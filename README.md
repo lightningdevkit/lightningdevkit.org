@@ -1,2 +1,3 @@
 # lightningdevkit.org
-the dev website
+The dev website
+
