@@ -1,6 +1,6 @@
 ---
 id: custom_persist
-title: Customizing Data Persistence
+title: Data Persistence
 ---
 
 TODO

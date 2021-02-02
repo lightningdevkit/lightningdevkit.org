@@ -1,6 +1,6 @@
 ---
 id: custom_blockdata
-title: Customizing Blockchain Data
+title: Blockchain Data
 ---
 
 TODO
