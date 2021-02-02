@@ -148,6 +148,6 @@ chain_monitor.block_connected(header, txn, height);
 ```
 
 ## Using LDK
-- [ ] opening/closing channels
-- [ ] sending payments and getting the result of the payment
-- [ ] connecting/disconnecting peers
+- [ ] opening/closing and listing channels
+- [ ] sending and listing payments and getting the result of the payment (and storing preimages etc)
+- [ ] connecting/disconnecting and listing peers
