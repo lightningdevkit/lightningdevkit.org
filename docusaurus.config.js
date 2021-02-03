@@ -6,8 +6,8 @@ module.exports = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'Square Crypto', // Usually your GitHub org/user name.
-  projectName: 'ldk-docs', // Usually your repo name.
+  organizationName: 'lightningdevkit', // Usually your GitHub org/user name.
+  projectName: 'lightningdevkit.org', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'LDK',
