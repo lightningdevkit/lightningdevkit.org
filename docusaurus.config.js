@@ -3,7 +3,7 @@ module.exports = {
   tagline: 'A flexible lightning implementation and supporting batteries',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'lightningdevkit', // Usually your GitHub org/user name.
