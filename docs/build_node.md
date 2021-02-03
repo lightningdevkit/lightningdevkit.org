@@ -72,6 +72,7 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
   * What it's used for: monitoring the chain for lighting transactions that are relevant to our node, and broadcasting force close transactions if need be
   * Dependencies: fee estimator, logger, transaction broadcaster, channel data persister
   * Optional dependency: a chain filter that allows LDK to let you know what transactions you should filter blocks for. This is useful if you pre-filter blocks or use compact filters. Otherwise, LDK will need full blocks.
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java), [Rust `Filter` docs](https://docs.rs/lightning/0.0.12/lightning/chain/trait.Filter.html)
   * Example:
 ```java
 // Example of a ChainMonitor if you *are* running a light client or filtering for transactions:
