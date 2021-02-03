@@ -21,6 +21,7 @@ which are supported but not yet part of this guide.
 - [ ] Initialize the fee estimator
   * What it's used for: estimating fees for on-chain transactions that LDK wants broadcasted.
   * Dependencies: none
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
 
 Example fee estimator that always returns `253` satoshis:
 ```java
@@ -38,7 +39,9 @@ final logger = Logger.new_impl((String arg) -> System.out.println(arg));
 - [ ] Initialize the transaction broadcaster
   * What it's used for: broadcasting various lightning transactions 
   * Dependencies: none
-  * Example transaction broadcaster skeleton:
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
+
+Example transaction broadcaster skeleton:
 ```java
 // Note that the `tx` argument is a []byte type. 
 final tx_broadcaster = BroadcasterInterface.new_impl(tx -> {
@@ -48,6 +51,7 @@ final tx_broadcaster = BroadcasterInterface.new_impl(tx -> {
 - [ ] Initialize the channel data persister
   * What it's used for: persisting crucial channel data in a timely manner
   * Dependencies: none
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
   * Example:
 ```java
 Persist persister = Persist.new_impl(new Persist.PersistInterface() {
