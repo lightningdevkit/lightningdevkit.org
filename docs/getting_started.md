@@ -19,7 +19,7 @@ your application, as well as documentation for what features are currently avail
 and not available for LDK in Java. "Opening a Channel" is a follow-up to "Build a Node"
 that walks through an example of opening a channel with LDK.
 
-"Key Management", "Spending On-Chain Funds", and "Block Data" dive into more depth on their topics.
+"Key Management", and "Blockchain Data" dive into more depth on their topics.
 
 Throughout these docs, if any piece of code is used or mentioned, the most in-depth docs can be
 found by searching [the Rust docs](https://docs.rs/lightning/0.0.12/lightning/index.html).
@@ -29,7 +29,7 @@ found by searching [the Rust docs](https://docs.rs/lightning/0.0.12/lightning/in
 
 The big blue box in the center contains all of LDK's core objects.
 
-The green boxes and Data Storage are all of LDK's batteries that must be provided.
+The green boxes on the outside of the big blue box and Data Storage are all of LDK's batteries that must be provided.
 
 ## LDK Batteries
 
