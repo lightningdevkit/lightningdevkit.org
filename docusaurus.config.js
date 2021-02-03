@@ -75,6 +75,9 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Square Crypto, Inc.`,
     },
+    prism: {
+      additionalLanguages: ['rust'],
+	},
   },
   presets: [
     [
