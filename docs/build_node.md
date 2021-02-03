@@ -96,6 +96,7 @@ final chain_monitor = ChainMonitor.constructor_new(null, tx_broadcaster, logger,
 - [ ] Initialize the keys manager
   * What it's used for: providing keys for signing lightning transactions
   * Dependencies: random bytes, the current bitcoin network
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
   * Example:
 ```java
 byte[] key_seed = new byte[32];
@@ -113,6 +114,7 @@ See the Key Management guide for more information.
 - [ ] Initialize the channel manager
     * What it's used for: managing channel state
     * Dependencies: keys manager, fee estimator, chain monitor, transaction broadcaster, logger, channel configuration info, and the set of channel monitors we read from disk in the previous step
+    * References: [Rust `ChannelManager` docs](https://docs.rs/lightning/0.0.12/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
 
 Example of initializing a channel manager on a fresh node:
 ```java
@@ -182,7 +184,9 @@ final router = NetGraphMsgHandler.constructor_new(new byte[32], null, logger);
 - [ ] Initialize the peer manager using LDK's `PeerManager` struct combined with LDK's supplied `NioPeerHandler` networking battery
   * What it's used for: connecting to peers, facilitating peer data to and from LDK
   * Dependencies: channel manager, router (optional), keys manager, random bytes, logger
-  * Example:
+  * References: [Rust docs](https://docs.rs/lightning/0.0.12/lightning/ln/peer_handler/struct.PeerManager.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Java `NioPeerHandler`](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/batteries/NioPeerHandler.java)
+
+Example:
 ```java
 byte[] random_data = new byte[32];
 <insert code to fill in `random_data` with random bytes>
