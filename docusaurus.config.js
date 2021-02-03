@@ -84,7 +84,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/lightningdevkit/lightningdevkit.org/tree/main',
         },
         blog: {
           showReadingTime: true,
