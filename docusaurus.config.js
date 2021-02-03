@@ -2,7 +2,7 @@ module.exports = {
   title: 'Lightning Dev Kit',
   tagline: 'A flexible lightning implementation and supporting batteries',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/lightningdevkit.org/',
+  baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
