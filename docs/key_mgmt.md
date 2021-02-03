@@ -17,3 +17,7 @@ let mut random_32_bytes = [0; 32];
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
 let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(random_32-bytes, bitcoin::network::constants::Network::Bitcoin, start_time.as_secs(), start_time.subsec_nanos());
 ```
+
+Spending On-Chain Funds
+=======================
+When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `util::events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `chain::keysinterface::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it. `ChannelKeys` objects provide a unique id via the `key_derivation_params` function, who's value is provided back to you in the `SpendableOutputs` objects. For users of a `KeysManager` object, you can re-construct the `InMemoryChannelKeys` object using this information and fetch the relevant private keys from that. A `SpendableOutputDescriptor::StaticOutput` element does not have this information as the output is sent to an output which used only `KeysInterface` data, not per-channel data.
