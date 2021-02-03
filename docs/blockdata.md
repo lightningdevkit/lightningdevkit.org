@@ -1,5 +1,5 @@
 ---
-id: custom_blockdata
+id: blockdata
 title: Blockchain Data
 ---
 
