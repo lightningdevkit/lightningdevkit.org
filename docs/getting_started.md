@@ -25,7 +25,7 @@ Throughout these docs, if any piece of code is used or mentioned, the most in-de
 found by searching [the Rust docs](https://docs.rs/lightning/0.0.12/lightning/index.html).
 
 ## Architecture
-<img alt="LDK Architecture" src={useBaseUrl('img/ldk_arch.svg')} />
+![LDK Architecture](assets/ldk-architecture.svg)
 
 The big blue box in the center contains all of LDK's core objects.
 
