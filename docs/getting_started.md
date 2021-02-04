@@ -27,9 +27,9 @@ found by searching [the Rust docs](https://docs.rs/lightning/0.0.12/lightning/in
 ## Architecture
 ![LDK Architecture](assets/ldk-architecture.svg)
 
-The big blue box in the center contains all of LDK's core objects.
-
-The green boxes on the outside of the big blue box and Data Storage are all of LDK's batteries that must be provided.
+LDK's core components are shown in the center box labeled `lightning`. Boxes
+with dotted borders are LDK's batteries — these must be configured with either
+off-the-shelf or custom implementations that you provide.
 
 ## LDK Batteries
 
