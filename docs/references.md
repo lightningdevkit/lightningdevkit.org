@@ -3,7 +3,7 @@ id: references
 title: References
 ---
 
-### [Rust Documentation](https://docs.rs/lightning/0.0.12/lightning/index.html)
+### [Rust Documentation](https://docs.rs/lightning)
 
 These provide the most searchable and comprehensive documentation on LDK.
 If you're using Java and want more information on any method/struct/etc., searching
