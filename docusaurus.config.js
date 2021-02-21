@@ -9,6 +9,7 @@ module.exports = {
   organizationName: 'lightningdevkit', // Usually your GitHub org/user name.
   projectName: 'lightningdevkit.org', // Usually your repo name.
   themeConfig: {
+    sidebarCollapsible: false,
     navbar: {
       title: 'LDK',
       logo: {

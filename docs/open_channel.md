@@ -4,7 +4,7 @@ title: "Opening a Channel with LDK"
 ---
 
 ## Prerequisites
-See "Build a Node: Checklist" for preparing LDK to open a channel. This guide 
+See [Building a Node with LDK](build_node.md) for preparing LDK to open a channel. This guide 
 is a follow-up.
 
 ## Overview
