@@ -9,7 +9,9 @@ This document covers everything you need to make a node using LDK.
 
 * [Setup](#setup) covers everything you need to do to set up LDK on startup.
 * [Running LDK](#running-ldk) covers everything you need to do while LDK is running to keep it operational.
-* [Using LDK](#using-ldk) covers most lightning operations you'll want to use, such as opening a channel. Sending and receiving payments are supported but not yet a part of this guide.
+* [Using LDK](#using-ldk) covers most lightning operations you'll want to use,
+  such as opening a channel. Sending and receiving payments are supported but
+  not yet a part of this guide.
 
 Note that LDK does not assume that safe shutdown is available, so there is no 
 shutdown checklist.
@@ -25,7 +27,9 @@ shutdown checklist.
 final fee_estimator = FeeEstimator.new_impl((confirmation_target -> 253));
 ```
 
-**Implementation notes:** Rather than using static fees, you'll want to fill in the lambda with fetching up-to-date fees from a source like bitcoin core or your own API endpoint.
+**Implementation notes:** Rather than using static fees, you'll want to fill in
+the lambda with fetching up-to-date fees from a source like bitcoin core or your
+own API endpoint.
 
 **Dependencies:** *none*
 

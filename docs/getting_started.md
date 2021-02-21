@@ -12,7 +12,7 @@ can be supplied by the user or by one of LDK's sample modules.
 
 ## How To Use These Docs
 "Getting Started" + "Overview" provide an introduction to the architecture and
-design philosophy of LDK. 
+design philosophy of LDK.
 
 "Build a Node: Checklist" walks through how to specifically integrate LDK into
 your application, as well as documentation for what features are currently available
