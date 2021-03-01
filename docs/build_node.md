@@ -128,7 +128,8 @@ final chain_monitor = ChainMonitor.constructor_new(null, tx_broadcaster, logger,
 **Example:**
 ```java
 byte[] key_seed = new byte[32];
-<insert code to fill key_seed with random bytes>
+// <insert code to fill key_seed with random bytes OR if restarting, reload the
+// seed from disk>
 // Notes about this `KeysManager`:
 // * it is parameterized by the mainnet bitcoin network, but this should be 
 //   swapped out for testnet or regtest as needed.
@@ -139,7 +140,12 @@ KeysManager keys = KeysManager.constructor_new(key_seed,
     LDKNetwork.LDKNetwork_Bitcoin, System.currentTimeMillis() / 1000, 
     (int) (System.currentTimeMillis() * 1000));
 ```
-**Implementation notes:** See the Key Management guide for more information.
+**Implementation notes:**
+* See the Key Management guide for more information.
+* Note that you must write the `key_seed` you give to the `KeysManager` on
+  startup to disk, and keep using it to initialize the `KeysManager` every time
+  you restart. This `key_seed` is your node's private key, that corresponds to
+  its node pubkey.
 
 **Dependencies:** random bytes, the current bitcoin network
 
@@ -185,13 +191,6 @@ channel_monitors.put(channel_monitor_funding_txo_str, channel_monitor);
 ```
 **Dependencies:** `KeysManager`
 
-### Sync `ChannelMonitor`s to chain tip
-**What it's used for:** ensuring the channel data state is up-to-date with the bitcoin blockchain
-
-**Example:** in Rust, of bringing a `ChannelMonitor` up to chain tip: https://github.com/rust-bitcoin/rust-lightning/pull/763/files#diff-f457bab978fc8b89ad308d5195f99d7b65a4a6ba1673c5f164104b2dda9a0db6R251. The `ChannelMonitor` is the `chain_listener` parameter. See the linked function and the `find_fork` function within it.
-
-**Implementation notes:** when you read each `ChannelMonitor` off of disk, it comes with a blockhash which was the last block the `ChannelMonitor` saw. If the blockhash is on a fork of the main chain, then first you need to disconnect blocks until the `ChannelMonitor` gets to a common ancestor with the main chain. Then after this disconnection happens if it needs to, you then need to connect recent blocks until the `ChannelMonitor` is at the current chain tip.
-
 ### Initialize the `ChannelManager`
 **What it's used for:** managing channel state
 
@@ -226,6 +225,19 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`, channel configuration info, and the set of `ChannelMonitor`s we read from disk in the previous step if restarting
 
 **References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/0.0.12/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
+
+### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
+**What it's used for:** ensuring the channel data state is up-to-date with the bitcoin blockchain
+
+**Example:** in Rust, of bringing a `ChannelMonitor` up to chain tip: https://github.com/rust-bitcoin/rust-lightning/pull/763/files#diff-f457bab978fc8b89ad308d5195f99d7b65a4a6ba1673c5f164104b2dda9a0db6R251. The `ChannelMonitor` is the `chain_listener` parameter. See the linked function and the `find_fork` function within it.
+
+**Implementation notes:** when you read each `ChannelMonitor` off of disk, it
+comes with a blockhash which was the last block the `ChannelMonitor` saw. The
+same is true for the `ChannelManager`. If the blockhash is on a fork of the main
+chain, then first you need to disconnect blocks until the `ChannelMonitor` or
+`ChannelManager` gets to a common ancestor with the main chain. Then after this
+disconnection happens if it needs to, you then need to connect recent blocks
+until the `ChannelMonitor` or `ChannelManager` is at the current chain tip.
 
 ### Give `ChannelMonitor`s to `ChainMonitor`
 ** What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
