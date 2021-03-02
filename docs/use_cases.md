@@ -19,8 +19,13 @@ supports routing data being fetched via the Lightning P2P protocol, an external
 service, or routes can be calculated off-device. It also provides cross-platform
 compatibility for free, allowing synchronization of lightning state across
 devices and, as long as there is protection from simultaneous-updates, users to
-access their wallet on any device. See the [Overview](overview.md) page for more
-details on the interfaces LDK provides for integration.
+access their wallet on any device.
+
+See the [Overview](overview.md) page for more details on the interfaces LDK 
+provides for integration.
+
+See the [Mobile](mobile.md) page for more details on the challenges of
+Lightning on mobile devices and what solutions LDK offers.
 
 ## HSMs (Hardware Security Modules)
 
