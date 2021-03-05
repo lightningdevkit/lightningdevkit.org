@@ -98,7 +98,7 @@ progress on sending or receiving payments until they return.
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
 ### Initialize the `ChainMonitor`
-**What it's used for:** Tracking one or more ChannelMonitors and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
+**What it's used for:** Tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
 
 **Example:** how to initialize a `ChainMonitor` if you *are* running a light client or filtering for transactions
 ```java
@@ -160,40 +160,22 @@ KeysManager keys_manager = KeysManager.constructor_new(key_seed,
 **What it's used for:** if LDK is restarting, its channel state will need to be read from disk and fed to the `ChannelManager` on the next step, as well as the `ChainMonitor` in the following step.
 
 **Example:** reading `ChannelMonitor`s from disk, where each `ChannelMonitor`'s file is named after its funding outpoint:
+
 ```java
-// Initialize the hashmap where we'll store the `ChannelMonitor`s read from disk.
-// This hashmap will later be given to the `ChannelManager` on initialization.
-final HashMap<String, ChannelMonitor> channel_monitors = new HashMap<>();
+// Initialize the array where we'll store the `ChannelMonitor`s read from disk.
+final ArrayList channel_monitor_list = new ArrayList<>();
 
-byte[] channel_monitor_bytes = // read the bytes from disk the same way you 
-                               // wrote them in step "Initialize `Persist`"
-Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ channel_monitor_read_result = 
-    UtilMethods.constructor_BlockHashChannelMonitorZ_read(channel_monitor_bytes,
-        keys_manager.as_KeysInterface());
+// For each monitor stored on disk, deserialize it and place it in `channel_monitors`.
+for (... : monitor_files) {
+    byte[] channel_monitor_bytes = // read the bytes from disk the same way you
+                                   // wrote them in step "Initialize `Persist`"
+	channel_monitor_list.add(channel_monitor_bytes);
+}
 
-// Assert that the result of reading bytes from disk is OK.
-assert channel_monitor_read_result instanceof 
-    Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK;
-
-// Cast the result of reading bytes from disk into its type in the `success`
-// read case.
-TwoTuple<OutPoint, byte[]> funding_txo_and_monitor = 
-    ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) 
-    channel_monitor_read_result)
-
-// Take the `ChannelMonitor` out of the result (the other part of the result is
-// the blockhash that the `ChannelMonitor` last saw).
-ChannelMonitor channel_monitor = 
-    ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) res).res.b;
-
-OutPoint channel_monitor_funding_txo = channel_monitor.get_funding_txo().a;
-String channel_monitor_funding_txo_str = 
-    Arrays.toString(channel_monitor_funding_txo.get_txid());
-channel_monitors.put(channel_monitor_funding_txo_str, channel_monitor);
+// Convert the ArrayList into an array so we can pass it to `ChannelManagerConstructor` in the next step.
+final byte[][] channel_monitors = channel_monitor_list.toArray(new byte[1][]);
 ```
+
 **Dependencies:** `KeysManager`
 
 ### Initialize the `ChannelManager`
@@ -212,19 +194,11 @@ final channel_manager = ChannelManager.constructor_new(
 byte[] serialized_channel_manager = // <insert bytes you would have written in 
                                     // following the later step "Persist 
                                     // channel manager">
-Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ channel_manager_read_result =
-  UtilMethods.constructor_BlockHashChannelManagerZ_read(serialized_channel_manager, 
-  keys_manager.as_KeysInterface(), fee_estimator, chain_monitor.as_Watch(), 
-  tx_broadcaster, logger, UserConfig.constructor_default(), channel_monitors);
+ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
+  serialized_channel_manager, channel_monitors, keys_manager.as_KeysInterface(),
+  fee_estimator, chain_monitor.as_Watch(), tx_broadcaster, logger);
 
-// Assert we were able to read successfully.
-assert channel_manager_read_result instanceof 
-    Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ_OK;
-
-final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ_OK) channel_manager_read_result)
-    .res.b;
+final channel_manager = channel_manager_constructor.channel_manager;
 ```
 
 **Implementation notes:** No methods should be called on `ChannelManager` until
@@ -255,9 +229,9 @@ after it has been synced and its `chain::Watch` has been given the
 
 **Example:**
 ```java
-// Give each `ChannelMonitor` to the `ChainMonitor`.
-final chain_watch = chain_monitor.as_Watch();
-chain_watch.watch_channel(channel_monitor.get_funding_txo().a, channel_monitor);
+// Note that if you use the ChannelManagerConstructor utility,
+// it handles this for you in chain_sync_completed().
+channel_manager_constructor.chain_sync_completed();
 ```
 
 ### Optional: Initialize the `NetGraphMsgHandler`
