@@ -155,40 +155,42 @@ KeysManager keys = KeysManager.constructor_new(key_seed,
 **What it's used for:** if LDK is restarting, its channel state will need to be read from disk and fed to the `ChannelManager` on the next step, as well as the `ChainMonitor` in the following step.
 
 **Example:** reading `ChannelMonitor`s from disk, where each `ChannelMonitor`'s file is named after its funding outpoint:
+
 ```java
-// Initialize the hashmap where we'll store the `ChannelMonitor`s read from disk.
+// Initialize the array where we'll store the `ChannelMonitor`s read from disk.
 // This hashmap will later be given to the `ChannelManager` on initialization.
-final HashMap<String, ChannelMonitor> channel_monitors = new HashMap<>();
+final ArrayList channel_monitors = new ArrayList<>();
 
-byte[] channel_monitor_bytes = // read the bytes from disk the same way you 
-                               // wrote them in step "Initialize `Persist`"
-Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ channel_monitor_read_result = 
-    UtilMethods.constructor_BlockHashChannelMonitorZ_read(monitor_bytes, 
-        keys_manager.as_KeysInterface());
+// For each monitor stored on disk, deserialize it and place it in `channel_monitors`.
+for (... : monitor_files) {
+    byte[] channel_monitor_bytes = // read the bytes from disk the same way you 
+                                   // wrote them in step "Initialize `Persist`"
+    Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ channel_monitor_read_result = 
+        UtilMethods.constructor_BlockHashChannelMonitorZ_read(monitor_bytes, 
+            keys_manager.as_KeysInterface());
 
-// Assert that the result of reading bytes from disk is OK.
-assert channel_monitor_read_result instanceof 
-    Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK;
+    // Assert that the result of reading bytes from disk is OK.
+    assert channel_monitor_read_result instanceof 
+        Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
+        .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK;
 
-// Cast the result of reading bytes from disk into its type in the `success`
-// read case.
-TwoTuple<OutPoint, byte[]> funding_txo_and_monitor = 
-    ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) 
-    channel_monitor_read_result)
+    // Cast the result of reading bytes from disk into its type in the `success`
+    // read case.
+    TwoTuple<OutPoint, byte[]> funding_txo_and_monitor = 
+        ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
+        .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) 
+        channel_monitor_read_result)
 
-// Take the `ChannelMonitor` out of the result (the other part of the result is
-// the blockhash that the `ChannelMonitor` last saw).
-ChannelMonitor channel_monitor = 
-    ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
-    .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) res).res.b;
+    // Take the `ChannelMonitor` out of the result (the other part of the result is
+    // the blockhash that the `ChannelMonitor` last saw).
+    ChannelMonitor channel_monitor = 
+        ((Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ
+        .Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ_OK) res).res.b;
 
-OutPoint channel_monitor_funding_txo = channel_monitor.get_funding_txo().a;
-String channel_monitor_funding_txo_str = 
-    Arrays.toString(channel_monitor_funding_txo.get_txid());
-channel_monitors.put(channel_monitor_funding_txo_str, channel_monitor);
+    channel_monitors.add(channel_monitor);
+}
 ```
+
 **Dependencies:** `KeysManager`
 
 ### Initialize the `ChannelManager`
@@ -210,7 +212,8 @@ byte[] serialized_channel_manager = // <insert bytes you would have written in
 Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ channel_manager_read_result =
   UtilMethods.constructor_BlockHashChannelManagerZ_read(serialized_channel_manager, 
   keys_manager.as_KeysInterface(), fee_estimator, chain_monitor.as_Watch(), 
-  tx_broadcaster, logger, UserConfig.constructor_default(), channel_monitors);
+  tx_broadcaster, logger, UserConfig.constructor_default(),
+  channel_monitors.toArray(new ChannelMonitor[0]));
 
 // Assert we were able to read successfully.
 assert channel_manager_read_result instanceof 
