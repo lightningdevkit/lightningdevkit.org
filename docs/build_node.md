@@ -231,13 +231,15 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
 
 **Example:** [Rust docs](https://github.com/rust-bitcoin/rust-lightning/blob/c42ea50cc703f03465d52b5fccfc4a90466d9fea/lightning-block-sync/src/init.rs#L95-L103)
 
-**Implementation notes:** when you read each `ChannelMonitor` off of disk, it
-comes with a blockhash which was the last block the `ChannelMonitor` saw. The
-same is true for the `ChannelManager`. If the blockhash is on a fork of the main
-chain, then first you need to disconnect blocks until the `ChannelMonitor` or
-`ChannelManager` gets to a common ancestor with the main chain. Then after this
-disconnection happens if it needs to, you then need to connect recent blocks
-until the `ChannelMonitor` or `ChannelManager` is at the current chain tip.
+**Implementation notes:**
+* When you read each `ChannelMonitor` off of disk, it comes with a blockhash,
+  which was the last block the `ChannelMonitor` saw. The same is true for the
+  `ChannelManager`.
+* If the blockhash is on a fork of the main chain, then first you need to
+  disconnect blocks until the `ChannelMonitor` or `ChannelManager` gets to a
+  common ancestor with the main chain.
+* Then you need to connect recent blocks until the `ChannelMonitor` or
+  `ChannelManager` is at the current chain tip.
 
 ### Give `ChannelMonitor`s to `ChainMonitor`
 ** What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
