@@ -87,12 +87,18 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
   }
 });
 ```
+
+**Implementation notes:** ChannelMonitors are objects which are capable of responding to on-chain
+events for a given channel. Thus, you will have one `ChannelMonitor` per channel, identified by the
+funding output `id`, above. They are persisted in real-time and the `Persist` methods will block
+progress on sending or receiving payments until they return.
+
 **Dependencies:** *none*
 
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
 ### Initialize the `ChainMonitor`
-**What it's used for:** monitoring the chain for lighting transactions that are relevant to our node, and broadcasting force close transactions if need be
+**What it's used for:** Tracking one or more ChannelMonitors and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
 
 **Example:** how to initialize a `ChainMonitor` if you *are* running a light client or filtering for transactions
 ```java
