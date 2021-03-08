@@ -229,7 +229,7 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
 ### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 **What it's used for:** ensuring the channel data state is up-to-date with the bitcoin blockchain
 
-**Example:** in Rust, of bringing a `ChannelMonitor` up to chain tip: https://github.com/rust-bitcoin/rust-lightning/pull/763/files#diff-f457bab978fc8b89ad308d5195f99d7b65a4a6ba1673c5f164104b2dda9a0db6R251. The `ChannelMonitor` is the `chain_listener` parameter. See the linked function and the `find_fork` function within it.
+**Example:** [Rust docs](https://github.com/rust-bitcoin/rust-lightning/blob/c42ea50cc703f03465d52b5fccfc4a90466d9fea/lightning-block-sync/src/init.rs#L95-L103)
 
 **Implementation notes:** when you read each `ChannelMonitor` off of disk, it
 comes with a blockhash which was the last block the `ChannelMonitor` saw. The
