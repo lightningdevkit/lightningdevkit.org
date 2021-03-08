@@ -24,12 +24,13 @@ shutdown checklist.
 ```java
 // `FeeEstimatorInterface` is a functional interface, so we can implement it
 // with a lambda.
+// Note that 253 is the minimum which can be returned (1 sat/vbyte, rounded up).
 final fee_estimator = FeeEstimator.new_impl((confirmation_target -> 253));
 ```
 
 **Implementation notes:** Rather than using static fees, you'll want to fill in
 the lambda with fetching up-to-date fees from a source like bitcoin core or your
-own API endpoint.
+own API endpoint. To reduce network traffic, you may wish to cache the results.
 
 **Dependencies:** *none*
 
