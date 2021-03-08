@@ -136,7 +136,7 @@ byte[] key_seed = new byte[32];
 // * the current time is part of the parameters because it is used to derive
 //   random numbers from the seed where required, to ensure all random
 //   generation is unique across restarts.
-KeysManager keys = KeysManager.constructor_new(key_seed, 
+KeysManager keys_manager = KeysManager.constructor_new(key_seed,
     LDKNetwork.LDKNetwork_Bitcoin, System.currentTimeMillis() / 1000, 
     (int) (System.currentTimeMillis() * 1000));
 ```
@@ -163,7 +163,7 @@ final HashMap<String, ChannelMonitor> channel_monitors = new HashMap<>();
 byte[] channel_monitor_bytes = // read the bytes from disk the same way you 
                                // wrote them in step "Initialize `Persist`"
 Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ channel_monitor_read_result = 
-    UtilMethods.constructor_BlockHashChannelMonitorZ_read(monitor_bytes, 
+    UtilMethods.constructor_BlockHashChannelMonitorZ_read(channel_monitor_bytes,
         keys_manager.as_KeysInterface());
 
 // Assert that the result of reading bytes from disk is OK.
@@ -274,8 +274,8 @@ byte[] random_bytes = new byte[32];
 // <insert code to fill in `random_data` with random bytes>
 
 final peer_manager = PeerManager.constructor_new(
-    chan_manager.as_ChannelMessageHandler(), router.as_RoutingMessageHandler(), 
-    keys_interface.get_node_secret(), random_bytes, logger);
+    channel_manager.as_ChannelMessageHandler(), router.as_RoutingMessageHandler(),
+    keys_manager.as_KeysInterface().get_node_secret(), random_bytes, logger);
 ```
 **Implementation notes:** if you did not initialize `NetGraphMsgHandler` in the previous step, you can initialize your own struct (which can be a dummy struct) that implements `RoutingMessageHandlerInterface`
 
@@ -320,7 +320,7 @@ channel_manager.block_connected(header, txn, height);
 chain_monitor.block_connected(header, txn, height);
 
 channel_manager.block_disconnected(header);
-chain_monitor.block_disconnected(header);
+chain_monitor.block_disconnected(header, height);
 ```
 **Implementation notes:** blocks must be connected and disconnected in chain order.
 
@@ -340,7 +340,7 @@ while(true) {
     Event[] channel_manager_events = 
         channel_manager.as_EventsProvider().get_and_clear_pending_events();
     Event[] chain_monitor_events = 
-        chain_watch.as_EventsProvider().get_and_clear_pending_events();
+        chain_monitor.as_EventsProvider().get_and_clear_pending_events();
 
     Event[] all_events = ArrayUtils.addAll(channel_manager_events, 
         chain_monitor_events);
