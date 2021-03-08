@@ -222,6 +222,10 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
     .res.b;
 ```
 
+**Implementation notes:** No methods should be called on `ChannelManager` until
+after it has been synced and its `chain::Watch` has been given the
+`ChannelMonitor`s as described in the next two steps.
+
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`, channel configuration info, and the set of `ChannelMonitor`s we read from disk in the previous step if restarting
 
 **References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
