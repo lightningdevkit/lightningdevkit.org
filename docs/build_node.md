@@ -17,7 +17,7 @@ Note that LDK does not assume that safe shutdown is available, so there is no
 shutdown checklist.
 
 ## Setup
-### Initialize the `FeeEstimator`
+### 1. Initialize the `FeeEstimator`
 **What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
 **Example:** `FeeEstimator` that returns static fees
@@ -35,7 +35,7 @@ own API endpoint.
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
 
-### Initialize the `Logger`
+### 2. Initialize the `Logger`
 **What it's used for:** LDK logging
 
 **Example:** `Logger` that prints to the console:
@@ -50,7 +50,7 @@ final logger = Logger.new_impl((String arg) -> System.out.println(arg));
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/util/logger/trait.Logger.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
 
-### Initialize the `BroadcasterInterface`
+### 3. Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various lightning transactions 
 
 **Example:**
@@ -64,7 +64,7 @@ final tx_broadcaster = BroadcasterInterface.new_impl(tx -> {
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
-### Initialize `Persist`
+### 4. Initialize `Persist`
 **What it's used for:** persisting crucial channel data in a timely manner
 
 **Example:**
@@ -90,7 +90,7 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
-### Initialize the `ChainMonitor`
+### 5. Initialize the `ChainMonitor`
 **What it's used for:** monitoring the chain for lighting transactions that are relevant to our node, and broadcasting force close transactions if need be
 
 **Example:** how to initialize a `ChainMonitor` if you *are* running a light client or filtering for transactions
@@ -122,7 +122,7 @@ final chain_monitor = ChainMonitor.constructor_new(null, tx_broadcaster, logger,
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java), [Rust `Filter` docs](https://docs.rs/lightning/0.0.12/lightning/chain/trait.Filter.html)
 
-### Initialize the `KeysManager`
+### 6. Initialize the `KeysManager`
 **What it's used for:** providing keys for signing lightning transactions
 
 **Example:**
@@ -191,7 +191,7 @@ channel_monitors.put(channel_monitor_funding_txo_str, channel_monitor);
 ```
 **Dependencies:** `KeysManager`
 
-### Initialize the `ChannelManager`
+### 7. Initialize the `ChannelManager`
 **What it's used for:** managing channel state
 
 **Example:** initializing `ChannelManager` on a fresh node:
@@ -226,7 +226,7 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
 
 **References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/0.0.12/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
 
-### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
+### 8. Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 **What it's used for:** ensuring the channel data state is up-to-date with the bitcoin blockchain
 
 **Example:** in Rust, of bringing a `ChannelMonitor` up to chain tip: https://github.com/rust-bitcoin/rust-lightning/pull/763/files#diff-f457bab978fc8b89ad308d5195f99d7b65a4a6ba1673c5f164104b2dda9a0db6R251. The `ChannelMonitor` is the `chain_listener` parameter. See the linked function and the `find_fork` function within it.
@@ -239,7 +239,7 @@ chain, then first you need to disconnect blocks until the `ChannelMonitor` or
 disconnection happens if it needs to, you then need to connect recent blocks
 until the `ChannelMonitor` or `ChannelManager` is at the current chain tip.
 
-### Give `ChannelMonitor`s to `ChainMonitor`
+### 9. Give `ChannelMonitor`s to `ChainMonitor`
 ** What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
 
 **Example:**
@@ -264,7 +264,7 @@ final router = NetGraphMsgHandler.constructor_new(new byte[32], null, logger);
 
 **References:** [`NetGraphMsgHandler` Rust docs](https://docs.rs/lightning/0.0.12/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetGraphMsgHandler.java), [`Access` Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/trait.Access.html), [`Access` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Access.java)
 
-### Initialize the `PeerManager`
+### 10. Initialize the `PeerManager`
 
 **What it's used for:** managing peer data
 
@@ -283,7 +283,7 @@ final peer_manager = PeerManager.constructor_new(
 
 **References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/ln/peer_handler/struct.PeerManager.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/0.0.12/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `RoutingMessageHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
 
-### Initialize networking
+### 11. Initialize networking
 **What it's used for:** making peer connections, facilitating peer data to and from LDK
 
 **Example:**
