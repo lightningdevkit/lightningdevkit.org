@@ -2,7 +2,7 @@
 id: key_mgmt
 title: Key Management
 ---
-Relevant reference: https://docs.rs/lightning/0.0.12/lightning/chain/keysinterface/struct.KeysManager.html
+Relevant reference: [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html)
 
 LDK Private Key Information is primarily provided through the `chain::keysinterface::KeysInterface` trait. It includes a few basic methods to get public and private key information, as well as a method to get an instance of a second trait which provides per-channel information - `chain::keysinterface::ChannelKeys`. While a custom `KeysInterface` implementation allows simple flexibility to control derivation of private keys, `ChannelKeys` focuses on signing lightning transactions and is primarily useful if you want to store private key material on a separate device which enforces lightning protocol details.
 
