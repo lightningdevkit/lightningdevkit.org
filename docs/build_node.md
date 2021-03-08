@@ -33,7 +33,7 @@ own API endpoint.
 
 **Dependencies:** *none*
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
 
 ### Initialize the `Logger`
 **What it's used for:** LDK logging
@@ -48,7 +48,7 @@ final logger = Logger.new_impl((String arg) -> System.out.println(arg));
 
 **Dependencies:** *none*
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/util/logger/trait.Logger.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
 
 ### Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various lightning transactions 
@@ -62,7 +62,7 @@ final tx_broadcaster = BroadcasterInterface.new_impl(tx -> {
 ```
 **Dependencies:** *none*
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
 ### Initialize `Persist`
 **What it's used for:** persisting crucial channel data in a timely manner
@@ -88,7 +88,7 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
 ```
 **Dependencies:** *none*
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
 ### Initialize the `ChainMonitor`
 **What it's used for:** monitoring the chain for lighting transactions that are relevant to our node, and broadcasting force close transactions if need be
@@ -120,7 +120,7 @@ final chain_monitor = ChainMonitor.constructor_new(null, tx_broadcaster, logger,
 
 **Optional dependency:** `Filter` allows LDK to let you know what transactions you should filter blocks for. This is useful if you pre-filter blocks or use compact filters. Otherwise, LDK will need full blocks.
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java), [Rust `Filter` docs](https://docs.rs/lightning/0.0.12/lightning/chain/trait.Filter.html)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java), [Rust `Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html)
 
 ### Initialize the `KeysManager`
 **What it's used for:** providing keys for signing lightning transactions
@@ -136,7 +136,7 @@ byte[] key_seed = new byte[32];
 // * the current time is part of the parameters because it is used to derive
 //   random numbers from the seed where required, to ensure all random
 //   generation is unique across restarts.
-KeysManager keys = KeysManager.constructor_new(key_seed, 
+KeysManager keys_manager = KeysManager.constructor_new(key_seed,
     LDKNetwork.LDKNetwork_Bitcoin, System.currentTimeMillis() / 1000, 
     (int) (System.currentTimeMillis() * 1000));
 ```
@@ -149,7 +149,7 @@ KeysManager keys = KeysManager.constructor_new(key_seed,
 
 **Dependencies:** random bytes, the current bitcoin network
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
 
 ### Read `ChannelMonitor` state from disk
 **What it's used for:** if LDK is restarting, its channel state will need to be read from disk and fed to the `ChannelManager` on the next step, as well as the `ChainMonitor` in the following step.
@@ -163,7 +163,7 @@ final HashMap<String, ChannelMonitor> channel_monitors = new HashMap<>();
 byte[] channel_monitor_bytes = // read the bytes from disk the same way you 
                                // wrote them in step "Initialize `Persist`"
 Result_C2Tuple_BlockHashChannelMonitorZDecodeErrorZ channel_monitor_read_result = 
-    UtilMethods.constructor_BlockHashChannelMonitorZ_read(monitor_bytes, 
+    UtilMethods.constructor_BlockHashChannelMonitorZ_read(channel_monitor_bytes,
         keys_manager.as_KeysInterface());
 
 // Assert that the result of reading bytes from disk is OK.
@@ -222,22 +222,28 @@ final channel_manager = ((Result_C2Tuple_BlockHashChannelManagerZDecodeErrorZ
     .res.b;
 ```
 
+**Implementation notes:** No methods should be called on `ChannelManager` until
+after it has been synced and its `chain::Watch` has been given the
+`ChannelMonitor`s as described in the next two steps.
+
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`, channel configuration info, and the set of `ChannelMonitor`s we read from disk in the previous step if restarting
 
-**References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/0.0.12/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
+**References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
 
 ### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 **What it's used for:** ensuring the channel data state is up-to-date with the bitcoin blockchain
 
-**Example:** in Rust, of bringing a `ChannelMonitor` up to chain tip: https://github.com/rust-bitcoin/rust-lightning/pull/763/files#diff-f457bab978fc8b89ad308d5195f99d7b65a4a6ba1673c5f164104b2dda9a0db6R251. The `ChannelMonitor` is the `chain_listener` parameter. See the linked function and the `find_fork` function within it.
+**Example:** [Rust docs](https://github.com/rust-bitcoin/rust-lightning/blob/c42ea50cc703f03465d52b5fccfc4a90466d9fea/lightning-block-sync/src/init.rs#L95-L103)
 
-**Implementation notes:** when you read each `ChannelMonitor` off of disk, it
-comes with a blockhash which was the last block the `ChannelMonitor` saw. The
-same is true for the `ChannelManager`. If the blockhash is on a fork of the main
-chain, then first you need to disconnect blocks until the `ChannelMonitor` or
-`ChannelManager` gets to a common ancestor with the main chain. Then after this
-disconnection happens if it needs to, you then need to connect recent blocks
-until the `ChannelMonitor` or `ChannelManager` is at the current chain tip.
+**Implementation notes:**
+* When you read each `ChannelMonitor` off of disk, it comes with a blockhash,
+  which was the last block the `ChannelMonitor` saw. The same is true for the
+  `ChannelManager`.
+* If the blockhash is on a fork of the main chain, then first you need to
+  disconnect blocks until the `ChannelMonitor` or `ChannelManager` gets to a
+  common ancestor with the main chain.
+* Then you need to connect recent blocks until the `ChannelMonitor` or
+  `ChannelManager` is at the current chain tip.
 
 ### Give `ChannelMonitor`s to `ChainMonitor`
 ** What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
@@ -262,7 +268,7 @@ final router = NetGraphMsgHandler.constructor_new(new byte[32], null, logger);
 
 **Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
-**References:** [`NetGraphMsgHandler` Rust docs](https://docs.rs/lightning/0.0.12/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetGraphMsgHandler.java), [`Access` Rust docs](https://docs.rs/lightning/0.0.12/lightning/chain/trait.Access.html), [`Access` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Access.java)
+**References:** [`NetGraphMsgHandler` Rust docs](https://docs.rs/lightning/*/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetGraphMsgHandler.java), [`Access` Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [`Access` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Access.java)
 
 ### Initialize the `PeerManager`
 
@@ -274,14 +280,14 @@ byte[] random_bytes = new byte[32];
 // <insert code to fill in `random_data` with random bytes>
 
 final peer_manager = PeerManager.constructor_new(
-    chan_manager.as_ChannelMessageHandler(), router.as_RoutingMessageHandler(), 
-    keys_interface.get_node_secret(), random_bytes, logger);
+    channel_manager.as_ChannelMessageHandler(), router.as_RoutingMessageHandler(),
+    keys_manager.as_KeysInterface().get_node_secret(), random_bytes, logger);
 ```
 **Implementation notes:** if you did not initialize `NetGraphMsgHandler` in the previous step, you can initialize your own struct (which can be a dummy struct) that implements `RoutingMessageHandlerInterface`
 
 **Dependencies:** `ChannelManager`, `RoutingMessageHandlerInterface`, `KeysManager`, random bytes, `Logger`
 
-**References:** [Rust docs](https://docs.rs/lightning/0.0.12/lightning/ln/peer_handler/struct.PeerManager.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/0.0.12/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `RoutingMessageHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/*/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `RoutingMessageHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
 
 ### Initialize networking
 **What it's used for:** making peer connections, facilitating peer data to and from LDK
@@ -320,13 +326,13 @@ channel_manager.block_connected(header, txn, height);
 chain_monitor.block_connected(header, txn, height);
 
 channel_manager.block_disconnected(header);
-chain_monitor.block_disconnected(header);
+chain_monitor.block_disconnected(header, height);
 ```
 **Implementation notes:** blocks must be connected and disconnected in chain order.
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`
 
-**References:** [Rust `ChainMonitor` `block_(dis)connected` docs](https://docs.rs/lightning/0.0.12/lightning/chain/chainmonitor/struct.ChainMonitor.html#method.block_connected), [Rust `ChannelManager` `block_(dis)connected`](https://docs.rs/lightning/0.0.12/lightning/ln/channelmanager/struct.ChannelManager.html#method.block_connected), [Java `ChainMonitor` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChainMonitor.java#L17), [Java `ChannelManager` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChannelManager.java#L136)
+**References:** [Rust `ChainMonitor` `block_(dis)connected` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html#method.block_connected), [Rust `ChannelManager` `block_(dis)connected`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html#method.block_connected), [Java `ChainMonitor` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChainMonitor.java#L17), [Java `ChannelManager` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChannelManager.java#L136)
 
 ### Handle `ChannelManager` and `ChainMonitor`'s Generated Events
 **What it's used for:** `ChannelManager` and `ChainMonitor` generate events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
@@ -340,7 +346,7 @@ while(true) {
     Event[] channel_manager_events = 
         channel_manager.as_EventsProvider().get_and_clear_pending_events();
     Event[] chain_monitor_events = 
-        chain_watch.as_EventsProvider().get_and_clear_pending_events();
+        chain_monitor.as_EventsProvider().get_and_clear_pending_events();
 
     Event[] all_events = ArrayUtils.addAll(channel_manager_events, 
         chain_monitor_events);
@@ -372,14 +378,20 @@ while (true) {
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`
 
-### Once Per Minute: `ChannelManager`'s `timer_chan_freshness_every_min()`
-**What it's used for:** `ChannelManager` needs to be told every time a minute passes so that it can broadcast fresh channel updates if needed
+### Background Processing
+
+**What it's used for:** running tasks periodically that aren't high-priority:
+* `ChannelManager`'s `timer_chan_freshness_every_min()` to broadcast fresh
+  channel updates if needed
+* `PeerManager`'s `timer_tick_occurred()` to ping peers and disconnect from
+  those who haven't responded with pongs
 
 **Example:**
 ```java
 while (true) {
     // <wait 60 seconds>
     channel_manager.timer_chan_freshness_every_min();
+    // Note: NioPeerHandler handles calling timer_tick_occurred
 }
 ```
 
