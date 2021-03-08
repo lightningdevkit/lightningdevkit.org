@@ -132,23 +132,21 @@ byte[] key_seed = new byte[32];
 // <insert code to fill key_seed with random bytes OR if restarting, reload the
 // seed from disk>
 // Notes about this `KeysManager`:
-// * it is parameterized by the mainnet bitcoin network, but this should be 
-//   swapped out for testnet or regtest as needed.
 // * the current time is part of the parameters because it is used to derive
 //   random numbers from the seed where required, to ensure all random
 //   generation is unique across restarts.
 KeysManager keys_manager = KeysManager.constructor_new(key_seed,
-    LDKNetwork.LDKNetwork_Bitcoin, System.currentTimeMillis() / 1000, 
+    System.currentTimeMillis() / 1000,
     (int) (System.currentTimeMillis() * 1000));
 ```
 **Implementation notes:**
 * See the Key Management guide for more information.
 * Note that you must write the `key_seed` you give to the `KeysManager` on
   startup to disk, and keep using it to initialize the `KeysManager` every time
-  you restart. This `key_seed` is your node's private key, that corresponds to
-  its node pubkey.
+  you restart. This `key_seed` is used to derive your node's secret key (which
+  corresponds to its node pubkey) and all other secret key material.
 
-**Dependencies:** random bytes, the current bitcoin network
+**Dependencies:** random bytes
 
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
 
