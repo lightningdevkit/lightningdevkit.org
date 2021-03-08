@@ -378,14 +378,20 @@ while (true) {
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`
 
-### Once Per Minute: `ChannelManager`'s `timer_chan_freshness_every_min()`
-**What it's used for:** `ChannelManager` needs to be told every time a minute passes so that it can broadcast fresh channel updates if needed
+### Background Processing
+
+**What it's used for:** running tasks periodically that aren't high-priority:
+* `ChannelManager`'s `timer_chan_freshness_every_min()` to broadcast fresh
+  channel updates if needed
+* `PeerManager`'s `timer_tick_occurred()` to ping peers and disconnect from
+  those who haven't responded with pongs
 
 **Example:**
 ```java
 while (true) {
     // <wait 60 seconds>
     channel_manager.timer_chan_freshness_every_min();
+    // Note: NioPeerHandler handles calling timer_tick_occurred
 }
 ```
 
