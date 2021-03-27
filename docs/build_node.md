@@ -313,7 +313,7 @@ chain_monitor.block_disconnected(header, height);
 
 **References:** [Rust `ChainMonitor` `block_(dis)connected` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html#method.block_connected), [Rust `ChannelManager` `block_(dis)connected`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html#method.block_connected), [Java `ChainMonitor` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChainMonitor.java#L17), [Java `ChannelManager` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChannelManager.java#L136)
 
-### Handle `ChannelManager` and `ChainMonitor`'s Generated Events
+### Handle LDK Events
 **What it's used for:** `ChannelManager` and `ChainMonitor` generate events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
 
 **Example:** in Rust, of handling these events: https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/master/src/main.rs#L122
@@ -381,7 +381,70 @@ This section assumes you've followed the steps of the [Setup](#setup) and [Runni
 
 ### Opening a Channel
 
-See the "Opening a Channel" guide.
+**Example:**
+```java
+// <insert code to connect to peer via
+// NioPeerHandler.connect(byte[] their_node_id, SocketAddress remote)>
+
+// Create the initial channel of 10000 sats with a push_msat of 1000 and make
+// sure the result is successful. The `42` here can be any value, and it is not
+// used internally in LDK. It will be provided back to you in the
+// `Event.FundingGenerationReady` event as `user_channel_id`.
+byte[] peer_node_pubkey = <peer node pubkey bytes>;
+Result_NoneAPIErrorZ create_channel_result = channel_manager.create_channel(
+    peer_node_pubkey, 10000, 1000, 42, null);
+assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
+
+// Ensure we immediately send a `create_channel` message to the counterparty.
+nio_peer_handler.check_events();
+
+// After the peer responds with an `accept_channel` message, an
+// Event.FundingGenerationReady event will be generated.
+
+// In the background event handler thread (see "Handle LDK Events" section
+// above), the FundingGenerationReady event should be handled like this:
+if (e instanceof Event.FundingGenerationReady) {
+	byte[] funding_scriptpubkey = ((Event.FundingGenerationReady) e).output_script;
+	long output_value = ((Event.FundingGenerationReady) e).channel_value_satoshis;
+	// This is the same channel we just created, above:
+	assert ((Event.FundingGenerationReady) e).user_channel_id == 42;
+	// The output is always a P2WSH:
+	assert funding_scriptpubkey.length == 34 && funding_scriptpubkey[0] == 0 &&
+		funding_scriptpubkey[1] == 32;
+
+	// Generate the funding transaction for the channel based on the channel amount
+	NetworkParameters bitcoinj_net =
+		NetworkParameters.fromID(NetworkParameters.ID_MAINNET);
+	Transaction funding_tx = new Transaction(bitcoinj_net);
+	funding_tx.addInput(new TransactionInput(bitcoinj_net, funding, new byte[0]));
+	// Note that all inputs in the funding transaction MUST spend SegWit outputs
+	// (and have witnesses)
+	funding_tx.getInputs().get(0).setWitness(new TransactionWitness(2));
+	funding_tx.getInput(0).getWitness().setPush(0, new byte[]{0x1});
+	funding_tx.addOutput(Coin.SATOSHI.multiply(output_value),
+		new Script(funding_scriptpubkey));
+	short funding_output_index = (short) 0;
+
+	// Give the funding transaction back to the ChannelManager.
+	byte[] chan_id = ((Event.FundingGenerationReady) e).temporary_channel_id;
+	Result_NoneAPIErrorZ funding_res =
+		channel_manager.funding_transaction_generated(chan_id,
+			funding_tx.bitcoinSerialize(), funding_output_index);
+	// funding_transaction_generated should only generate an error if the
+	// transaction didn't meet the required format (or the counterparty already
+	// closed the channel on us):
+    assert funding_res instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
+
+	// Ensure we immediately send a `funding_created` message to the counterparty.
+	nio_peer_handler.check_events();
+
+	// At this point LDK will exchange the remaining channel open messages with
+	// the counterparty and, when appropriate, broadcast the funding transaction
+	// provided.
+	// Once it confirms, the channel will be open and available for use (indicated
+	// by its presence in `channel_manager.list_usable_channels()`).
+}
+```
 
 ### Closing a Channel
 
