@@ -52,7 +52,7 @@ module.exports = {
           items: [
             {
               label: 'Slack',
-              href: 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-mvxb7hbr-EuJMSnUpt0xjmo67xY805A',
+              href: 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-otakb2o0-1WRgofEpTtoQaPPN2kev8w',
             },
           ],
         },
