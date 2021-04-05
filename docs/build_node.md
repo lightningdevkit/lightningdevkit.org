@@ -314,37 +314,14 @@ chain_monitor.block_disconnected(header, height);
 **References:** [Rust `ChainMonitor` `block_(dis)connected` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html#method.block_connected), [Rust `ChannelManager` `block_(dis)connected`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html#method.block_connected), [Java `ChainMonitor` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChainMonitor.java#L17), [Java `ChannelManager` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChannelManager.java#L136)
 
 ### Handle LDK Events
-**What it's used for:** `ChannelManager` and `ChainMonitor` generate events that
-must be handled by you, such as telling you when a payment has been successfully
-received or when a funding transaction must be generated.
 
-**Example:** in Rust, of handling these events: https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/master/src/main.rs#L122
-
-**Example:**
-```java
-// On startup, start this loop:
-while(true) {
-    Event[] channel_manager_events = 
-        channel_manager.as_EventsProvider().get_and_clear_pending_events();
-    Event[] chain_monitor_events = 
-        chain_monitor.as_EventsProvider().get_and_clear_pending_events();
-
-    Event[] all_events = ArrayUtils.addAll(channel_manager_events, 
-        chain_monitor_events);
-    for (Event e: all_events) {
-        // <insert code to handle each event>
-    }
-}
-```
-**Dependencies:** `ChannelManager`, `ChainMonitor`
-
-**References:** [events to handle in Java](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java)
+See [Handling LDK Events](handle_events.md).
 
 ### Persist `ChannelManager`
 
 **What it's used for:** keeping `ChannelManager`'s stored state up-to-date
 
-**Example:** persist `ChannelManager` after each event you handled in the previous step
+**Example:** persist `ChannelManager` after each time you handle events from the previous step
 ```java
 while (true) {
     // <code from the previous step that handles `ChannelManager` and 
