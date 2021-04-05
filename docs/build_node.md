@@ -29,7 +29,7 @@ final fee_estimator = FeeEstimator.new_impl((confirmation_target -> 253));
 ```
 
 **Implementation notes:** Rather than using static fees, you'll want to fill in
-the lambda with fetching up-to-date fees from a source like bitcoin core or your
+the lambda with fetching up-to-date fees from a source like Bitcoin Core or your
 own API endpoint. To reduce network traffic, you may wish to cache the results.
 
 **Dependencies:** *none*
@@ -88,7 +88,7 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
 });
 ```
 
-**Implementation notes:** ChannelMonitors are objects which are capable of responding to on-chain
+**Implementation notes:** `ChannelMonitor`s are objects which are capable of responding to on-chain
 events for a given channel. Thus, you will have one `ChannelMonitor` per channel, identified by the
 funding output `id`, above. They are persisted in real-time and the `Persist` methods will block
 progress on sending or receiving payments until they return.
@@ -146,7 +146,7 @@ KeysManager keys_manager = KeysManager.constructor_new(key_seed,
     (int) (System.currentTimeMillis() * 1000));
 ```
 **Implementation notes:**
-* See the Key Management guide for more information.
+* See [Key Management](key_mgmt.md) for more information.
 * Note that you must write the `key_seed` you give to the `KeysManager` on
   startup to disk, and keep using it to initialize the `KeysManager` every time
   you restart. This `key_seed` is used to derive your node's secret key (which
@@ -185,7 +185,7 @@ final byte[][] channel_monitors = channel_monitor_list.toArray(new byte[1][]);
 ```java
 int block_height = // <insert current chain tip height>;
 final channel_manager = ChannelManager.constructor_new(
-    LDKNetwork.LDKNetwork_Bitcoin, fee_estimator, chain_monitor.as_Watch(), 
+    LDKNetwork.LDKNetwork_Bitcoin, fee_estimator, chain_monitor.as_Watch(),
     tx_broadcaster, logger, keys_manager.as_KeysInterface(), 
     UserConfig.constructor_default(), block_height);
 ```
@@ -314,7 +314,9 @@ chain_monitor.block_disconnected(header, height);
 **References:** [Rust `ChainMonitor` `block_(dis)connected` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html#method.block_connected), [Rust `ChannelManager` `block_(dis)connected`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html#method.block_connected), [Java `ChainMonitor` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChainMonitor.java#L17), [Java `ChannelManager` `block_(dis)connected` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/51638b0070b47ec83459dc7fa74aa823dd890f58/src/main/java/org/ldk/structs/ChannelManager.java#L136)
 
 ### Handle LDK Events
-**What it's used for:** `ChannelManager` and `ChainMonitor` generate events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
+**What it's used for:** `ChannelManager` and `ChainMonitor` generate events that
+must be handled by you, such as telling you when a payment has been successfully
+received or when a funding transaction must be generated.
 
 **Example:** in Rust, of handling these events: https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/master/src/main.rs#L122
 
