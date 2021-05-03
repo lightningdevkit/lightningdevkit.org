@@ -14,12 +14,9 @@ LDK is a flexible lightning implementation with supporting batteries (or modules
 LDK/Rust-Lightning is a generic library which allows you to build a lightning
 node without needing to worry about getting all of the lightning state machine,
 routing, and on-chain punishment code (and other chain interactions) exactly
-correct. Note that Rust-Lightning isn't, in itself, a node. There are various
-working/in progress demos which could be used as a node today, but if you "just"
-want a generic lightning node, you're almost certainly better off with
-`c-lightning`/`lnd` - if, on the other hand, you want to integrate lightning
-with custom features such as your own chain sync, your own key management, your
-own data storage/backup logic, etc., LDK is likely your only option.
+correct. LDK tends to be suitable for use cases where a degree of
+customization is desired, e.g. your own chain sync, your own key management
+and/or your own storage/backup logic.
 
 We are currently working on a demo node which fetches blockchain data and
 on-chain funds via Bitcoin Core RPC/REST. The individual pieces of that demo
