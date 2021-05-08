@@ -316,7 +316,7 @@ chain_monitor.block_disconnected(header, height);
 ### Handle LDK Events
 **What it's used for:** `ChannelManager` and `ChainMonitor` generate events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
 
-**Example:** in Rust, of handling these events: https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/master/src/main.rs#L122
+**Example:** in Rust, of handling these events: https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L103-L265
 
 **Example:**
 ```java

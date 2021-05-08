@@ -56,7 +56,7 @@ batteries, which are enumerated below.
   on-chain logic - without needing to move funds in and out of a separate
   lightning wallet with on-chain transactions and a separate private key system.
   * LDK does not currently provide a sample wallet module, but its sample node
-    implementation uses Bitcoin Core's wallet for UTXO management e.g. [here](https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/139a653eeba313284c6d9d2eb2776d30dbb0ca3d/src/main.rs#L219)
+    implementation uses Bitcoin Core's wallet for UTXO management e.g. [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L245-L260)
 * Networking 
   * To enable a user to run a full lightning node on an embedded
   machine, we don't specify exactly how to connect to another node at all! We
@@ -77,12 +77,12 @@ batteries, which are enumerated below.
 * Transaction filtering
   * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](blockdata.md).
 * Fee estimation
-  * LDK's sample node implementation uses Bitcoin Core's fee estimation API [here](https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/139a653eeba313284c6d9d2eb2776d30dbb0ca3d/src/chain_monitor.rs#L31).
+  * LDK's sample node implementation uses Bitcoin Core's fee estimation API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L98-L154).
 * Transaction broadcasting
-  * LDK's sample node implementation uses Bitcoin Core's transaction broadcasting API [here](https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/139a653eeba313284c6d9d2eb2776d30dbb0ca3d/src/chain_monitor.rs#L132).
+  * LDK's sample node implementation uses Bitcoin Core's transaction broadcasting API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L235-L257).
 * Random number generation
   * Because Rust-Lightning aims to make no system calls, it is restricted from generating its own randomness.
-  * LDK's sample node implementation uses Rust's `rand` crate [here](https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc/blob/139a653eeba313284c6d9d2eb2776d30dbb0ca3d/src/main.rs#L512) and elsewhere.
+  * LDK's sample node implementation uses Rust's `rand` crate [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L464-L465) and elsewhere.
 
 
 ## LDK Architecture
@@ -104,10 +104,10 @@ These provide the most searchable and comprehensive documentation on LDK.
 If you're using Java and want more information on any method/struct/etc., searching
 the Rust docs for the Rust version of that struct/method is your best bet.
 
-### [Rust Sample Node](https://github.com/TheBlueMatt/rust-lightning-bitcoinrpc)
+### [Rust Sample Node](https://github.com/lightningdevkit/ldk-sample)
 
-While this node is a little outdated, it's still a very useful reference for how to construct
-a lightning node using LDK.
+The sample serves as a complete reference for constructing a lightning node with
+the LDK. This is a good starting point if you want a self-guided tour!
 
 ### [Swift LDK Documentation](https://github.com/arik-so/SwiftLightning/tree/master/Documentation)
 
