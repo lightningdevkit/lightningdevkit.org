@@ -42,8 +42,8 @@ module.exports = {
               to: 'docs/',
             },
             {
-              label: 'Getting Started',
-              to: 'docs/getting_started/',
+              label: 'Use Cases',
+              to: 'docs/use_cases/',
             },
           ],
         },
