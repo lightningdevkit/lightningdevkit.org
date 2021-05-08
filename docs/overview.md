@@ -42,7 +42,7 @@ batteries, which are enumerated below.
   provide an API for getting information about transactions we wish to be
   informed of, which is compatible with Electrum server requests/neutrino
   filtering/etc.
-  * [**WIP sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/pull/791)
+  * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-block-sync)
 * On-chain funds wallet/UTXO management
   * Rust-Lightning/LDK owns on-chain funds as long as they are claimable as
   a part of a lightning output which can be contested - once a channel is closed
