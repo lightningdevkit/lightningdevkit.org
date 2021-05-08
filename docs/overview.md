@@ -71,7 +71,9 @@ batteries, which are enumerated below.
   keys to RL/LDK in any way they wish following a simple API. We even support a
   generic API for signing transactions, allowing users to run RL/LDK without any
   private keys in memory and/or putting private keys only on hardware wallets.
-  * [LDK's `KeyManager` docs](https://docs.rs/lightning/0.0.12/lightning/chain/keysinterface/struct.KeysManager.html). While LDK's default implementation is currently within Rust-Lightning, it still is considered a "sample module."
+  * [LDK's `KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html).
+  While LDK's default implementation is currently within Rust-Lightning, it is
+  still considered a sample module.
 * Transaction filtering
   * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](blockdata.md).
 * Fee estimation
