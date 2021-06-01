@@ -8,7 +8,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 LDK is a flexible lightning implementation with supporting batteries (or modules).
 
-## To jump into integrating LDK with your application, click [here](build_node.md)
+## To jump into integrating LDK with your Java application, click [here](build_node.md)
 
 ## Introduction
 LDK/Rust-Lightning is a generic library which allows you to build a lightning
