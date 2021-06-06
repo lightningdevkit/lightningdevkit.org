@@ -114,7 +114,8 @@ Persist persister = Persist.new_impl(new Persist.PersistInterface() {
 **Implementation notes:** `ChannelMonitor`s are objects which are capable of responding to on-chain
 events for a given channel. Thus, you will have one `ChannelMonitor` per channel, identified by the
 funding output `id`, above. They are persisted in real-time and the `Persist` methods will block
-progress on sending or receiving payments until they return.
+progress on sending or receiving payments until they return. You must ensure that any
+`ChannelMonitor`s are durably persisted to disk before returning or you may lose funds.
 
 **Dependencies:** *none*
 
