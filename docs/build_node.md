@@ -301,19 +301,20 @@ final byte[][] channel_monitors = (byte[][])channel_monitor_list.toArray(new byt
 /* FRESH CHANNELMANAGER */
 
 int block_height = // <insert current chain tip height>;
-final channel_manager = ChannelManager.constructor_new(
-    LDKNetwork.LDKNetwork_Bitcoin, fee_estimator, chain_monitor.as_Watch(), 
-    tx_broadcaster, logger, keys_manager.as_KeysInterface(), 
-    UserConfig.constructor_default(), block_height);
-    
+byte[] best_block_hash = // <insert current chain tip block hash>;
+ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
+  LDKNetwork.LDKNetwork_Bitcoin, UserConfig.default(), best_block_hash,
+  block_height, keys_manager.as_KeysInterface(), fee_estimator, chain_monitor,
+  router, tx_broadcaster, logger);
+
 /* RESTARTING CHANNELMANAGER */
 
 byte[] serialized_channel_manager = // <insert bytes as written to disk in Step 6>
 ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
   serialized_channel_manager, channel_monitors, keys_manager.as_KeysInterface(),
-  fee_estimator, chain_monitor.as_Watch(), tx_broadcaster, logger);
+  fee_estimator, chain_monitor, filter, router, tx_broadcaster, logger);
 
-final channel_manager = channel_manager_constructor.channel_manager;
+final ChannelManager channel_manager = channel_manager_constructor.channel_manager;
 ```
 
 **Implementation notes:** No methods should be called on `ChannelManager` until
@@ -366,7 +367,8 @@ int best_height = // <insert code to get your best known block height>
 channel_manager.update_best_block(best_header, best_height);
 chain_monitor.update_best_block(best_header, best_height);
 
-// Finally, tell LDK that chain sync is complete.
+// Finally, tell LDK that chain sync is complete. This will also spawn several
+// background threads to handle networking and event processing.
 channel_manager_constructor.chain_sync_completed(channel_manager_persister);
 ```
 
@@ -391,21 +393,15 @@ channel_manager_constructor.chain_sync_completed(channel_manager_persister);
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, chain source
 
-### 13. Initialize networking
-**What it's used for:** making peer connections, facilitating peer data to and from LDK
+### 13. Optional: Bind a listening port
+**What it's used for:** Accepting incoming connections from peers.
 
 **Example:**
 
 ```java
-
-// Use LDK's supplied Java networking battery, `NioPeerHandler`.
-final nio_peer_handler;
-try { 
-    nio_peer_handler = new NioPeerHandler(peer_manager); 
-} catch (IOException e) { assert false; }
-
-// Start `NioPeerHandler` listening for connections.
-final port = 9735;
+// The `PeerHandler` was initialized by `chain_sync_completed` in step 12.
+final NioPeerHandler nio_peer_handler = channel_manager_constructor.nio_peer_handler;
+final int port = 9735;
 nio_peer_handler.bind_listener(new InetSocketAddress("0.0.0.0", port));
 ```
 
@@ -525,9 +521,6 @@ Result_NoneAPIErrorZ create_channel_result = channel_manager.create_channel(
     peer_node_pubkey, 10000, 1000, 42, null);
 assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
 
-// Ensure we immediately send a `create_channel` message to the counterparty.
-nio_peer_handler.check_events();
-
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 
@@ -565,9 +558,6 @@ if (e instanceof Event.FundingGenerationReady) {
 	// closed the channel on us):
     assert funding_res instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
 
-	// Ensure we immediately send a `funding_created` message to the counterparty.
-	nio_peer_handler.check_events();
-
 	// At this point LDK will exchange the remaining channel open messages with
 	// the counterparty and, when appropriate, broadcast the funding transaction
 	// provided.
@@ -585,9 +575,6 @@ byte[] channel_id = channel_manager.list_channels()[0].get_channel_id();
 Result_NoneAPIErrorZ close_result = channel_manager.close_channel(
     channel_id);
 assert close_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
-
-// Make sure the peer manager processes this new event.
-nio_peer_handler.check_events();
 ```
 
 **Example:** force/unilateral close
@@ -595,9 +582,6 @@ nio_peer_handler.check_events();
 // Assuming 1 open channel
 byte[] channel_id = channel_manager.list_channels()[0].get_channel_id();
 Result_NoneAPIErrorZ channel_manager.force_close_channel(channel_id);
-
-// Make sure the peer manager processes this new event.
-nio_peer_handler.check_events();
 ```
 **Dependencies:** `ChannelManager`, `NioPeerHandler`
 
