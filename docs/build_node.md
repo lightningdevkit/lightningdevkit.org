@@ -187,11 +187,12 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
     public void register_tx(byte[] txid, byte[] script_pubkey) {
         // <insert code for you to watch for this transaction on-chain>
     }
-    
+
     @Override
-    void register_output(OutPoint outpoint, byte[] script_pubkey) {
+    Option_C2Tuple_usizeTransactionZZ register_output(WatchedOutput output) {
         // <insert code for you to watch for any transactions that spend this
         // output on-chain>
+        // See blockdata.md for more info. XXX HOW2LINK???
     }
 });
 ```
