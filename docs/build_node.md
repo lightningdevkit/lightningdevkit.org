@@ -268,7 +268,7 @@ for (... : monitor_files) {
 
 // Convert the ArrayList into an array so we can pass it to
 // `ChannelManagerConstructor` in Step 10.
-final byte[][] channel_monitors = channel_monitor_list.toArray(new byte[1][]);
+final byte[][] channel_monitors = (byte[][])channel_monitor_list.toArray(new byte[1][]);
 ```
 
 **Dependencies:** in Rust: `KeysManager`
