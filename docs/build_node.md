@@ -524,8 +524,9 @@ assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIError
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 
-// In the background event handler thread (see "Handle LDK Events" section
-// above), the FundingGenerationReady event should be handled like this:
+// In the `handle_event` function created in the
+// "Initialize the `ChannelManagerPersister`" section above),
+// the FundingGenerationReady event should be handled to create a funding tx.
 if (e instanceof Event.FundingGenerationReady) {
 	byte[] funding_scriptpubkey = ((Event.FundingGenerationReady) e).output_script;
 	long output_value = ((Event.FundingGenerationReady) e).channel_value_satoshis;
@@ -536,6 +537,8 @@ if (e instanceof Event.FundingGenerationReady) {
 		funding_scriptpubkey[1] == 32;
 
 	// Generate the funding transaction for the channel based on the channel amount
+	// The following uses the bitcoinj library to do so, but you can use any
+	// standard Bitcoin library for on-chain logic.
 	NetworkParameters bitcoinj_net =
 		NetworkParameters.fromID(NetworkParameters.ID_MAINNET);
 	Transaction funding_tx = new Transaction(bitcoinj_net);
@@ -546,13 +549,12 @@ if (e instanceof Event.FundingGenerationReady) {
 	funding_tx.getInput(0).getWitness().setPush(0, new byte[]{0x1});
 	funding_tx.addOutput(Coin.SATOSHI.multiply(output_value),
 		new Script(funding_scriptpubkey));
-	short funding_output_index = (short) 0;
 
 	// Give the funding transaction back to the ChannelManager.
 	byte[] chan_id = ((Event.FundingGenerationReady) e).temporary_channel_id;
 	Result_NoneAPIErrorZ funding_res =
 		channel_manager.funding_transaction_generated(chan_id,
-			funding_tx.bitcoinSerialize(), funding_output_index);
+			funding_tx.bitcoinSerialize());
 	// funding_transaction_generated should only generate an error if the
 	// transaction didn't meet the required format (or the counterparty already
 	// closed the channel on us):
