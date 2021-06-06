@@ -130,39 +130,36 @@ the `ChannelManager` must be re-persisted to disk and/or backups.
 
 **Example:**
 ```java
-class YourObj implements ChannelManagerPersister {
-
+class YourObj implements ChannelManagerConstructor.ChannelManagerPersister {
     @Override
-    void handle_events(Event[] events) {
-        for (Event e : events) {
-            if (e instanceof Event.FundingGenerationReady) { 
-                // <insert code to handle this event>
-            } 
-            else if (e instanceof Event.PaymentReceived) { 
-                // <insert code to handle this event>
-            }
-            else if (e instanceof Event.PaymentSent) { 
-                // <insert code to handle this event>
-            }
-            else if (e instanceof Event.PaymentFailed) { 
-                // <insert code to handle this event>
-            }
-            else if (e instanceof Event.PendingHTLCsForwardable) { 
-                // <insert code to handle this event>
-            }
-            else if (e instanceof Event.SpendableOutputs) { 
-                // <insert code to handle this event>
-            }
+    public void handle_event(Event e) {
+        if (e instanceof Event.FundingGenerationReady) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PaymentReceived) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PaymentSent) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PaymentFailed) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PendingHTLCsForwardable) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.SpendableOutputs) {
+            // <insert code to handle this event>
         }
     }
     
     @Override
-    void persist_manager(byte[] channel_manager_bytes) {
+    public void persist_manager(byte[] channel_manager_bytes) {
         // <insert code to persist channel_manager_bytes to disk and/or backups>
     }
 }
 
-ChannelManagerPersister channel_manager_persister = new YourObj();
+ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister = new YourObj();
 ```
 
 **Dependencies:** *none*
