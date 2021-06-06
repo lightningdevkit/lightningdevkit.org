@@ -209,7 +209,7 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 ```java
 final filter = // leave this as `null` or insert the Filter object, depending on
                // what you did for Step 6
-final chain_monitor = ChainMonitor.constructor_new(filter, tx_broadcaster, logger,
+final chain_monitor = ChainMonitor.of(filter, tx_broadcaster, logger,
     fee_estimator, persister);
 ```
 
@@ -228,7 +228,7 @@ final chain_monitor = ChainMonitor.constructor_new(filter, tx_broadcaster, logge
 byte[] key_seed = new byte[32];
 // <insert code to fill key_seed with random bytes OR if restarting, reload the
 // seed from disk>
-KeysManager keys_manager = KeysManager.constructor_new(key_seed,
+KeysManager keys_manager = KeysManager.of(key_seed,
     System.currentTimeMillis() / 1000,
     (int) (System.currentTimeMillis() * 1000));
 ```
@@ -380,7 +380,7 @@ channel_manager_constructor.chain_sync_completed(channel_manager_persister);
 **Example:** initializing `NetGraphMsgHandler` without providing an `Access`
 
 ```java
-final router = NetGraphMsgHandler.constructor_new(new byte[32], null, logger);
+final router = NetGraphMsgHandler.of(new byte[32], null, logger);
 ```
 
 **Implementation notes:** this struct is not required if you are providing your own routes.
