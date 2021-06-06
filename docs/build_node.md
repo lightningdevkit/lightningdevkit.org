@@ -27,23 +27,20 @@ shutdown checklist.
 **Example:**
 
 ```java
-class YourFeeEstimator implements FeeEstimator {
-
+class YourFeeEstimator implements FeeEstimator.FeeEstimatorInterface {
     @Override
-    int get_est_sat_per_1000_weight(LDKConfirmationTarget conf_target) {
-        if (conf_target instanceof LDKConfirmationTarget_Background) {
+    public int get_est_sat_per_1000_weight(LDKConfirmationTarget conf_target) {
+        if (conf_target == LDKConfirmationTarget.LDKConfirmationTarget_Background) {
             // <insert code to retrieve a background feerate>
-        }
-        else if (conf_target instanceof LDKConfirmationTarget_Normal) {
+        } else if (conf_target == LDKConfirmationTarget.LDKConfirmationTarget_Normal) {
             // <insert code to retrieve a normal (i.e. within ~6 blocks) feerate>
-        }
-        else if (conf_target instanceof LDKConfirmationTarget_HighPriority) {
+        } else if (conf_target == LDKConfirmationTarget.LDKConfirmationTarget_HighPriority) {
             // <insert code to retrieve a high-priority feerate>
         }
     }
 }
 
-FeeEstimator fee_estimator = new YourFeeEstimator();
+FeeEstimator fee_estimator = FeeEstimator.new_impl(new YourFeeEstimator());
 ```
 
 **Implementation notes:** 
