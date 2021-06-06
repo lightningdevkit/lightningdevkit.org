@@ -494,7 +494,11 @@ chain_monitor.block_disconnected(header, height);
 
 ### 15. Regularly Broadcast Node Announcement
 
-**What it's used for:** if you have 1 or more public channels, you need to announce your node and its channels regularly (once per minute is recommended).
+**What it's used for:** if you have 1 or more public channels, you may need to
+announce your node and its channels occasionally. LDK will automatically
+announce channels when they are created, but there are no guarantees you have
+connected peers at that time or that your peers will propagate such announcements.
+The broader node-announcement message is not automatically broadcast.
 
 **Example:**
 
