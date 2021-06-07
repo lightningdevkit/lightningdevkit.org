@@ -597,8 +597,44 @@ Result_NoneAPIErrorZ channel_manager.force_close_channel(channel_id);
 ChannelDetails[] channels = channel_manager.list_channels();
 ```
 
-### WIP: Sending/Receiving Payments
+### Receiving Payments
+
+**Example:**
+```java
+Result_InvoiceSignOrCreationErrorZ invoice = UtilMethods.invoice_from_channelmanager(
+    channel_manager, keys_manager.as_KeysInterface(), LDKCurrency.LDKCurrency_Bitcoin,
+	Option_u64Z.none(), "Invoice Description");
+assert invoice instanceof
+    Result_InvoiceSignOrCreationErrorZ.Result_InvoiceSignOrCreationErrorZ_OK;
+Invoice invoice = ((Result_InvoiceSignOrCreationErrorZ.Result_InvoiceSignOrCreationErrorZ_OK) invoice).res;
+String invoice_string = invoice.to_str();
+```
+
+**Implementation notes:**
+Unless a `payment_secret` and `payment_hash` is registered with the
+`ChannelManager` via `create_inbound_payment` or `create_inbound_payment_for_hash`,
+LDK will automatically reject incoming HTLCs to protect your privacy.
+`UtilMethods.invoice_from_channelmanager` automatically calls
+`create_inbound_payment` for you, generating an invoice and a pending payment
+all at once.
+
+### Sending Payments
 **NOTE: CURRENTLY UNSUPPORTED IN JAVA**
+
+**Example:**
+```java
+String invoice = // get an invoice from the payee
+Result_InvoiceNoneZ parsed_invoice = invoice.from_str();
+if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
+	byte[] payment_hash = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res.payment_hash();
+	byte[] payment_secret = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res.payment_secret();
+
+	Route route = peer1.get_route(peer2.node_id, peer1_chans);
+	Result_NonePaymentSendFailureZ payment_res = peer1.chan_manager.send_payment(route, payment_hash, payment_secret);
+	assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
+	wait_events_processed(peer1, peer2);
+}
+```
 
 Currently unsatisfied dependencies:
 1. a way of constructing `NodeFeatures` and `ChannelFeatures` LDK structs (which should be exposed soon)
