@@ -67,6 +67,7 @@ class YourLogger implements Logger.LoggerInterface {
     public void log(String record) {
         // <insert code to print this log and/or write this log to a file>
     }
+}
 
 Logger logger = Logger.new_impl(new YourLogger());
 ```
