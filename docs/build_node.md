@@ -620,26 +620,48 @@ LDK will automatically reject incoming HTLCs to protect your privacy.
 all at once.
 
 ### Sending Payments
-**NOTE: CURRENTLY UNSUPPORTED IN JAVA**
 
 **Example:**
 ```java
-String invoice = // get an invoice from the payee
-Result_InvoiceNoneZ parsed_invoice = invoice.from_str();
-if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
-	byte[] payment_hash = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res.payment_hash();
-	byte[] payment_secret = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res.payment_secret();
+String invoice_str = // get an invoice from the payee
+Result_InvoiceNoneZ parsed_invoice = invoice_str.from_str();
 
-	Route route = peer1.get_route(peer2.node_id, peer1_chans);
-	Result_NonePaymentSendFailureZ payment_res = peer1.chan_manager.send_payment(route, payment_hash, payment_secret);
-	assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
-	wait_events_processed(peer1, peer2);
+if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
+	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
+    long amt = 0;
+    if (invoice.amount_pico_btc() instanceof Option_u64Z.Some) {
+        amt = ((Option_u64Z.Some)invoice.amount_pico_btc()).some;
+    }
+    if (amt == 0) {
+        // <Handle a zero-value invoice>
+    }
+
+    // LDK currently only supports one-hop route hints, so we need to select
+    // only the last hops, potentially not using any longer hints.
+    ArrayList<RouteHintHop> invoice_hops = new ArrayList<RouteHintHop>();
+    for (RouteHint hint : invoice.res.routes()) {
+            RouteHintHop[] hops = hint.into_inner();
+            invoice_hops.add(hops[hops.length - 1]);
+    }
+
+    Route route;
+    try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
+        NetworkGraph graph = netgraph.graph();
+        Result_RouteLightningErrorZ route_res = UtilMethods.get_route(chan_manager.get_our_node_id(),
+            graph, invoice.recover_payee_pub_key(), invoice.features(),
+            channel_manager.list_usable_channels(), invoice_hops.toArray(new RouteHintHop[0]), amt,
+            invoice.min_final_cltv_expiry(), logger);
+        assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
+        route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
+    }
+
+    Result_NonePaymentSendFailureZ payment_res = peer1.chan_manager.send_payment(route, invoice.payment_hash(),
+            invoice.payment_secret());
+    assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
 }
 ```
 
-Currently unsatisfied dependencies:
-1. a way of constructing `NodeFeatures` and `ChannelFeatures` LDK structs (which should be exposed soon)
-2. a way to parse invoices (we need to generate bindings for the `rust-invoices` crate)
+**Dependencies:** `ChannelManager`, `NetGraphMsgHandler`
 
 ### Connect to Peers
 
