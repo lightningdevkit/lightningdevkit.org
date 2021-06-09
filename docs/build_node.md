@@ -13,8 +13,7 @@ This document covers everything you need to make a node using LDK in Java.
 * [Setup](#setup) covers everything you need to do to set up LDK on startup.
 * [Running LDK](#running-ldk) covers everything you need to do while LDK is running to keep it operational.
 * [Using LDK](#using-ldk) covers most lightning operations you'll want to use,
-  such as opening a channel. Sending and receiving payments are supported but
-  not yet a part of this guide.
+  such as opening a channel.
 
 Note that LDK does not assume that safe shutdown is available, so there is no 
 shutdown checklist.
@@ -72,7 +71,7 @@ class YourLogger implements Logger.LoggerInterface {
 Logger logger = Logger.new_impl(new YourLogger());
 ```
 
-**Implementation notes:** You'll most likely want to write the logs to a file for debugging purposes.
+**Implementation notes:** you'll most likely want to write the logs to a file for debugging purposes.
 
 **Dependencies:** *none*
 
@@ -205,7 +204,7 @@ ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
 **References:** [Example of handling LDK events in Rust](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240), 
 [Rust docs for LDK events](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html)
 
-### 7. Optional: Initialize the transaction `Filter`
+### 7. Optional: Initialize the Transaction `Filter`
 **You must follow this step if:** you are *not* providing full blocks to LDK,
 i.e. if you're using BIP 157/158 or Electrum as your chain backend
 
