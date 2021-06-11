@@ -563,7 +563,7 @@ if (e instanceof Event.FundingGenerationReady) {
 	// funding_transaction_generated should only generate an error if the
 	// transaction didn't meet the required format (or the counterparty already
 	// closed the channel on us):
-    assert funding_res instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
+	assert funding_res instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
 
 	// At this point LDK will exchange the remaining channel open messages with
 	// the counterparty and, when appropriate, broadcast the funding transaction
@@ -624,7 +624,7 @@ all at once.
 **Example:**
 ```java
 String invoice_str = // get an invoice from the payee
-Result_InvoiceNoneZ parsed_invoice = invoice_str.from_str();
+Result_InvoiceNoneZ parsed_invoice = Invoice.from_str(invoice_str);
 
 if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
