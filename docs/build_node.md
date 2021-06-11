@@ -636,20 +636,12 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
         // <Handle a zero-value invoice>
     }
 
-    // LDK currently only supports one-hop route hints, so we need to select
-    // only the last hops, potentially not using any longer hints.
-    ArrayList<RouteHintHop> invoice_hops = new ArrayList<RouteHintHop>();
-    for (RouteHint hint : invoice.res.routes()) {
-            RouteHintHop[] hops = hint.into_inner();
-            invoice_hops.add(hops[hops.length - 1]);
-    }
-
     Route route;
     try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
         NetworkGraph graph = netgraph.graph();
         Result_RouteLightningErrorZ route_res = UtilMethods.get_route(chan_manager.get_our_node_id(),
             graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice_hops.toArray(new RouteHintHop[0]), amt,
+            channel_manager.list_usable_channels(), invoice.route_hints(), amt,
             invoice.min_final_cltv_expiry(), logger);
         assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
         route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
