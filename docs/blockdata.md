@@ -37,7 +37,7 @@ We will walk through this process as depicted here:
 
 Initially, our node doesn't have any channels and hence has no data to monitor
 for on-chain. When a channel is opened with a peer, the `ChannelManager` creates
- a `ChannelMonitor` and passes it to the `ChainMonitor` to watch.
+a `ChannelMonitor` and passes it to the `ChainMonitor` to watch.
 
 At this point, you need to feed LDK any chain data of interest so that it can
 respond accordingly. It supports receiving either full blocks or pre-filtered
@@ -58,7 +58,7 @@ required chain data to LDK. If you choose to use it, you will need to implement
 the `BlockSource` interface or use one of the samples that it provides.
 
 :::note
-Currently, `lightning-block-sync`  is only available in Rust.
+Currently, `lightning-block-sync` is only available in Rust.
 :::
 
 ### Block Source
