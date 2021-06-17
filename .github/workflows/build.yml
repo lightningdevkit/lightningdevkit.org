@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  # Run the build for pushes and pull requests targeting master
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14]
+
+    steps:
+      # Checkout doc repo and its dependencies
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Setup Node
+      - name: Setup (Node.js ${{ matrix.node-version }})
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Install, test and build
+      - name: Install
+        run: npm ci
+      # Link the dependencies
+      - name: Setup dependencies
+        run: ./setup-deps.sh
+      # Test and build
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+      # Deploy, limited to the master branch
+      - name: Predeploy
+        if: success() && github.ref == 'refs/heads/master'
+        run: |
+          # https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
+          touch docs/.vuepress/dist/.nojekyll
+          # https://help.github.com/en/articles/managing-a-custom-domain-for-your-github-pages-site
+          echo lightningdevkit.org > docs/.vuepress/dist/CNAME
+      - name: Deploy
+        if: success() && github.ref == 'refs/heads/master'
+        uses: maxheld83/ghpages@v0.2.1
+        env:
+          BUILD_DIR: docs/.vuepress/dist/
+          GH_PAT: ${{ secrets.GH_PAT }}
+      # Run linkcheck, propagate linkcheck failure through grep pipe
+      - name: Linkcheck
+        run: set -o pipefail; npm run linkcheck 2>/dev/null | grep "Getting links from\|BROKEN"
