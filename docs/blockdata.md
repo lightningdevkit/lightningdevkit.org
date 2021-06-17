@@ -21,8 +21,9 @@ watched. The `ChainMonitor` does so by maintaining a `ChannelMonitor` for each
 channel.
 
 When a new block is mined, it is connected to the chain while other blocks may
-be disconnected. LDK will process such events as they are fed into it from a
-`BlockSource` by:
+be disconnected if reorganized out. Transactions are confirmed or unconfirmed
+during this process. You are required to feed this activity to LDK which will
+process it by:
 
 * Updating channel state
 * Signaling back transactions to filter
@@ -32,18 +33,18 @@ We will walk through this process as depicted here:
 
 ![LDK block processing](assets/ldk-block-processing.svg)
 
-## Block Source
+## Chain Activity
 
 Initially, our node doesn't have any channels and hence has no data to monitor
 for on-chain. When a channel is opened with a peer, the `ChannelManager` creates
  a `ChannelMonitor` and passes it to the `ChainMonitor` to watch.
 
-At this point, LDK needs to be fed chain data of interest so that it can respond
-accordingly. It supports receiving either full blocks or pre-filtered blocks.
-Block data can sourced from anywhere, but it is your responsibility to ensure
-that the necessary `block_connected` and `block_disconnected` methods are called
-on `ChannelManager` and `ChainMonitor`. This allows them to update channel state
-and respond to on-chain events, respectively.
+At this point, you need to feed LDK any chain data of interest so that it can
+respond accordingly. It supports receiving either full blocks or pre-filtered
+blocks using the `chain::Listen` interface. While block data can sourced from
+anywhere, it is your responsibility to call the `block_connected` and
+`block_disconnected` methods on `ChannelManager` and `ChainMonitor`. This allows
+them to update channel state and respond to on-chain events, respectively.
 
 LDK comes with a `lightning-block-sync` utility that handles polling a block
 source for the best chain tip, detecting chain forks, and notifying listeners
@@ -59,6 +60,8 @@ the `BlockSource` interface or use one of the samples that it provides.
 :::note
 Currently, `lightning-block-sync`  is only available in Rust.
 :::
+
+### Block Source
 
 Implementing the `BlockSource` interface requires defining methods for fetching
 headers, blocks, and the best block hash.
@@ -189,6 +192,30 @@ are opened and blocks connected. This gives the opportunity for the source to
 pre-filter blocks as desired.
 
 Regardless, when a block is connected, its header must be processed by LDK.
+
+### Confirmed Transactions
+
+Up until this point, we've explored how to notify LDK of chain activity using
+blocks. But what if you're sourcing chain activity from a place that doesn't
+provide a block-centric interface, like Electrum?
+
+LDK has a `chain::Confirm` interface to support this use case, analogous to the
+block-oriented `chain::Listen` interface which we've been using up until now.
+With this alternative approach, you still need to give LDK block headers but
+only for blocks containing transactions of interest. These are identified by
+`chain::Filter` as before. You also need to notify LDK of any transactions with
+insufficient confirmation that have been reorganized out of the chain. Use the
+`transactions_confirmed` and `transaction_unconfirmed` methods, respectively.
+
+Additionally, you must notify LDK whenever a new chain tip is available using
+the `best_block_updated` method. See the documentation for a full picture of how
+this interface is intended to be used.
+
+:::note
+Be advised that `chain::Confirm` is a less mature interface than
+`chain::Listen`. As such, there is not yet a utility like `lightning-block-sync`
+to use for interacting with clients like Electrum.
+:::
 
 ## Transaction Broadcast
 
