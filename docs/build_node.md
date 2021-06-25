@@ -3,9 +3,6 @@ id: build_node
 title: "Building a Node with LDK in Java"
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Introduction
 
 This document covers everything you need to make a node using LDK in Java.
@@ -46,6 +43,7 @@ FeeEstimator fee_estimator = FeeEstimator.new_impl(new YourFeeEstimator());
 ```
 
 **Implementation notes:**
+
 1. Fees must be returned in: satoshis per 1000 weight units
 2. Fees returned must be no smaller than 253 (equivalent to 1 satoshi/vbyte, rounded up)
 3. To reduce network traffic, you may want to cache fee results rather than
@@ -102,6 +100,7 @@ BroadcasterInterface tx_broadcaster =
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
 ### 4. Optional: Initialize the `NetGraphMsgHandler`
+
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
 **What it's used for:** generating routes to send payments over
@@ -121,9 +120,11 @@ final router = NetGraphMsgHandler.of(new byte[32], null, logger);
 **References:** [`NetGraphMsgHandler` Rust docs](https://docs.rs/lightning/*/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [`NetGraphMsgHandler` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetGraphMsgHandler.java), [`Access` Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [`Access` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Access.java)
 
 ### 5. Initialize `Persist`
+
 **What it's used for:** persisting crucial channel data in a timely manner
 
 **Example:**
+
 ```java
 Persist persister = Persist.new_impl(new Persist.PersistInterface() {
   @Override
@@ -161,6 +162,7 @@ funding transaction is ready for broadcast. (2) After new event(s) are handled,
 the `ChannelManager` must be re-persisted to disk and/or backups.
 
 **Example:**
+
 ```java
 class YourObj implements ChannelManagerConstructor.ChannelManagerPersister {
     @Override
@@ -198,6 +200,7 @@ ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
 **Dependencies:** *none*
 
 **Implementation notes:**
+
 * See References for an integrated example of handling LDK events (in Rust)
 * It's important to read the documentation (linked in References) for each event
   to make sure you satisfy the API requirements for handling it
@@ -206,6 +209,7 @@ ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
 [Rust docs for LDK events](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html)
 
 ### 7. Optional: Initialize the Transaction `Filter`
+
 **You must follow this step if:** you are *not* providing full blocks to LDK,
 i.e. if you're using BIP 157/158 or Electrum as your chain backend
 
@@ -214,6 +218,7 @@ object to tell you what transactions and outputs to watch for on-chain. You'll
 inform LDK about these transactions/outputs in Step 14.
 
 **Example:**
+
 ```java
 Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
     @Override
@@ -237,6 +242,7 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Filter.java), [Blockchain Data guide](blockdata.md)
 
 ### 8. Initialize the `ChainMonitor`
+
 **What it's used for:** monitoring the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
 
 **Example:**
@@ -255,6 +261,7 @@ final chain_monitor = ChainMonitor.of(filter, tx_broadcaster, logger,
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java)
 
 ### 9. Initialize the `KeysManager`
+
 **What it's used for:** providing keys for signing lightning transactions
 
 **Example:**
@@ -269,6 +276,7 @@ KeysManager keys_manager = KeysManager.of(key_seed,
 ```
 
 **Implementation notes:**
+
 * See the [Key Management](key_mgmt.md) guide for more info
 * Note that you must write the `key_seed` you give to the `KeysManager` on
   startup to disk, and keep using it to initialize the `KeysManager` every time
@@ -308,6 +316,7 @@ final byte[][] channel_monitors = (byte[][])channel_monitor_list.toArray(new byt
 **Dependencies:** *none*
 
 ### 11. Initialize the `ChannelManager`
+
 **What it's used for:** managing channel state
 
 **Example:**
@@ -342,6 +351,7 @@ final ChannelManager channel_manager = channel_manager_constructor.channel_manag
 **References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
 
 ### 12. Sync `ChannelMonitor`s and `ChannelManager` to chain tip
+
 **What it's used for:** this step is only necessary if you're restarting and have open channels. This step ensures that LDK channel state is up-to-date with the bitcoin blockchain
 
 **Example:** with Electrum backend

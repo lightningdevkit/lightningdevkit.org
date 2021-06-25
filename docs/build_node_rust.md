@@ -3,9 +3,6 @@ id: build_node_rust
 title: "Building a Node with LDK in Rust"
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Introduction
 
 This document covers everything you need to make a node using LDK in Rust.

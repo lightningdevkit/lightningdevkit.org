@@ -4,35 +4,37 @@
     :aria-labelledby="data.heroText !== null ? 'main-title' : null"
   >
     <header class="hero">
-      <img
-        v-if="data.heroImage"
-        :src="$withBase(data.heroImage)"
-        :alt="data.heroAlt || 'hero'"
-      >
+      <div class="hero-inner">
+        <img
+          v-if="data.heroImage"
+          :src="$withBase(data.heroImage)"
+          :alt="data.heroAlt || 'hero'"
+        >
 
-      <h1
-        v-if="data.heroText !== null"
-        id="main-title"
-      >
-        {{ data.heroText || $title || 'Hello' }}
-      </h1>
+        <h1
+          v-if="data.heroText !== null"
+          id="main-title"
+        >
+          {{ data.heroText || $title || 'Hello' }}
+        </h1>
 
-      <p
-        v-if="data.tagline !== null"
-        class="description"
-      >
-        {{ data.tagline || $description || 'Welcome to your VuePress site' }}
-      </p>
+        <p
+          v-if="data.tagline !== null"
+          class="description"
+        >
+          {{ data.tagline || $description || 'Welcome to your VuePress site' }}
+        </p>
 
-      <p
-        v-if="data.actionText && data.actionLink"
-        class="action"
-      >
-        <NavLink
-          class="action-button"
-          :item="actionLink"
-        />
-      </p>
+        <p
+          v-if="data.actionText && data.actionLink"
+          class="action"
+        >
+          <NavLink
+            class="action-button"
+            :item="actionLink"
+          />
+        </p>
+      </div>
     </header>
 
     <div
@@ -51,13 +53,6 @@
     </div>
 
     <Content class="theme-default-content custom" />
-
-    <div
-      v-if="data.footer"
-      class="footer"
-    >
-      {{ data.footer }}
-    </div>
   </main>
 </template>
 
@@ -86,89 +81,100 @@ export default {
 
 <style lang="stylus">
 .home
-  padding $navbarHeight 2rem 0
-  max-width $homePageWidth
-  margin 0px auto
+  padding $navbarHeight 0 0
   display block
   .hero
-    text-align center
-    img
-      max-width: 100%
-      max-height 280px
-      display block
-      margin 3rem auto 1.5rem
+    margin 0 calc(var(--docs-wrap-space-inner) * -1)
+    border-bottom var(--docs-border-dashed)
     h1
-      font-size 3rem
-    h1, .description, .action
-      margin 1.8rem auto
+      font-size 64px
+      margin-top 0
+      margin-bottom var(--docs-space-s)
+    .description
+      margin-bottom var(--docs-space-l)
     .description
       max-width 35rem
       font-size 1.6rem
       line-height 1.3
-      color lighten($textColor, 40%)
     .action-button
       display inline-block
       font-size 1.2rem
       color #fff
       background-color $accentColor
-      padding 0.8rem 1.6rem
+      padding: var(--docs-space-s) var(--docs-space-m);
       border-radius 4px
       transition background-color .1s ease
       box-sizing border-box
-      border-bottom 1px solid darken($accentColor, 10%)
+      background: linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
+      border-radius: 8px;
       &:hover
         background-color lighten($accentColor, 10%)
+    .hero-inner
+      padding var(--docs-space-l)
+      @media (min-width: $MQNarrow)
+        max-width 48rem
+        margin 0 auto
+        border-right var(--docs-border-dashed)
   .features
-    border-top 1px solid $borderColor
-    padding 1.2rem 0
-    margin-top 2.5rem
     display flex
-    flex-wrap wrap
-    align-items flex-start
-    align-content stretch
     justify-content space-between
+    margin 0 calc(var(--docs-wrap-space-inner) * -1)
   .feature
-    flex-grow 1
-    flex-basis 30%
-    max-width 30%
+    flex 1 1 33.333333%
+    padding var(--docs-space-l)
+    border-bottom var(--docs-border-dashed)
+    + .feature
+      border-left var(--docs-border-dashed)
     h2
+      font-size 24px
+      line-height 33px
       border-bottom none
+      margin-bottom var(--docs-space-s)
       padding-bottom 0
-      color lighten($textColor, 10%)
     p
-      color lighten($textColor, 25%)
-  .footer
-    padding 2.5rem
-    border-top 1px solid $borderColor
-    text-align center
-    color lighten($textColor, 25%)
+      max-width 35rem
+      margin 0
+    img
+      display block
+      margin 0 auto
+      width 200px
+      height 200px
+  .content__default
+    padding var(--docs-space-l) var(--docs-space-m)
 
 @media (max-width: $MQMobile)
   .home
     .features
       flex-direction column
+      flex-basis 100%
     .feature
-      max-width 100%
-      padding 0 2.5rem
+      + .feature
+        border-left 0
+      img
+        margin 0
 
 @media (max-width: $MQMobileNarrow)
   .home
-    padding-left 1.5rem
-    padding-right 1.5rem
     .hero
-      img
-        max-height 210px
-        margin 2rem auto 1.2rem
-      h1
-        font-size 2rem
-      h1, .description, .action
-        margin 1.2rem auto
-      .description
-        font-size 1.2rem
-      .action-button
-        font-size 1rem
-        padding 0.6rem 1.2rem
+      .hero-inner
+        padding-left var(--docs-space-m)
+        padding-right var(--docs-space-m)
+        h1
+          font-size 2rem
+        .description
+          font-size 1.2rem
     .feature
-      h2
-        font-size 1.25rem
+      padding-left var(--docs-space-m)
+      padding-right var(--docs-space-m)
+      img
+        margin 0
+
+@media (min-width: $MQNarrow)
+  .home
+    .content__default
+      max-width 48rem
+      margin 0 auto
+      border-left var(--docs-border-dashed)
+      border-right var(--docs-border-dashed)
+      padding var(--docs-space-l)
 </style>

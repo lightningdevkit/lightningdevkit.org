@@ -17,9 +17,9 @@ module.exports = {
   title,
   description: "LDK is a flexible lightning implementation with supporting batteries (or modules).",
   head: [
-    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-regular.woff2", as="font", crossorigin: true }],
-    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-600.woff2", as="font", crossorigin: true }],,
-    ["link", { rel: "preload", href: "/fonts/ibm-plex-mono-v6-latin-regular.woff2", as="font", crossorigin: true }]
+    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-regular.woff2", as: "font", crossorigin: true }],
+    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-600.woff2", as: "font", crossorigin: true }],
+    ["link", { rel: "preload", href: "/fonts/ibm-plex-mono-v6-latin-regular.woff2", as: "font", crossorigin: true }]
   ],
   chainWebpack (config) {
     config.module
@@ -67,7 +67,7 @@ module.exports = {
   },
   themeConfig: {
     domain: baseUrl,
-    logo: "/img/logo/ldk.svg",
+    logo: "/img/logo.svg",
     displayAllHeaders: false,
     repo: "lightningdevkit/ldk-doc",
     docsDir: "docs",
@@ -84,10 +84,6 @@ module.exports = {
         link: "/use_cases/"
       },
       {
-        text: "Docs",
-        link: "/docs/"
-      },
-      {
         text: "Slack",
         link: "https://lightningdevkit.slack.com/",
         rel: "noopener noreferrer github"
@@ -98,7 +94,6 @@ module.exports = {
         rel: "noopener noreferrer github"
       }
     ],
-    sidebar: [
-    ]
+    sidebar: "auto"
   }
 }

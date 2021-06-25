@@ -14,7 +14,6 @@ features:
 - title: "Mobile first"
   details: "As lightweight as you need it to be and with language bindings suitable for iOS or Android -- it may be written in secure Rust, but you'll never have to touch Rust code."
   image: "mobile"
-footer: Copyright © 2021 LDK Developers
 ---
 
 ## Introduction

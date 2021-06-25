@@ -6,9 +6,10 @@ slug: /
 
 LDK is a flexible lightning implementation with supporting batteries (or modules).
 
-## To jump into integrating LDK with your application:
-##     [Click here for Java](build_node.md)
-##     [Click here for Rust](build_node_rust.md)
+**To jump into integrating LDK with your application:**
+
+- [Click here for Java](build_node.md)
+- [Click here for Rust](build_node_rust.md)
 
 ## Introduction
 LDK/Rust-Lightning is a generic library which allows you to build a lightning
