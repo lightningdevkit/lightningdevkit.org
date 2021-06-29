@@ -4,13 +4,12 @@ title: Overview
 slug: /
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
 LDK is a flexible lightning implementation with supporting batteries (or modules).
 
-## To jump into integrating LDK with your application:
-##     [Click here for Java](build_node.md)
-##     [Click here for Rust](build_node_rust.md)
+**To jump into integrating LDK with your application:**
+
+* [Click here for Java](build_node.md)
+* [Click here for Rust](build_node_rust.md)
 
 ## Introduction
 LDK/Rust-Lightning is a generic library which allows you to build a lightning
@@ -32,7 +31,7 @@ through generic interfaces, meaning the user can choose the implementation that
 best suits their needs. LDK provides sample implementations for many of these
 batteries, which are enumerated below.
 
-* On-disk storage 
+* On-disk storage
   * You can store the channel state any way you want - whether Google
   Drive/iCloud, a local disk, any key-value store/database/a remote server, or
   any combination of them - we provide a clean API that provides objects which
@@ -59,7 +58,7 @@ batteries, which are enumerated below.
   lightning wallet with on-chain transactions and a separate private key system.
   * LDK does not currently provide a sample wallet module, but its sample node
     implementation uses Bitcoin Core's wallet for UTXO management e.g. [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L245-L260)
-* Networking 
+* Networking
   * To enable a user to run a full lightning node on an embedded
   machine, we don't specify exactly how to connect to another node at all! We
   provide a default implementation which uses TCP sockets, but, e.g., if you
@@ -88,12 +87,12 @@ batteries, which are enumerated below.
 
 
 ## LDK Architecture
-![LDK Architecture](assets/ldk-architecture.svg)
+![LDK Architecture](./assets/ldk-architecture.svg)
 
 LDK's core components are shown in the center box labeled `lightning`. Boxes
 with dotted borders are LDK's batteries — these must be configured with either
 off-the-shelf or custom implementations that you provide.
- 
+
 EventHandler in the diagram is not so much a necessary LDK battery, but instead
 refers to the fact that LDK generates events that the user should handle (e.g.
 the `PaymentReceived` event).

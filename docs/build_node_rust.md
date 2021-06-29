@@ -3,9 +3,6 @@ id: build_node_rust
 title: "Building a Node with LDK in Rust"
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Introduction
 
 This document covers everything you need to make a node using LDK in Rust.
@@ -17,7 +14,7 @@ For an integrated example of an LDK node in Rust, see the [Sample Node](https://
 * [Setup](#setup) covers everything you need to do to set up LDK on startup.
 * [Running LDK](#running-ldk) covers everything you need to do while LDK is running to keep it operational.
 
-Note that LDK does not assume that safe shutdown is available, so there is no 
+Note that LDK does not assume that safe shutdown is available, so there is no
 shutdown checklist.
 
 ## Setup
@@ -44,7 +41,7 @@ impl FeeEstimator for YourFeeEstimator {
 let fee_estimator = YourFeeEstimator();
 ```
 
-**Implementation notes:** 
+**Implementation notes:**
 1. Fees must be returned in: satoshis per 1000 weight units
 2. Fees must be no smaller than 253 (equivalent to 1 satoshi/vbyte, rounded up)
 3. To reduce network traffic, you may want to cache fee results rather than
@@ -86,7 +83,7 @@ let logger = YourLogger();
 **References:** [`Logger` docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html)
 
 ### 3. Initialize the `BroadcasterInterface`
-**What it's used for:** broadcasting various lightning transactions 
+**What it's used for:** broadcasting various lightning transactions
 
 **Example:**
 ```rust
@@ -109,14 +106,9 @@ let broadcaster = YourTxBroadcaster();
 **What it's used for:** persisting `ChannelMonitor`s, which contain crucial channel data, in a timely manner
 
 **Example:**
-<Tabs
-  defaultValue="custom"
-  values={[
-    { label: 'Custom', value: 'custom', },
-    { label: 'Using LDK Sample Filesystem Persistence Module', value: 'ldk-sample', },
-  ]
-}>
-<TabItem value="custom">
+
+:::: tabs
+::: tab "Custom"
 
 ```rust
 struct YourPersister();
@@ -129,11 +121,11 @@ impl<ChannelSigner: Sign> Persist for YourPersister {
         // Note that monitor.encode() will get you the ChannelMonitor as a
         // Vec<u8>.
     }
-    
+
 	fn update_persisted_channel(
-        &self, 
-        funding_txo: OutPoint, 
-        update: &ChannelMonitorUpdate, 
+        &self,
+        funding_txo: OutPoint,
+        update: &ChannelMonitorUpdate,
         monitor: &ChannelMonitor<ChannelSigner>
     ) -> Result<(), ChannelMonitorUpdateErr> {
         // <insert code to persist either the ChannelMonitor or the
@@ -144,8 +136,8 @@ impl<ChannelSigner: Sign> Persist for YourPersister {
 let persister = YourPersister();
 ```
 
-</TabItem>
-<TabItem value="ldk-sample">
+:::
+::: tab "Using LDK Sample Filesystem Persistence Module"
 
 ```rust
 use lightning_persister::FilesystemPersister; // import LDK sample persist module
@@ -153,10 +145,10 @@ use lightning_persister::FilesystemPersister; // import LDK sample persist modul
 let persister = FilesystemPersister::new(ldk_data_dir_path);
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
-**Implementation notes:** 
+**Implementation notes:**
 * `ChannelMonitor`s are objects which are capable of
 responding to on-chain events for a given channel. Thus, you will have one
 `ChannelMonitor` per channel. They are persisted in real-time and the `Persist`
@@ -174,7 +166,7 @@ returning or you may lose funds.
 i.e. if you're using BIP 157/158 or Electrum as your chain backend
 
 **What it's used for:** if you are not providing full blocks, LDK uses this
-object to tell you what transactions and outputs to watch for on-chain. You'll 
+object to tell you what transactions and outputs to watch for on-chain. You'll
 inform LDK about these transactions/outputs in Step 15.
 
 **Example:**
@@ -185,8 +177,8 @@ impl Filter for YourTxFilter {
 	fn register_tx(&self, txid: &Txid, script_pubkey: &Script) {
         // <insert code for you to watch for this transaction on-chain>
 	}
-    
-	fn register_output(&self, output: WatchedOutput) -> 
+
+	fn register_output(&self, output: WatchedOutput) ->
         Option<(usize, Transaction)> {
 
         // <insert code for you to watch for any transactions that spend this
@@ -287,7 +279,7 @@ generation is unique across restarts.
 // Use LDK's sample persister module provided method
 let mut channel_monitors =
 	persister.read_channelmonitors(keys_manager.clone()).unwrap();
-    
+
 // If you are using Electrum or BIP 157/158, you must call load_outputs_to_watch
 // on each ChannelMonitor to prepare for chain synchronization in Step 10.
 for chan_mon in channel_monitors.iter() {
@@ -310,7 +302,7 @@ let user_config = UserConfig::default();
 /* RESTARTING */
 
 let (channel_manager_blockhash, mut channel_manager) = {
-    let channel_manager_file = 
+    let channel_manager_file =
         fs::File::open(format!("{}/manager", ldk_data_dir.clone())).unwrap();
 
     // Use the `ChannelMonitors` marshalled in Step 8.
@@ -366,15 +358,8 @@ let (channel_manager_blockhash, mut channel_manager) = {
 
 **Example:**
 
-<Tabs
-  defaultValue="bitcoind"
-  values={[
-    { label: 'Full Blocks or BIP 157/158', value: 'bitcoind', },
-    { label: 'Electrum', value: 'electrum', },
-  ]
-}>
-
-<TabItem value="bitcoind">
+:::: tabs
+::: tab "Full Blocks or BIP 157/158"
 
 ```rust
 use lightning_block_sync::init;
@@ -393,8 +378,8 @@ impl lightning_block_sync::BlockSource for YourChainBackend {
 	) -> AsyncBlockSourceResult<'a, Block> {
         // <insert code to retrieve the block corresponding to header_hash>
 	}
-    
-	fn get_best_block<'a>(&'a mut self) -> 
+
+	fn get_best_block<'a>(&'a mut self) ->
         AsyncBlockSourceResult<(BlockHash, Option<u32>)> {
         // <insert code to retrieve your best known block hash and height>
 	}
@@ -445,8 +430,8 @@ chain_tip = Some(
 );
 ```
 
-</TabItem>
-<TabItem value="electrum">
+:::
+::: tab "Electrum"
 
 ```rust
 // Retrieve transaction IDs to check the chain for un-confirmation.
@@ -480,8 +465,8 @@ channel_manager.update_best_block(best_header, best_height);
 chain_monitor.update_best_block(best_header, best_height);
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 **Implementation notes:**
 
@@ -490,7 +475,7 @@ chain_monitor.update_best_block(best_header, best_height);
 LDK's `lightning_block_sync` sample module as in the example above
   * Otherwise, you can use LDK's `Confirm` interface as in the Electrum example above
 * More details about LDK's interfaces to provide chain info in Step 15
-  
+
 **References:** [`Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/)
 
 **Dependencies:** `ChannelManager`
@@ -508,7 +493,7 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 }
 ```
 
-**Dependencies:** 
+**Dependencies:**
 * `ChainMonitor`, set of `ChannelMonitor`s and their funding outpoints
 * Step 10 must be completed prior to this step
 
@@ -601,14 +586,8 @@ This section assumes you've already run all the steps in [Setup](#setup).
 
 **Example:**
 
-<Tabs
-  defaultValue="bitcoind"
-  values={[
-    { label: 'Bitcoind', value: 'bitcoind', },
-    { label: 'Electrum', value: 'electrum', },
-  ]
-}>
-<TabItem value="bitcoind">
+:::: tabs
+::: tab "Bitcoind"
 
 ```rust
 // If you don't have the chain tip, retrieve it here.
@@ -635,8 +614,8 @@ loop {
 }
 ```
 
-</TabItem>
-<TabItem value="electrum">
+:::
+::: tab "Electrum"
 
 ```rust
 /* UNCONFIRMED TRANSACTIONS */
@@ -666,8 +645,8 @@ channel_manager.update_best_block(new_best_header, new_best_height);
 chain_monitor.update_best_block(new_best_header, new_best_height);
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 **Implementation notes:**
 * If you're using the `Listen` interface: blocks must be connected and disconnected in chain order
@@ -705,7 +684,7 @@ fn handle_ldk_event(..) {
 }
 ```
 
-**Implementation notes:** 
+**Implementation notes:**
 * It's important to read the documentation for individual event handling (linked in References below) to make sure event handling requirements are satisfied
 * It is recommended to read through event handling in the LDK sample node (linked in the first example) to get an idea of what integrated LDK event handling looks like
 
@@ -721,7 +700,7 @@ fn handle_ldk_event(..) {
 
 ```rust
 // In this example, we provide a closure to handle ChannelManager persistence.
-// But you're also free to provide an implementation of the trait 
+// But you're also free to provide an implementation of the trait
 // `ChannelManagerPersister` instead.
 
 // This callback will be used in the Step 18 for regular persistence.
