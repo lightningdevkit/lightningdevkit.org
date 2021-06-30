@@ -9,10 +9,10 @@
 	--docs-space-xl: 60px;
 	--docs-space-xxl: 80px;
 
-	--docs-font-size-xs: 10px;
-	--docs-font-size-s: 12px;
-	--docs-font-size-m: 1rem;
-	--docs-font-size-l: 18px;
+	--docs-font-size-xs: .75em;
+	--docs-font-size-s: .9em;
+	--docs-font-size-m: 1em;
+	--docs-font-size-l: 1.2em;
 	--docs-font-size-xl: 36px;
 	--docs-font-size-xxl: 45px;
 	--docs-font-weight-normal: 400;
@@ -26,7 +26,6 @@
   --docs-accent-teal: #76F3CD;
   --docs-accent-yellow: #F7C00F;
   --docs-accent-purple: #711BF7;
-  --docs-pre-bg: #414862;
 
   --docs-neutral-10: #E6E6E6;
   --docs-neutral-25: #BFBFBF;
@@ -41,7 +40,7 @@
   --docs-body-link-accent: var(--docs-primary);
   --docs-body-border-light: var(--docs-neutral-10);
   --docs-body-border-medium: var(--docs-neutral-25);
-  --docs-border-dashed: 1px dashed var(--docs-neutral-25);
+  --docs-border-dashed: 1px dashed var(--docs-body-border-medium);
 
   --docs-header-text: var(--docs-body-text);
   --docs-header-bg: var(--docs-body-bg);
@@ -58,6 +57,11 @@
 
   --docs-wrap-space-outer: var(--docs-space-s);
   --docs-wrap-space-inner: var(--docs-space-m);
+
+  --docs-code-text: inherit;
+  --docs-code-bg: var(--docs-neutral-10);
+  --docs-pre-text: var(--docs-white);
+  --docs-pre-bg: #414862;
 
   @media (max-width: $MQMobile) {
     --docs-font-size-base: 16px;
