@@ -1,8 +1,4 @@
----
-id: overview
-title: Overview
-slug: /
----
+# Overview
 
 LDK is a flexible lightning implementation with supporting batteries (or modules).
 

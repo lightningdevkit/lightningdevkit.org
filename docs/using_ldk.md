@@ -1,7 +1,4 @@
----
-id: using_ldk
-title: "Using LDK"
----
+# Using LDK
 
 ## Introduction
 

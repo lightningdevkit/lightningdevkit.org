@@ -1,7 +1,4 @@
----
-id: build_node2
-title: Building a Node
----
+# Building a Node
 
 ## Introduction
 In this guide, we'll be walking through how to build a lightning node using LDK in Java.
@@ -52,4 +49,3 @@ This will look something like this:
 <!--     .. -->
 <!--     final chain_monitor = ChainMonitor.constructor_new(null, tx_broadcaster, logger, fee_estimator, persister); -->
 <!-- ``` -->
-

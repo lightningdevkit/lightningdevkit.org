@@ -1,13 +1,10 @@
----
-id: build_node_rust
-title: "Building a Node with LDK in Rust"
----
+# Building a Node with LDK in Rust
 
 ## Introduction
 
 This document covers everything you need to make a node using LDK in Rust.
 
-:::note
+::: tip Note
 For an integrated example of an LDK node in Rust, see the [Sample Node](https://github.com/lightningdevkit/ldk-sample)
 :::
 

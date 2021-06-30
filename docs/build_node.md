@@ -1,7 +1,4 @@
----
-id: build_node
-title: "Building a Node with LDK in Java"
----
+# Building a Node with LDK in Java
 
 ## Introduction
 

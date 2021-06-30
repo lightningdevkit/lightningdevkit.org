@@ -1,7 +1,4 @@
----
-id: blockdata
-title: Blockchain Data
----
+# Blockchain Data
 
 ## Introduction
 
@@ -53,7 +50,7 @@ It is your choice as to whether you use this utility or your own to feed the
 required chain data to LDK. If you choose to use it, you will need to implement
 the `BlockSource` interface or use one of the samples that it provides.
 
-:::note
+::: tip Note
 Currently, `lightning-block-sync`  is only available in Rust.
 :::
 
