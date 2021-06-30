@@ -15,11 +15,11 @@ const extractDescription = text => {
 
 module.exports = {
   title,
-  description: "LDK is a flexible lightning implementation with supporting batteries (or modules).",
+  description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
   head: [
-    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-regular.woff2", as: "font", crossorigin: true }],
-    ["link", { rel: "preload", href: "/fonts/manrope-v4-latin-600.woff2", as: "font", crossorigin: true }],
-    ["link", { rel: "preload", href: "/fonts/ibm-plex-mono-v6-latin-regular.woff2", as: "font", crossorigin: true }]
+    ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-regular.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-600.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-v6-latin-regular.woff2', as: 'font', crossorigin: true }]
   ],
   chainWebpack (config) {
     config.module
@@ -38,8 +38,7 @@ module.exports = {
       tags: $page => ($page.frontmatter.tags || ['Bitcoin', 'Lightning Network', 'LDK']),
       twitterCard: _ => 'summary',
       type: $page => 'article',
-      url: (_, $site, path) => `${baseUrl}${path.replace('.html', pageSuffix)}`,
-      image: ($page, $site) => `${baseUrl}/card.png`
+      url: (_, $site, path) => `${baseUrl}${path.replace('.html', pageSuffix)}`
     }],
     ['clean-urls', {
       normalSuffix: pageSuffix,
@@ -67,33 +66,48 @@ module.exports = {
   },
   themeConfig: {
     domain: baseUrl,
-    logo: "/img/logo.svg",
+    logo: '/img/logo.svg',
     displayAllHeaders: false,
-    repo: "lightningdevkit/lightningdevkit.org",
-    docsDir: "docs",
+    repo: 'lightningdevkit/lightningdevkit.org',
+    docsDir: 'docs',
     editLinks: true,
-    notSatisfiedLinks: true, // our own addition, see theme/components/PageEdit.vue
-    sidebarDepth: 0,
+    sidebarDepth: 2,
     nav: [
       {
-        text: "Overview",
-        link: "/overview/"
+        text: 'Overview',
+        link: '/overview/'
       },
       {
-        text: "Getting Started",
-        link: "/use_cases/"
+        text: 'Slack',
+        link: 'https://lightningdevkit.slack.com/',
+        rel: 'noopener noreferrer github'
       },
       {
-        text: "Slack",
-        link: "https://lightningdevkit.slack.com/",
-        rel: "noopener noreferrer github"
-      },
-      {
-        text: "GitHub",
-        link: "https://github.com/lightningdevkit",
-        rel: "noopener noreferrer github"
+        text: 'GitHub',
+        link: 'https://github.com/lightningdevkit',
+        rel: 'noopener noreferrer github'
       }
     ],
-    sidebar: "auto"
+    sidebar: [
+      {
+        title: 'Lightning Development Kit',
+        collapsable: false,
+        children: [
+          '/overview',
+          '/use_cases'
+        ]
+      },
+      {
+        title: 'Guides',
+        collapsable: false,
+        children: [
+          '/build_node',
+          '/build_node_rust',
+          '/using_ldk',
+          '/key_mgmt',
+          '/blockdata'
+        ],
+      }
+    ]
   }
 }
