@@ -27,6 +27,7 @@ export default {
 
 <style lang="stylus">
 .sidebar
+  --border-left-width .25rem
   color var(--docs-nav-link)
   background var(--docs-body-bg)
   border-right var(--docs-border-dashed)
@@ -74,5 +75,5 @@ export default {
   .sidebar
     left auto
     border-left 0
-    margin-left 0
+    margin-left calc(var(--docs-wrap-space-inner) * -1)
 </style>

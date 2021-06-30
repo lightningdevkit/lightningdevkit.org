@@ -113,13 +113,13 @@ export default {
   transition color .15s ease
   cursor pointer
   font-size 1.1em
-  font-weight bold
+  font-weight var(--docs-font-weight-semibold)
   // text-transform uppercase
-  padding 0.35rem 1.5rem 0.35rem 1.25rem
+  padding 0.35rem var(--docs-wrap-space-inner) 0.35rem calc(var(--docs-wrap-space-inner) - var(--border-left-width))
   width 100%
   box-sizing border-box
   margin 0
-  border-left 0.25rem solid transparent
+  border-left var(--border-left-width) solid transparent
   &.open, &:hover
     color inherit
   .arrow
@@ -128,7 +128,7 @@ export default {
     left 0.5em
   &.clickable
     &.active
-      font-weight 600
+      font-weight var(--docs-font-weight-semibold)
       color $accentColor
       border-left-color $accentColor
     &:hover

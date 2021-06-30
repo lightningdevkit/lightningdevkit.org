@@ -108,26 +108,26 @@ function renderExternal (h, to, text) {
 
 a.sidebar-link
   font-size 1em
-  font-weight 400
+  font-weight var(--docs-font-weight-normal)
   display inline-block
   color var(--docs-sidebar-link)
   border-left 0.25rem solid transparent
-  padding 0.35rem 1rem 0.35rem 1.25rem
+  padding .35rem var(--docs-wrap-space-inner)
   line-height 1.4
   width: 100%
   box-sizing: border-box
   &:hover
     color var(--docs-sidebar-link-accent)
   &.active
-    font-weight 600
+    font-weight var(--docs-font-weight-semibold)
     color var(--docs-sidebar-link-accent)
     border-left-color var(--docs-sidebar-link-accent)
   .sidebar-group &
-    padding-left 2rem
+    padding-left calc(var(--docs-wrap-space-inner) - var(--border-left-width))
   .sidebar-sub-headers &
     padding-top 0.25rem
     padding-bottom 0.25rem
     border-left none
     &.active
-      font-weight 500
+      font-weight var(--docs-font-weight-semibold)
 </style>
