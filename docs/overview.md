@@ -2,7 +2,7 @@
 
 LDK is a flexible lightning implementation with supporting batteries (or modules).
 
-**To jump into integrating LDK with your application:**
+<div class="h2">To jump into integrating LDK with your application:</div>
 
 * [Click here for Java](build_node.md)
 * [Click here for Rust](build_node_rust.md)

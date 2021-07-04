@@ -74,7 +74,7 @@ module.exports = {
     sidebarDepth: 2,
     nav: [
       {
-        text: 'Overview',
+        text: 'Docs',
         link: '/overview/'
       },
       {
