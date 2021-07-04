@@ -72,11 +72,27 @@ a:hover {
   transition-duration 0.2s
 
 #app
+  min-height 100vh
+
+  .theme-container
+    min-height 100vh
+    max-width 1280px
+    display flex
+    flex-direction column
+    margin-left auto
+    margin-right auto
+    .wrap
+    .wrap-border
+      flex 1
+      display flex
+
   // Max-width, centered layout
   .wrap
     max-width 1280px
     padding-left var(--docs-wrap-space-outer)
     padding-right var(--docs-wrap-space-outer)
+
+  .navbar .wrap
     margin-left auto
     margin-right auto
 

@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <Content class="theme-default-content custom" />
+    <!-- <Content class="theme-default-content custom" /> -->
   </main>
 </template>
 
