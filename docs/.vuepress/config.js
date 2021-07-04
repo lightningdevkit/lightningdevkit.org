@@ -5,6 +5,7 @@ const preprocessMarkdown = resolve(__dirname, 'preprocessMarkdown')
 
 const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
+const themeColor = '#ffffff'
 const pageSuffix = '/'
 const info = { name: title }
 const extractDescription = text => {
@@ -19,7 +20,12 @@ module.exports = {
   head: [
     ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-regular.woff2', as: 'font', crossorigin: true }],
     ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-600.woff2', as: 'font', crossorigin: true }],
-    ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-v6-latin-regular.woff2', as: 'font', crossorigin: true }]
+    ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-v6-latin-regular.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/img/favicon/apple-touch-icon.png' }],
+    ['link', { rel: 'manifest', href: '/site.webmanifest' }],
+    ['link', { name: 'msapplication-config', content: '/browserconfig.xml' }],
+    ['link', { name: 'msapplication-TileColor', content: themeColor }],
+    ['link', { name: 'theme-colorr', content: themeColor }]
   ],
   chainWebpack (config) {
     config.module

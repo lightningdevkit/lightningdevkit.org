@@ -12,11 +12,11 @@
 
 <style lang="stylus">
 .footer
-  border-top var(--docs-border-dashed)
   @media (min-width: $MQNarrow)
     position relative
     z-index 10
   .wrap-border
+    border-top var(--docs-border-dashed)
     padding var(--docs-space-l)
     @media (min-width: $MQMobile)
       padding-left 19.5rem !important
