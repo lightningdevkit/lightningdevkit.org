@@ -1,12 +1,10 @@
----
-id: use_cases
-title: Use Cases for LDK
----
+# Use Cases for LDK
 
 The standard lightning use case is running a standalone node on one's laptop.
 Here's some other use cases that LDK supports.
 
 ## Mobile Devices
+
 Mobile devices with lightning have unique requirements often not well served by
 today's lightning ecosystem. Not only do they need to operate with minimal
 footprint, they also have intermittent data access and cannot shutdown safely.
@@ -35,6 +33,7 @@ all details of the lightning protocol are enforced without consideration of host
 compromise.
 
 ## Production Lightning Nodes
+
 Many large Bitcoin transactors have large amounts of custom-built infrastructure
 for interacting with the Bitcoin blockchain. Such tight integration with
 business logic may be difficult with existing lightning implementations focusing

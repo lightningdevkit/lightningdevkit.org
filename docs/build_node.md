@@ -1,10 +1,4 @@
----
-id: build_node
-title: "Building a Node with LDK in Java"
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+# Building a Node with LDK in Java
 
 ## Introduction
 
@@ -13,7 +7,7 @@ This document covers everything you need to make a node using LDK in Java.
 * [Setup](#setup) covers everything you need to do to set up LDK on startup.
 * [Running LDK](#running-ldk) covers everything you need to do while LDK is running to keep it operational.
 
-Note that LDK does not assume that safe shutdown is available, so there is no 
+Note that LDK does not assume that safe shutdown is available, so there is no
 shutdown checklist.
 
 ## Setup
@@ -43,7 +37,7 @@ class YourFeeEstimator implements FeeEstimator.FeeEstimatorInterface {
 FeeEstimator fee_estimator = FeeEstimator.new_impl(new YourFeeEstimator());
 ```
 
-**Implementation notes:** 
+**Implementation notes:**
 1. Fees must be returned in: satoshis per 1000 weight units
 2. Fees returned must be no smaller than 253 (equivalent to 1 satoshi/vbyte, rounded up)
 3. To reduce network traffic, you may want to cache fee results rather than
@@ -76,7 +70,7 @@ Logger logger = Logger.new_impl(new YourLogger());
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
 
 ### 3. Initialize the `BroadcasterInterface`
-**What it's used for:** broadcasting various lightning transactions 
+**What it's used for:** broadcasting various lightning transactions
 
 **Example:**
 
@@ -124,7 +118,7 @@ final router = NetGraphMsgHandler.of(new byte[32], null, logger);
 ```java
 Persist persister = Persist.new_impl(new Persist.PersistInterface() {
   @Override
-  public Result_NoneChannelMonitorUpdateErrZ persist_new_channel(OutPoint id, 
+  public Result_NoneChannelMonitorUpdateErrZ persist_new_channel(OutPoint id,
     ChannelMonitor data) {
       byte[] channel_monitor_bytes = data.write();
       // <insert code to write these bytes to disk, keyed by `id`>
@@ -181,7 +175,7 @@ class YourObj implements ChannelManagerConstructor.ChannelManagerPersister {
             // <insert code to handle this event>
         }
     }
-    
+
     @Override
     public void persist_manager(byte[] channel_manager_bytes) {
         // <insert code to persist channel_manager_bytes to disk and/or backups>
@@ -199,7 +193,7 @@ ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
 * It's important to read the documentation (linked in References) for each event
   to make sure you satisfy the API requirements for handling it
 
-**References:** [Example of handling LDK events in Rust](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240), 
+**References:** [Example of handling LDK events in Rust](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240),
 [Rust docs for LDK events](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html)
 
 ### 7. Optional: Initialize the Transaction `Filter`
@@ -207,7 +201,7 @@ ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
 i.e. if you're using BIP 157/158 or Electrum as your chain backend
 
 **What it's used for:** if you are not providing full blocks, LDK uses this
-object to tell you what transactions and outputs to watch for on-chain. You'll 
+object to tell you what transactions and outputs to watch for on-chain. You'll
 inform LDK about these transactions/outputs in Step 14.
 
 **Example:**
@@ -289,7 +283,7 @@ generation is unique across restarts.
 // Initialize the array where we'll store the `ChannelMonitor`s read from disk.
 final ArrayList channel_monitor_list = new ArrayList<>();
 
-// For each monitor stored on disk, deserialize it and place it in 
+// For each monitor stored on disk, deserialize it and place it in
 // `channel_monitors`.
 for (... : monitor_files) {
     byte[] channel_monitor_bytes = // read the bytes from disk the same way you
@@ -388,7 +382,7 @@ channel_manager_constructor.chain_sync_completed(channel_manager_persister);
 
 * There are 2 main options for synchronizing to chain on startup:
   * If you are connecting full blocks or using BIP 157/158: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
-    1. Get the last blockhash that each object saw. 
+    1. Get the last blockhash that each object saw.
       * `ChannelManager`'s is in `channel_manager_constructor.channel_manager_latest_block_hash`
       * Each `ChannelMonitor`'s is in `channel_manager_constructor.channel_monitors`, as the 2nd element in each tuple
     2. For each object, if its latest known blockhash has been reorged out of the chain, then disconnect blocks using `channel_manager.as_Listen().block_disconnected(..)` or `channel_monitor.block_disconnected(..)` until you reach the last common ancestor with the main chain.
@@ -400,7 +394,7 @@ channel_manager_constructor.chain_sync_completed(channel_manager_persister);
     2. Tell LDK what your best known block header and height is.
     3. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
 * More details about LDK's interfaces to provide chain info in Step 14.
-  
+
 **References:** [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html)
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`
@@ -431,14 +425,8 @@ This section assumes you've already run all the steps in [Setup](#setup).
 
 **Example:**
 
-<Tabs
-  defaultValue="java-blocks"
-  values={[
-    { label: 'Java with Full Blocks or BIP 157/158', value: 'java-blocks', },
-    { label: 'Java with Electrum', value: 'java-electrum', },
-  ]
-}>
-<TabItem value="java-electrum">
+:::: tabs
+::: tab "Java with Full Blocks or BIP 157/158"
 
 ```java
 /* UNCONFIRMED TRANSACTIONS */
@@ -472,8 +460,8 @@ channel_manager.update_best_block(new_best_header, new_best_height);
 chain_monitor.update_best_block(new_best_header, new_best_height);
 ```
 
-</TabItem>
-<TabItem value="java-blocks">
+:::
+:::tab "Java with Electrum"
 
 ```java
 // For each connected and disconnected block, and in chain-order, call these
@@ -483,9 +471,9 @@ chain_monitor.update_best_block(new_best_header, new_best_height);
 // Transactions and outputs are registered both on startup and as new relevant
 // transactions/outputs are created.
 
-// header is a []byte type, height is `int`, txdata is a 
-// TwoTuple<Long, byte[]>[], where the 0th element is the transaction's position 
-// in the block (with the coinbase transaction considered position 0) and the 1st 
+// header is a []byte type, height is `int`, txdata is a
+// TwoTuple<Long, byte[]>[], where the 0th element is the transaction's position
+// in the block (with the coinbase transaction considered position 0) and the 1st
 // element is the transaction bytes
 channel_manager.as_Listen().block_connected(header, txdata, height);
 chain_monitor.block_connected(header, txdata, height);
@@ -494,8 +482,8 @@ channel_manager.as_Listen().block_disconnected(header, height);
 chain_monitor.block_disconnected(header, height);
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 **Implementation notes:**
 * If you're using the `Listen` interface: blocks must be connected and disconnected in chain order
