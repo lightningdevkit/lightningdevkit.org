@@ -1,5 +1,12 @@
 <template>
+<<<<<<< HEAD
   <main class="home">
+=======
+  <main
+    class="home"
+    :aria-labelledby="data.heroText !== null ? 'main-title' : null"
+  >
+>>>>>>> Migrate to Vuepress (#46)
     <header class="hero">
       <div class="hero-inner">
         <img
@@ -80,7 +87,10 @@ export default {
 .home
   padding $navbarHeight 0 0
   display block
+<<<<<<< HEAD
   width 100%
+=======
+>>>>>>> Migrate to Vuepress (#46)
   .hero
     margin 0 calc(var(--docs-wrap-space-inner) * -1)
     border-bottom var(--docs-border-dashed)
@@ -99,16 +109,26 @@ export default {
       font-size 1.2rem
       color #fff
       background-color $accentColor
+<<<<<<< HEAD
       padding var(--docs-space-s) var(--docs-space-m);
       border-radius 4px
       transition background-color .1s ease
       box-sizing border-box
       background linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
       border-radius 8px
+=======
+      padding: var(--docs-space-s) var(--docs-space-m);
+      border-radius 4px
+      transition background-color .1s ease
+      box-sizing border-box
+      background: linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
+      border-radius: 8px;
+>>>>>>> Migrate to Vuepress (#46)
       &:hover
         background-color lighten($accentColor, 10%)
     .hero-inner
       padding var(--docs-space-l)
+<<<<<<< HEAD
   .intro
     margin 0 calc(var(--docs-wrap-space-inner) * -1)
     border-bottom var(--docs-border-dashed)
@@ -119,6 +139,12 @@ export default {
     p
       max-width 35rem
       margin 0 auto
+=======
+      @media (min-width: $MQNarrow)
+        max-width 48rem
+        margin 0 auto
+        border-right var(--docs-border-dashed)
+>>>>>>> Migrate to Vuepress (#46)
   .features
     display flex
     justify-content space-between
@@ -137,14 +163,19 @@ export default {
       padding-bottom 0
     p
       max-width 35rem
+<<<<<<< HEAD
       &:last-child
         margin 0
+=======
+      margin 0
+>>>>>>> Migrate to Vuepress (#46)
     img
       display block
       margin 0 auto
       width 200px
       height 200px
   .content__default
+<<<<<<< HEAD
     .features
       display flex
       flex-wrap wrap
@@ -162,6 +193,9 @@ export default {
         border-bottom 0
       .feature:nth-child(odd)
         border-left 0
+=======
+    padding var(--docs-space-l) var(--docs-space-m)
+>>>>>>> Migrate to Vuepress (#46)
 
 @media (max-width: $MQMobile)
   .home
@@ -173,9 +207,12 @@ export default {
         border-left 0
       img
         margin 0
+<<<<<<< HEAD
     .content__default
       .feature:last-child
         border-bottom 0
+=======
+>>>>>>> Migrate to Vuepress (#46)
 
 @media (max-width: $MQMobileNarrow)
   .home
@@ -195,14 +232,21 @@ export default {
 
 @media (min-width: $MQNarrow)
   .home
+<<<<<<< HEAD
     .hero-inner
+=======
+>>>>>>> Migrate to Vuepress (#46)
     .content__default
       max-width 48rem
       margin 0 auto
       border-left var(--docs-border-dashed)
       border-right var(--docs-border-dashed)
+<<<<<<< HEAD
       .intro,
       .features
         margin-left 0
         margin-right 0
+=======
+      padding var(--docs-space-l)
+>>>>>>> Migrate to Vuepress (#46)
 </style>

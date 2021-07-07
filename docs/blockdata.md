@@ -52,7 +52,7 @@ required chain data to LDK. If you choose to use it, you will need to implement
 the `BlockSource` interface or use one of the samples that it provides.
 
 ::: tip Note
-Currently, `lightning-block-sync` is only available in Rust.
+Currently, `lightning-block-sync`  is only available in Rust.
 :::
 
 ### Block Source
