@@ -1,10 +1,4 @@
----
-id: blockdata
-title: Blockchain Data
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+# Blockchain Data
 
 ## Introduction
 
@@ -30,7 +24,7 @@ be disconnected. LDK will process such events as they are fed into it from a
 
 We will walk through this process as depicted here:
 
-![LDK block processing](assets/ldk-block-processing.svg)
+![LDK block processing](./assets/ldk-block-processing.svg)
 
 ## Block Source
 
@@ -56,21 +50,15 @@ It is your choice as to whether you use this utility or your own to feed the
 required chain data to LDK. If you choose to use it, you will need to implement
 the `BlockSource` interface or use one of the samples that it provides.
 
-:::note
+::: tip Note
 Currently, `lightning-block-sync`  is only available in Rust.
 :::
 
 Implementing the `BlockSource` interface requires defining methods for fetching
 headers, blocks, and the best block hash.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 impl BlockSource for Blockchain {
@@ -88,15 +76,15 @@ impl BlockSource for Blockchain {
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 // TODO
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 For instance, you may implement this interface by querying Bitcoin Core's JSON
 RPC interface, which happens to be a sample implementation provided by
@@ -133,14 +121,8 @@ if a block contains relevant transactions before fetching it.
 So how does this work in practice? `ChainMonitor` is parameterized by an
 optional type that implements `chain::Filter`:
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 impl chain::Filter for Blockchain {
@@ -159,8 +141,8 @@ impl chain::Filter for Blockchain {
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
@@ -181,8 +163,8 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 });
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 When this is provided, `ChainMonitor` will call back to the filter as channels
 are opened and blocks connected. This gives the opportunity for the source to

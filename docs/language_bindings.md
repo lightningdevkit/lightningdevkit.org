@@ -1,7 +1,4 @@
----
-id: language_bindings
-title: Language Bindings
----
+# Language Bindings
 
 TODO
 
