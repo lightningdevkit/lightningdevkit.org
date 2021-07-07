@@ -1,0 +1,100 @@
+:root {
+  --docs-font-family-base: 'Manrope', sans-serif;
+  --docs-font-family-monospace: 'IBM Plex Mono', monospace;
+
+  --docs-space-xs: 5px;
+	--docs-space-s: 10px;
+	--docs-space-m: 20px;
+	--docs-space-l: 40px;
+	--docs-space-xl: 60px;
+	--docs-space-xxl: 80px;
+
+	--docs-font-size-xs: .75em;
+	--docs-font-size-s: .9em;
+	--docs-font-size-m: 1em;
+	--docs-font-size-l: 1.2em;
+	--docs-font-size-xl: 36px;
+	--docs-font-size-xxl: 45px;
+	--docs-font-weight-normal: 400;
+	--docs-font-weight-semibold: 600;
+
+  --docs-border-radius: 12px;
+
+  --docs-white: #FFF;
+  --docs-black: #000;
+  --docs-primary: #0F31F7;
+  --docs-accent-teal: #76F3CD;
+  --docs-accent-yellow: #F7C00F;
+  --docs-accent-purple: #711BF7;
+
+  --docs-neutral-10: #E6E6E6;
+  --docs-neutral-25: #BFBFBF;
+  --docs-neutral-50: #808080;
+  --docs-neutral-75: #606060;
+  --docs-neutral-90: #161616;
+
+  --docs-body-bg: var(--docs-white);
+  --docs-body-heading: var(--docs-black);
+  --docs-body-text: var(--docs-neutral-75);
+  --docs-body-link: var(--docs-primary);
+  --docs-body-link-accent: var(--docs-primary);
+  --docs-body-border-light: var(--docs-neutral-10);
+  --docs-body-border-medium: var(--docs-neutral-25);
+  --docs-border-dashed: 1px dashed var(--docs-body-border-medium);
+
+  --docs-header-text: var(--docs-body-text);
+  --docs-header-bg: var(--docs-body-bg);
+  --docs-header-link: var(--docs-body-link);
+  --docs-header-link-accent: var(--docs-body-link-accent);
+
+  --docs-sidebar-text: var(--docs-body-text);
+  --docs-sidebar-bg: var(--docs-body-bg);
+  --docs-sidebar-link: var(--docs-body-text);
+  --docs-sidebar-link-accent: var(--docs-body-link-accent);
+
+	--docs-font-weight-body: var(--docs-font-weight-normal);
+	--docs-font-weight-heading: var(--docs-font-weight-semibold);
+
+  --docs-wrap-space-outer: var(--docs-space-s);
+  --docs-wrap-space-inner: var(--docs-space-m);
+
+  --docs-code-text: inherit;
+  --docs-code-bg: var(--docs-neutral-10);
+  --docs-pre-text: var(--docs-white);
+  --docs-pre-bg: #414862;
+
+  @media (max-width: $MQMobile) {
+    --docs-font-size-base: 16px;
+  }
+  @media (min-width: $MQMobile+1) {
+    --docs-font-size-base: 18px;
+  }
+}
+
+:root[data-theme="dark"] {
+  --docs-neutral-10: #161616;
+  --docs-neutral-25: #606060;
+  --docs-neutral-50: #808080;
+  --docs-neutral-75: #BFBFBF;
+  --docs-neutral-90: #E6E6E6;
+
+  --docs-body-bg: var(--docs-black);
+  --docs-body-heading: var(--docs-white);
+  --docs-body-link: var(--docs-accent-teal);
+  --docs-body-link-accent: var(--docs-accent-teal);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --docs-neutral-10: #161616;
+    --docs-neutral-25: #606060;
+    --docs-neutral-50: #808080;
+    --docs-neutral-75: #BFBFBF;
+    --docs-neutral-90: #E6E6E6;
+
+    --docs-body-bg: var(--docs-black);
+    --docs-body-heading: var(--docs-white);
+    --docs-body-link: var(--docs-accent-teal);
+    --docs-body-link-accent: var(--docs-accent-teal);
+  }
+}

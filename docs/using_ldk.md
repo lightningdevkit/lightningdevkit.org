@@ -1,10 +1,4 @@
----
-id: using_ldk
-title: "Using LDK"
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+# Using LDK
 
 ## Introduction
 
@@ -29,14 +23,8 @@ of another node that you want as a peer. Once the connection is established and
 the handshake is complete, `PeerManager` will show the peer's pubkey in its list
 of peers.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, address).await {
@@ -62,8 +50,8 @@ match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, a
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 try {
@@ -80,8 +68,8 @@ catch (java.io.IOException e) {
 }
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 ## Managing Channels
 
@@ -102,14 +90,8 @@ Now that you have a peer, you can open a channel with them using
 Channels can be announced to the network or can remain private, which is
 controlled via `UserConfig::announced_channel`.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 let amount = 10_000;
@@ -125,8 +107,8 @@ match channel_manager.create_channel(pubkey, amount, push_msat, user_id, Some(co
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 long amount = 10_000L;
@@ -140,8 +122,8 @@ Result_NoneAPIErrorZ create_channel_result = channel_manager.create_channel(
 assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 At this point, an outbound channel has been initiated with your peer and it will
 appear in `ChannelManager::list_channels`. However, the channel  is not yet
@@ -150,14 +132,8 @@ funded. Once your peer accepts the channel, you will be notified with a
 funding transaction and pass it to `ChannelManager`, which will broadcast it
 once it receives your channel counterparty's signature.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -196,8 +172,8 @@ match event {
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 // After the peer responds with an `accept_channel` message, an
@@ -240,8 +216,8 @@ if (e instanceof Event.FundingGenerationReady) {
 }
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 After `ChannelManager` has broadcast the funding transaction, the channel will
 become usable once the transaction has enough confirmations and will appear in
@@ -259,14 +235,8 @@ unilaterally. The cooperative case makes for lower fees and immediate access to
 funds while the unilateral case does not. The latter may be necessary if your
 peer isn't behaving properly or has gone offline.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 let channel_id = channel_manager
@@ -283,8 +253,8 @@ channel_manager.close_channel(&channel_id).expect("ERROR: Failed to close channe
 channel_manager.force_close_channel(&channel_id).expect("ERROR: Failed to close channel");
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 // Example: Cooperative close (assuming 1 open channel)
@@ -298,8 +268,8 @@ byte[] channel_id = channel_manager.list_channels()[0].get_channel_id();
 Result_NoneAPIErrorZ channel_manager.force_close_channel(channel_id);
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 Now that we know how to manage channels, let's put our new channel to use!
 
@@ -310,14 +280,8 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 // Parse the invoice.
@@ -349,8 +313,8 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 	.expect("ERROR: failed to send payment");
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 String invoice_str = // get an invoice from the payee
@@ -384,22 +348,16 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 }
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 An event is generated once a payment has completed. Successful payments result
 in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -414,8 +372,8 @@ match event {
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 // In the `handle_event` method of ChannelManagerPersister implementation
@@ -429,8 +387,8 @@ else if (e instanceof Event.PaymentFailed) {
 }
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 ## Receiving Payments
 
@@ -439,14 +397,8 @@ amount and description. `ChannelManager` contains the remaining information
 needed for the invoice. Use the provided utility to generate an invoice and
 register a pending payment in `ChannelManager`.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 let amt_msat = 10_000;
@@ -461,8 +413,8 @@ let invoice = match utils::create_invoice_from_channelmanager(
 let encoded_invoice = invoice.to_string();
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 String description = "coffee";
@@ -476,8 +428,8 @@ Invoice invoice = ((Result_InvoiceSignOrCreationErrorZ.Result_InvoiceSignOrCreat
 String encoded_invoice = invoice.to_str();
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 While it is possible to create an invoice without using the utility,
 `ChannelManager` will reject any incoming HTLCs for unregistered payments to
@@ -489,14 +441,8 @@ As with sending a payment, LDK will generate an event once a payment is
 received. It is your responsibility to handle the `PaymentReceived` event by
 using `ChannelManager` to release the preimage and claim the funds.
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust', },
-    { label: 'Java', value: 'java', },
-  ]
-}>
-<TabItem value="rust">
+:::: tabs
+::: tab "Rust"
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -512,8 +458,8 @@ match event {
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+:::
+::: tab "Java"
 
 ```java
 // In the `handle_event` method of ChannelManagerPersister implementation
@@ -526,8 +472,8 @@ else if (e instanceof Event.PaymentReceived) {
 }
 ```
 
-</TabItem>
-</Tabs>
+:::
+::::
 
 ## Conclusion
 
