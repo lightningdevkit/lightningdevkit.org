@@ -1,34 +1,49 @@
 {
-  "name": "ldk-docs",
-  "version": "0.0.0",
-  "private": true,
+  "name": "lightningdevkit.org",
+  "version": "1.0.0",
+  "description": "Lightning Dev Kit Documentation",
+  "author": "Lightning Dev Kit",
+  "license": "MIT",
+  "bugs": "https://github.com/lightningdevkit/lightningdevkit.org/issues",
+  "homepage": "https://lightningdevkit.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lightningdevkit/lightningdevkit.org.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "lightning",
+    "ldk",
+    "documentation"
+  ],
+  "config": {
+    "dist": "docs/.vuepress/dist",
+    "port": "8080",
+    "linkcheck": "blc -ro --filter-level 2 --requests 1 --exclude edit/master --exclude issues/new"
+  },
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve",
-    "clear": "docusaurus clear"
+    "prestart": "rm -rf $npm_package_config_dist",
+    "start": "NODE_ENV=development vuepress dev docs -p $npm_package_config_port",
+    "build": "NODE_ENV=production vuepress build docs",
+    "linkcheck": "start-server-and-test linkcheck:serve $npm_package_config_port linkcheck:local",
+    "linkcheck:serve": "serve -p $npm_package_config_port $npm_package_config_dist",
+    "linkcheck:local": "$npm_package_config_linkcheck http://localhost:$npm_package_config_port"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-back-to-top": "1.8.2",
+    "@vuepress/plugin-medium-zoom": "1.8.2",
+    "broken-link-checker": "0.7.8",
+    "markdown-it-implicit-figures": "0.10.0",
+    "serve": "12.0.0",
+    "start-server-and-test": "1.12.5",
+    "vuepress": "1.8.2",
+    "vuepress-plugin-clean-urls": "1.1.2",
+    "vuepress-plugin-code-copy": "1.0.6",
+    "vuepress-plugin-seo": "0.1.4",
+    "vuepress-plugin-sitemap": "2.3.1",
+    "vuepress-plugin-tabs": "0.3.0"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/preset-classic": "2.0.0-alpha.70",
-    "@mdx-js/react": "^1.6.21",
-    "clsx": "^1.1.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
-  },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "vue-tabs-component": "1.5.0"
   }
 }
