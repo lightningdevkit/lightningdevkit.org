@@ -77,7 +77,6 @@ module.exports = {
     repo: 'lightningdevkit/lightningdevkit.org',
     docsDir: 'docs',
     editLinks: true,
-    sidebarDepth: 2,
     nav: [
       {
         text: 'Docs',
