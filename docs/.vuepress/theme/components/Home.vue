@@ -83,6 +83,7 @@ export default {
 .home
   padding $navbarHeight 0 0
   display block
+  width 100%
   .hero
     margin 0 calc(var(--docs-wrap-space-inner) * -1)
     border-bottom var(--docs-border-dashed)
