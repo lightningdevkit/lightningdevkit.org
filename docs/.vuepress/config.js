@@ -18,9 +18,9 @@ module.exports = {
   title,
   description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
   head: [
-    ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-regular.woff2', as: 'font', crossorigin: true }],
-    ['link', { rel: 'preload', href: '/fonts/manrope-v4-latin-600.woff2', as: 'font', crossorigin: true }],
-    ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-v6-latin-regular.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'preload', href: '/fonts/manrope-400.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'preload', href: '/fonts/manrope-600.woff2', as: 'font', crossorigin: true }],
+    ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-400.woff2', as: 'font', crossorigin: true }],
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/img/favicon/apple-touch-icon.png' }],
     ['link', { rel: 'manifest', href: '/site.webmanifest' }],
     ['link', { name: 'msapplication-config', content: '/browserconfig.xml' }],
