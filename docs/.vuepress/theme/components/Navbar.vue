@@ -152,6 +152,7 @@ $navbar-horizontal-padding = 1.5rem
     margin-right 0.8rem
     vertical-align top
     min-width unset
+
   .links
     margin-left auto
     box-sizing border-box
