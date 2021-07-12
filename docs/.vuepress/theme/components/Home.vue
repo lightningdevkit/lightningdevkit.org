@@ -1,8 +1,5 @@
 <template>
-  <main
-    class="home"
-    :aria-labelledby="data.heroText !== null ? 'main-title' : null"
-  >
+  <main class="home">
     <header class="hero">
       <div class="hero-inner">
         <img

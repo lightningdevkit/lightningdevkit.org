@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "1.8.2",
+    "@vuepress/plugin-blog": "1.9.4",
     "@vuepress/plugin-medium-zoom": "1.8.2",
     "broken-link-checker": "0.7.8",
     "markdown-it-implicit-figures": "0.10.0",
