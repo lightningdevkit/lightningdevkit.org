@@ -78,7 +78,6 @@ a:hover
     .wrap
     .wrap-border
       flex 1
-      display flex
 
   // Max-width, centered layout
   .wrap
@@ -102,9 +101,11 @@ a:hover
     font-weight var(--docs-font-weight-heading)
     border 0
 
-    a.header-anchor
-      margin-left -1.2em
-      padding-right 0
+    a
+      font-weight inherit
+      &.header-anchor
+        margin-left -1.2em
+        padding-right 0
 
   .h2
     font-size 1.65rem
@@ -126,7 +127,16 @@ a:hover
   .page-edit,
   .theme-default-content:not(.custom),
   .footer .inner
-    max-width 800px
+    max-width 100%
+
+  .theme-default-content:not(.custom)
+    padding var(--docs-space-l) var(--docs-space-s)
+    @media (min-width: $MQMobileNarrow)
+      padding-left var(--docs-space-m)
+      padding-right var(--docs-space-m)
+    @media (min-width: $MQMobile)
+      padding-left var(--docs-space-l)
+      padding-right var(--docs-space-l)
 
   hr
     border-color var(--docs-body-border-light)
@@ -155,6 +165,7 @@ a:hover
     color var(--docs-pre-text)
     background-color var(--docs-pre-bg)
     font-size var(--docs-font-size-s)
+    max-width 100%
 
   pre code
     color var(--docs-white)
@@ -201,6 +212,41 @@ a:hover
 
   .page-nav .inner
     border-top-color var(--docs-body-border-light)
+
+  .pagination > li:not(.active) > a
+    background-color transparent
+    border-color var(--docs-body-border-medium)
+
+  .pagination > .disabled > span,
+  .pagination > .disabled > span:hover,
+  .pagination > .disabled > span:focus,
+  .pagination > .disabled > a,
+  .pagination > .disabled > a:hover,
+  .pagination > .disabled > a:focus
+    pointer-events none
+    color var(--docs-body-text-muted)
+
+  .pagination > li > a,
+  .pagination > li > span
+    color var(--docs-body-link)
+
+  .pagination > li > a:hover,
+  .pagination > li > span:hover,
+  .pagination > li > a:focus,
+  .pagination > li > span:focus
+    color var(--docs-body-link-accent)
+    text-decoration none !important
+
+  .pagination > .active > a,
+  .pagination > .active > span,
+  .pagination > .active > a:hover,
+  .pagination > .active > span:hover,
+  .pagination > .active > a:focus,
+  .pagination > .active > span:focus
+    color #fff
+    cursor default
+    background-color var(--docs-body-border-medium)
+    border-color var(--docs-body-border-medium)
 
   .tabs-component
     margin var(--docs-space-m) 0

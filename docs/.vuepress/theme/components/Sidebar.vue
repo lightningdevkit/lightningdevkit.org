@@ -39,7 +39,7 @@ export default {
     display inline-block
   .nav-links
     display none
-    padding .5rem 0
+    padding var(--docs-space-m) 0
     border-bottom var(--docs-border-dashed)
     .repo-link
       dispay none
@@ -49,11 +49,11 @@ export default {
       font-size 1.1em
       padding 0.5rem 0 0.5rem 1.5rem
   & > .sidebar-links
-    padding 1.5rem 0
+    padding var(--docs-space-l) 0
     & > li > a.sidebar-link
       font-size 1.1em
       line-height 1.7
-      font-weight bold
+      font-weight var(--docs-font-weight-semibold)
     & > li:not(:first-child)
       margin-top .75rem
 
