@@ -1,12 +1,12 @@
 <template>
   <LayoutWrap>
-    <Home v-if="$page.frontmatter.home" />
-    <Page v-else :sidebar-items="sidebarItems">
-      <template #top>
-        <slot name="page-top" />
-      </template>
-      <template #bottom>
-        <slot name="page-bottom" />
+    <Page :sidebar-items="sidebarItems">
+      <template v-slot:top>
+        <header class="theme-default-content post-header">
+          <h1>{{ $page.title }}</h1>
+          <PostMeta :post="$page" />
+        <hr/>
+        </header>
       </template>
     </Page>
   </LayoutWrap>
@@ -14,17 +14,17 @@
 
 <script>
 import LayoutWrap from '@theme/components/LayoutWrap.vue'
-import Home from '@theme/components/Home.vue'
 import Page from '@theme/components/Page.vue'
+import PostMeta from '@theme/components/PostMeta.vue'
 import { resolveSidebarItems } from '@parent-theme/util'
 
 export default {
-  name: 'Layout',
+  name: 'Post',
 
   components: {
     LayoutWrap,
-    Home,
-    Page
+    Page,
+    PostMeta
   },
 
   computed: {
@@ -39,3 +39,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.post-header {
+  margin-bottom: -6.2rem !important;
+  padding-bottom: 0 !important;
+}
+</style>
