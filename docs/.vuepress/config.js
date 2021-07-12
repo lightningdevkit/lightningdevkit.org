@@ -13,6 +13,10 @@ const extractDescription = text => {
   const paragraph = text.match(/^[A-Za-z].*(?:\n[A-Za-z].*)*/m)
   return paragraph ? paragraph.toString().replace(/[\*\_\(\)\[\]]/g, '') : null
 }
+const sitemap = {
+  hostname: baseUrl,
+  exclude: ['/404.html']
+}
 
 module.exports = {
   title,
@@ -56,12 +60,56 @@ module.exports = {
       backgroundTransition: false,
       staticIcon: true
     }],
-    ['sitemap', {
-      hostname: baseUrl,
-      exclude: ['/404.html']
-    }],
+    ['sitemap', sitemap],
     ['tabs'],
-    ['@vuepress/medium-zoom']
+    ['@vuepress/medium-zoom'],
+    ['@vuepress/blog', {
+      sitemap,
+      directories: [
+        {
+          id: 'blog',
+          dirname: '_blog',
+          path: '/blog/',
+          itemPermalink: '/blog/:slug',
+          pagination: {
+            lengthPerPage: 10,
+            getPaginationPageTitle(pageNumber) {
+              return `Page ${pageNumber}`
+            }
+          }
+        },
+      ],
+      frontmatters: [
+        {
+          id: 'tags',
+          keys: ['tags'],
+          path: '/blog/tags/',
+          title: '',
+          frontmatter: {
+            title: 'Tags'
+          },
+          pagination: {
+            getPaginationPageTitle(pageNumber, key) {
+              return `${capitalize(key)} - Page ${pageNumber}`
+            }
+          }
+        },
+        {
+          id: 'author',
+          keys: ['author', 'authors'],
+          path: '/blog/author/',
+          title: '',
+          frontmatter: {
+            title: 'Authors'
+          },
+          pagination: {
+            getPaginationPageTitle(pageNumber, key) {
+              return `${key} - Page ${pageNumber}`
+            }
+          }
+        },
+      ],
+    }]
   ],
   markdown: {
     extendMarkdown (md) {
@@ -84,6 +132,10 @@ module.exports = {
         link: '/overview/'
       },
       {
+        text: 'Blog',
+        link: '/blog/'
+      },
+      {
         text: 'Slack',
         link: 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ',
         rel: 'noopener noreferrer github'
@@ -94,26 +146,29 @@ module.exports = {
         rel: 'noopener noreferrer github'
       }
     ],
-    sidebar: [
-      {
-        title: 'Lightning Development Kit',
-        collapsable: false,
-        children: [
-          '/overview',
-          '/use_cases'
-        ]
-      },
-      {
-        title: 'Guides',
-        collapsable: false,
-        children: [
-          '/build_node',
-          '/build_node_rust',
-          '/using_ldk',
-          '/key_mgmt',
-          '/blockdata'
-        ],
-      }
-    ]
+    sidebar: {
+      '/': [
+        {
+          title: 'Lightning Development Kit',
+          collapsable: false,
+          children: [
+            '/overview',
+            '/use_cases'
+          ]
+        },
+        {
+          title: 'Guides',
+          collapsable: false,
+          children: [
+            '/build_node',
+            '/build_node_rust',
+            '/using_ldk',
+            '/key_mgmt',
+            '/blockdata'
+          ],
+        }
+      ],
+      '/blog/': 'auto'
+    }
   }
 }
