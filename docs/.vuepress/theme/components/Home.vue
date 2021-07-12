@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <main class="home">
 =======
   <main
@@ -7,6 +8,9 @@
     :aria-labelledby="data.heroText !== null ? 'main-title' : null"
   >
 >>>>>>> Migrate to Vuepress (#46)
+=======
+  <main class="home">
+>>>>>>> Add blog
     <header class="hero">
       <div class="hero-inner">
         <img
