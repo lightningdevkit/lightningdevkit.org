@@ -358,11 +358,11 @@ Result_InvoiceNoneZ parsed_invoice = Invoice.from_str(invoice_str);
 
 if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
-    long amt = 0;
+    long amt_msat = 0;
     if (invoice.amount_pico_btc() instanceof Option_u64Z.Some) {
-        amt = ((Option_u64Z.Some)invoice.amount_pico_btc()).some;
+        amt_msat = ((Option_u64Z.Some)invoice.amount_pico_btc()).some / 10;
     }
-    if (amt == 0) {
+    if (amt_msat == 0) {
         // <Handle a zero-value invoice>
     }
 
@@ -372,8 +372,8 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
         Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
 			channel_manager.get_our_node_id(),
             graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice.route_hints(), amt,
-            invoice.min_final_cltv_expiry(), logger);
+            channel_manager.list_usable_channels(), invoice.route_hints(),
+            amt_msat, invoice.min_final_cltv_expiry(), logger);
         assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
         route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
     }
