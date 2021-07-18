@@ -742,7 +742,7 @@ let persist_channel_manager_callback = move |node: &ChannelManager| {
 
 **Example:**
 ```rust
-BackgroundProcessor::start(
+let background_processor = BackgroundProcessor::start(
 	persist_channel_manager_callback,
 	handle_event_callback,
 	&chain_monitor,
