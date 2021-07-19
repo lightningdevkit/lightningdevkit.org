@@ -1,18 +1,22 @@
 <template>
-  <div class="theme-container">
-    <div class="theme-default-content">
-      <h1>404 - Not Found</h1>
+  <LayoutWrap>
+    <main class="page">
+      <div class="theme-default-content">
+        <h1>404 - Not Found</h1>
 
-      <blockquote>{{ getMsg() }}</blockquote>
+        <blockquote>{{ getMsg() }}</blockquote>
 
-      <RouterLink to="/">
-        Take me home.
-      </RouterLink>
-    </div>
-  </div>
+        <RouterLink to="/">
+          Take me home.
+        </RouterLink>
+      </div>
+    </main>
+  </LayoutWrap>
 </template>
 
 <script>
+import LayoutWrap from '@theme/components/LayoutWrap.vue'
+
 const msgs = [
   `There's nothing here.`,
   `How did we get here?`,
@@ -22,6 +26,10 @@ const msgs = [
 
 export default {
   name: 'NotFound',
+
+  components: {
+    LayoutWrap
+  },
 
   methods: {
     getMsg () {
