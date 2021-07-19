@@ -80,7 +80,8 @@ module.exports = {
       tags: $page => ($page.frontmatter.tags || ['Bitcoin', 'Lightning Network', 'LDK']),
       twitterCard: _ => 'summary',
       type: $page => 'article',
-      url: (_, $site, path) => `${baseUrl}${path.replace('.html', pageSuffix)}`
+      url: (_, $site, path) => `${baseUrl}${path.replace('.html', pageSuffix)}`,
+      image: ($page, $site) => `${baseUrl}/card.png`
     }],
     ['clean-urls', {
       normalSuffix: pageSuffix,
