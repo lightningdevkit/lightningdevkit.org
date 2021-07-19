@@ -28,15 +28,6 @@ export default {
   computed: {
     items() {
       return this.$frontmatterKey.list
-    },
-
-    sidebarItems () {
-      return resolveSidebarItems(
-        this.$page,
-        this.$page.regularPath,
-        this.$site,
-        this.$localePath
-      )
     }
   },
 
