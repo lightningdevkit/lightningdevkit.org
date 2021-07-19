@@ -147,6 +147,17 @@ module.exports = {
       }
     ],
     sidebar: {
+      '/blog/': [
+        {
+          title: 'Blog',
+          collapsable: false,
+          children: [
+            ['/blog/', 'Articles'],
+            ['/blog/tags/', 'Tags'],
+            ['/blog/author/', 'Authors']
+          ]
+        }
+      ],
       '/': [
         {
           title: 'Lightning Development Kit',
@@ -167,8 +178,7 @@ module.exports = {
             '/blockdata'
           ],
         }
-      ],
-      '/blog/': 'auto'
+      ]
     }
   }
 }
