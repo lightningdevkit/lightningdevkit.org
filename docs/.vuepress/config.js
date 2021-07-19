@@ -17,6 +17,38 @@ const sitemap = {
   hostname: baseUrl,
   exclude: ['/404.html']
 }
+const docsSidebar = [
+  {
+    title: 'Lightning Development Kit',
+    collapsable: false,
+    children: [
+      '/overview',
+      '/use_cases'
+    ]
+  },
+  {
+    title: 'Guides',
+    collapsable: false,
+    children: [
+      '/build_node',
+      '/build_node_rust',
+      '/using_ldk',
+      '/key_mgmt',
+      '/blockdata'
+    ],
+  }
+]
+const blogSidebar = [
+  {
+    title: 'Blog',
+    collapsable: false,
+    children: [
+      ['/blog/', 'Articles'],
+      ['/blog/tags/', 'Tags'],
+      ['/blog/author/', 'Authors']
+    ]
+  }
+]
 
 module.exports = {
   title,
@@ -147,38 +179,9 @@ module.exports = {
       }
     ],
     sidebar: {
-      '/blog/': [
-        {
-          title: 'Blog',
-          collapsable: false,
-          children: [
-            ['/blog/', 'Articles'],
-            ['/blog/tags/', 'Tags'],
-            ['/blog/author/', 'Authors']
-          ]
-        }
-      ],
-      '/': [
-        {
-          title: 'Lightning Development Kit',
-          collapsable: false,
-          children: [
-            '/overview',
-            '/use_cases'
-          ]
-        },
-        {
-          title: 'Guides',
-          collapsable: false,
-          children: [
-            '/build_node',
-            '/build_node_rust',
-            '/using_ldk',
-            '/key_mgmt',
-            '/blockdata'
-          ],
-        }
-      ]
+      '/_blog/': blogSidebar,
+      '/blog/': blogSidebar,
+      '/': docsSidebar
     }
   }
 }
