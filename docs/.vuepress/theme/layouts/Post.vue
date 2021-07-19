@@ -5,7 +5,7 @@
         <header class="theme-default-content post-header">
           <h1>{{ $page.title }}</h1>
           <PostMeta :post="$page" />
-        <hr/>
+          <hr/>
         </header>
       </template>
     </Page>
