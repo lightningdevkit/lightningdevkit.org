@@ -99,20 +99,16 @@ export default {
       font-size 1.2rem
       color #fff
       background-color $accentColor
-      padding: var(--docs-space-s) var(--docs-space-m);
+      padding var(--docs-space-s) var(--docs-space-m);
       border-radius 4px
       transition background-color .1s ease
       box-sizing border-box
-      background: linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
-      border-radius: 8px;
+      background linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
+      border-radius 8px
       &:hover
         background-color lighten($accentColor, 10%)
     .hero-inner
       padding var(--docs-space-l)
-      @media (min-width: $MQNarrow)
-        max-width 48rem
-        margin 0 auto
-        border-right var(--docs-border-dashed)
   .features
     display flex
     justify-content space-between
@@ -169,6 +165,7 @@ export default {
 
 @media (min-width: $MQNarrow)
   .home
+    .hero-inner
     .content__default
       max-width 48rem
       margin 0 auto
