@@ -52,7 +52,6 @@ export default {
     z-index 10
   .wrap-border
     border-top var(--docs-border-dashed)
-<<<<<<< HEAD
     padding 0
     .theme-container:not(.no-sidebar) &
       @media (min-width: $MQMobile)
@@ -80,14 +79,24 @@ export default {
   .copyright
     margin-bottom 0
     padding-bottom var(--docs-space-l)
-=======
-    padding var(--docs-space-l)
-    @media (min-width: $MQMobile)
-      padding-left 19.5rem !important
-    @media (min-width: $MQNarrow)
-      padding-left 23.6rem !important
       .inner
-        padding-left 1.6rem
-        padding-right 1.6rem
->>>>>>> Migrate to Vuepress (#46)
+        @media (min-width: $MQNarrow)
+          max-width 48rem !important
+          margin 0 auto
+          border-left var(--docs-border-dashed)
+          border-right var(--docs-border-dashed)
+          padding var(--docs-space-l)
+  .footer-content
+    display flex
+    flex-wrap wrap
+    padding-top var(--docs-space-m)
+    @media (min-width: $MQNarrow)
+      justify-content space-between
+    .footer-block
+      padding var(--docs-space-m) var(--docs-space-xxl) var(--docs-space-m) 0
+    h4
+      margin 0 0 var(--docs-space-s)
+  .copyright
+    margin-bottom 0
+    padding-bottom var(--docs-space-l)
 </style>
