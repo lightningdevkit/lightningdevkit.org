@@ -126,20 +126,27 @@ a:hover
   .arrow.down
     border-top-color var(--docs-neutral-500)
 
+  .theme-default-content:not(.custom),
   .page-nav,
   .page-edit,
-  .theme-default-content:not(.custom),
   .footer .inner
     max-width 100%
-
-  .theme-default-content:not(.custom)
-    padding var(--docs-space-l) var(--docs-space-s)
+    padding-left var(--docs-space-s)
+    padding-right var(--docs-space-s)
     @media (min-width: $MQMobileNarrow)
       padding-left var(--docs-space-m)
       padding-right var(--docs-space-m)
     @media (min-width: $MQMobile)
       padding-left var(--docs-space-l)
       padding-right var(--docs-space-l)
+
+  .theme-default-content:not(.custom)
+    padding-top var(--docs-space-l)
+    padding-bottom var(--docs-space-l)
+
+  .page-edit
+    padding-top 0
+    padding-bottom 0
 
   hr
     border-color var(--docs-body-border-light)
