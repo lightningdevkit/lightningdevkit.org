@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <Content class="theme-default-content custom features" />
+    <Content class="theme-default-content custom" />
   </main>
 </template>
 
@@ -109,6 +109,16 @@ export default {
         background-color lighten($accentColor, 10%)
     .hero-inner
       padding var(--docs-space-l)
+  .intro
+    margin 0 calc(var(--docs-wrap-space-inner) * -1)
+    border-bottom var(--docs-border-dashed)
+    padding var(--docs-space-l)
+    text-align center
+    h2
+      margin 0 0 var(--docs-space-s)
+    p
+      max-width 35rem
+      margin 0 auto
   .features
     display flex
     justify-content space-between
@@ -135,9 +145,10 @@ export default {
       width 200px
       height 200px
   .content__default
-    display flex
-    flex-wrap wrap
-    padding 0
+    .features
+      display flex
+      flex-wrap wrap
+      padding 0
     .feature
       flex 1 1 50%
       border-bottom var(--docs-border-dashed)
@@ -190,4 +201,8 @@ export default {
       margin 0 auto
       border-left var(--docs-border-dashed)
       border-right var(--docs-border-dashed)
+      .intro,
+      .features
+        margin-left 0
+        margin-right 0
 </style>
