@@ -16,9 +16,15 @@ features:
   image: "mobile"
 ---
 
-<div class="feature">
+<div class="intro">
+<h2>Why LDK?</h2>
+<p>Leading Bitcoin open source projects love LDK …</p>
+</div>
 
-### Cross-Language Bindings
+<div class="features">
+<div class="feature">
+<h3>Cross-Language Bindings</h3>
+
 As the application is an SDK and not a standalone binary opinionated about its execution environment, we would provide FFI bindings into whichever languages developers happen to build Lightning applications in, be they C, Swift, or Python. You can open the same wallet in multiple environments (e.g. in a web browser, on a phone, on a desktop, etc)!
 
 [Documentation →](./overview/)
@@ -26,15 +32,17 @@ As the application is an SDK and not a standalone binary opinionated about its e
 </div>
 
 <div class="feature">
+<h3>Custom Storage Backend</h3>
 
-### Custom Storage Backend
 Synchronize node state across multiple clients sharing the same channels. Back up new state before it goes live and missing it loses funds.
+
+[Documentation →](./overview/)
 
 </div>
 
 <div class="feature">
+<h3>Blockchain Truth Sourcing</h3>
 
-### Blockchain Truth Sourcing
 Use a local full node, an SPV node, or your own server with API access to source data about the blockchain truth and feed it to the LDK for decision-making about whether to sign a state update. Or if you’re running your own server that does custom verification, have that server sign a message and then simply verify that signature in lieu of doing any local state verification.
 
 [Documentation →](./blockdata/)
@@ -42,8 +50,11 @@ Use a local full node, an SPV node, or your own server with API access to source
 </div>
 
 <div class="feature">
+<h3>Custom Routing, Peer Scoring, and Channel Creation</h3>
 
-### Custom Routing, Peer Scoring, and Channel Creation
 Implement a custom routing engine to take more control over routing decisions with native ownership of the full routing table. Also take more control over channel creation and peer selection.
 
+[Documentation →](./overview/)
+
+</div>
 </div>
