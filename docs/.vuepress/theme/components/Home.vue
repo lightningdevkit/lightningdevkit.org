@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <Content class="theme-default-content custom" />
+    <Content class="theme-default-content custom features" />
   </main>
 </template>
 
@@ -127,14 +127,30 @@ export default {
       padding-bottom 0
     p
       max-width 35rem
-      margin 0
+      &:last-child
+        margin 0
     img
       display block
       margin 0 auto
       width 200px
       height 200px
   .content__default
-    padding var(--docs-space-l) var(--docs-space-m)
+    display flex
+    flex-wrap wrap
+    padding 0
+    .feature
+      flex 1 1 50%
+      border-bottom var(--docs-border-dashed)
+      h2, h3, h4, h5, h6
+        margin-top 0
+
+@media (min-width: $MQMobile)
+  .home
+    .content__default
+      .feature:nth-last-of-type(-n+2)
+        border-bottom 0
+      .feature:nth-child(odd)
+        border-left 0
 
 @media (max-width: $MQMobile)
   .home
@@ -146,6 +162,9 @@ export default {
         border-left 0
       img
         margin 0
+    .content__default
+      .feature:last-child
+        border-bottom 0
 
 @media (max-width: $MQMobileNarrow)
   .home
@@ -171,5 +190,4 @@ export default {
       margin 0 auto
       border-left var(--docs-border-dashed)
       border-right var(--docs-border-dashed)
-      padding var(--docs-space-l)
 </style>
