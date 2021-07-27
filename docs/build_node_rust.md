@@ -209,7 +209,7 @@ let filter = YourTxFilter();
 **Example:**
 
 ```rust
-let filter: Option<Filter> = // leave this as None or insert the Filter trait
+let filter: Option<Box<dyn Filter>> = None // leave this as None or insert the Filter trait
                              // object, depending on what you did for Step 5
 
 let chain_monitor = ChainMonitor::new(
