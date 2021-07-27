@@ -5,6 +5,8 @@ const preprocessMarkdown = resolve(__dirname, 'preprocessMarkdown')
 
 const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
+const githubUrl = 'https://github.com/lightningdevkit'
+const slackUrl = 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-sp65y241-yAjk1~nghitJ~J3YS8cWsQ'
 const themeColor = '#ffffff'
 const pageSuffix = '/'
 const info = { name: title }
@@ -170,19 +172,61 @@ module.exports = {
       },
       {
         text: 'Slack',
-        link: 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-sp65y241-yAjk1~nghitJ~J3YS8cWsQ',
-        rel: 'noopener noreferrer github'
+        link: slackUrl,
+        rel: 'noopener noreferrer'
       },
       {
         text: 'GitHub',
-        link: 'https://github.com/lightningdevkit',
-        rel: 'noopener noreferrer github'
+        link: githubUrl,
+        rel: 'noopener noreferrer'
       }
     ],
     sidebar: {
       '/_blog/': blogSidebar,
       '/blog/': blogSidebar,
       '/': docsSidebar
+    },
+    footer: {
+      links: [
+        {
+          title: 'Docs',
+          children: [
+            {
+              text: 'Overview',
+              link: '/overview/'
+            },
+            {
+              text: 'Getting Started',
+              link: '/use_cases/'
+            }
+          ]
+        },
+        {
+          title: 'Community',
+          children: [
+            {
+              text: 'Slack',
+              link: slackUrl,
+              rel: 'noopener noreferrer'
+            },
+            {
+              text: 'GitHub',
+              link: githubUrl,
+              rel: 'noopener noreferrer'
+            }
+          ]
+        },
+        {
+          title: 'More',
+          children: [
+            {
+              text: 'Blog',
+              link: '/blog/'
+            }
+          ]
+        }
+      ],
+      copyright: 'Copyright © 2021 LDK Developers'
     }
   }
 }
