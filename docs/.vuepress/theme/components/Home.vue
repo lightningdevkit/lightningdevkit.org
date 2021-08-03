@@ -103,7 +103,7 @@ export default {
       border-radius 4px
       transition background-color .1s ease
       box-sizing border-box
-      background linear-gradient(135.66deg, #711BF7 25.8%, rgba(113, 27, 247, 0) 74.56%), linear-gradient(0deg, #0D3BED, #0D3BED), linear-gradient(180deg, #0F31F7 -6.82%, #76F3CD 142.05%);
+      background linear-gradient(291.12deg, #0F31F7 23.78%, #76F3CD 102.85%);
       border-radius 8px
       &:hover
         background-color lighten($accentColor, 10%)
