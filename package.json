@@ -36,7 +36,7 @@
     "broken-link-checker": "0.7.8",
     "markdown-it-implicit-figures": "0.10.0",
     "serve": "12.0.0",
-    "start-server-and-test": "1.12.6",
+    "start-server-and-test": "1.13.1",
     "vuepress": "1.8.2",
     "vuepress-plugin-clean-urls": "1.1.2",
     "vuepress-plugin-code-copy": "1.0.6",
