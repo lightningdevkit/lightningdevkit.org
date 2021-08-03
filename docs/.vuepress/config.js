@@ -21,22 +21,52 @@ const sitemap = {
 }
 const docsSidebar = [
   {
-    title: 'Lightning Development Kit',
+    title: 'Documentation',
     collapsable: false,
     children: [
-      '/overview',
-      '/use_cases'
+      '/getting-started',
+      {
+        title: "Basic Features",
+        collapsable: true,
+        children: [
+          ['/key_mgmt', 'Key management'],
+          ['/blockdata', 'Blockchain data'],
+          ['/', 'Connecting peers'],
+          ['/', 'Managing channels'],
+          ['/', 'Sending payments'],
+          ['/', 'Receiving Payments']
+        ]
+      },
+      // '/overview',
+      // '/use_cases',
+      // '/using_ldk',
     ]
   },
+  {
+    title: 'API Reference',
+    collapsable: false,
+    children: [
+      ['https://docs.rs/lightning/0.0.99/lightning/', 'Rust'],
+      ['https://github.com/arik-so/SwiftLightning/tree/master/Documentation', 'Swift']
+    ],
+  }
+  // {
+  //   title: 'Guides',
+  //   collapsable: false,
+  //   children: [
+  //     '/build_node',
+  //     '/build_node_rust',
+  //   ],
+  // }
+]
+
+const tutorialSidebar = [
   {
     title: 'Guides',
     collapsable: false,
     children: [
       '/build_node',
       '/build_node_rust',
-      '/using_ldk',
-      '/key_mgmt',
-      '/blockdata'
     ],
   }
 ]
@@ -164,7 +194,11 @@ module.exports = {
     nav: [
       {
         text: 'Docs',
-        link: '/overview/'
+        link: '/getting-started/'
+      },
+      {
+        text: 'Tutorial',
+        link: '/tutorial/'
       },
       {
         text: 'Blog',
@@ -184,7 +218,7 @@ module.exports = {
     sidebar: {
       '/_blog/': blogSidebar,
       '/blog/': blogSidebar,
-      '/': docsSidebar
+      '/': docsSidebar,
     },
     footer: {
       links: [
