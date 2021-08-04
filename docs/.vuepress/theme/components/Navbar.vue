@@ -162,14 +162,14 @@ $navbar-horizontal-padding = 1.5rem
     .search-box
       flex 0 0 auto
       vertical-align top
-      margin: 0 0 0 var(--docs-space-m)
+      margin 0 0 0 var(--docs-space-m)
       input
-        color: var(--docs-header-text);
-        background-color: var(--docs-header-bg);
-        border-color: var(--docs-header-link);
-        left: 0
+        color var(--docs-header-text);
+        background-color var(--docs-header-bg);
+        border-color var(--docs-header-link);
+        left 0
       .search-query.ds-hint
-        display: none !important
+        display none !important
 
   @media (max-width: $MQMobile)
     .logo
@@ -179,39 +179,39 @@ $navbar-horizontal-padding = 1.5rem
       display none
 
 .theme-switch
-  --docs-theme-switch-icon-size: 2rem
-  display: inline-flex
-  align-items: center
-  justify-content: center
-  background: none
-  cursor: pointer
-  height: 40px
-  width: 40px
-  border: 0
+  --docs-theme-switch-icon-size 2rem
+  display inline-flex
+  align-items center
+  justify-content center
+  background none
+  cursor pointer
+  height 40px
+  width 40px
+  border 0
   padding 0
 
 .theme-switch svg
-  height: var(--docs-theme-switch-icon-size)
-  width: var(--docs-theme-switch-icon-size)
+  height var(--docs-theme-switch-icon-size)
+  width var(--docs-theme-switch-icon-size)
 
 .theme-switch-dark
-  display: inline-block
+  display inline-block
 
 .theme-switch-light
-  display: none
+  display none
 
 :root[data-theme="dark"]
   .theme-switch-dark
-    display: none
+    display none
   .theme-switch-light
-    display: inline-block
+    display inline-block
   #app .navbar .search-box input
-    background-color: var(--docs-neutral-900) !important
+    background-color var(--docs-neutral-900) !important
 
 @media (prefers-color-scheme: dark)
   :root:not([data-theme="light"]) .theme-switch-light,
   :root:not([data-theme="dark"]) .theme-switch-dark
-    display: inline-block
+    display inline-block
   :root:not([data-theme="dark"]) #app .navbar .search-box input
-    background-color: var(--docs-body-bg) !important
+    background-color var(--docs-body-bg) !important
 </style>

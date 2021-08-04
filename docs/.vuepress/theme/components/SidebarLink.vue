@@ -114,8 +114,8 @@ a.sidebar-link
   border-left 0.25rem solid transparent
   padding .35rem var(--docs-wrap-space-inner)
   line-height 1.4
-  width: 100%
-  box-sizing: border-box
+  width 100%
+  box-sizing border-box
   &:hover
     color var(--docs-sidebar-link-accent)
   &.active
