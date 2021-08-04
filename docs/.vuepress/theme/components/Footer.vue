@@ -27,17 +27,13 @@
 
 <script>
 import NavLink from '@theme/components/NavLink.vue'
-
 export default {
   name: 'Footer',
-
   components: { NavLink },
-
   computed: {
     links () {
       return this.$site.themeConfig.footer.links
     },
-
     copyright () {
       return this.$site.themeConfig.footer.copyright
     }
@@ -59,26 +55,6 @@ export default {
       @media (min-width: $MQNarrow)
         padding-left 21.1rem !important
     .theme-container.no-sidebar &
-      .inner
-        @media (min-width: $MQNarrow)
-          max-width 48rem !important
-          margin 0 auto
-          border-left var(--docs-border-dashed)
-          border-right var(--docs-border-dashed)
-          padding var(--docs-space-l)
-  .footer-content
-    display flex
-    flex-wrap wrap
-    padding-top var(--docs-space-m)
-    @media (min-width: $MQNarrow)
-      justify-content space-between
-    .footer-block
-      padding var(--docs-space-m) var(--docs-space-xxl) var(--docs-space-m) 0
-    h4
-      margin 0 0 var(--docs-space-s)
-  .copyright
-    margin-bottom 0
-    padding-bottom var(--docs-space-l)
       .inner
         @media (min-width: $MQNarrow)
           max-width 48rem !important
