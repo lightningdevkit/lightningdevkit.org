@@ -172,13 +172,8 @@ module.exports = {
       },
       {
         text: 'Slack',
-<<<<<<< HEAD
-        link: 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ',
-        rel: 'noopener noreferrer github'
-=======
         link: slackUrl,
         rel: 'noopener noreferrer'
->>>>>>> de2b20c (Add footer)
       },
       {
         text: 'GitHub',
