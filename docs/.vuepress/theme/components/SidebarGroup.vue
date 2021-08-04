@@ -85,24 +85,17 @@ export default {
 .sidebar-group
   .sidebar-group
     padding-left 0.5em
-  &:not(.collapsable)
-    .sidebar-heading:not(.clickable)
-      cursor auto
-      color inherit
   // refine styles of nested sidebar groups
   &.is-sub-group
     padding-left 0
     & > .sidebar-heading
-      font-size 0.95em
+      font-size 1em
       line-height 1.4
       font-weight var(--docs-font-weight-normal)
-      padding-left 2rem
-      &:not(.clickable)
-        opacity 0.5
     & > .sidebar-group-items
       padding-left 1rem
       & > li > .sidebar-link
-        font-size: 0.95em;
+        font-size 0.95em
         border-left none
   &.depth-2
     & > .sidebar-heading
