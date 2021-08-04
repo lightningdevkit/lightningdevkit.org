@@ -25,7 +25,7 @@ process it by:
 
 We will walk through this process as depicted here:
 
-![LDK block processing](./assets/ldk-block-processing.svg)
+![LDK block processing](../assets/ldk-block-processing.svg)
 
 ## Chain Activity
 

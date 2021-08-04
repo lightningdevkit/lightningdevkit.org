@@ -3,7 +3,7 @@ home: true
 heroText: Lightning Dev Kit
 tagline: A flexible Lightning implementation and supporting batteries.
 actionText: Get started
-actionLink: /overview/
+actionLink: /getting-started/
 features:
 - title: "Customizable"
   details: "LDK was designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
@@ -27,7 +27,7 @@ features:
 
 As the application is an SDK and not a standalone binary opinionated about its execution environment, we would provide FFI bindings into whichever languages developers happen to build Lightning applications in, be they C, Swift, or Python. You can open the same wallet in multiple environments (e.g. in a web browser, on a phone, on a desktop, etc)!
 
-[Documentation →](./overview/)
+[Documentation →](./getting-started/)
 
 </div>
 
@@ -36,7 +36,7 @@ As the application is an SDK and not a standalone binary opinionated about its e
 
 Synchronize node state across multiple clients sharing the same channels. Back up new state before it goes live and missing it loses funds.
 
-[Documentation →](./overview/)
+[Documentation →](./getting-started/)
 
 </div>
 
@@ -45,16 +45,16 @@ Synchronize node state across multiple clients sharing the same channels. Back u
 
 Use a local full node, an SPV node, or your own server with API access to source data about the blockchain truth and feed it to the LDK for decision-making about whether to sign a state update. Or if you’re running your own server that does custom verification, have that server sign a message and then simply verify that signature in lieu of doing any local state verification.
 
-[Documentation →](./blockdata/)
+[Documentation →](./basic-features/blockchain_data/)
 
 </div>
 
 <div class="feature">
-<h3>Custom Routing, Peer Scoring, and Channel Creation</h3>
+<h3>Mobile Interoperability</h3>
 
-Implement a custom routing engine to take more control over routing decisions with native ownership of the full routing table. Also take more control over channel creation and peer selection.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 
-[Documentation →](./overview/)
+[Documentation →](./getting-started/)
 
 </div>
 </div>
