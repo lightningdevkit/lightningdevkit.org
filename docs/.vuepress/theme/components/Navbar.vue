@@ -188,6 +188,7 @@ $navbar-horizontal-padding = 1.5rem
   height: 40px
   width: 40px
   border: 0
+  padding 0
 
 .theme-switch svg
   height: var(--docs-theme-switch-icon-size)
