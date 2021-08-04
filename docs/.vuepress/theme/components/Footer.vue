@@ -49,7 +49,6 @@ export default {
 .footer
   @media (min-width: $MQNarrow)
     position relative
-    z-index 10
   .wrap-border
     border-top var(--docs-border-dashed)
     padding 0
