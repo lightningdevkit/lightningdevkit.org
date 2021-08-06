@@ -467,7 +467,7 @@ let encoded_invoice = invoice.to_string();
 ```java
 String description = "coffee";
 long amt_msat = 10_000L;
-Result_InvoiceSignOrCreationErrorZ invoice = UtilMethods.invoice_from_channelmanager(
+Result_InvoiceSignOrCreationErrorZ invoice = UtilMethods.create_invoice_from_channelmanager(
     channel_manager, keys_manager.as_KeysInterface(), LDKCurrency.LDKCurrency_Bitcoin,
 	Option_u64Z.some(amt_msat), description);
 assert invoice instanceof
