@@ -193,7 +193,7 @@ Additionally, you must notify LDK whenever a new chain tip is available using
 the `best_block_updated` method. See the documentation for a full picture of how
 this interface is intended to be used.
 
-:::note
+::: tip Note
 Be advised that `chain::Confirm` is a less mature interface than
 `chain::Listen`. As such, there is not yet a utility like `lightning-block-sync`
 to use for interacting with clients like Electrum.
