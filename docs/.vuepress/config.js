@@ -119,7 +119,11 @@ module.exports = {
       staticIcon: true
     }],
     ['sitemap', sitemap],
-    ['tabs'],
+    ['tabs', {
+      tabsAttributes: {
+        options: { useUrlFragment: false }
+      }
+    }],
     ['@vuepress/medium-zoom'],
     ['@vuepress/blog', {
       sitemap,
