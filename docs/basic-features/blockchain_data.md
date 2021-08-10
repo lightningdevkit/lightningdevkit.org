@@ -55,7 +55,7 @@ the `BlockSource` interface or use one of the samples that it provides.
 Currently, `lightning-block-sync` is only available in Rust.
 :::
 
-### Block Source
+### Block Source   
 
 Implementing the `BlockSource` interface requires defining methods for fetching
 headers, blocks, and the best block hash.
