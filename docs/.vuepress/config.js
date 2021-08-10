@@ -224,10 +224,6 @@ module.exports = {
           title: 'Docs',
           children: [
             {
-              text: 'Overview',
-              link: '/overview/'
-            },
-            {
               text: 'Getting Started',
               link: '/use_cases/'
             }
