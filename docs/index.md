@@ -18,43 +18,49 @@ features:
 
 <div class="intro">
 <h2>Why LDK?</h2>
-<p>Leading Bitcoin open source projects love LDK …</p>
+<p>Leading Bitcoin open source projects love LDK</p>
 </div>
 
 <div class="features">
 <div class="feature">
-<h3>Cross-Language Bindings</h3>
+<h3>Multi-Language Support</h3>
 
-As the application is an SDK and not a standalone binary opinionated about its execution environment, we would provide FFI bindings into whichever languages developers happen to build Lightning applications in, be they C, Swift, or Python. You can open the same wallet in multiple environments (e.g. in a web browser, on a phone, on a desktop, etc)!
-
-[Documentation →](./getting-started/)
-
-</div>
-
-<div class="feature">
-<h3>Custom Storage Backend</h3>
-
-Synchronize node state across multiple clients sharing the same channels. Back up new state before it goes live and missing it loses funds.
+We support native API's including C, Swift, Java & Python so you can build lightning applications in your preferred programming language. 
 
 [Documentation →](./getting-started/)
 
 </div>
 
 <div class="feature">
-<h3>Blockchain Truth Sourcing</h3>
+<h3>Custom Persistent Storage</h3>
 
-Use a local full node, an SPV node, or your own server with API access to source data about the blockchain truth and feed it to the LDK for decision-making about whether to sign a state update. Or if you’re running your own server that does custom verification, have that server sign a message and then simply verify that signature in lieu of doing any local state verification.
+Our API's let you choose how to backup new channel state. This gives you multi-wallet device access and lets you save state locally, to the cloud or an alternative backup scheme.
+
+[Documentation →](./getting-started/)
+
+</div>
+
+<div class="feature">
+<h3>Custom Block Data Sources</h3>
+
+Use a local full node, an SPV node, or your own server with API access to source data about the blockchain  and feed it to the LDK for decision-making about whether to sign a state update.
 
 [Documentation →](./basic-features/blockchain_data/)
 
 </div>
 
 <div class="feature">
-<h3>Mobile Interoperability</h3>
+<h3>Single Wallet</h3>
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience. 
 
 [Documentation →](./getting-started/)
 
 </div>
 </div>
+
+<!-- No need to use separate bitcoin and lightning wallets
+Bring your own wallet
+Feed blocks to LDK howevery you want
+Native Language Bindings 14:10 -->
+
