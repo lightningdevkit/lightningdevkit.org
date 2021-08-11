@@ -25,7 +25,7 @@ features:
 <div class="feature">
 <h3>Multi-Language Support</h3>
 
-We support native API's including C, Swift, Java & Python so you can build lightning applications in your preferred programming language. 
+We support native API's including C, Swift & Java so you can build lightning applications in your preferred programming language. 
 
 [Documentation →](./getting-started/)
 
@@ -43,7 +43,7 @@ Our API's let you choose how to backup new channel state. This gives you multi-w
 <div class="feature">
 <h3>Custom Block Data Sources</h3>
 
-Use a local full node, an SPV node, or your own server with API access to source data about the blockchain  and feed it to the LDK for decision-making about whether to sign a state update.
+Use a local full node, an SPV node, or your own Electrum server with API access to source data about the blockchain  and feed it to the LDK for decision-making about whether to sign a state update.
 
 [Documentation →](./basic-features/blockchain_data/)
 
