@@ -27,7 +27,7 @@ features:
 
 We support native API's including C, Swift & Java so you can build lightning applications in your preferred programming language. 
 
-[Documentation →](./getting-started/)
+<!-- [Documentation →](./getting-started/) -->
 
 </div>
 
@@ -36,7 +36,7 @@ We support native API's including C, Swift & Java so you can build lightning app
 
 Our API's let you choose how to backup new channel state. This gives you multi-wallet device access and lets you save state locally, to the cloud or an alternative backup scheme.
 
-[Documentation →](./getting-started/)
+<!-- [Documentation →](./getting-started/) -->
 
 </div>
 
@@ -45,7 +45,7 @@ Our API's let you choose how to backup new channel state. This gives you multi-w
 
 Use a local full node, an SPV node, or your own Electrum server with API access to source data about the blockchain  and feed it to the LDK for decision-making about whether to sign a state update.
 
-[Documentation →](./basic-features/blockchain_data/)
+<!-- [Documentation →](./basic-features/blockchain_data/) -->
 
 </div>
 
@@ -54,13 +54,8 @@ Use a local full node, an SPV node, or your own Electrum server with API access 
 
 No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience. 
 
-[Documentation →](./getting-started/)
+<!-- [Documentation →](./getting-started/) -->
 
 </div>
 </div>
-
-<!-- No need to use separate bitcoin and lightning wallets
-Bring your own wallet
-Feed blocks to LDK howevery you want
-Native Language Bindings 14:10 -->
 
