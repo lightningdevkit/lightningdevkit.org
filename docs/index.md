@@ -9,10 +9,10 @@ features:
   details: "LDK was designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
   image: "customizable"
 - title: "Focus on what matters"
-  details: "LDK lets you focus on your user experience and we'll handle all the low-level lightning logic."
+  details: "All of the low-level lightning logic is handled by us, so you can focus on crafting custom-tailored user experiences."
   image: "focus"
-- title: "Mobile first"
-  details: "As lightweight as you need it to be and with language bindings suitable for iOS or Android -- it may be written in secure Rust, but you'll never have to touch Rust code."
+- title: "High performance & compact"
+  details: "As lightweight as you need it to be and optimized to run on all modern-day embedded devices such as mobile phones, tablets, smartwatches and more."
   image: "mobile"
 ---
 
