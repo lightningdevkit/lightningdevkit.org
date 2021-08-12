@@ -12,7 +12,7 @@ features:
   details: "All of the low-level lightning logic is handled by us, so you can focus on crafting custom-tailored user experiences."
   image: "focus"
 - title: "High performance & compact"
-  details: "As lightweight as you need it to be and optimized to run on all modern-day embedded devices such as mobile phones, tablets, smartwatches and more."
+  details: "As lightweight as you need it to be and optimized to run on all modern-day embedded devices such as mobile phones, IoT devices, PoS terminals and more."
   image: "mobile"
 ---
 
