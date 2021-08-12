@@ -6,7 +6,7 @@ actionText: Get started
 actionLink: /getting-started/
 features:
 - title: "Customizable"
-  details: "LDK was designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
+  details: "Designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
   image: "customizable"
 - title: "Focus on what matters"
   details: "All of the low-level lightning logic is handled by us, so you can focus on crafting custom-tailored user experiences."
