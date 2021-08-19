@@ -147,8 +147,8 @@ $navbar-horizontal-padding = 1.5rem
     margin-left var(--docs-space-s)
     flex-shrink 0
   .logo
-    width 144px
-    height 52px
+    width 140px
+    height 50px
     margin-right 0.8rem
     vertical-align top
     min-width unset
@@ -173,8 +173,8 @@ $navbar-horizontal-padding = 1.5rem
 
   @media (max-width: $MQMobile)
     .logo
-      width 96px
-      height 46px
+      width 86px
+      height 35px
     .can-hide
       display none
 
