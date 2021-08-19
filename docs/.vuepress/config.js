@@ -79,6 +79,7 @@ module.exports = {
   title,
   description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
   head: [
+    ['meta', { name: 'viewport', content: 'width=device-width,initial-scale=1.0' }],
     ['link', { rel: 'preload', href: '/fonts/manrope-400.woff2', as: 'font', crossorigin: true }],
     ['link', { rel: 'preload', href: '/fonts/manrope-600.woff2', as: 'font', crossorigin: true }],
     ['link', { rel: 'preload', href: '/fonts/ibm-plex-mono-400.woff2', as: 'font', crossorigin: true }],
