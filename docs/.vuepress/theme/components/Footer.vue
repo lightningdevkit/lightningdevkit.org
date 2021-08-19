@@ -54,9 +54,9 @@ export default {
     padding 0
     .theme-container:not(.no-sidebar) &
       @media (min-width: $MQMobile)
-        padding-left 17.5rem !important
+        padding-left 13.8rem !important
       @media (min-width: $MQNarrow)
-        padding-left 21.1rem !important
+        padding-left 16.6rem !important
     .theme-container.no-sidebar &
       .inner
         @media (min-width: $MQNarrow)
