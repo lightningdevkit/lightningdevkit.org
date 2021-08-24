@@ -6,12 +6,15 @@
           :to="$localePath"
           class="home-link"
         >
-          <img
+          <svg
             v-if="$site.themeConfig.logo"
+            role="img"
             class="logo"
-            :src="$withBase($site.themeConfig.logo)"
             :alt="$siteTitle"
           >
+            <use :href="`${$withBase($site.themeConfig.logo)}#small`" class="small" />
+            <use :href="`${$withBase($site.themeConfig.logo)}#large`" class="large" />
+          </svg>
         </RouterLink>
 
         <div
@@ -147,8 +150,7 @@ $navbar-horizontal-padding = 1.5rem
     margin-left var(--docs-space-s)
     flex-shrink 0
   .logo
-    width 140px
-    height 50px
+    height 35px
     margin-right 0.8rem
     vertical-align top
     min-width unset
@@ -170,11 +172,17 @@ $navbar-horizontal-padding = 1.5rem
         left 0
       .search-query.ds-hint
         display none !important
+  @media (min-width: $MQMobile + 1)
+    .logo
+      width 125px
+      .small
+        display none
 
   @media (max-width: $MQMobile)
     .logo
       width 86px
-      height 35px
+      .large
+        display none
     .can-hide
       display none
 
