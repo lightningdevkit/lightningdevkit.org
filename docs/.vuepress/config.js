@@ -1,4 +1,5 @@
 const { resolve } = require('path')
+const footnotes = require('markdown-it-footnote')
 const implicitFigures = require('markdown-it-implicit-figures')
 const slugify = require('./slugify')
 const preprocessMarkdown = resolve(__dirname, 'preprocessMarkdown')
@@ -175,7 +176,8 @@ module.exports = {
     }]
   ],
   markdown: {
-    extendMarkdown (md) {
+    extendMarkdown(md) {
+      md.use(footnotes)
       md.use(implicitFigures)
     },
     pageSuffix,
