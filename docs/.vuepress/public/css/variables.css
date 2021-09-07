@@ -1,8 +1,6 @@
 :root {
   --docs-primary: #0F31F7;
   --docs-accent-teal: #76F3CD;
-  --docs-accent-yellow: #fff200;
-  --docs-accent-purple: #711BF7;
   --docs-deep-blue: #000628;
 
   --docs-neutral-10: #E6E6E6;
@@ -23,6 +21,8 @@
   --docs-body-border-medium: var(--docs-neutral-25);
   --docs-border-dashed: 1px dashed var(--docs-body-border-medium);
 
+  --docs-cta-bg: linear-gradient(291.12deg, #0F31F7 23.78%, #76F3CD 102.85%);
+
   --docs-header-text: var(--docs-body-text);
   --docs-header-bg: var(--docs-body-bg);
   --docs-header-link: var(--docs-body-link);
@@ -40,6 +40,8 @@
 }
 
 :root[data-theme="dark"] {
+  --docs-primary: var(--docs-accent-teal);
+
   --docs-neutral-10: #161616;
   --docs-neutral-25: #606060;
   --docs-neutral-50: #808080;
@@ -48,8 +50,6 @@
 
   --docs-body-bg: var(--docs-deep-blue);
   --docs-body-heading: var(--docs-white);
-  --docs-body-link: var(--docs-accent-teal);
-  --docs-body-link-accent: var(--docs-accent-teal);
 
   --docs-code-bg: #0f1637;
   --docs-pre-bg: var(--docs-code-bg);
@@ -57,6 +57,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
+    --docs-primary: var(--docs-accent-teal);
+
     --docs-neutral-10: #161616;
     --docs-neutral-25: #606060;
     --docs-neutral-50: #808080;
@@ -65,8 +67,6 @@
 
     --docs-body-bg: var(--docs-deep-blue);
     --docs-body-heading: var(--docs-white);
-    --docs-body-link: var(--docs-accent-teal);
-    --docs-body-link-accent: var(--docs-accent-teal);
 
     --docs-code-bg: #0f1637;
     --docs-pre-bg: var(--docs-code-bg);
