@@ -63,7 +63,7 @@
     --docs-neutral-75: #BFBFBF;
     --docs-neutral-90: #E6E6E6;
 
-    --docs-body-bg: var(--docs-black);
+    --docs-body-bg: var(--docs-deep-blue);
     --docs-body-heading: var(--docs-white);
     --docs-body-link: var(--docs-accent-teal);
     --docs-body-link-accent: var(--docs-accent-teal);
