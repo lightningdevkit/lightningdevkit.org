@@ -30,22 +30,10 @@
     "linkcheck:local": "$npm_package_config_linkcheck http://localhost:$npm_package_config_port"
   },
   "devDependencies": {
-    "@vuepress/plugin-back-to-top": "1.8.2",
-    "@vuepress/plugin-blog": "1.9.4",
-    "@vuepress/plugin-medium-zoom": "1.8.2",
     "broken-link-checker": "0.7.8",
-    "markdown-it-footnote": "3.0.3",
-    "markdown-it-implicit-figures": "0.10.0",
     "serve": "12.0.0",
-    "start-server-and-test": "1.13.1",
-    "vuepress": "1.8.2",
-    "vuepress-plugin-clean-urls": "1.1.2",
-    "vuepress-plugin-code-copy": "1.0.6",
-    "vuepress-plugin-seo": "0.1.4",
-    "vuepress-plugin-sitemap": "2.3.1",
-    "vuepress-plugin-tabs": "0.3.0"
-  },
-  "dependencies": {
-    "vue-tabs-component": "1.5.0"
+    "squarecrypto-vuepress-devkit-theme": "0.1.1",
+    "start-server-and-test": "1.14.0",
+    "vuepress": "1.8.2"
   }
 }
