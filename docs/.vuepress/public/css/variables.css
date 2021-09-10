@@ -21,6 +21,7 @@
   --docs-body-border-medium: var(--docs-neutral-25);
   --docs-border-dashed: 1px dashed var(--docs-body-border-medium);
 
+  --docs-cta-text: var(--docs-white);
   --docs-cta-bg: linear-gradient(291.12deg, #0F31F7 23.78%, #76F3CD 102.85%);
 
   --docs-header-text: var(--docs-body-text);
