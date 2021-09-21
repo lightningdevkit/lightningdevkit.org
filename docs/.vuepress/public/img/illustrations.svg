@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" >
+  <symbol id="customizable" viewBox="0 0 202 202">
+    <path d="M1 1h200M1 34.334h200M1 67.666h200M1 101h200M1 134.333h200M1 167.667h200M1 201h200M1 1v200M34.333 1v200M67.667 1v200M101 1v200M134.333 1v200M167.667 1v200M201 1v200" stroke="var(--docs-border-color)" stroke-opacity=".4" stroke-width=".593"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M68.111 67.559 99.56 99.007V36.11L68.111 67.56ZM99.643 165.756v-63.447a1.33 1.33 0 0 1-.943-.391L67.643 70.861v62.895l32 32ZM64.448 131.006V70.778l-30.114 30.114 30.114 30.114ZM167.558 101l-64.781-64.781V165.78L167.558 101Z" fill="var(--docs-primary)"/>
+  </symbol>
+  <symbol id="mobile" viewBox="0 0 202 202">
+    <path d="M1 1h200M1 34.334h200M1 67.666h200M1 101h200M1 134.333h200M1 167.667h200M1 201h200M1 1v200M34.333 1v200M67.667 1v200M101 1v200M134.333 1v200M167.667 1v200M201 1v200" stroke="var(--docs-border-color)" stroke-opacity=".4" stroke-width=".593"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M132.448 101.337 67.667 36.556v129.562l64.781-64.781ZM134.225 99.115V34.334h-64.78l64.78 64.78ZM102.778 135.114l31.448 31.448v-62.895l-31.448 31.447ZM70.778 167.559h60.229l-30.114-30.115-30.115 30.115Z" fill="var(--docs-primary)"/>
+  </symbol>
+  <symbol id="focus" viewBox="0 0 202 202">
+    <path d="M1 1h200M1 34.334h200M1 67.666h200M1 101h200M1 134.333h200M1 167.667h200M1 201h200M1 1v200M34.333 1v200M67.667 1v200M101 1v200M134.333 1v200M167.667 1v200M201 1v200" stroke="var(--docs-border-color)" stroke-opacity=".4" stroke-width=".593"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="m69.444 101 31.448 31.448L132.34 101l-31.448-31.448L69.444 101ZM136.111 100.892l31.448 31.448V69.444l-31.448 31.448ZM34.333 70.778v60.229l30.114-30.115-30.114-30.114Z" fill="var(--docs-primary)"/>
+  </symbol>
+  <symbol id="node" viewBox="0 0 233 280">
+    <path d="M16 40h200M16 73.334h200M16 106.667h200M16 140h200M16 173.333h200M16 206.667h200M16 240h200M16 40v200M49.333 40v200M82.667 40v200M116 40v200M149.333 40v200M182.667 40v200M216 40v200" stroke="var(--docs-border-color)" stroke-opacity=".4" stroke-width=".593"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="m137.423 233.836-91.614-91.614v91.614h91.614ZM45.807 140.532l45.807-45.807-45.807-45.807v91.614ZM142.68 233.851h44.474v-44.474H142.68v44.474ZM142.665 186.74h44.474v-44.474l-44.474 44.474ZM137.284 91.683 92.419 46.819a1.33 1.33 0 0 1-.943.39H47.555l44.474 44.474h45.255ZM97.335 189.5l42.588 42.588V189.5H97.335ZM187.171 46.252H95.557l91.614 91.614V46.252Z" fill="var(--docs-primary)"/>
+  </symbol>
+</svg>
