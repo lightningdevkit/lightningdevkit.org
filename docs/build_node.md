@@ -28,13 +28,13 @@ class YourFeeEstimator implements FeeEstimator.FeeEstimatorInterface {
     @Override
     public int get_est_sat_per_1000_weight(LDKConfirmationTarget conf_target) {
         if (conf_target ==
-            LDKConfirmationTarget.LDKConfirmationTarget_Background) {
+            ConfirmationTarget.LDKConfirmationTarget_Background) {
             // <insert code to retrieve a background feerate>
         } else if (conf_target ==
-            LDKConfirmationTarget.LDKConfirmationTarget_Normal) {
+            ConfirmationTarget.LDKConfirmationTarget_Normal) {
             // <insert code to retrieve a normal (i.e. within ~6 blocks) feerate>
         } else if (conf_target ==
-            LDKConfirmationTarget.LDKConfirmationTarget_HighPriority) {
+            ConfirmationTarget.LDKConfirmationTarget_HighPriority) {
             // <insert code to retrieve a high-priority feerate>
         }
     }
@@ -106,7 +106,9 @@ BroadcasterInterface tx_broadcaster =
 **Example:** initializing `NetGraphMsgHandler` without providing an `Access`
 
 ```java
-final router = NetGraphMsgHandler.of(new byte[32], null, logger);
+final byte[] genesis_block_hash = // <insert the genesis block hash>
+final NetGraphMsgHandler router = NetGraphMsgHandler.of(
+    NetworkGraph.of(genesis_block_hash), Option_AccessZ.none(), logger);
 ```
 
 **Implementation notes:** this struct is not required if you are providing your own routes.
@@ -159,7 +161,7 @@ the `ChannelManager` must be re-persisted to disk and/or backups.
 
 **Example:**
 ```java
-class YourObj implements ChannelManagerConstructor.ChannelManagerPersister {
+class YourObj implements ChannelManagerConstructor.EventHandler {
     @Override
     public void handle_event(Event e) {
         if (e instanceof Event.FundingGenerationReady) {
@@ -171,13 +173,19 @@ class YourObj implements ChannelManagerConstructor.ChannelManagerPersister {
         else if (e instanceof Event.PaymentSent) {
             // <insert code to handle this event>
         }
-        else if (e instanceof Event.PaymentFailed) {
+        else if (e instanceof Event.PaymentPathFailed) {
             // <insert code to handle this event>
         }
         else if (e instanceof Event.PendingHTLCsForwardable) {
             // <insert code to handle this event>
         }
         else if (e instanceof Event.SpendableOutputs) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PaymentForwarded) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.ChannelClosed) {
             // <insert code to handle this event>
         }
     }
@@ -315,7 +323,7 @@ final byte[][] channel_monitors = (byte[][])channel_monitor_list.toArray(new byt
 int block_height = // <insert current chain tip height>;
 byte[] best_block_hash = // <insert current chain tip block hash>;
 ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
-  LDKNetwork.LDKNetwork_Bitcoin, UserConfig.default(), best_block_hash,
+  Network.LDKNetwork_Bitcoin, UserConfig.default(), best_block_hash,
   block_height, keys_manager.as_KeysInterface(), fee_estimator, chain_monitor,
   router, tx_broadcaster, logger);
 
@@ -366,10 +374,10 @@ byte[] header = // insert block header from the block with confirmed tx/output
 int height = // insert block height of `header`
 Long tx_index = // insert tx index in block
 byte[] serialized_tx = // insert tx hex as byte array
-TwoTuple<Long, byte[]> tx = new TwoTuple<>(tx_index, serialized_tx);
+TwoTuple_usizeTransactionZ tx = TwoTuple_usizeTransactionZ.of(tx_index, serialized_tx);
 
 // Marshall all TwoTuples you built right above into an array
-TwoTuple<Long, byte[]>[] tx_list = new TwoTuple[]{tx, .. };
+TwoTuple_usizeTransactionZ[] tx_list = new TwoTuple_usizeTransactionZ[]{tx, .. };
 
 channel_manager.transactions_confirmed(header, height, tx_list);
 chain_monitor.transactions_confirmed(header, height, tx_list);
@@ -484,9 +492,9 @@ chain_monitor.update_best_block(new_best_header, new_best_height);
 // transactions/outputs are created.
 
 // header is a []byte type, height is `int`, txdata is a 
-// TwoTuple<Long, byte[]>[], where the 0th element is the transaction's position 
-// in the block (with the coinbase transaction considered position 0) and the 1st 
-// element is the transaction bytes
+// TwoTuple_usizeTransactionZ[], where the 0th element is the transaction's
+// position in the block (with the coinbase transaction considered position 0)
+// and the 1st element is the transaction bytes
 channel_manager.as_Listen().block_connected(header, txdata, height);
 chain_monitor.block_connected(header, txdata, height);
 

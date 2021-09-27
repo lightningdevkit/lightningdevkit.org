@@ -549,11 +549,13 @@ let lightning_msg_handler = MessageHandler {
 	chan_handler: &channel_manager,
 	route_handler: &router,
 };
+let ignoring_custom_msg_handler = IgnoringMessageHandler {};
 let peer_manager = PeerManager::new(
 	lightning_msg_handler,
 	keys_manager.get_node_secret(),
 	&ephemeral_bytes,
 	&logger,
+    &ignoring_custom_msg_handler,
 );
 ```
 
@@ -698,9 +700,11 @@ fn handle_ldk_event(..) {
         Event::FundingGenerationReady { .. } => { .. }, // insert handling code
         Event::PaymentReceived { .. } => { .. }, // insert handling code
         Event::PaymentSent { .. } => { .. }, // insert handling code
-        Event::PaymentFailed { .. } => { .. }, // insert handling code
+        Event::PaymentPathFailed { .. } => { .. }, // insert handling code
         Event::PendingHTLCsForwardable { .. } => { .. }, // insert handling code
         Event::SpendableOutputs { .. } => { .. } // insert handling code
+        Event::PaymentForwarded { .. } => { .. } // insert handling code
+        Event::ChannelClosed { .. } => { .. } // insert handling code
     }
 }
 ```
