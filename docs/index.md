@@ -1,7 +1,7 @@
 ---
 home: true
 heroText: Lightning Dev Kit
-tagline: A flexible Lightning implementation and supporting batteries.
+tagline: The simplest way to integrate Lightning into your Bitcoin wallet
 actionText: Get started
 actionLink: /getting-started/
 features:
