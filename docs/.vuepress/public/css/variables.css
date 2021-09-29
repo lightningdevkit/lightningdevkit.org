@@ -2,4 +2,20 @@
   --docs-primary-light: #0F31F7;
   --docs-primary-dark: #76F3CD;
   --docs-dark: #000628;
+
+  --docs-note-text: var(--docs-white) !important;
+  --docs-code-bg: #E6EAFE;
+  --docs-pre-bg: #020A36;
+}
+
+:root[data-theme="dark"] {
+  --docs-code-bg: #06463C;
+  --docs-pre-bg: #002547;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --docs-code-bg: #06463C;
+    --docs-pre-bg: #002547;
+  }
 }
