@@ -366,17 +366,13 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
         // <Handle a zero-value invoice>
     }
 
-    Route route;
-    try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
-        NetworkGraph graph = netgraph.graph();
-        Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
-			channel_manager.get_our_node_id(),
-            graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice.route_hints(),
-            amt_msat, invoice.min_final_cltv_expiry(), logger);
-        assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
-        route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
-    }
+    Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
+        channel_manager.get_our_node_id(), router.get_network_graph(),
+        invoice.recover_payee_pub_key(), invoice.features(),
+        channel_manager.list_usable_channels(), invoice.route_hints(),
+        amt_msat, invoice.min_final_cltv_expiry(), logger);
+    assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
+    Route route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
 
     Result_NonePaymentSendFailureZ payment_res = channel_manager.send_payment(
 		route, invoice.payment_hash(), invoice.payment_secret());
@@ -389,8 +385,8 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 
 An event is generated once a payment has completed. Successful payments result
 in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
-out for a `PaymentFailed` event, if the payment fails for some reason, and act
-accordingly.
+out for a `PaymentPathFailed` event, if an MPP payment path (or the full path, if
+`all_paths_failed` is set) fails for some reason, and act accordingly.
 
 <Tabs
   defaultValue="rust"
@@ -407,7 +403,7 @@ match event {
 	Event::PaymentSent { payment_preimage } => {
 		// Handle successful payment
 	}
-	Event::PaymentFailed { payment_hash, rejected_by_dest } => {
+	Event::PaymentPathFailed { payment_hash, rejected_by_dest, all_paths_failed, .. } => {
 		// Handle failed payment
 	}
 	// ...
@@ -423,9 +419,10 @@ else if (e instanceof Event.PaymentSent) {
 	// Handle successful payment
 	Event.PaymentSent event = ((Event.PaymentSent) e);
 }
-else if (e instanceof Event.PaymentFailed) {
-	// Handle failed payment
-	Event.PaymentFailed event = ((Event.PaymentFailed) e);
+else if (e instanceof Event.PaymentPathFailed) {
+	// Handle failed payment *path*
+	Event.PaymentPathFailed event = ((Event.PaymentPathFailed) e);
+    // Note that the full payment has failed iff event.all_paths_failed is set
 }
 ```
 
