@@ -51,7 +51,7 @@ batteries, which are enumerated below.
   While LDK's default implementation is currently within Rust-Lightning, it is
   still considered a sample module.
 * Transaction filtering
-  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](blockdata.md).
+  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](/basic-features/blockchain_data.md).
 * Fee estimation
   * LDK's sample node implementation uses Bitcoin Core's fee estimation API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L98-L154).
 * Transaction broadcasting
