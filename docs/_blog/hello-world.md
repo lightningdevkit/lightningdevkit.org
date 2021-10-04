@@ -1,9 +1,9 @@
 ---
-title: "Hello World!"
-description: "This is just a blog post template."
-date: "2020-12-18"
+title: "Coming Soon!"
+description: "First blog post is in the works"
+date: "2021-10-04"
 authors:
-  - The Author
+  - Dan Tomas
 tags:
   - Bitcoin
   - LDK
