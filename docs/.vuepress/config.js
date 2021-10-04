@@ -118,7 +118,7 @@ module.exports = {
           children: [
             {
               text: 'Getting Started',
-              link: '/use_cases/'
+              link: '/getting-started/'
             }
           ]
         },
