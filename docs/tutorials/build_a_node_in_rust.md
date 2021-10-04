@@ -186,11 +186,11 @@ impl Filter for YourTxFilter {
 let filter = YourTxFilter();
 ```
 
-**Implementation notes:** see the [Blockchain Data](blockdata.md) guide for more info
+**Implementation notes:** see the [Blockchain Data](/basic-features/blockchain_data.md) guide for more info
 
 **Dependencies:** *none*
 
-**References:** [`Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Blockchain Data guide](blockdata.md)
+**References:** [`Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Blockchain Data guide](/basic-features/blockchain_data.md)
 
 ### 6. Initialize the `ChainMonitor`
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
@@ -253,7 +253,7 @@ let keys_manager = KeysManager::new(&keys_seed, cur.as_secs(), cur.subsec_nanos(
 ```
 
 **Implementation notes:**
-* See the [Key Management](key_mgmt.md) guide for more info
+* See the [Key Management](/basic-features/key_management.md) guide for more info
 * Note that you must write the `key_seed` you give to the `KeysManager` on
   startup to disk, and keep using it to initialize the `KeysManager` every time
   you restart. This `key_seed` is used to derive your node's secret key (which
@@ -264,7 +264,7 @@ generation is unique across restarts.
 
 **Dependencies:** random bytes
 
-**References:** [`KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Key Management guide](key_mgmt.md)
+**References:** [`KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Key Management guide](/basic-features/key_management.md)
 
 ### 8. Marshal `ChannelMonitor`s from disk
 
