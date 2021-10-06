@@ -14,7 +14,7 @@ const docsSidebar = [
     children: [
       '/getting-started',
       {
-        title: "Basic Features",
+        title: 'Basic Features',
         collapsable: true,
         children: [
           ['/basic-features/key_management', 'Key management'],
@@ -71,7 +71,8 @@ module.exports = {
   ...themeConfig({
     baseUrl,
     title,
-    themeColor
+    themeColor,
+    tags: ['Bitcoin', 'Lightning', 'LDK', 'Lightning Dev Kit', 'Documentation']
   }),
   themeConfig: {
     domain: baseUrl,
