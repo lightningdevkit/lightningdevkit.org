@@ -222,7 +222,7 @@ if (e instanceof Event.FundingGenerationReady) {
 After `ChannelManager` has broadcast the funding transaction, the channel will
 become usable once the transaction has enough confirmations and will appear in
 `ChannelManager::list_usable_channels`. See the guide on
-[Blockchain Data](blockdata.md) for details on confirmations.
+[Blockchain Data](./basic-features/blockchain_data.md) for details on confirmations.
 
 With a fully funded channel, you can now make Lightning payments! No more hefty
 on-chain fees and long confirmation times when you're transacting on layer 2.

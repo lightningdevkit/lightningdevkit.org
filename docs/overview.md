@@ -4,8 +4,8 @@ LDK is a flexible lightning implementation with supporting batteries (or modules
 
 <div class="h2">To jump into integrating LDK with your application:</div>
 
-* [Click here for Java](build_node.md)
-* [Click here for Rust](build_node_rust.md)
+* [Click here for Java](./tutorials/build_a_node_in_java.md)
+* [Click here for Rust](./tutorials/build_a_node_in_rust.md)
 
 ## Introduction
 LDK/Rust-Lightning is a generic library which allows you to build a lightning
@@ -72,7 +72,7 @@ batteries, which are enumerated below.
   While LDK's default implementation is currently within Rust-Lightning, it is
   still considered a sample module.
 * Transaction filtering
-  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](blockdata.md).
+  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](./basic-features/blockchain_data.md).
 * Fee estimation
   * LDK's sample node implementation uses Bitcoin Core's fee estimation API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L98-L154).
 * Transaction broadcasting
