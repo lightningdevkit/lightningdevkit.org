@@ -26,7 +26,7 @@ LDK Supports various HSM configurations. In conjunction with the [Lightning
 Signer project](https://github.com/lightning-signer/) , an external HSM can be
 used to verify most protocol details about states before signing, ensuring host
 compromise cannot steal funds by broadcasting revoked states. For nodes seeking
-a higher level of assurance, the entire Rust-Lightning channel state machine can
+a higher level of assurance, the entire LDK channel state machine can
 be run on an offline device, communicating with the outside world via a proxy
 host which maintains TCP connections with peers. Such a configuration ensures
 all details of the lightning protocol are enforced without consideration of host

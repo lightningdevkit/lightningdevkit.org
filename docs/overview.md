@@ -8,7 +8,7 @@ LDK is a flexible lightning implementation with supporting batteries (or modules
 * [Click here for Rust](./tutorials/build_a_node_in_rust.md)
 
 ## Introduction
-LDK/Rust-Lightning is a generic library which allows you to build a lightning
+Lightning Development Kit (LDK) allows you to build a lightning
 node without needing to worry about getting all of the lightning state machine,
 routing, and on-chain punishment code (and other chain interactions) exactly
 correct. LDK tends to be suitable for use cases where a degree of
@@ -41,7 +41,7 @@ batteries, which are enumerated below.
   filtering/etc.
   * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-block-sync)
 * On-chain funds wallet/UTXO management
-  * Rust-Lightning/LDK owns on-chain funds as long as they are claimable as
+  * LDK owns on-chain funds as long as they are claimable as
   a part of a lightning output which can be contested - once a channel is closed
   and all on-chain outputs are spendable only by the user, we provide users
   notifications that a UTXO is "theirs" again and it is up to them to spend it
@@ -78,7 +78,7 @@ batteries, which are enumerated below.
 * Transaction broadcasting
   * LDK's sample node implementation uses Bitcoin Core's transaction broadcasting API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L235-L257).
 * Random number generation
-  * Because Rust-Lightning aims to make no system calls, it is restricted from generating its own randomness.
+  * Because LDK aims to make no system calls, it is restricted from generating its own randomness.
   * LDK's sample node implementation uses Rust's `rand` crate [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L464-L465) and elsewhere.
 
 
