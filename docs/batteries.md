@@ -1,26 +1,5 @@
-# Overview
-
-LDK is a flexible lightning implementation with supporting batteries (or modules).
-
-<div class="h2">To jump into integrating LDK with your application:</div>
-
-* [Click here for Java](./tutorials/build_a_node_in_java.md)
-* [Click here for Rust](./tutorials/build_a_node_in_rust.md)
-
-## Introduction
-Lightning Development Kit (LDK) allows you to build a lightning
-node without needing to worry about getting all of the lightning state machine,
-routing, and on-chain punishment code (and other chain interactions) exactly
-correct. LDK tends to be suitable for use cases where a degree of
-customization is desired, e.g. your own chain sync, your own key management
-and/or your own storage/backup logic.
-
-We are currently working on a demo node which fetches blockchain data and
-on-chain funds via Bitcoin Core RPC/REST. The individual pieces of that demo
-are/will be composable, so you can pick the off-the-shelf parts you want and
-replace the rest.
-
 ## LDK Batteries
+
 While LDK provides all the core lightning state machine logic, other
 batteries/modules are needed to run a node. LDK interacts with these modules
 through generic interfaces, meaning the user can choose the implementation that
@@ -72,7 +51,7 @@ batteries, which are enumerated below.
   While LDK's default implementation is currently within Rust-Lightning, it is
   still considered a sample module.
 * Transaction filtering
-  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](./basic-features/blockchain_data.md).
+  * Clients running a light client may wish to filter for transactions on a separate server, in which case LDK will tell them about transactions to filter for. More information is available in the [Blockchain Data guide](/basic-features/blockchain_data.md).
 * Fee estimation
   * LDK's sample node implementation uses Bitcoin Core's fee estimation API [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/bitcoind_client.rs#L98-L154).
 * Transaction broadcasting
@@ -80,38 +59,3 @@ batteries, which are enumerated below.
 * Random number generation
   * Because LDK aims to make no system calls, it is restricted from generating its own randomness.
   * LDK's sample node implementation uses Rust's `rand` crate [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L464-L465) and elsewhere.
-
-
-## LDK Architecture
-![LDK Architecture](./assets/ldk-architecture.svg)
-
-LDK's core components are shown in the center box labeled `lightning`. Boxes
-with dotted borders are LDK's batteries — these must be configured with either
-off-the-shelf or custom implementations that you provide.
-
-EventHandler in the diagram is not so much a necessary LDK battery, but instead
-refers to the fact that LDK generates events that the user should handle (e.g.
-the `PaymentReceived` event).
-
-## References
-
-### [Rust Documentation](https://docs.rs/lightning)
-
-These provide the most searchable and comprehensive documentation on LDK.
-If you're using Java and want more information on any method/struct/etc., searching
-the Rust docs for the Rust version of that struct/method is your best bet.
-
-### [Rust Sample Node](https://github.com/lightningdevkit/ldk-sample)
-
-The sample serves as a complete reference for constructing a lightning node with
-the LDK. This is a good starting point if you want a self-guided tour!
-
-### [Swift LDK Documentation](https://github.com/arik-so/SwiftLightning/tree/master/Documentation)
-
-These docs are mainly geared towards how Swift could call LDK C bindings directly, but still may
-provide a useful overview of Rust Lightning in the context of language bindings.
-
-### [LDK Architecture](https://docs.google.com/drawings/d/1Ql-q5gyrPnJhi7z_D39jayG0HEEVh6UEY1eULXb03Eg/edit?usp=sharing)
-
-Gives a high-level organization of LDK and how the pieces fit together. Variations of this diagram
-are used throughout the site. This is the primary source and is still a work in progress.

@@ -2,11 +2,7 @@
 /node_modules
 
 # Production
-/build
-
-# Generated files
-.docusaurus
-.cache-loader
+/docs/.vuepress/dist
 
 # Misc
 .DS_Store
@@ -16,5 +12,3 @@
 .env.production.local
 
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
