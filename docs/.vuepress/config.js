@@ -91,10 +91,10 @@ module.exports = {
         text: 'Tutorials',
         link: '/tutorials/build_a_node_in_java'
       },
-      {
-        text: 'Blog',
-        link: '/blog/'
-      },
+      // {
+      //   text: 'Blog',
+      //   link: '/blog/'
+      // },
       {
         text: 'Slack',
         link: slackUrl,
@@ -138,15 +138,15 @@ module.exports = {
             }
           ]
         },
-        {
-          title: 'More',
-          children: [
-            {
-              text: 'Blog',
-              link: '/blog/'
-            }
-          ]
-        }
+        // {
+        //   title: 'More',
+        //   children: [
+        //     {
+        //       text: 'Blog',
+        //       link: '/blog/'
+        //     }
+        //   ]
+        // }
       ],
       copyright: 'Copyright © 2021 LDK Developers'
     }
