@@ -80,6 +80,7 @@ module.exports = {
     displayAllHeaders: false,
     repo: 'lightningdevkit/lightningdevkit.org',
     docsDir: 'docs',
+    docsBranch: 'main',
     editLinks: true,
     sidebarDepth: 0,
     nav: [

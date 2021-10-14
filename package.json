@@ -19,7 +19,7 @@
   "config": {
     "dist": "docs/.vuepress/dist",
     "port": "8080",
-    "linkcheck": "blc -ro --filter-level 2 --requests 1 --exclude edit/master --exclude issues/new"
+    "linkcheck": "blc -ro --filter-level 2 --requests 1 --exclude edit/main --exclude issues/new"
   },
   "scripts": {
     "prestart": "rm -rf $npm_package_config_dist",
