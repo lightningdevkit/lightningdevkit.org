@@ -32,7 +32,7 @@
   "devDependencies": {
     "broken-link-checker": "0.7.8",
     "serve": "12.0.1",
-    "squarecrypto-vuepress-devkit-theme": "0.1.11",
+    "squarecrypto-vuepress-devkit-theme": "0.2.0",
     "start-server-and-test": "1.14.0",
     "vuepress": "1.8.2"
   }
