@@ -1,6 +1,6 @@
 # Overview
 
-LDK is a flexible lightning implementation with supporting batteries (or modules).
+LDK is a flexible Lightning implementation with supporting batteries (or modules).
 
 <div class="h2">To jump into integrating LDK with your application:</div>
 
@@ -8,8 +8,8 @@ LDK is a flexible lightning implementation with supporting batteries (or modules
 * [Click here for Rust](./tutorials/build_a_node_in_rust.md)
 
 ## Introduction
-Lightning Development Kit (LDK) allows you to build a lightning
-node without needing to worry about getting all of the lightning state machine,
+Lightning Development Kit (LDK) allows you to build a Lightning
+node without needing to worry about getting all of the Lightning state machine,
 routing, and on-chain punishment code (and other chain interactions) exactly
 correct. LDK tends to be suitable for use cases where a degree of
 customization is desired, e.g. your own chain sync, your own key management
@@ -21,7 +21,7 @@ are/will be composable, so you can pick the off-the-shelf parts you want and
 replace the rest.
 
 ## LDK Batteries
-While LDK provides all the core lightning state machine logic, other
+While LDK provides all the core Lightning state machine logic, other
 batteries/modules are needed to run a node. LDK interacts with these modules
 through generic interfaces, meaning the user can choose the implementation that
 best suits their needs. LDK provides sample implementations for many of these
@@ -42,24 +42,24 @@ batteries, which are enumerated below.
   * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-block-sync)
 * On-chain funds wallet/UTXO management
   * LDK owns on-chain funds as long as they are claimable as
-  a part of a lightning output which can be contested - once a channel is closed
+  a part of a Lightning output which can be contested - once a channel is closed
   and all on-chain outputs are spendable only by the user, we provide users
   notifications that a UTXO is "theirs" again and it is up to them to spend it
   as they wish. Additionally, channel funding is accomplished with a generic API
   which notifies users of the output which needs to appear on-chain, which they
   can then create a transaction for. Once a transaction is created, we handle
   the rest. This is a large part of our API's goals - making it easier to
-  integrate lightning into existing on-chain wallets which have their own
+  integrate Lightning into existing on-chain wallets which have their own
   on-chain logic - without needing to move funds in and out of a separate
-  lightning wallet with on-chain transactions and a separate private key system.
+  Lightning wallet with on-chain transactions and a separate private key system.
   * LDK does not currently provide a sample wallet module, but its sample node
     implementation uses Bitcoin Core's wallet for UTXO management e.g. [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L245-L260)
 * Networking
-  * To enable a user to run a full lightning node on an embedded
+  * To enable a user to run a full Lightning node on an embedded
   machine, we don't specify exactly how to connect to another node at all! We
   provide a default implementation which uses TCP sockets, but, e.g., if you
-  wanted to run your full lightning node on a hardware wallet, you could, by
-  piping the lightning network messages over USB/serial and then sending them in
+  wanted to run your full Lightning node on a hardware wallet, you could, by
+  piping the Lightning network messages over USB/serial and then sending them in
   a TCP socket from another machine.
   * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-net-tokio)
   * [**Sample module in Java**](https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk/batteries)
@@ -103,7 +103,7 @@ the Rust docs for the Rust version of that struct/method is your best bet.
 
 ### [Rust Sample Node](https://github.com/lightningdevkit/ldk-sample)
 
-The sample serves as a complete reference for constructing a lightning node with
+The sample serves as a complete reference for constructing a Lightning node with
 the LDK. This is a good starting point if you want a self-guided tour!
 
 ### [Swift LDK Documentation](https://github.com/arik-so/SwiftLightning/tree/master/Documentation)

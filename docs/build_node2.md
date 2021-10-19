@@ -1,7 +1,7 @@
 # Building a Node
 
 ## Introduction
-In this guide, we'll be walking through how to build a lightning node using LDK in Java.
+In this guide, we'll be walking through how to build a Lightning node using LDK in Java.
 
 The process breaks down to 3 overarching steps:
 1. Initializing LDK's channel, peer, chain monitoring, and (optionally) routing objects on startup.

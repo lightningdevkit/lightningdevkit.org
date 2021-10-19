@@ -80,7 +80,7 @@ let logger = YourLogger();
 **References:** [`Logger` docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html)
 
 ### 3. Initialize the `BroadcasterInterface`
-**What it's used for:** broadcasting various lightning transactions
+**What it's used for:** broadcasting various Lightning transactions
 
 **Example:**
 ```rust
@@ -215,7 +215,7 @@ let chain_monitor = ChainMonitor::new(
 **References:** [`ChainMonitor` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html)
 
 ### 7. Initialize the `KeysManager`
-**What it's used for:** providing keys for signing lightning transactions
+**What it's used for:** providing keys for signing Lightning transactions
 
 **Example:**
 
