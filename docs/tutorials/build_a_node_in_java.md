@@ -70,7 +70,7 @@ Logger logger = Logger.new_impl(new YourLogger());
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
 
 ### 3. Initialize the `BroadcasterInterface`
-**What it's used for:** broadcasting various lightning transactions
+**What it's used for:** broadcasting various Lightning transactions
 
 **Example:**
 
@@ -254,7 +254,7 @@ final chain_monitor = ChainMonitor.of(filter, tx_broadcaster, logger,
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java)
 
 ### 9. Initialize the `KeysManager`
-**What it's used for:** providing keys for signing lightning transactions
+**What it's used for:** providing keys for signing Lightning transactions
 
 **Example:**
 

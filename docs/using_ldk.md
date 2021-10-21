@@ -11,7 +11,7 @@ your lightning node.
 * [Sending Payments](#sending-payments) demonstrates making payments using your
   channels.
 * [Receiving Payments](#receiving-payments) walks through how to get paid via
-  lightning.
+  Lightning.
 
 Time to roll up your sleeves!
 

@@ -21,24 +21,24 @@ batteries, which are enumerated below.
   * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-block-sync)
 * On-chain funds wallet/UTXO management
   * LDK owns on-chain funds as long as they are claimable as
-  a part of a lightning output which can be contested - once a channel is closed
+  a part of a Lightning output which can be contested - once a channel is closed
   and all on-chain outputs are spendable only by the user, we provide users
   notifications that a UTXO is "theirs" again and it is up to them to spend it
   as they wish. Additionally, channel funding is accomplished with a generic API
   which notifies users of the output which needs to appear on-chain, which they
   can then create a transaction for. Once a transaction is created, we handle
   the rest. This is a large part of our API's goals - making it easier to
-  integrate lightning into existing on-chain wallets which have their own
+  integrate Lightning into existing on-chain wallets which have their own
   on-chain logic - without needing to move funds in and out of a separate
-  lightning wallet with on-chain transactions and a separate private key system.
+  Lightning wallet with on-chain transactions and a separate private key system.
   * LDK does not currently provide a sample wallet module, but its sample node
     implementation uses Bitcoin Core's wallet for UTXO management e.g. [here](https://github.com/lightningdevkit/ldk-sample/blob/2cd778e7acc959689e3b8462c529ffb3509aa1ec/src/main.rs#L245-L260)
 * Networking
-  * To enable a user to run a full lightning node on an embedded
+  * To enable a user to run a full Lightning node on an embedded
   machine, we don't specify exactly how to connect to another node at all! We
   provide a default implementation which uses TCP sockets, but, e.g., if you
-  wanted to run your full lightning node on a hardware wallet, you could, by
-  piping the lightning network messages over USB/serial and then sending them in
+  wanted to run your full Lightning node on a hardware wallet, you could, by
+  piping the Lightning network messages over USB/serial and then sending them in
   a TCP socket from another machine.
   * [**Sample module in Rust**](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-net-tokio)
   * [**Sample module in Java**](https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk/batteries)
