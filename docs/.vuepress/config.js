@@ -83,6 +83,19 @@ module.exports = {
     docsBranch: 'main',
     editLinks: true,
     sidebarDepth: 0,
+    algolia: {
+      indexName: 'lightningdevkit',
+      appId: 'BH4D9OD16A',
+      apiKey: '17ed8a4e16a1cb7d94da4e96f2ff817f',
+      // See https://www.algolia.com/doc/api-reference/api-parameters/
+      algoliaOptions: {
+        typoTolerance: 'min'
+      },
+      // See https://community.algolia.com/docsearch/behavior.html#autocompleteoptions
+      autocompleteOptions: {
+        openOnFocus: true
+      }
+    },
     nav: [
       {
         text: 'Docs',
