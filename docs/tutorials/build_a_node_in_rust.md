@@ -112,7 +112,7 @@ struct YourPersister();
 
 impl<ChannelSigner: Sign> Persist for YourPersister {
     fn persist_new_channel(
-        &self, funding_txo: OutPoint, monitor: &ChannelMonitor<ChannelSigner>
+        &self, id: OutPoint, data: &ChannelMonitor<ChannelSigner>
     ) -> Result<(), ChannelMonitorUpdateErr> {
         // <insert code to persist the ChannelMonitor to disk and/or backups>
         // Note that monitor.encode() will get you the ChannelMonitor as a
@@ -121,9 +121,9 @@ impl<ChannelSigner: Sign> Persist for YourPersister {
 
 	fn update_persisted_channel(
         &self,
-        funding_txo: OutPoint,
+        id: OutPoint,
         update: &ChannelMonitorUpdate,
-        monitor: &ChannelMonitor<ChannelSigner>
+        data: &ChannelMonitor<ChannelSigner>
     ) -> Result<(), ChannelMonitorUpdateErr> {
         // <insert code to persist either the ChannelMonitor or the
         //  ChannelMonitorUpdate to disk>
@@ -156,7 +156,7 @@ returning or you may lose funds.
 
 **Dependencies:** *none*
 
-**References:** [`Persist` docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/trait.Persist.html), [Rust sample persister module](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-persister)
+**References:** [`Persist` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/trait.Persist.html), [Rust sample persister module](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-persister)
 
 ### 5. Optional: Initialize the Transaction `Filter`
 **You must follow this step if:** you are *not* providing full blocks to LDK,
