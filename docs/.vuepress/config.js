@@ -35,7 +35,7 @@ const docsSidebar = [
     title: 'API Reference',
     collapsable: false,
     children: [
-      ['https://docs.rs/lightning/0.0.99/lightning/', 'Rust'],
+      ['https://docs.rs/lightning/*/lightning/', 'Rust'],
       ['https://github.com/arik-so/SwiftLightning/tree/master/Documentation', 'Swift']
     ],
   }
