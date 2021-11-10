@@ -146,7 +146,7 @@ progress on sending or receiving payments until they return. You must ensure tha
 
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/trait.Persist.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
-### 6. Initialize the `ChannelManagerPersister`
+### 6. Initialize the `EventHandler`
 
 **What it's used for:** (1) LDK produces events that must be handled by you,
 such as telling you when a payment has been successfully received or when a
@@ -190,8 +190,7 @@ class YourObj implements ChannelManagerConstructor.EventHandler {
     }
 }
 
-ChannelManagerConstructor.ChannelManagerPersister channel_manager_persister =
-    new YourObj();
+ChannelManagerConstructor.EventHandler customEventHandler = new YourObj();
 ```
 
 **Dependencies:** *none*
@@ -383,7 +382,7 @@ chain_monitor.update_best_block(best_header, best_height);
 
 // Finally, tell LDK that chain sync is complete. This will also spawn several
 // background threads to handle networking and event processing.
-channel_manager_constructor.chain_sync_completed(channel_manager_persister);
+channel_manager_constructor.chain_sync_completed(customEventHandler);
 ```
 
 **Implementation notes:**
