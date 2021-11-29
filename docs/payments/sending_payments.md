@@ -1,4 +1,4 @@
-## Sending Payments
+# Sending Payments
 
 Lightning payments are used to pay invoices, which are typically encoded as a
 string in accordance with BOLT 11. After parsing the invoice, you'll need to

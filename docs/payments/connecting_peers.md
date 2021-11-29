@@ -1,4 +1,4 @@
-## Connecting Peers
+# Connecting Peers
 
 First things first, let's join the Lightning Network! Connections to other peers
 are established with `PeerManager`. You'll need to know the pubkey and address

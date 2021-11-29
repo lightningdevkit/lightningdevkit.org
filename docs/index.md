@@ -3,7 +3,7 @@ home: true
 heroText: Lightning Dev Kit
 tagline: The simplest way to integrate Lightning into your Bitcoin wallet
 actionText: Get started
-actionLink: /getting-started/
+actionLink: /introduction/
 features:
 - title: "Customizable"
   details: "Designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
@@ -27,16 +27,12 @@ features:
 
 We support native API's including Rust, C, Swift, Java & Kotlin so you can build Lightning applications in your preferred programming language. 
 
-<!-- [Documentation →](./getting-started/) -->
-
 </div>
 
 <div class="feature">
 <h3>Custom Persistent Storage</h3>
 
 Our API's let you choose how to backup channel state. This gives you multi-wallet device access and lets you save state locally, to the cloud or an alternative backup scheme.
-
-<!-- [Documentation →](./getting-started/) -->
 
 </div>
 
@@ -45,16 +41,12 @@ Our API's let you choose how to backup channel state. This gives you multi-walle
 
 Use a local full node, an SPV node, or your own Electrum server with API access to source data about the blockchain  and feed it to LDK for decision-making about whether to sign a state update.
 
-<!-- [Documentation →](./basic-features/blockchain_data/) -->
-
 </div>
 
 <div class="feature">
 <h3>Single Wallet</h3>
 
 No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience. 
-
-<!-- [Documentation →](./getting-started/) -->
 
 </div>
 </div>
