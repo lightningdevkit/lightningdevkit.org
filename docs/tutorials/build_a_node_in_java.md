@@ -20,7 +20,7 @@ shutdown checklist.
 ```java
 class YourFeeEstimator implements FeeEstimator.FeeEstimatorInterface {
     @Override
-    public int get_est_sat_per_1000_weight(LDKConfirmationTarget conf_target) {
+    public int get_est_sat_per_1000_weight(ConfirmationTarget conf_target) {
         if (conf_target ==
             ConfirmationTarget.LDKConfirmationTarget_Background) {
             // <insert code to retrieve a background feerate>
