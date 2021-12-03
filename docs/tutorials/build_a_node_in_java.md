@@ -92,26 +92,29 @@ BroadcasterInterface tx_broadcaster =
 
 **References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
-### 4. Optional: Initialize the `NetGraphMsgHandler`
+### 4. Optional: Initialize the `NetworkGraph`
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
 **What it's used for:** generating routes to send payments over
 
-**Example:** initializing `NetGraphMsgHandler` without providing an `Access`
+**Example:** initializing `NetworkGraph` on signet
 
 ```java
-final byte[] genesis_block_hash = // <insert the genesis block hash>
-final NetGraphMsgHandler router = NetGraphMsgHandler.of(
-    NetworkGraph.of(genesis_block_hash), Option_AccessZ.none(), logger);
+Network network = Network.LDKNetwork_Signet;
+
+BestBlock genesisBlock = BestBlock.from_genesis(network);
+final byte[] genesis_block_hash = genesisBlock.block_hash();
+
+final NetworkGraph networkGraph = NetworkGraph.of(genesis_block_hash);
 ```
 
-**Implementation notes:** this struct is not required if you are providing your own routes.
+**Implementation notes:** this struct is not required if you are providing your own routes. It will be used internally in `ChannelManagerConstructor` to build a `NetGraphMsgHandler`. Other networking options are: `LDKNetwork_Bitcoin`, `LDKNetwork_Regtest` and `LDKNetwork_Testnet`.
 
-**Dependencies:** `Logger`
+**Dependencies:** *none*
 
-**Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
+**Optional dependency:** `BestBlock`, the best known block as identified by its hash and height. Recommended to retrieve the genesis block from the target network.
 
-**References:** [`NetGraphMsgHandler` Rust docs](https://docs.rs/lightning/*/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [`NetGraphMsgHandler` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetGraphMsgHandler.java), [`Access` Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [`Access` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Access.java)
+**References:** [`NetworkGraph` Rust docs](https://docs.rs/lightning/0.0.103/lightning/routing/network_graph/struct.NetworkGraph.html), [`NetworkGraph` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/NetworkGraph.java), [`BestBlock` Rust docs](https://docs.rs/lightning/0.0.103/lightning/chain/struct.BestBlock.html), [`BestBlock` Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BestBlock.java)
 
 ### 5. Initialize `Persist`
 **What it's used for:** persisting crucial channel data in a timely manner
