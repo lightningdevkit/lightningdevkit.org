@@ -74,7 +74,7 @@ match event {
 else if (e instanceof Event.PaymentReceived) {
 	// Handle successful payment
 	Event.PaymentReceived event = ((Event.PaymentReceived) e);
-	assert event.payment_preimage insanceof Option_PaymentPreimageZ;
+	assert event.payment_preimage instanceof Option_PaymentPreimageZ;
 	byte[] payment_preimage = ((Option_PaymentPreimageZ.Some) event.payment_preimage).some;
 	assert channel_manager.claim_funds(payment_preimage);
 }
