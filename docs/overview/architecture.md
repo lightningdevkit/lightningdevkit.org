@@ -1,5 +1,5 @@
 ## LDK Architecture
-![LDK Architecture](./assets/ldk-architecture.svg)
+![LDK Architecture](../assets/ldk-architecture.svg)
 
 LDK's core components are shown in the center box labeled `lightning`. Boxes
 with dotted borders are LDK's batteries — these must be configured with either

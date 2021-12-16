@@ -12,23 +12,55 @@ const docsSidebar = [
     title: 'Documentation',
     collapsable: false,
     children: [
-      '/getting-started',
       {
-        title: 'Basic Features',
+        title: 'Introduction',
+        path: '/introduction/',
         collapsable: true,
         children: [
-          ['/basic-features/key_management', 'Key management'],
-          ['/basic-features/blockchain_data', 'Blockchain data'],
-          ['/basic-features/connecting_peers', 'Connecting peers'],
-          ['/basic-features/managing_channels', 'Managing channels'],
-          ['/basic-features/sending_payments', 'Sending payments'],
-          ['/basic-features/receiving_payments', 'Receiving Payments']
+          ['/introduction/use_cases', 'Use Cases'],
         ]
       },
+      '/running-a-sample-ldk-node',
+      {
+        title: 'Overview',
+        collapsable: true,
+        children: [
+          ['/overview/architecture', 'LDK Architecture'],
+          ['/overview/persistent_storage', 'Persistent Storage'],
+          ['/overview/blockchain_data', 'Blockchain Data'],
+          ['/overview/wallet_management', 'Wallet Management'],
+          ['/overview/networking', 'Networking'],
+          ['/overview/private_key_management', 'Private Key Management'],
+          ['/overview/transactions', 'Transactions'],
+          ['/overview/random_number_generation', 'Random Number Generation'],
+        ]
+      },
+      {
+        title: 'Payments',
+        path: '/payments/',
+        collapsable: true,
+        children: [
+          ['/payments/connecting_peers', 'Connecting Peers'],
+          ['/payments/managing_channels', 'Managing Channels'],
+          ['/payments/sending_payments', 'Sending Payments'],
+          ['/payments/receiving_payments', 'Receiving Payments'],
+        ]
+      },
+      {
+        title: 'Blockchain Data',
+        collapsable: true,
+        children: [
+          ['/blockchain_data/introduction', 'Introduction'],
+          ['/blockchain_data/chain_activity', 'Chain Activity'],
+          ['/blockchain_data/block_source', 'Block Source'],
+          ['/blockchain_data/full_blocks', 'Full Blocks'],
+          ['/blockchain_data/pre_filtered_blocks', 'Pre-filtered Blocks'],
+          ['/blockchain_data/confirmed_transactions', 'Confirmed Transactions'],
+          ['/blockchain_data/transaction_broadcasting', 'Transaction Broadcasting'],
+        ]
+      },
+      '/key_management',
       '/examples',
-      '/batteries',
-      '/architecture',
-      '/use_cases',
     ]
   },
   {
@@ -99,7 +131,7 @@ module.exports = {
     nav: [
       {
         text: 'Docs',
-        link: '/getting-started/'
+        link: '/introduction/'
       },
       {
         text: 'Tutorials',
@@ -132,8 +164,8 @@ module.exports = {
           title: 'Docs',
           children: [
             {
-              text: 'Getting Started',
-              link: '/getting-started/'
+              text: 'Payments',
+              link: '/payments/'
             }
           ]
         },

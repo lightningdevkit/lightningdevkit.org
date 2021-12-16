@@ -231,11 +231,11 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 });
 ```
 
-**Implementation notes:** see the [Blockchain Data](/basic-features/blockchain_data.md) guide for more info
+**Implementation notes:** see the [Blockchain Data](/blockchain_data/introduction.md) guide for more info
 
 **Dependencies:** *none*
 
-**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Filter.java), [Blockchain Data guide](/basic-features/blockchain_data.md)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Filter.java), [Blockchain Data guide](/blockchain_data/introduction.md)
 
 ### 8. Initialize the `ChainMonitor`
 **What it's used for:** monitoring the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
@@ -270,7 +270,7 @@ KeysManager keys_manager = KeysManager.of(key_seed,
 ```
 
 **Implementation notes:**
-* See the [Key Management](/basic-features/key_management.md) guide for more info
+* See the [Key Management](/key_management.md) guide for more info
 * Note that you must write the `key_seed` you give to the `KeysManager` on
   startup to disk, and keep using it to initialize the `KeysManager` every time
   you restart. This `key_seed` is used to derive your node's secret key (which
@@ -281,7 +281,7 @@ generation is unique across restarts.
 
 **Dependencies:** random bytes
 
-**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java), [Key Management guide](/basic-features/key_management.md)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java), [Key Management guide](/key_management.md)
 
 ### 10. Read `ChannelMonitor`s from disk
 
