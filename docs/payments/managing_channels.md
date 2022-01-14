@@ -1,10 +1,10 @@
-## Managing Channels
+# Managing Channels
 
 Channels are the basic building blocks of the Lightning Network. With channels,
 you can transact not only with your immediate peers but with others on the
 network. Let's explore how to open and close channels with LDK.
 
-### Opening a Channel
+## Opening a Channel
 
 Now that you have a peer, you can open a channel with them using
 `ChannelManager`. You'll need the peer's pubkey as before along with:
@@ -149,12 +149,12 @@ if (e instanceof Event.FundingGenerationReady) {
 After `ChannelManager` has broadcast the funding transaction, the channel will
 become usable once the transaction has enough confirmations and will appear in
 `ChannelManager::list_usable_channels`. See the guide on
-[Blockchain Data](./blockchain_data.md) for details on confirmations.
+[Blockchain Data](../blockchain_data/introduction.md) for details on confirmations.
 
 With a fully funded channel, you can now make Lightning payments! No more hefty
 on-chain fees and long confirmation times when you're transacting on layer 2.
 
-### Closing a Channel
+## Closing a Channel
 
 While a channel can remain open indefinitely, there may come a time when you
 need to close it. There are two ways to close a channel: either cooperatively or

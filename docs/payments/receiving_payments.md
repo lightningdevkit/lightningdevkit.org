@@ -1,4 +1,4 @@
-## Receiving Payments
+# Receiving Payments
 
 To receive a payment, you'll need to create an invoice of your own with an
 amount and description. `ChannelManager` contains the remaining information
@@ -74,7 +74,7 @@ match event {
 else if (e instanceof Event.PaymentReceived) {
 	// Handle successful payment
 	Event.PaymentReceived event = ((Event.PaymentReceived) e);
-	assert event.payment_preimage insanceof Option_PaymentPreimageZ;
+	assert event.payment_preimage instanceof Option_PaymentPreimageZ;
 	byte[] payment_preimage = ((Option_PaymentPreimageZ.Some) event.payment_preimage).some;
 	assert channel_manager.claim_funds(payment_preimage);
 }
@@ -82,3 +82,6 @@ else if (e instanceof Event.PaymentReceived) {
 
 :::
 ::::
+
+So there you have it! Those are the basics of using LDK. As you can see, LDK
+offers a ton of flexibility for building Lightning-enabled wallets and apps.
