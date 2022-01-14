@@ -12,7 +12,7 @@ A `KeysManager` can be constructed simply with only a 32-byte seed and some inte
 let mut random_32_bytes = [0; 32];
 // Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
-let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(random_32-bytes, start_time.as_secs(), start_time.subsec_nanos());
+let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
 ```
 
 Spending On-Chain Funds
