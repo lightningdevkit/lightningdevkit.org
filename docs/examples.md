@@ -11,8 +11,8 @@ This repository contains a sample implementation of LDK as the result of followi
 
 ### [Kotlin Sample Node](https://github.com/BlueWallet/HelloLightning)
 
-Kotlin based CLI lightning network server based on LDK. Provides HTTP-RPC interface
+Kotlin based CLI lightning network server based on LDK. Provides HTTP-RPC interface.
 
 ### [BDK + LDK Sample Node](https://github.com/johncantrell97/bdk-ldk)
 
-This library hopes to bridge the gap needed to implement a ldk-based lightning client using a `bdk::Wallet`.
+This library hopes to bridge the gap needed to implement a LDK-based lightning client using a `bdk::Wallet`.
