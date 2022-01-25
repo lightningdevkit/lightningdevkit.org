@@ -13,6 +13,6 @@ This repository contains a sample implementation of LDK as the result of followi
 
 Kotlin based CLI lightning network server based on LDK. Provides HTTP-RPC interface.
 
-### [BDK + LDK Sample Node](https://github.com/johncantrell97/bdk-ldk)
+### [LDK + BDK Sample Node](https://github.com/johncantrell97/ldk-bdk-sample)
 
 This library hopes to bridge the gap needed to implement a LDK-based lightning client using a `bdk::Wallet`.
