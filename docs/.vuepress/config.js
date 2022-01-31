@@ -67,7 +67,18 @@ const docsSidebar = [
     title: 'API Reference',
     collapsable: false,
     children: [
-      ['https://docs.rs/lightning/*/lightning/', 'Rust'],
+      {
+        title: "Rust",
+        collapsable: true,
+        children: [
+          ['https://docs.rs/lightning/*/lightning/', 'lightning'],
+          ['https://docs.rs/lightning-background-processor/*/lightning_background_processor/', 'lightning-background-processor'],
+          ['https://docs.rs/lightning-block-sync/*/lightning_block_sync/', 'lightning-block-sync'],
+          ['https://docs.rs/lightning-invoice/*/lightning_invoice/', 'lightning-invoice'],
+          ['https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/', 'lightning-net-tokio'],
+          ['https://docs.rs/lightning-persister/*/lightning_persister/', 'lightning-persister'],
+        ]
+      },
       ['https://github.com/arik-so/SwiftLightning/tree/master/Documentation', 'Swift']
     ],
   }
