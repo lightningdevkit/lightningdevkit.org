@@ -5,6 +5,7 @@ const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
 const githubUrl = 'https://github.com/lightningdevkit'
 const slackUrl = 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ'
+const discordUrl = 'https://discord.gg/5AcknnMfBw'
 const themeColor = '#ffffff'
 
 const docsSidebar = [
@@ -153,11 +154,6 @@ module.exports = {
       //   link: '/blog/'
       // },
       {
-        text: 'Slack',
-        link: slackUrl,
-        rel: 'noopener noreferrer'
-      },
-      {
         text: 'GitHub',
         link: githubUrl,
         rel: 'noopener noreferrer'
@@ -175,24 +171,58 @@ module.exports = {
           title: 'Docs',
           children: [
             {
+              text: 'Introduction',
+              link: '/introduction/'
+            },
+            {
+              text: 'Running a sample LDK node',
+              link: '/running-a-sample-ldk-node/'
+            },
+            {
+              text: 'LDK Architecture',
+              link: '/overview/architecture/'
+            },
+            {
               text: 'Payments',
               link: '/payments/'
+            },
+            {
+              text: 'Blockchain Data',
+              link: '/blockchain_data/introduction/'
+            },
+            {
+              text: 'Key Management',
+              link: '/key_management/'
+            },
+            {
+              text: 'Examples',
+              link: '/examples/'
             }
           ]
         },
         {
-          title: 'Community',
+          title: 'Channels',
           children: [
+            {
+              text: 'GitHub',
+              link: githubUrl,
+              rel: 'noopener noreferrer'
+            },
             {
               text: 'Slack',
               link: slackUrl,
               rel: 'noopener noreferrer'
             },
             {
-              text: 'GitHub',
-              link: githubUrl,
+              text: 'Discord',
+              link: discordUrl,
               rel: 'noopener noreferrer'
-            }
+            },
+            {
+              text: 'Twitter',
+              link: "https://twitter.com/lightningdevkit",
+              rel: 'noopener noreferrer'
+            },         
           ]
         },
         // {
