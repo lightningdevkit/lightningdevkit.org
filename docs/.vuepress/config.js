@@ -154,6 +154,16 @@ module.exports = {
       //   link: '/blog/'
       // },
       {
+        text: 'Slack',
+        link: slackUrl,
+        rel: 'noopener noreferrer'
+      },
+      {
+        text: 'Discord',
+        link: discordUrl,
+        rel: 'noopener noreferrer'
+      },
+      {
         text: 'GitHub',
         link: githubUrl,
         rel: 'noopener noreferrer'
@@ -175,7 +185,7 @@ module.exports = {
               link: '/introduction/'
             },
             {
-              text: 'Running a sample LDK node',
+              text: 'Sample LDK node',
               link: '/running-a-sample-ldk-node/'
             },
             {
@@ -201,7 +211,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Channels',
+          title: 'Community',
           children: [
             {
               text: 'GitHub',
@@ -209,31 +219,36 @@ module.exports = {
               rel: 'noopener noreferrer'
             },
             {
-              text: 'Slack',
-              link: slackUrl,
-              rel: 'noopener noreferrer'
-            },
-            {
-              text: 'Discord',
-              link: discordUrl,
-              rel: 'noopener noreferrer'
-            },
-            {
               text: 'Twitter',
               link: "https://twitter.com/lightningdevkit",
               rel: 'noopener noreferrer'
-            },         
+            }, 
+            {
+              text: 'Chat on Discord',
+              link: discordUrl,
+              rel: 'noopener noreferrer'
+            }, 
+            {
+              text: 'Chat on Slack',
+              link: slackUrl,
+              rel: 'noopener noreferrer'
+            },
+                   
           ]
         },
-        // {
-        //   title: 'More',
-        //   children: [
-        //     {
-        //       text: 'Blog',
-        //       link: '/blog/'
-        //     }
-        //   ]
-        // }
+        {
+          title: 'More',
+          children: [
+            {
+              text: 'LDK Documentary',
+              link: 'https://www.youtube.com/watch?v=oOT78Bgy1Qw'
+            }
+            // {
+            //   text: 'Blog',
+            //   link: '/blog/'
+            // }
+          ]
+        }
       ],
       copyright: 'Copyright © 2022 LDK Developers'
     }

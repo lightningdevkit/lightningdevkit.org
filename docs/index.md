@@ -9,7 +9,7 @@ features:
   details: "Designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
   image: "customizable"
 - title: "Focus on what matters"
-  details: "All of the low-level Lightning logic is handled by us, so you can focus on crafting custom-tailored user experiences."
+  details: "A full implementation of the Lightning Network protocol, so you can focus on crafting custom-tailored user experiences."
   image: "focus"
 - title: "High performance & compact"
   details: "As lightweight as you need it to be and optimized to run on all embedded devices such as mobile phones, IoT devices, PoS terminals and more."
