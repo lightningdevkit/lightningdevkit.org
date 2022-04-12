@@ -693,28 +693,37 @@ fn handle_ldk_event(..) {
 
 **References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html)
 
-### 17. Initialize the `ChannelManagerPersister`
+### 17. Initialize the `Persister`
 
 **What it's used for:** keeping `ChannelManager`'s stored state up-to-date
 
 **Example:**
 
 ```rust
-// In this example, we provide a closure to handle ChannelManager persistence.
-// But you're also free to provide an implementation of the trait
-// `ChannelManagerPersister` instead.
+// In this example, we provide an implementation of the trait `Persister`
 
-// This callback will be used in the Step 18 for regular persistence.
-let persist_channel_manager_callback = move |node: &ChannelManager| {
-	FilesystemPersister::persist_manager(ldk_data_dir, &*node)
-};
+struct YourDataPersister()
+
+impl Persister for YourDataPersister {
+	fn persist_manager(&self, channel_manager: &ChannelManager) -> Result<(), std::io::Error> {
+		// <insert code to persist the ChannelManager to disk and/or backups>
+	}
+
+	fn persist_graph(&self, network_graph: &NetworkGraph) -> Result<(), std::io::Error> {
+	   // <insert code to persist the NetworkGraph to disk and/or backups>
+	}
+}
+
+// This will be used in the Step 18 for regular persistence.
+let persister = DataPersister { data_dir: ldk_data_dir.clone() };
+
 ```
 
 **Implementation notes:** if the `ChannelManager` is not persisted properly to disk, there is risk of channels force closing the next time LDK starts up. However, in this situation, no funds other than those used to pay force-closed channel fees are at risk of being lost.
 
 **Dependencies:** `ChannelManager`
 
-**References:** [`ChannelManagerPersister` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/trait.ChannelManagerPersister.html)
+**References:** [`Persister` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/trait.Persister.html)
 
 ### 18. Start Background Processing
 
@@ -723,7 +732,7 @@ let persist_channel_manager_callback = move |node: &ChannelManager| {
 **Example:**
 ```rust
 let background_processor = BackgroundProcessor::start(
-	persist_channel_manager_callback,
+	persister,
 	handle_event_callback,
 	&chain_monitor,
 	&channel_manager,
