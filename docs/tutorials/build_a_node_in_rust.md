@@ -702,7 +702,9 @@ fn handle_ldk_event(..) {
 ```rust
 // In this example, we provide an implementation of the trait `Persister`
 
-struct YourDataPersister()
+struct YourDataPersister {
+	data_dir: String
+}
 
 impl Persister for YourDataPersister {
 	fn persist_manager(&self, channel_manager: &ChannelManager) -> Result<(), std::io::Error> {
@@ -710,7 +712,7 @@ impl Persister for YourDataPersister {
 	}
 
 	fn persist_graph(&self, network_graph: &NetworkGraph) -> Result<(), std::io::Error> {
-	   // <insert code to persist the NetworkGraph to disk and/or backups>
+		// <insert code to persist the NetworkGraph to disk and/or backups>
 	}
 }
 
@@ -721,7 +723,7 @@ let persister = DataPersister { data_dir: ldk_data_dir.clone() };
 
 **Implementation notes:** if the `ChannelManager` is not persisted properly to disk, there is risk of channels force closing the next time LDK starts up. However, in this situation, no funds other than those used to pay force-closed channel fees are at risk of being lost.
 
-**Dependencies:** `ChannelManager`
+**Dependencies:** `ChannelManager`, `NetworkGraph`
 
 **References:** [`Persister` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/trait.Persister.html)
 
