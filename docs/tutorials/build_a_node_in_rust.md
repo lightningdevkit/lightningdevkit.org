@@ -503,7 +503,7 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 
 ```rust
 let genesis = genesis_block(Network::Testnet).header.block_hash();
-let router = Arc::new(NetGraphMsgHandler::new(
+let net_graph_msg_handler = Arc::new(NetGraphMsgHandler::new(
 	genesis,
 	None::<Arc<dyn chain::Access + Send + Sync>>,
 	&logger,
@@ -529,7 +529,7 @@ let mut ephemeral_bytes = [0; 32];
 rand::thread_rng().fill_bytes(&mut ephemeral_bytes);
 let lightning_msg_handler = MessageHandler {
 	chan_handler: &channel_manager,
-	route_handler: &router,
+	route_handler: &net_graph_msg_handler,
 };
 let ignoring_custom_msg_handler = IgnoringMessageHandler {};
 let peer_manager = PeerManager::new(
@@ -717,7 +717,7 @@ impl Persister for YourDataPersister {
 }
 
 // This will be used in the Step 18 for regular persistence.
-let persister = DataPersister { data_dir: ldk_data_dir.clone() };
+let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
 
 ```
 
@@ -738,6 +738,7 @@ let background_processor = BackgroundProcessor::start(
 	handle_event_callback,
 	&chain_monitor,
 	&channel_manager,
+	&net_graph_msg_handler
 	&peer_manager,
 	&logger,
 );
