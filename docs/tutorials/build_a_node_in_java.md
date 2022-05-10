@@ -191,6 +191,11 @@ class YourObj implements ChannelManagerConstructor.EventHandler {
     public void persist_manager(byte[] channel_manager_bytes) {
         // <insert code to persist channel_manager_bytes to disk and/or backups>
     }
+
+    @Override
+    public void persist_network_graph(byte[] network_graph_bytes) {
+        // <insert code to persist network_graph_bytes to disk and/or backups>
+    }
 }
 
 ChannelManagerConstructor.EventHandler customEventHandler = new YourObj();
