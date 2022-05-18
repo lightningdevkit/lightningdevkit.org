@@ -769,12 +769,12 @@ let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
 ```rust
 let background_processor = BackgroundProcessor::start(
 	persister,
-	&invoice_payer,
-	&chain_monitor,
-	&channel_manager,
-	&net_graph_msg_handler
-	&peer_manager,
-	&logger,
+	Arc::clone(&invoice_payer),
+	Arc::clone(&chain_monitor),
+	Arc::clone(&channel_manager),
+	Arc::clone(&network_gossip)
+	Arc:clone(&peer_manager),
+	Arc:clone(&logger),
 );
 ```
 
