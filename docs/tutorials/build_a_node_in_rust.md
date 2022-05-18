@@ -694,9 +694,9 @@ fn handle_ldk_event(..) {
 **What it's used for:** to find a suitable payment path to reach the destination.
 
 ```rust
-let params = ProbabilisticScoringParameters::default()
+let params = ProbabilisticScoringParameters::default();
 
-let scorer = ProbabilisticScorer::new(params, Arc:clone(&network_graph))
+let scorer = ProbabilisticScorer::new(params, Arc:clone(&network_graph));
 ```
 
 **Dependencies** `NetworkGraph`
@@ -716,7 +716,7 @@ let invoice_payer = InvoicePayer::new(
 	&scorer,
 	&logger,
 	event_handler
-	payment::RetryAttempts(5)
+	payment::RetryAttempts(5),
 )
 ```
 
