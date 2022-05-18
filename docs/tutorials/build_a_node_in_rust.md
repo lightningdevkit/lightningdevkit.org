@@ -720,7 +720,7 @@ let invoice_payer = InvoicePayer::new(
 )
 ```
 
-**Implementation notes:** The scorer is used when finding a route and when handling events from successful and failed paths. The retrier consumes those events by telling the scorer that a path has failed or succeeded and then retries by querying for a (potentially new) path with the updated scorer. LDK users can use the LDK scorer and their own retry logic, the latter of which delegates to the scorer.
+**Implementation notes:** The scorer is used when finding a route and when handling events from successful and failed paths. The retrier consumes those events by telling the scorer that a path has failed or succeeded and then retries by querying for a (potentially new) path with the updated scorer.
 
 **Dependencies** `ChannelManager`, `DefaultRouter`, `ProbablisticScorer`, `Logger`, `Event`, `RetryAttempts`
 
