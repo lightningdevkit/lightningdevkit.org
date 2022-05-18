@@ -708,7 +708,7 @@ let scorer = ProbabilisticScorer::new(params, Arc:clone(&network_graph))
 **What it's used for:** to create an invoice payer that retries failed payment paths.
 
 ```rust
-let router = DefaultRouter::new(&network_graph, &logger, keys_manager.get_secure_random_bytes())
+let router = DefaultRouter::new(Arc:clone(&network_graph), &logger, keys_manager.get_secure_random_bytes())
 
 let invoice_payer = InvoicePayer::new(
 	&channel_manager, 
