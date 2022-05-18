@@ -656,7 +656,7 @@ chain_monitor.update_best_block(new_best_header, new_best_height);
 
 **References:** [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html)
 
-### Step 15. Initialize the `EventHandler`
+### Step 15. Initialize an `EventHandler`
 **What it's used for:** LDK generates events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
 
 ```rust
