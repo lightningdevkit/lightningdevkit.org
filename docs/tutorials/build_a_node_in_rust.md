@@ -696,7 +696,7 @@ fn handle_ldk_event(..) {
 ```rust
 let params = ProbabilisticScoringParameters::default()
 
-let scorer = ProbabilisticScorer::new(params, &network_graph)
+let scorer = ProbabilisticScorer::new(params, Arc:clone(&network_graph))
 ```
 
 **Dependencies** `NetworkGraph`
