@@ -502,11 +502,11 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 
 ```rust
 let genesis_hash = genesis_block(Network::Testnet).header.block_hash();
-let network_graph = NetworkGraph::new(genesis_hash)
-let net_graph_msg_handler = Arc::new(NetGraphMsgHandler::new(
-	genesis_hash,
+let network_graph = Arc::new(NetworkGraph::new(genesis_hash))
+let network_gossip = Arc::new(NetGraphMsgHandler::new(
+	Arc::clone(&network_graph),
 	None::<Arc<dyn chain::Access + Send + Sync>>,
-	&logger,
+	Arc:clone(&logger),
 ));
 ```
 
