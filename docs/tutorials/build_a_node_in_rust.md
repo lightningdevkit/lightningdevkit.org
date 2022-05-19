@@ -503,7 +503,7 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 ```rust
 let genesis_hash = genesis_block(Network::Testnet).header.block_hash();
 let network_graph = Arc::new(NetworkGraph::new(genesis_hash))
-let network_gossip = Arc::new(NetGraphMsgHandler::new(
+let net_graph_msg_handler = Arc::new(NetGraphMsgHandler::new(
 	Arc::clone(&network_graph),
 	None::<Arc<dyn chain::Access + Send + Sync>>,
 	Arc:clone(&logger),
@@ -696,35 +696,35 @@ fn handle_ldk_event(..) {
 ```rust
 let params = ProbabilisticScoringParameters::default();
 
-let scorer = ProbabilisticScorer::new(params, Arc:clone(&network_graph));
+let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&network_graph))));
 ```
 
 **Dependencies** `NetworkGraph`
 
 **Reference** [`ProbabilisticScorer` docs](https://docs.rs/lightning/*/lightning/routing/scoring/type.ProbabilisticScorer.html),
-[LDK sample node ProbabilisticScorer example](https://github.com/lightningdevkit/ldk-sample/blob/main/src/main.rs#L612)
+[LDK sample node ProbabilisticScorer example](https://github.com/lightningdevkit/ldk-sample/commit/6f6473bf1bb4a1b2149a9a5c3616c39653dec144#diff-42cb6807ad74b3e201c5a7ca98b911c5fa08380e942be6e4ac5807f8377f87fcR592)
 
 ### Step 17. Initialize the `InvoicePayer`
 **What it's used for:** to create an invoice payer that retries failed payment paths.
 
 ```rust
-let router = DefaultRouter::new(Arc:clone(&network_graph), &logger, keys_manager.get_secure_random_bytes())
+let router = DefaultRouter::new(Arc:clone(&network_graph), &logger, keys_manager.get_secure_random_bytes());
 
 let invoice_payer = InvoicePayer::new(
-	&channel_manager, 
+	Arc::clone(&channel_manager), 
 	router,
-	&scorer,
-	&logger,
-	event_handler
+	Arc::clone(&scorer),
+	Arc::clone(&logger),
+	event_handler,
 	payment::RetryAttempts(5),
-)
+);
 ```
 
 **Implementation notes:** The scorer is used when finding a route and when handling events from successful and failed paths. The retrier consumes those events by telling the scorer that a path has failed or succeeded and then retries by querying for a (potentially new) path with the updated scorer.
 
 **Dependencies** `ChannelManager`, `DefaultRouter`, `ProbablisticScorer`, `Logger`, `Event`, `RetryAttempts`
 
-**Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/blob/main/src/main.rs#L633)
+**Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/pull/40/commits/7a39a4df612ae282fcf2329be8fc1bf8da8a84db#diff-42cb6807ad74b3e201c5a7ca98b911c5fa08380e942be6e4ac5807f8377f87fcR602)
 
 
 ### Step 18. Initialize the `Persister`
@@ -751,7 +751,7 @@ impl Persister for YourDataPersister {
 }
 
 // This will be used in the Step 19 for regular persistence.
-let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
+let persister = YourDataPersister { data_dir: ldk_data_dir.clone() }
 
 ```
 
@@ -772,7 +772,7 @@ let background_processor = BackgroundProcessor::start(
 	Arc::clone(&invoice_payer),
 	Arc::clone(&chain_monitor),
 	Arc::clone(&channel_manager),
-	Arc::clone(&network_gossip)
+	Arc::clone(&net_graph_msg_handler),
 	Arc:clone(&peer_manager),
 	Arc:clone(&logger),
 );
