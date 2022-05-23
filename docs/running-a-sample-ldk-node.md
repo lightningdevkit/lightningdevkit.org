@@ -61,4 +61,6 @@ LDK logs are available at <your-supplied-ldk-data-dir-path>/.ldk/logs
 Local Node ID is 02e8788eb41ac1731352d87ced719afce91a1201cf0d6cca12ee79502db1b0e317.
 ```
 
+If you want to connect to another node you created with Polar select the node there. In the Connect tab you can copy the `P2P External` connection info. Running `connectpeer` with that will get you connected.
+
 To check out the complete reference for constructing a Lightning node with LDK check out the [Github repo](https://github.com/lightningdevkit/ldk-sample)
