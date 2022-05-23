@@ -702,7 +702,7 @@ let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&ne
 **Dependencies** `NetworkGraph`
 
 **Reference** [`ProbabilisticScorer` docs](https://docs.rs/lightning/*/lightning/routing/scoring/type.ProbabilisticScorer.html),
-[LDK sample node ProbabilisticScorer example](https://github.com/lightningdevkit/ldk-sample/commit/6f6473bf1bb4a1b2149a9a5c3616c39653dec144#diff-42cb6807ad74b3e201c5a7ca98b911c5fa08380e942be6e4ac5807f8377f87fcR592)
+[LDK sample node ProbabilisticScorer example](https://github.com/lightningdevkit/ldk-sample/blob/c0a722430b8fbcb30310d64487a32aae839da3e8/src/disk.rs#L100-L112)
 
 ### Step 17. Initialize the `InvoicePayer`
 **What it's used for:** to create an invoice payer that retries failed payment paths.
@@ -724,7 +724,7 @@ let invoice_payer = InvoicePayer::new(
 
 **Dependencies** `ChannelManager`, `DefaultRouter`, `ProbablisticScorer`, `Logger`, `Event`, `RetryAttempts`
 
-**Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/pull/40/commits/7a39a4df612ae282fcf2329be8fc1bf8da8a84db#diff-42cb6807ad74b3e201c5a7ca98b911c5fa08380e942be6e4ac5807f8377f87fcR602)
+**Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/blob/6f6473bf1bb4a1b2149a9a5c3616c39653dec144/src/main.rs#L615-L622)
 
 
 ### Step 18. Initialize the `Persister`
