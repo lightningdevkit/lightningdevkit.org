@@ -15,7 +15,7 @@ Note that LDK does not assume that safe shutdown is available, so there is no
 shutdown checklist.
 
 ## Setup
-### 1. Initialize the `FeeEstimator`
+### Step 1. Initialize the `FeeEstimator`
 
 **What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
@@ -48,7 +48,7 @@ retrieving fresh ones every time
 
 **References:** [`FeeEstimator` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.FeeEstimator.html)
 
-### 2. Initialize the `Logger`
+### Step 2. Initialize the `Logger`
 **What it's used for:** LDK logging
 
 **Example:**
@@ -79,7 +79,7 @@ let logger = YourLogger();
 
 **References:** [`Logger` docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html)
 
-### 3. Initialize the `BroadcasterInterface`
+### Step 3. Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various Lightning transactions
 
 **Example:**
@@ -99,7 +99,7 @@ let broadcaster = YourTxBroadcaster();
 
 **References:** [`BroadcasterInterface` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html)
 
-### 4. Initialize `Persist`
+### Step 4. Initialize `Persist`
 **What it's used for:** persisting `ChannelMonitor`s, which contain crucial channel data, in a timely manner
 
 **Example:**
@@ -158,13 +158,13 @@ returning or you may lose funds.
 
 **References:** [`Persist` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/trait.Persist.html), [Rust sample persister module](https://github.com/rust-bitcoin/rust-lightning/tree/main/lightning-persister)
 
-### 5. Optional: Initialize the Transaction `Filter`
+### Optional: Initialize the Transaction `Filter`
 **You must follow this step if:** you are *not* providing full blocks to LDK,
 i.e. if you're using BIP 157/158 or Electrum as your chain backend
 
 **What it's used for:** if you are not providing full blocks, LDK uses this
 object to tell you what transactions and outputs to watch for on-chain. You'll
-inform LDK about these transactions/outputs in Step 15.
+inform LDK about these transactions/outputs in Step 14.
 
 **Example:**
 ```rust
@@ -192,14 +192,14 @@ let filter = YourTxFilter();
 
 **References:** [`Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Blockchain Data guide](/blockchain_data.md)
 
-### 6. Initialize the `ChainMonitor`
+### Step 5. Initialize the `ChainMonitor`
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
 
 **Example:**
 
 ```rust
 let filter: Option<Box<dyn Filter>> = // leave this as None or insert the Filter trait
-                                      // object, depending on what you did for Step 5
+                                      // object, depending on what you did for Step 4
 
 let chain_monitor = ChainMonitor::new(
     filter, &broadcaster, &logger, &fee_estimator, &persister
@@ -214,7 +214,7 @@ let chain_monitor = ChainMonitor::new(
 
 **References:** [`ChainMonitor` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html)
 
-### 7. Initialize the `KeysManager`
+### Step 6. Initialize the `KeysManager`
 **What it's used for:** providing keys for signing Lightning transactions
 
 **Example:**
@@ -266,9 +266,9 @@ generation is unique across restarts.
 
 **References:** [`KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Key Management guide](/key_management.md)
 
-### 8. Marshal `ChannelMonitor`s from disk
+### Step 7. Read `ChannelMonitor` state from disk
 
-**What it's used for:** if LDK is restarting and has at least 1 channel, its `ChannelMonitor`s will need to be (1) fed to the `ChannelManager` in Step 9 and (2) synced to chain in Step 10.
+**What it's used for:** if LDK is restarting and has at least 1 channel, its `ChannelMonitor`s will need to be (1) fed to the `ChannelManager` in Step 8 and (2) synced to chain in Step 9.
 
 **Example:** using LDK's sample persistence module
 
@@ -278,7 +278,7 @@ let mut channel_monitors =
 	persister.read_channelmonitors(keys_manager.clone()).unwrap();
 
 // If you are using Electrum or BIP 157/158, you must call load_outputs_to_watch
-// on each ChannelMonitor to prepare for chain synchronization in Step 10.
+// on each ChannelMonitor to prepare for chain synchronization in Step 9.
 for chan_mon in channel_monitors.iter() {
     chan_mon.load_outputs_to_watch(&filter);
 }
@@ -288,7 +288,7 @@ for chan_mon in channel_monitors.iter() {
 
 **References:** [`load_outputs_to_watch` docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/struct.ChannelMonitor.html#method.load_outputs_to_watch)
 
-### 9. Initialize the `ChannelManager`
+### Step 8. Initialize the `ChannelManager`
 **What it's used for:** managing channel state
 
 **Example:**
@@ -302,7 +302,7 @@ let (channel_manager_blockhash, mut channel_manager) = {
     let channel_manager_file =
         fs::File::open(format!("{}/manager", ldk_data_dir.clone())).unwrap();
 
-    // Use the `ChannelMonitors` marshalled in Step 8.
+    // Use the `ChannelMonitors` we read from disk in Step 7.
 	let mut channel_monitor_mut_references = Vec::new();
 	for (_, channel_monitor) in channel_monitors.iter_mut() {
 		channel_monitor_mut_references.push(channel_monitor);
@@ -343,14 +343,14 @@ let (channel_manager_blockhash, mut channel_manager) = {
 ```
 
 **Implementation notes:** No methods should be called on `ChannelManager` until
-*after* Step 10.
+*after* Step 9.
 
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`
-* If restarting: `ChannelMonitor`s and `ChannelManager` bytes from Step 8 and Step 17 respectively
+* If restarting: `ChannelMonitor`s and `ChannelManager` bytes from Step 7 and Step 18 respectively
 
 **References:** [`ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html)
 
-### 10. Sync `ChannelMonitor`s and `ChannelManager` to chain tip
+### Step 9. Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 **What it's used for:** this step is only necessary if you're restarting and have open channels. This step ensures that LDK channel state is up-to-date with the bitcoin blockchain
 
 **Example:**
@@ -414,7 +414,7 @@ for monitor_listener_info in chain_listener_channel_monitors.iter_mut()
     ));
 }
 
-// Save the chain tip to be used in Step 15.
+// Save the chain tip to be used in Step 14.
 chain_tip = Some(
     init::synchronize_listeners(
         &mut block_source,
@@ -445,7 +445,6 @@ for txid in unconfirmed_txids.iter() {
 }
 
 // Retrieve transactions and outputs that were registered through the `Filter`
-// interface in Step 5.
 
 // If any of these txs/outputs were confirmed on-chain, then:
 let header = // insert block header from the block with confirmed tx/output
@@ -471,7 +470,7 @@ chain_monitor.update_best_block(best_header, best_height);
   * If you are connecting full blocks or using BIP 157/158, then it is recommended to use
 LDK's `lightning_block_sync` sample module as in the example above
   * Otherwise, you can use LDK's `Confirm` interface as in the Electrum example above
-* More details about LDK's interfaces to provide chain info in Step 15
+* More details about LDK's interfaces to provide chain info in Step 14
 
 **References:** [`Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/)
 
@@ -479,7 +478,7 @@ LDK's `lightning_block_sync` sample module as in the example above
 * If providing providing full blocks or BIP 157/158: set of `ChannelMonitor`s
 * If using Electrum: `ChainMonitor`
 
-### 11. Give `ChannelMonitor`s to `ChainMonitor`
+### Step 10. Give `ChannelMonitor`s to `ChainMonitor`
 **What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
 
 **Example:**
@@ -492,9 +491,9 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 
 **Dependencies:**
 * `ChainMonitor`, set of `ChannelMonitor`s and their funding outpoints
-* Step 10 must be completed prior to this step
+* Step 9 must be completed prior to this step
 
-### 12. Optional: Initialize the `NetGraphMsgHandler`
+### Step 11: Optional: Initialize the `NetGraphMsgHandler`
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
 **What it's used for:** generating routes to send payments over
@@ -502,11 +501,12 @@ for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
 **Example:** initializing `NetGraphMsgHandler` without providing an `Access`
 
 ```rust
-let genesis = genesis_block(Network::Testnet).header.block_hash();
+let genesis_hash = genesis_block(Network::Testnet).header.block_hash();
+let network_graph = Arc::new(NetworkGraph::new(genesis_hash))
 let net_graph_msg_handler = Arc::new(NetGraphMsgHandler::new(
-	genesis,
+	Arc::clone(&network_graph),
 	None::<Arc<dyn chain::Access + Send + Sync>>,
-	&logger,
+	Arc:clone(&logger),
 ));
 ```
 
@@ -518,7 +518,7 @@ let net_graph_msg_handler = Arc::new(NetGraphMsgHandler::new(
 
 **References:** [`NetGraphMsgHandler` docs](https://docs.rs/lightning/*/lightning/routing/network_graph/struct.NetGraphMsgHandler.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html)
 
-### 13. Initialize the `PeerManager`
+### Step 12. Initialize the `PeerManager`
 
 **What it's used for:** managing peer data and connections
 
@@ -547,7 +547,11 @@ let peer_manager = PeerManager::new(
 
 **References:** [`PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [`RoutingMessageHandler` docs](https://docs.rs/lightning/*/lightning/ln/msgs/trait.RoutingMessageHandler.html)
 
-### 14. Initialize Networking
+## Running LDK
+
+This section assumes you've already run all the steps in [Setup](#setup).
+
+### Step 13. Initialize Networking
 **What it's used for:** making peer connections, facilitating peer data to and from LDK
 
 **Example:**
@@ -576,11 +580,8 @@ loop {
 
 **References:** [Rust `lightning-net-tokio` sample networking module](https://docs.rs/lightning-net-tokio/0.0.14/lightning_net_tokio/)
 
-## Running LDK
 
-This section assumes you've already run all the steps in [Setup](#setup).
-
-### 15. Keep LDK Up-to-date with Chain Info
+### Step 14. Keep LDK Up-to-date with Chain Info
 **What it's used for:** LDK needs to know when blocks are newly connected and disconnected and when relevant transactions are confirmed and/or reorged out.
 
 **Example:**
@@ -596,7 +597,7 @@ if chain_tip.is_none() {
 	);
 }
 
-// Use your BlockSource from Step 10.
+// Use your BlockSource from Step 9.
 let chain_poller = poll::ChainPoller::new(&mut block_source, Network::Testnet);
 let chain_listener = (chain_monitor, channel_manager);
 let mut spv_client = SpvClient::new(
@@ -655,12 +656,8 @@ chain_monitor.update_best_block(new_best_header, new_best_height);
 
 **References:** [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html)
 
-### 16. Initialize LDK `EventHandler`
+### Step 15. Initialize an `EventHandler`
 **What it's used for:** LDK generates events that must be handled by you, such as telling you when a payment has been successfully received or when a funding transaction is ready for broadcast.
-
-**Example:** from the LDK Rust sample node, of handling these events: https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240
-
-**Example:**
 
 ```rust
 // In this example, we provide a closure to handle events. But you're also free
@@ -691,9 +688,46 @@ fn handle_ldk_event(..) {
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `KeysManager`, `BroadcasterInterface`
 
-**References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html)
+**References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html),[LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240)
 
-### 17. Initialize the `Persister`
+### Step 16. Initialize the `ProbabilisticScorer` 
+**What it's used for:** to find a suitable payment path to reach the destination.
+
+```rust
+let params = ProbabilisticScoringParameters::default();
+
+let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&network_graph))));
+```
+
+**Dependencies** `NetworkGraph`
+
+**Reference** [`ProbabilisticScorer` docs](https://docs.rs/lightning/*/lightning/routing/scoring/type.ProbabilisticScorer.html),
+[LDK sample node ProbabilisticScorer example](https://github.com/lightningdevkit/ldk-sample/blob/c0a722430b8fbcb30310d64487a32aae839da3e8/src/disk.rs#L100-L112)
+
+### Step 17. Initialize the `InvoicePayer`
+**What it's used for:** to create an invoice payer that retries failed payment paths.
+
+```rust
+let router = DefaultRouter::new(Arc:clone(&network_graph), &logger, keys_manager.get_secure_random_bytes());
+
+let invoice_payer = InvoicePayer::new(
+	Arc::clone(&channel_manager), 
+	router,
+	Arc::clone(&scorer),
+	Arc::clone(&logger),
+	event_handler,
+	payment::RetryAttempts(5),
+);
+```
+
+**Implementation notes:** The scorer is used when finding a route and when handling events from successful and failed paths. The retrier consumes those events by telling the scorer that a path has failed or succeeded and then retries by querying for a (potentially new) path with the updated scorer.
+
+**Dependencies** `ChannelManager`, `DefaultRouter`, `ProbablisticScorer`, `Logger`, `Event`, `RetryAttempts`
+
+**Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/blob/6f6473bf1bb4a1b2149a9a5c3616c39653dec144/src/main.rs#L615-L622)
+
+
+### Step 18. Initialize the `Persister`
 
 **What it's used for:** keeping `ChannelManager`'s stored state up-to-date
 
@@ -716,8 +750,8 @@ impl Persister for YourDataPersister {
 	}
 }
 
-// This will be used in the Step 18 for regular persistence.
-let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
+// This will be used in the Step 19 for regular persistence.
+let persister = YourDataPersister { data_dir: ldk_data_dir.clone() }
 
 ```
 
@@ -727,7 +761,7 @@ let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
 
 **References:** [`Persister` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/trait.Persister.html)
 
-### 18. Start Background Processing
+### Step 19. Start Background Processing
 
 **What it's used for:** running tasks periodically in the background to keep LDK operational
 
@@ -735,12 +769,12 @@ let persister = YourDataPersister { data_dir: ldk_data_dir.clone() };
 ```rust
 let background_processor = BackgroundProcessor::start(
 	persister,
-	handle_event_callback,
-	&chain_monitor,
-	&channel_manager,
-	&net_graph_msg_handler
-	&peer_manager,
-	&logger,
+	Arc::clone(&invoice_payer),
+	Arc::clone(&chain_monitor),
+	Arc::clone(&channel_manager),
+	Arc::clone(&net_graph_msg_handler),
+	Arc:clone(&peer_manager),
+	Arc:clone(&logger),
 );
 ```
 
