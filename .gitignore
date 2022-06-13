@@ -10,5 +10,6 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.nova
 
 npm-debug.log*
