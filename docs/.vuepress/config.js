@@ -149,14 +149,9 @@ module.exports = {
         text: 'Tutorials',
         link: '/tutorials/build_a_node_in_java'
       },
-      // {
-      //   text: 'Blog',
-      //   link: '/blog/'
-      // },
       {
-        text: 'Slack',
-        link: slackUrl,
-        rel: 'noopener noreferrer'
+        text: 'Blog',
+        link: '/blog/'
       },
       {
         text: 'Discord',
@@ -227,26 +222,16 @@ module.exports = {
               text: 'Chat on Discord',
               link: discordUrl,
               rel: 'noopener noreferrer'
-            }, 
-            {
-              text: 'Chat on Slack',
-              link: slackUrl,
-              rel: 'noopener noreferrer'
-            },
-                   
+            },     
           ]
         },
         {
           title: 'More',
           children: [
             {
-              text: 'LDK Documentary',
-              link: 'https://www.youtube.com/watch?v=oOT78Bgy1Qw'
+              text: 'Blog',
+              link: '/blog/'
             }
-            // {
-            //   text: 'Blog',
-            //   link: '/blog/'
-            // }
           ]
         }
       ],
