@@ -41,8 +41,7 @@ We created LDK in multiple languages with an API-first approach designed to run 
 
 Finally (for this section), LDK’s flexibility enables several different architectures without sacrificing security. Its lightweight design can be optimized to run on embedded devices or HSMs (hardware security modules) and it doesn’t make system calls, so it can run in almost any OS environment. For example, you can opt to run some Lightning logic, such as signing transactions and updating channel states on an HSM that has specific [spending policies](https://gitlab.com/lightning-signer/docs/-/blob/master/README.md) and manages private keys. Then you connect it to a server with its own TCP/IP stack using a serial communication method such as USB. 
 
-More on LDK use cases [here](https://lightningdevkit.org/introduction/use_cases/).
-
+Check out this [presentation](https://www.youtube.com/watch?v=9-81tobFSKg) at btc++ by [Jeff Czyz](https://twitter.com/jkczyz) and [Arik Sosman](https://twitter.com/arikaleph) to learn more about LDK [use cases](https://lightningdevkit.org/introduction/use_cases/).
 ## Who uses LDK?
 
 LDK supports applications that require running many nodes (such as server/custodial apps), letting users run nodes on mobile devices, integrating with existing infrastructure, broad customization options, and resource-constrained embedded systems such as point of sale, IoT, and so on and so on, etc.  
