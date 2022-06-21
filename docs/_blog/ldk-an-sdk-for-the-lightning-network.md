@@ -69,7 +69,7 @@ This feature improves privacy by allowing reusable payments over blinded paths a
 Taproot! People love it. We love it. It’s been several months since full activation, and LDK will start to take advantage of everything it offers. This includes improved on-chain privacy by making current funding channel outputs (2-of-2 multisig) indistinguishable from single sig outputs, and making channel opening and closing transactions look more like regular non-lightning transactions. In addition, we’re looking to support multi-sig channel capabilities as they allow for greater security, redundancy, and flexibility.
 
 `Language Bindings`  
-We’re making existing language integrations feel more native. We currently support Rust, C/C++, Swift, Java, & Kotlin. It’s now in the beta stage, but [JavaScript/TypeScript/WASM](https://www.npmjs.com/package/lightningdevkit) is also supported, and we are prioritizing bug fixing for early adopters. In the future, expect support for C#, Python, Flutter/Dart, and possibly others.
+We’re making existing language integrations feel more native. We currently support Rust, C/C++, Swift, Java, & Kotlin. It’s now in the beta stage, but [JavaScript/TypeScript/Wasm](https://www.npmjs.com/package/lightningdevkit) is also supported, and we are prioritizing bug fixing for early adopters. In the future, expect support for C#, Python, Flutter/Dart, and possibly others.
 
 Also in LDK’s future: a simplified API that makes opinionated decisions on behalf of developers that will accelerate getting their apps up and running. Think of it as a Rust crate but using UniFFI to auto-generate language bindings for Kotlin, Swift, Python, and Ruby that expedite basic send/receive functionality.
 
