@@ -48,7 +48,7 @@ LDK supports applications that require running many nodes (such as server/custod
 
 [Blue Wallet](https://bluewallet.io) was LDK’s patient zero and ideal first adopter since it is both non-custodial and mobile. Their team maintains [rn-ldk](https://github.com/BlueWallet/rn-ldk) and runs it on both Android and iOS.The wallet is likely to ship with LDK soon but not before some critical infrastructure is in place. While non-custodial mobile wallets are LDK’s primary use case, that doesn’t make it limited to them.
 
-[CashApp](https://cash.app), one of the world’s most used payment apps, chose LDK for its Lightning implementation because of its customizability. While custodial server-based solutions are not the primary use case for LDK, it shows how adaptable the library is. Ryan Loomba recently explained some of the trade-offs their team had to think about when comparing LDK to other solutions [at bitcoin++](https://www.youtube.com/watch?v=5YmfEgh-LC8&t=2442s).
+[CashApp](https://cash.app), one of the world’s most used payment apps, chose LDK for its Lightning implementation because of its customizability. While custodial server-based solutions are not the primary use case for LDK, it shows how adaptable the library is. Ryan Loomba recently explained some of the trade-offs their team had to think about when comparing LDK to other solutions [at btc++](https://www.youtube.com/watch?v=5YmfEgh-LC8&t=2442s).
 
 [Sensei](https://l2.technology/sensei), an out-of-the-box lightning node solution, is also powered by LDK. Its modular architecture enables a unique multi-node operation mode, letting nodes easily share a network graph, route scoring, and chain data which enables exciting new use cases.
 
