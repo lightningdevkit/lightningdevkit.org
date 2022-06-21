@@ -60,7 +60,7 @@ Know someone building a Lightning wallet or related application? Point them in [
 ## What are LDK’s engineering priorities?
 
 `Offline Receive`  
-A problem with Lightning UX is that mobile wallets can’t receive payments unless the user is using the app. We’re developing solutions in conjunction with the LN developer community that will let offline nodes receive payments. Spiral’s Matt Corallo has a pull request open that proposes a protocol to fix this exact problem. It includes his original post to the Lightning Devs mailing list which is a pretty good technical read on this issue if you’re in the mood for one of those.
+A problem with Lightning UX is that mobile wallets can’t receive payments unless the user is using the app. We’re developing solutions in conjunction with the LN developer community that will let offline nodes receive payments. Spiral’s Matt Corallo has a [pull request](https://github.com/lightning/bolts/pull/989) open that proposes a protocol to fix this exact problem. It includes his original post to the Lightning Devs mailing list which is a [pretty good technical](https://lists.linuxfoundation.org/pipermail/lightning-dev/2021-October/003307.html) read on this issue if you’re in the mood for one of those.
 
 `BOLT 12`  
 This feature improves privacy by allowing reusable payments over blinded paths and provides a framework for future upgrades that support recurring payments. There’s still work to be done, and it includes implementing route blinding/blinded paths, an onion messages API for requesting invoices, and BOLT 12 invoice parsing. 
@@ -69,7 +69,7 @@ This feature improves privacy by allowing reusable payments over blinded paths a
 Taproot! People love it. We love it. It’s been several months since full activation, and LDK will start to take advantage of everything it offers. This includes improved on-chain privacy by making current funding channel outputs (2-of-2 multisig) indistinguishable from single sig outputs, and making channel opening and closing transactions look more like regular non-lightning transactions. In addition, we’re looking to support multi-sig channel capabilities as they allow for greater security, redundancy, and flexibility.
 
 `Language Bindings`  
-We’re making existing language integrations feel more native. We currently support Rust, C/C++, Swift, Java, & Kotlin. It’s now in the beta stage, but JavaScript/TypeScript/WASM is also supported, and we are prioritizing bug fixing for early adopters. In the future, expect support for C#, Python, Flutter/Dart, and possibly others.
+We’re making existing language integrations feel more native. We currently support Rust, C/C++, Swift, Java, & Kotlin. It’s now in the beta stage, but [JavaScript/TypeScript/WASM](https://www.npmjs.com/package/lightningdevkit) is also supported, and we are prioritizing bug fixing for early adopters. In the future, expect support for C#, Python, Flutter/Dart, and possibly others.
 
 Also in LDK’s future: a simplified API that makes opinionated decisions on behalf of developers that will accelerate getting their apps up and running. Think of it as a Rust crate but using UniFFI to auto-generate language bindings for Kotlin, Swift, Python, and Ruby that expedite basic send/receive functionality.
 
