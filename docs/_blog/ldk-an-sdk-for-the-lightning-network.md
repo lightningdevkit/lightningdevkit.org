@@ -52,7 +52,7 @@ LDK supports applications that require running many nodes (such as server/custod
 
 We’re also talking to dozens of developers, some of whom we expect to adopt LDK soon. 
 
-Know someone building a Lightning wallet or related application? Point them in [@moneyball’s](https://twitter.com/moneyball) direction. If you’re already using LDK and have questions, hop into our [Discord](https://twitter.com/moneyball) or [Slack](https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ).
+[Know someone building a Lightning wallet or related application?](https://github.com/orgs/lightningdevkit/discussions/1554) Point them in [@moneyball’s](https://twitter.com/moneyball) direction. If you’re already using LDK and have questions, hop into our [Discord](https://discord.gg/5AcknnMfBw) or [Slack](https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ).
 
 ## What are LDK’s engineering priorities?
 
