@@ -1,5 +1,7 @@
 # Examples
 
+Click the links below and learn from community-built example projects
+
 ### [Rust Sample Node](https://github.com/lightningdevkit/ldk-sample)
 
 The sample serves as a complete reference for constructing a Lightning node with
@@ -20,3 +22,7 @@ This library hopes to bridge the gap needed to implement a LDK-based lightning c
 ### [Rust node with sample Lightning Signer integration](https://gitlab.com/lightning-signer/lnrod/)
 
 A Rust Lightning node implementation based on the LDK and the Lightning Signer projects. Aims to be production ready at some point.
+
+### [Rust node with sample Tor integration](https://github.com/TonyGiorgio/ldk-sample-tor)
+
+A Rust Lightning node sample implementation based on LDK with an embedded Tor daemon.
