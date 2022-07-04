@@ -89,6 +89,7 @@ const tutorialSidebar = [
     title: 'Tutorials',
     collapsable: false,
     children: [
+      '/tutorials/getting-started',
       '/tutorials/build_a_node_in_java',
       '/tutorials/build_a_node_in_rust'
     ],
