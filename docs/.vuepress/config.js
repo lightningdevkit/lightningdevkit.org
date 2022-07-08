@@ -147,7 +147,7 @@ module.exports = {
       },
       {
         text: 'Tutorials',
-        link: '/tutorials/build_a_node_in_java'
+        link: '/tutorials/getting-started'
       },
       {
         text: 'Blog',

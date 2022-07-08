@@ -81,7 +81,8 @@ Example usage after installation is complete:
 :::: tabs
 ::: tab "Rust"
 ```rust
-use lightning::chain::chaininterface::{FeeEstimator};```
+use lightning::chain::chaininterface::{FeeEstimator};
+```
 :::
 
 ::: tab "Java"
