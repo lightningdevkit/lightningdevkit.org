@@ -23,7 +23,7 @@ Using LNMerchant as an example company, here’s how phantom payments work:
 
 The following illustration demonstrates how phantom route hints work:
 
-<!-- IMAGE -->
+![Phantom Hints](../assets/phantom-hints.png)
 
 3. The buyer’s node generates a normal route. Using the route hints, the last two hops are [LNMerchantNode, PhantomNode], i.e., the phantom node is the destination node, and the second-to-last hop is an actual LNMerchant node. (Note: If the LNMerchant has public channels, only the last hop containing the fake channel is strictly necessary for the route hints.)
 
@@ -37,8 +37,7 @@ The buyer uses this route, including the fake forwarding information from the ro
 
 7. The LNMerchant node knows the phantom node’s secret key, so it can unwrap the last layer of the onion and verify the payment details. It also knows the preimage for the payment, so it can claim the amount owed without forwarding the payment to the non-existent phantom.
 
-<!-- IMAGE -->
-
+![Phantom PMT](../assets/phantom-pmt.png)
 ## Why It’s OK to Not Support MPP
 One potential drawback to phantom node payments is the lack of multi-path payments (MPP) support.
 
