@@ -51,7 +51,7 @@ With this in mind, a compelling compromise is to:
  
  Let’s say that we want to implement MPP for phantom payments. In this case, each real LNMerchant node may receive a slice of the phantom node-destined phantom payment. In this case, the question becomes: How do real nodes know when a payment is accepted across all nodes so that it’s safe to release the preimage?
 
-On the surface, it seems like users should be able to tell LDK when a payment has been received across all nodes and is safe to claim. However, this would significantly compromise our safety guarantees because releasing the preimage before receiving the total payment value opens up the possibility for intermediate nodes to claim remaining payment parts. Furthermore, implementing this would violate our API’s layers of abstraction, giving users a power that only LDK should access.
+On the surface, it seems like users should be able to tell LDK when a payment has been received across all nodes and is safe to claim. However, this would significantly compromise our safety guarantees because releasing the preimage before receiving the total payment value opens up the possibility for intermediate nodes to claim remaining payment parts. Moreover, implementing this would introduce perilous race conditions, because users would need to “lock” internal LDK data structures to ensure payment claims are atomic. Failing to properly handle these delicate cases would lead to force-closed channels and possibly lost funds.
 
 ---
 
