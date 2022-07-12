@@ -57,4 +57,4 @@ On the surface, it seems like users should be able to tell LDK when a payment ha
 
 Thanks for taking the time to learn about phantom nodes and payments. We think it’s an exciting showcase for the lightning protocol’s flexibility and variety of use cases. 
 
-For more information on LDK, check out our [website](https://lightningdevkit.org/). Want to make your own contribution to LDK? Join us on GitHub at our [LDK repo](https://github.com/lightningdevkit/rust-lightning). 
+Want to make your own contribution to LDK? Join us on GitHub at our [LDK repo](https://github.com/lightningdevkit/). 
