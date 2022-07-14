@@ -15,16 +15,16 @@ To add LDK to a project, run:
 ::: tab Rust
 ```toml
 
-# Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use from
+# Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use.
 
 [dependencies]
-lightning = { version = VERSION, features = ["max_level_trace"] }
-lightning-block-sync = { version = VERSION, features = [ "rpc-client" ] }
-lightning-invoice = { version = VERSION }
-lightning-net-tokio = { version = VERSION }
-lightning-persister = { version = VERSION }
-lightning-background-processor = { version = VERSION }
-lightning-rapid-gossip-sync = { version = VERSION }
+lightning = { version = {VERSION}, features = ["max_level_trace"] }
+lightning-block-sync = { version = {VERSION}, features = [ "rpc-client" ] }
+lightning-invoice = { version = {VERSION} }
+lightning-net-tokio = { version = {VERSION} }
+lightning-persister = { version = {VERSION} }
+lightning-background-processor = { version = {VERSION} }
+lightning-rapid-gossip-sync = { version = {VERSION} }
 ```
 :::
 
@@ -32,7 +32,7 @@ lightning-rapid-gossip-sync = { version = VERSION }
 ```xml
 <!--
 For Maven, add the following dependency to your POM and replace {VERSION} with the 
-version number you want to use from
+version number you want to use.
 -->
 
 <dependency>
@@ -45,7 +45,7 @@ version number you want to use from
 ```kotlin
 /* 
 For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
-the version number you want to use from
+the version number you want to use.
 */ 
 
 dependencies {
@@ -81,7 +81,7 @@ Example usage after installation is complete:
 :::: tabs 
 ::: tab Rust
 ```rust
-use lightning::chain::chaininterface::{FeeEstimator};
+use lightning::chain::chaininterface::FeeEstimator;
 ```
 :::
 
