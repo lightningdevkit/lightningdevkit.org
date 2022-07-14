@@ -11,12 +11,11 @@ MacOS, Windows and Linux are supported.
 To add LDK to a project, run:
 
 :::: tabs
-::: tab "Rust"
-```rust
-/*
-Add the following dependencies to your cargo.toml and replace {VERSION} with the 
-version number you want to use from
-*/
+
+::: tab Rust
+```toml
+
+# Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use from
 
 [dependencies]
 lightning = { version = VERSION, features = ["max_level_trace"] }
@@ -28,8 +27,8 @@ lightning-background-processor = { version = VERSION }
 lightning-rapid-gossip-sync = { version = VERSION }
 ```
 :::
-::: tab "Java"
 
+::: tab Java
 ```xml
 <!--
 For Maven, add the following dependency to your POM and replace {VERSION} with the 
@@ -56,7 +55,7 @@ dependencies {
 }
 ```
 :::
-::: tab "Kotlin"
+::: tab Kotlin
 ```kotlin
 /* To include the LDK Kotlin bindings in an Android project download the latest binary from https://github.com/lightningdevkit/ldk-garbagecollected/releases and place it in your libs directory.
 Then add to your build.gradle file:
@@ -70,28 +69,29 @@ dependencies {
 ```
 :::
 
-::: tab "Javascript/Typescript"
+::: tab Javascript/Typescript
 ```javascript
 npm i lightningdevkit --save
 ```
 :::
+
 ::::
 
 Example usage after installation is complete:
-:::: tabs
-::: tab "Rust"
+:::: tabs 
+::: tab Rust
 ```rust
 use lightning::chain::chaininterface::{FeeEstimator};
 ```
 :::
 
-::: tab "Java"
+::: tab Java
 ```java
 import org.ldk.structs.FeeEstimator
 ```
 :::
 
-::: tab "Kotlin"
+::: tab Kotlin
 ```kotlin
 import org.ldk.structs.FeeEstimator
 ```
