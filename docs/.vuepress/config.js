@@ -4,7 +4,6 @@ const themeConfig = require('squarecrypto-vuepress-devkit-theme/config')
 const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
 const githubUrl = 'https://github.com/lightningdevkit'
-const slackUrl = 'https://join.slack.com/t/lightningdevkit/shared_invite/zt-tte36cb7-r5f41MDn3ObFtDu~N9dCrQ'
 const discordUrl = 'https://discord.gg/5AcknnMfBw'
 const themeColor = '#ffffff'
 
@@ -217,12 +216,12 @@ module.exports = {
               text: 'Twitter',
               link: "https://twitter.com/lightningdevkit",
               rel: 'noopener noreferrer'
-            }, 
+            },
             {
               text: 'Chat on Discord',
               link: discordUrl,
               rel: 'noopener noreferrer'
-            },     
+            },
           ]
         },
         {
