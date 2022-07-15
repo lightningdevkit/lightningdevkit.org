@@ -6,8 +6,8 @@ of another node that you want as a peer. Once the connection is established and
 the handshake is complete, `PeerManager` will show the peer's pubkey in its list
 of peers.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, address).await {
@@ -33,8 +33,8 @@ match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, a
 }
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 try {
@@ -51,5 +51,5 @@ catch (java.io.IOException e) {
 }
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>

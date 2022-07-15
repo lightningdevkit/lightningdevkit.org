@@ -5,8 +5,8 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 // Parse the invoice.
@@ -38,8 +38,8 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 	.expect("ERROR: failed to send payment");
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 String invoice_str = // get an invoice from the payee
@@ -73,16 +73,16 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 }
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 An event is generated once a payment has completed. Successful payments result
 in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -97,8 +97,8 @@ match event {
 }
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 // In the `handle_event` method of ChannelManagerPersister implementation
@@ -112,5 +112,5 @@ else if (e instanceof Event.PaymentFailed) {
 }
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>

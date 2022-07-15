@@ -5,8 +5,8 @@ amount and description. `ChannelManager` contains the remaining information
 needed for the invoice. Use the provided utility to generate an invoice and
 register a pending payment in `ChannelManager`.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 let amt_msat = 10_000;
@@ -21,8 +21,8 @@ let invoice = match utils::create_invoice_from_channelmanager(
 let encoded_invoice = invoice.to_string();
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 String description = "coffee";
@@ -36,8 +36,8 @@ Invoice invoice = ((Result_InvoiceSignOrCreationErrorZ.Result_InvoiceSignOrCreat
 String encoded_invoice = invoice.to_str();
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 While it is possible to create an invoice without using the utility,
 `ChannelManager` will reject any incoming HTLCs for unregistered payments to
@@ -49,8 +49,8 @@ As with sending a payment, LDK will generate an event once a payment is
 received. It is your responsibility to handle the `PaymentReceived` event by
 using `ChannelManager` to release the preimage and claim the funds.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -66,8 +66,8 @@ match event {
 }
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 // In the `handle_event` method of ChannelManagerPersister implementation
@@ -80,8 +80,8 @@ else if (e instanceof Event.PaymentReceived) {
 }
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 So there you have it! Those are the basics of using LDK. As you can see, LDK
 offers a ton of flexibility for building Lightning-enabled wallets and apps.

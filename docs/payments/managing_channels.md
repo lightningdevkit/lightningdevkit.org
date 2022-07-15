@@ -17,25 +17,25 @@ Now that you have a peer, you can open a channel with them using
 Channels can be announced to the network or can remain private, which is
 controlled via `UserConfig::announced_channel`.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 let amount = 10_000;
 let push_msat = 1_000;
 let user_id = 42;
 let config = UserConfig {
-	channel_options: ChannelConfig { announced_channel: true, ..Default::default() },
-	..Default::default()
+  channel_options: ChannelConfig { announced_channel: true, ..Default::default() },
+  ..Default::default()
 };
 match channel_manager.create_channel(pubkey, amount, push_msat, user_id, Some(config)) {
-	Ok(_) => println!("EVENT: initiated channel with peer {}", pubkey),
-	Err(e) => panic!("ERROR: failed to open channel: {:?}", e),
+  Ok(_) => println!("EVENT: initiated channel with peer {}", pubkey),
+  Err(e) => panic!("ERROR: failed to open channel: {:?}", e),
 }
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 long amount = 10_000L;
@@ -49,8 +49,8 @@ Result_NoneAPIErrorZ create_channel_result = channel_manager.create_channel(
 assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 At this point, an outbound channel has been initiated with your peer and it will
 appear in `ChannelManager::list_channels`. However, the channel  is not yet
@@ -59,8 +59,8 @@ funded. Once your peer accepts the channel, you will be notified with a
 funding transaction and pass it to `ChannelManager`, which will broadcast it
 once it receives your channel counterparty's signature.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 // In the event handler passed to BackgroundProcessor::start
@@ -99,8 +99,8 @@ match event {
 }
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 // After the peer responds with an `accept_channel` message, an
@@ -143,8 +143,8 @@ if (e instanceof Event.FundingGenerationReady) {
 }
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 After `ChannelManager` has broadcast the funding transaction, the channel will
 become usable once the transaction has enough confirmations and will appear in
@@ -162,8 +162,8 @@ unilaterally. The cooperative case makes for lower fees and immediate access to
 funds while the unilateral case does not. The latter may be necessary if your
 peer isn't behaving properly or has gone offline.
 
-:::: tabs
-::: tab "Rust"
+<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+  <template v-slot:rust>
 
 ```rust
 let channel_id = channel_manager
@@ -180,8 +180,8 @@ channel_manager.close_channel(&channel_id).expect("ERROR: Failed to close channe
 channel_manager.force_close_channel(&channel_id).expect("ERROR: Failed to close channel");
 ```
 
-:::
-::: tab "Java"
+  </template>
+  <template v-slot:java>
 
 ```java
 // Example: Cooperative close (assuming 1 open channel)
@@ -195,7 +195,7 @@ byte[] channel_id = channel_manager.list_channels()[0].get_channel_id();
 Result_NoneAPIErrorZ channel_manager.force_close_channel(channel_id);
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 Now that we know how to manage channels, let's put our new channel to use!

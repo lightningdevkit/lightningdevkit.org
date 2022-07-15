@@ -440,8 +440,8 @@ This section assumes you've already run all the steps in [Setup](#setup).
 
 **Example:**
 
-:::: tabs
-::: tab "Java with Full Blocks or BIP 157/158"
+<CodeSwitcher :languages="{java_fullblocks:'Java with Full Blocks or BIP 157/158', java_electrum:'Java with Electrum'}">
+  <template v-slot:java_fullblocks>
 
 ```java
 /* UNCONFIRMED TRANSACTIONS */
@@ -475,8 +475,8 @@ channel_manager.update_best_block(new_best_header, new_best_height);
 chain_monitor.update_best_block(new_best_header, new_best_height);
 ```
 
-:::
-:::tab "Java with Electrum"
+  </template>
+  <template v-slot:java_electrum>
 
 ```java
 // For each connected and disconnected block, and in chain-order, call these
@@ -486,7 +486,7 @@ chain_monitor.update_best_block(new_best_header, new_best_height);
 // Transactions and outputs are registered both on startup and as new relevant
 // transactions/outputs are created.
 
-// header is a []byte type, height is `int`, txdata is a 
+// header is a []byte type, height is `int`, txdata is a
 // TwoTuple_usizeTransactionZ[], where the 0th element is the transaction's
 // position in the block (with the coinbase transaction considered position 0)
 // and the 1st element is the transaction bytes
@@ -497,8 +497,8 @@ channel_manager.as_Listen().block_disconnected(header, height);
 chain_monitor.block_disconnected(header, height);
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 **Implementation notes:**
 * If you're using the `Listen` interface: blocks must be connected and disconnected in chain order
