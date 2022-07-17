@@ -1,10 +1,11 @@
-# Block Source   
+# Block Source
 
 Implementing the `BlockSource` interface requires defining methods for fetching
 headers, blocks, and the best block hash.
 
-:::: tabs
-::: tab "Rust"
+
+<CodeSwitcher :languages="{rust:'Rust'}">
+  <template v-slot:rust>
 
 ```rust
 impl BlockSource for Blockchain {
@@ -21,6 +22,9 @@ impl BlockSource for Blockchain {
 	}
 }
 ```
+
+  </template>
+</CodeSwitcher>
 
 <!-- ADD JAVA EXAMPLE -->
 

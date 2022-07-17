@@ -104,8 +104,8 @@ let broadcaster = YourTxBroadcaster();
 
 **Example:**
 
-:::: tabs
-::: tab "Custom"
+<CodeSwitcher :languages="{custom:'Custom', ldk:'Using LDK Sample Filesystem Persistence Module'}">
+  <template v-slot:custom>
 
 ```rust
 struct YourPersister();
@@ -133,8 +133,8 @@ impl<ChannelSigner: Sign> Persist for YourPersister {
 let persister = YourPersister();
 ```
 
-:::
-::: tab "Using LDK Sample Filesystem Persistence Module"
+  </template>
+  <template v-slot:ldk>
 
 ```rust
 use lightning_persister::FilesystemPersister; // import LDK sample persist module
@@ -142,8 +142,8 @@ use lightning_persister::FilesystemPersister; // import LDK sample persist modul
 let persister = FilesystemPersister::new(ldk_data_dir_path);
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 **Implementation notes:**
 * `ChannelMonitor`s are objects which are capable of
@@ -355,8 +355,8 @@ let (channel_manager_blockhash, mut channel_manager) = {
 
 **Example:**
 
-:::: tabs
-::: tab "Full Blocks or BIP 157/158"
+<CodeSwitcher :languages="{full_blocks:'Full Blocks or BIP 157/158', electrum:'Electrum'}">
+  <template v-slot:full_blocks>
 
 ```rust
 use lightning_block_sync::init;
@@ -427,8 +427,8 @@ chain_tip = Some(
 );
 ```
 
-:::
-::: tab "Electrum"
+  </template>
+  <template v-slot:electrum>
 
 ```rust
 // Retrieve transaction IDs to check the chain for un-confirmation.
@@ -461,8 +461,8 @@ channel_manager.update_best_block(best_header, best_height);
 chain_monitor.update_best_block(best_header, best_height);
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 **Implementation notes:**
 
@@ -586,8 +586,8 @@ loop {
 
 **Example:**
 
-:::: tabs
-::: tab "Bitcoind"
+<CodeSwitcher :languages="{bitcoind:'Bitcoind', electrum:'Electrum'}">
+  <template v-slot:bitcoind>
 
 ```rust
 // If you don't have the chain tip, retrieve it here.
@@ -614,8 +614,8 @@ loop {
 }
 ```
 
-:::
-::: tab "Electrum"
+  </template>
+  <template v-slot:electrum>
 
 ```rust
 /* UNCONFIRMED TRANSACTIONS */
@@ -645,8 +645,8 @@ channel_manager.update_best_block(new_best_header, new_best_height);
 chain_monitor.update_best_block(new_best_header, new_best_height);
 ```
 
-:::
-::::
+  </template>
+</CodeSwitcher>
 
 **Implementation notes:**
 * If you're using the `Listen` interface: blocks must be connected and disconnected in chain order
@@ -690,7 +690,7 @@ fn handle_ldk_event(..) {
 
 **References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html),[LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240)
 
-### Step 16. Initialize the `ProbabilisticScorer` 
+### Step 16. Initialize the `ProbabilisticScorer`
 **What it's used for:** to find a suitable payment path to reach the destination.
 
 ```rust
@@ -711,7 +711,7 @@ let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&ne
 let router = DefaultRouter::new(Arc:clone(&network_graph), &logger, keys_manager.get_secure_random_bytes());
 
 let invoice_payer = InvoicePayer::new(
-	Arc::clone(&channel_manager), 
+	Arc::clone(&channel_manager),
 	router,
 	Arc::clone(&scorer),
 	Arc::clone(&logger),
