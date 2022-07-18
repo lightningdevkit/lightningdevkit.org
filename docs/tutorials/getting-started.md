@@ -26,34 +26,33 @@ To add LDK to a project, run:
   ```
 
   </template>
-  
   <template v-slot:java>
  
-```xml
- <!--
- For Maven, add the following dependency to your POM and replace {VERSION} with the 
- version number you want to use.
- -->
+  ```xml
+  <!--
+  For Maven, add the following dependency to your POM and replace {VERSION} with the 
+  version number you want to use.
+  -->
 
-<dependency>
-  <groupId>org.lightningdevkit</groupId>
-  <artifactId>ldk-java</artifactId>
+  <dependency>
+   <groupId>org.lightningdevkit</groupId>
+   <artifactId>ldk-java</artifactId>
   <version>{VERSION}</version>
-</dependency>
-```
+  </dependency>
+  ```
 
- ```kotlin
-/* 
-For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
-the version number you want to use.
-*/ 
+  ```kotlin
+  /* 
+  For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
+  the version number you want to use.
+  */ 
 
-dependencies {
+  dependencies {
    // ...
     implementation 'org.lightningdevkit:ldk-java:{VERSION}'
    // ...
-}
-```
+  }
+  ```
 
   </template>
   <template v-slot:kotlin>
@@ -90,7 +89,6 @@ Example usage after installation is complete:
   ```
 
   </template>
-
   <template v-slot:java>
   
   ```java
@@ -98,7 +96,6 @@ Example usage after installation is complete:
   ```
 
   </template> 
-
   <template v-slot:kotlin>
 
   ```kotlin
@@ -106,7 +103,6 @@ Example usage after installation is complete:
   ```
 
   </template>
-
   <template v-slot:javascript>
 
   ```javascript
