@@ -6,34 +6,34 @@ If you have any questions about anything related to LDK, feel free to ask our co
 
 ## System Requirements
 MacOS, Windows and Linux are supported.
-
 ## Installation
 To add LDK to a project, run:
 
-:::: tabs
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', javascript:'JavaScript'}">
+  <template v-slot:rust>
+ 
+  ```toml
+    # Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use.
 
-::: tab Rust
-```toml
+    [dependencies]
+    lightning = { version = {VERSION}, features = ["max_level_trace"] }
+    lightning-block-sync = { version = {VERSION}, features = [ "rpc-client" ] }
+    lightning-invoice = { version = {VERSION} }
+    lightning-net-tokio = { version = {VERSION} }
+    lightning-persister = { version = {VERSION} }
+    lightning-background-processor = { version = {VERSION} }
+    lightning-rapid-gossip-sync = { version = {VERSION} }
+  ```
 
-# Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use.
-
-[dependencies]
-lightning = { version = {VERSION}, features = ["max_level_trace"] }
-lightning-block-sync = { version = {VERSION}, features = [ "rpc-client" ] }
-lightning-invoice = { version = {VERSION} }
-lightning-net-tokio = { version = {VERSION} }
-lightning-persister = { version = {VERSION} }
-lightning-background-processor = { version = {VERSION} }
-lightning-rapid-gossip-sync = { version = {VERSION} }
-```
-:::
-
-::: tab Java
+  </template>
+  
+  <template v-slot:java>
+ 
 ```xml
-<!--
-For Maven, add the following dependency to your POM and replace {VERSION} with the 
-version number you want to use.
--->
+ <!--
+ For Maven, add the following dependency to your POM and replace {VERSION} with the 
+ version number you want to use.
+ -->
 
 <dependency>
   <groupId>org.lightningdevkit</groupId>
@@ -42,7 +42,7 @@ version number you want to use.
 </dependency>
 ```
 
-```kotlin
+ ```kotlin
 /* 
 For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
 the version number you want to use.
@@ -54,57 +54,69 @@ dependencies {
    // ...
 }
 ```
-:::
-::: tab Kotlin
-```kotlin
-/* To include the LDK Kotlin bindings in an Android project download the latest binary from https://github.com/lightningdevkit/ldk-garbagecollected/releases and place it in your libs directory.
-Then add to your build.gradle file:
-*/
 
-dependencies {
-    // ...
-    implementation fileTree(include: ['*.aar'], dir: 'libs')
-    // ...
-}
-```
-:::
+  </template>
+  <template v-slot:kotlin>
 
-::: tab Javascript/Typescript
-```javascript
-npm i lightningdevkit --save
-```
-:::
+  ```kotlin
+  /* To include the LDK Kotlin bindings in an Android project download the latest binary from https://github.com/lightningdevkit/ldk-garbagecollected/releases and place it in your libs directory.
+  Then add to your build.gradle file:
+  */
 
-::::
+  dependencies {
+      // ...
+      implementation fileTree(include: ['*.aar'], dir: 'libs')
+      // ...
+  }
+  ```
+
+  </template>
+  <template v-slot:javascript>
+
+  ```javascript
+    npm i lightningdevkit --save
+  ```
+
+  </template>
+</CodeSwitcher>
 
 Example usage after installation is complete:
-:::: tabs 
-::: tab Rust
-```rust
-use lightning::chain::chaininterface::FeeEstimator;
-```
-:::
 
-::: tab Java
-```java
-import org.ldk.structs.FeeEstimator
-```
-:::
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', javascript:'JavaScript'}">
+  <template v-slot:rust>
 
-::: tab Kotlin
-```kotlin
-import org.ldk.structs.FeeEstimator
-```
-:::
+  ```rust
+  use lightning::chain::chaininterface::FeeEstimator;
+  ```
 
-::: tab "JavaScript/Typescript"
-```javascript
-import { FeeEstimator } from "lightningdevkit";
-import * as fs from "fs";
-import { strict as assert } from "assert";
- 
-const wasm_file = fs.readFileSync("node_modules/lightningdevkit/liblightningjs.wasm");
-await ldk.initializeWasmFromBinary(wasm_file);
-```
-:::
-::::
+  </template>
+
+  <template v-slot:java>
+  
+  ```java
+  import org.ldk.structs.FeeEstimator
+  ```
+
+  </template> 
+
+  <template v-slot:kotlin>
+
+  ```kotlin
+  import org.ldk.structs.FeeEstimator
+  ```
+
+  </template>
+
+  <template v-slot:javascript>
+
+  ```javascript
+  import { FeeEstimator } from "lightningdevkit";
+  import * as fs from "fs";
+  import { strict as assert } from "assert";
+  
+  const wasm_file = fs.readFileSync("node_modules/lightningdevkit/liblightningjs.wasm");
+  await ldk.initializeWasmFromBinary(wasm_file);
+  ```
+
+  </template>
+</CodeSwitcher>
