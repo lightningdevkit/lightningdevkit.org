@@ -89,6 +89,7 @@ const tutorialSidebar = [
     title: 'Tutorials',
     collapsable: false,
     children: [
+      '/tutorials/getting-started',
       '/tutorials/build_a_node_in_java',
       '/tutorials/build_a_node_in_rust'
     ],
@@ -146,7 +147,7 @@ module.exports = {
       },
       {
         text: 'Tutorials',
-        link: '/tutorials/build_a_node_in_java'
+        link: '/tutorials/getting-started'
       },
       {
         text: 'Blog',
