@@ -186,11 +186,11 @@ impl Filter for YourTxFilter {
 let filter = YourTxFilter();
 ```
 
-**Implementation notes:** see the [Blockchain Data](/blockchain_data.md) guide for more info
+**Implementation notes:** see the [Blockchain Data](/blockchain_data/introduction.md) guide for more info
 
 **Dependencies:** *none*
 
-**References:** [`Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Blockchain Data guide](/blockchain_data.md)
+**References:** [`Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Blockchain Data guide](/blockchain_data/introduction.md)
 
 ### Step 5. Initialize the `ChainMonitor`
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be
