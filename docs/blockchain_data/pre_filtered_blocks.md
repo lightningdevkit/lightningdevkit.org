@@ -6,7 +6,7 @@ which transactions and outputs it is interested in. This information can then be
 used to filter blocks prior to sending them to your node.
 
 For example, if your block source is an Electrum client, you can pass along this
-information to it. Or if you are making use of a BIP 157 client, you can check
+information to it. Or, if you are making use of a BIP 157 client, you can check
 if a block contains relevant transactions before fetching it.
 
 So how does this work in practice? `ChainMonitor` is parameterized by an
