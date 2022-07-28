@@ -5,7 +5,7 @@ straight forward: call the appropriate methods on `ChannelManager` and
 `ChainMonitor` as blocks are connected and disconnected. LDK will handle the
 rest!
 
-So what happens? The `ChannelManager` examines the blocks transactions and
+So what happens? The `ChannelManager` examines the block's transactions and
 updates the internal channel state as needed. The `ChainMonitor` will detect
 any spends of the channel funding transaction or any pertinent transaction
 outputs, tracking them as necessary.
