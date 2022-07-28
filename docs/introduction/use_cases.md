@@ -1,6 +1,6 @@
 # Use Cases for LDK
 
-The standard lightning use case is running a standalone node on one's laptop.
+The standard Lightning use case is running a standalone node on one's laptop.
 Here's some other use cases that LDK supports.
 
 ## Mobile Devices
@@ -16,7 +16,7 @@ blockchain data, and storage. To allow full flexibility in footprint, the API
 supports routing data being fetched via the Lightning P2P protocol, an external
 service, or routes can be calculated off-device. It also provides cross-platform
 compatibility for free, allowing synchronization of Lightning state across
-devices and, as long as there is protection from simultaneous-updates, users to
+devices and, as long as there is protection from simultaneous updates, users to
 access their wallet on any device. See the [Overview](../../overview/architecture) page for more
 details on the interfaces LDK provides for integration.
 
