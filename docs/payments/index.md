@@ -1,7 +1,7 @@
 # Payments
 
 In this guide, we'll cover common operations when using LDK after you've set up
-your lightning node.
+your Lightning node.
 
 * [Connecting Peers](/payments/connecting_peers) shows how get on the Lightning Network.
 * [Managing Channels](/payments/managing_channels) covers the ins and outs of channels
