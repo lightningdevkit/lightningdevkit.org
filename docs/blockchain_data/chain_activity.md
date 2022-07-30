@@ -6,7 +6,7 @@ a `ChannelMonitor` and passes it to the `ChainMonitor` to watch.
 
 At this point, you need to feed LDK any chain data of interest so that it can
 respond accordingly. It supports receiving either full blocks or pre-filtered
-blocks using the `chain::Listen` interface. While block data can sourced from
+blocks using the `chain::Listen` interface. While block data can be sourced from
 anywhere, it is your responsibility to call the `block_connected` and
 `block_disconnected` methods on `ChannelManager` and `ChainMonitor`. This allows
 them to update channel state and respond to on-chain events, respectively.

@@ -6,7 +6,7 @@ provide a block-centric interface, like Electrum?
 
 LDK has a `chain::Confirm` interface to support this use case, analogous to the
 block-oriented `chain::Listen` interface which we've been using up until now.
-With this alternative approach, you still need to give LDK block headers but
+With this alternative approach, you still need to give LDK block headers, but
 only for blocks containing transactions of interest. These are identified by
 `chain::Filter` as before. You also need to notify LDK of any transactions with
 insufficient confirmation that have been reorganized out of the chain. Use the
