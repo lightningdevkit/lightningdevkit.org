@@ -90,6 +90,13 @@ const tutorialSidebar = [
     collapsable: false,
     children: [
       '/tutorials/getting-started',
+      {
+        title: 'Building a node with LDK',
+        collapsable: false,
+        children: [
+          ['/tutorials/building-a-node-with-ldk/introduction', 'Introduction']
+        ]
+      },
       '/tutorials/build_a_node_in_java',
       '/tutorials/build_a_node_in_rust'
     ],
