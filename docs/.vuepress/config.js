@@ -25,7 +25,7 @@ const docsSidebar = [
         title: 'Overview',
         collapsable: true,
         children: [
-          ['/overview/architecture', 'LDK Architecture'],
+          ['/overview/architecture', 'Architecture'],
           ['/overview/persistent_storage', 'Persistent Storage'],
           ['/overview/blockchain_data', 'Blockchain Data'],
           ['/overview/wallet_management', 'Wallet Management'],
@@ -184,7 +184,7 @@ module.exports = {
               link: '/running-a-sample-ldk-node/'
             },
             {
-              text: 'LDK Architecture',
+              text: 'Architecture',
               link: '/overview/architecture/'
             },
             {

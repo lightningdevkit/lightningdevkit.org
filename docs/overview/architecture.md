@@ -1,10 +1,12 @@
-## LDK Architecture
-![LDK Architecture](../assets/ldk-architecture.svg)
+## Architecture
+![Architecture](../assets/architecture.png)
 
-LDK's core components are shown in the center box labeled `lightning`. The boxes
-with dotted borders are LDK's modules — these must be configured with either
-off-the-shelf or custom implementations that you provide.
+Firstly, LDK is not a daemon, but rather its own implementation of the Lightning network written as an SDK and designed to be complied and run in your own application. 
 
-`EventHandler` in the diagram is not so much a necessary LDK module, but instead
-refers to the fact that LDK generates events that the user should handle (e.g.
-the `PaymentReceived` event).
+This makes it environment agnostic, allowing you to choose your own networking stack, data storage, wallet and blockchain monitoring. In the diagram above the boxes with dotted borders are LDK's modules — these must be configured with either off-the-shelf or custom implementations that you provide.
+
+We also use an event driven archictecture that will ansychronously prompt you to do an number of things. For example LDK will generate an event when a payment is received (`PaymentReceived`). More on this in a later section. 
+
+::: tip Langauge Bindings
+
+Although the core SDK is written in Rust, we support a number of other programming langauges. These include C/C++, Swift, Java, Kotlin, JavaScript (Alpha). Check out [examples](../examples.md) to see some of the implementions out in the wild!
