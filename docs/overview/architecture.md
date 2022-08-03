@@ -1,7 +1,7 @@
 ## Architecture
 ![Architecture](../assets/architecture.png)
 
-Firstly, LDK is not a daemon, but rather its own implementation of the Lightning network written as an SDK and designed to be complied and run in your own application. 
+Firstly, LDK is not a daemon, but rather its own implementation of the Lightning network written as a SDK and designed to be compiled and executed in your own application. 
 
 This makes it environment agnostic, allowing you to choose your own data storage, wallet, networking stack and blockchain monitoring. In the diagram above the boxes with dotted borders are LDK's modules — these must be configured with either default or custom implementations that you provide.
 
