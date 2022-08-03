@@ -9,4 +9,4 @@ We also use an event driven archictecture that that will allow you to act upon n
 
 ::: tip Langauge Bindings
 
-Although the core SDK is written in Rust, we support a number of other programming langauges. These include C/C++, Swift, Java, Kotlin, JavaScript (Alpha). Check out [examples](../examples.md) to see some of the implementions out in the wild!
+Although the core SDK is written in Rust, we support a number of other programming langauges. These include C/C++, Java, Kotlin, Swift, JavaScript/Typescript/WASM (Alpha). Check out [examples](../examples.md) to see some of the implementions out in the wild!
