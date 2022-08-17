@@ -1,4 +1,4 @@
-## Architecture
+# Architecture
 ![Architecture](../assets/ldk-architecture.svg)
 
 Firstly, LDK is not a daemon, but rather its own implementation of the Lightning protocol written as an SDK and designed to be compiled and executed in your application. 
