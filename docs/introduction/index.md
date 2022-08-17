@@ -29,7 +29,7 @@ provide a useful overview of Rust Lightning in the context of language bindings.
 The sample serves as a complete reference for constructing a Lightning node with
 the LDK. This is a good starting point if you want a self-guided tour!
 
-### [LDK Architecture](../overview/architecture)
+### [Architecture](../overview/architecture)
 
 Gives a high-level organization of LDK and how the pieces fit together. Variations of this diagram
 are used throughout the site. This is the primary source and is still a work in progress.
