@@ -70,6 +70,8 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
 ### Step 1. Initialize the `FeeEstimator`
 
+**What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
+
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
   <template v-slot:rust>
  
@@ -129,8 +131,6 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
   </template>
 </CodeSwitcher>
-
-**What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
 **Implementation notes:**
 1. Fees must be returned in: satoshis per 1000 weight units
@@ -342,7 +342,7 @@ retrieving fresh ones every time
   </template>
 </CodeSwitcher>
 
-<CodeSwitcher :languages="{rust:'Using LDK Sample Filesystem Persistence Module'}">
+<CodeSwitcher :languages="{rust:'Using LDK Sample Filesystem Persistence Module in Rust'}">
   <template v-slot:rust>
 
   ```rust
@@ -986,3 +986,68 @@ Otherwise, you can use LDK's `Confirm` interface as in the examples above. The h
 **Dependencies:**
 * `ChainMonitor`, set of `ChannelMonitor`s and their funding outpoints
 * Step 9 must be completed prior to this step
+
+### Step 11: Optional: Initialize the `P2PGossipSync`
+
+**You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
+
+**What it's used for:** generating routes to send payments over
+
+**Example:** initializing `P2PGossipSync`
+
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+
+<template v-slot:rust>
+
+```rust
+let genesis = genesis_block(Network::Testnet).header.block_hash();
+let network_graph_path = format!("{}/network_graph", ldk_data_dir.clone());
+let network_graph = Arc::new(disk::read_network(Path::new(&network_graph_path), genesis, logger.clone()));
+let gossip_sync = Arc::new(P2PGossipSync::new(
+  Arc::clone(&network_graph),
+  None::<Arc<dyn chain::Access + Send + Sync>>,
+  logger.clone(),
+));
+```
+
+</template>
+
+<template v-slot:java>
+
+```java
+Network network = Network.LDKNetwork_Testnet;
+
+BestBlock genesisBlock = BestBlock.from_genesis(network);
+final byte[] genesisBlockHash = genesisBlock.block_hash();
+
+final byte[] serializedNetworkGraph = // Read network graph bytes from file
+final NetworkGraph networkGraph = NetworkGraph.read(serializedNetworkGraph, logger);
+final P2PGossipSync p2pGossip = P2PGossipSync.of(networkGraph, Option_AccessZ.none(), logger)
+```
+
+</template>
+
+<template v-slot:kotlin>
+
+```kotlin
+val genesisBlock : BestBlock = BestBlock.from_genesis(Network.LDKNetwork_Testnet)
+val genesisBlockHash : String = byteArrayToHex(genesisBlock.block_hash())
+
+val serializedNetworkGraph = // Read network graph bytes from file
+val networkGraph : NetworkGraph = NetworkGraph.read(serializedNetworkGraph, logger)
+val p2pGossip : P2PGossipSync = P2PGossipSync.of(networkGraph, Option_AccessZ.none(), logger)
+```
+
+</template>
+
+
+</CodeSwitcher>
+
+
+**Implementation notes:** this struct is not required if you are providing your own routes. It will be used internally in `ChannelManager` to build a `NetworkGraph`. Other networking options are: `LDKNetwork_Bitcoin`, `LDKNetwork_Regtest` and `LDKNetwork_Testnet`
+
+**Dependencies:** `Logger`
+
+**Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
+
+**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java)
