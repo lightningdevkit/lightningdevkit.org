@@ -1,6 +1,6 @@
 # Building a Node with LDK
 
-## Learn how to build a basic LDK node from scratch using LDK 
+## Learn how to build a basic LDK node from scratch 
 
 ::: tip Note
 For an integrated example of an LDK node in Rust, see the [Sample Node](https://github.com/lightningdevkit/ldk-sample)
