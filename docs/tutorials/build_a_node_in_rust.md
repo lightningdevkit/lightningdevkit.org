@@ -672,12 +672,20 @@ fn handle_ldk_event(..) {
     match event {
         Event::FundingGenerationReady { .. } => { .. }, // insert handling code
         Event::PaymentReceived { .. } => { .. }, // insert handling code
+        Event::PaymentClaimed { .. } => { .. }, // insert handling code
         Event::PaymentSent { .. } => { .. }, // insert handling code
+        Event::PaymentFailed { .. } => { .. }, // insert handling code
+        Event::PaymentPathSuccessful { .. } => { .. }, // insert handling code
         Event::PaymentPathFailed { .. } => { .. }, // insert handling code
+        Event::ProbeSuccessful { .. } => { .. }, // insert handling code
+        Event::ProbeFailed { .. } => { .. }, // insert handling code
+        Event::HTLCHandlingFailed { .. } => { .. }, // insert handling code
         Event::PendingHTLCsForwardable { .. } => { .. }, // insert handling code
         Event::SpendableOutputs { .. } => { .. } // insert handling code
+        Event::OpenChannelRequest { .. } => { .. }, // insert handling code
         Event::PaymentForwarded { .. } => { .. } // insert handling code
         Event::ChannelClosed { .. } => { .. } // insert handling code
+        Event::DiscardFunding { .. } => { .. } // insert handling code
     }
 }
 ```
@@ -688,7 +696,7 @@ fn handle_ldk_event(..) {
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `KeysManager`, `BroadcasterInterface`
 
-**References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html),[LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240)
+**References:** [`Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [`EventHandler` docs](https://docs.rs/lightning/*/lightning/util/events/trait.EventHandler.html),[LDK sample node event handling example](https://github.com/lightningdevkit/ldk-sample/blob/39dda99b6977b8d976f4827486004503da91a760/src/main.rs#L115-L356)
 
 ### Step 16. Initialize the `ProbabilisticScorer`
 **What it's used for:** to find a suitable payment path to reach the destination.
