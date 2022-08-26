@@ -681,11 +681,11 @@ fn handle_ldk_event(..) {
         Event::ProbeFailed { .. } => { .. }, // insert handling code
         Event::HTLCHandlingFailed { .. } => { .. }, // insert handling code
         Event::PendingHTLCsForwardable { .. } => { .. }, // insert handling code
-        Event::SpendableOutputs { .. } => { .. } // insert handling code
+        Event::SpendableOutputs { .. } => { .. }, // insert handling code
         Event::OpenChannelRequest { .. } => { .. }, // insert handling code
-        Event::PaymentForwarded { .. } => { .. } // insert handling code
-        Event::ChannelClosed { .. } => { .. } // insert handling code
-        Event::DiscardFunding { .. } => { .. } // insert handling code
+        Event::PaymentForwarded { .. } => { .. }, // insert handling code
+        Event::ChannelClosed { .. } => { .. }, // insert handling code
+        Event::DiscardFunding { .. } => { .. }, // insert handling code
     }
 }
 ```
