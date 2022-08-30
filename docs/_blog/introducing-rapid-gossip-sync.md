@@ -1,5 +1,5 @@
 ---
-title: "Introducing Rapid Gossip Sync"
+title: "Announcing Rapid Gossip Sync"
 description: "Rapid Gossip Sync is a protocol that allows nodes to catch up with channel gossip data by relying on semi-trusted servers."
 date: "2022-08-30"
 authors:
