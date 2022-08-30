@@ -21,13 +21,9 @@ impl chain::Filter for Blockchain {
 		// <insert code for you to watch for this transaction on-chain>
 	}
 
-	fn register_output(&self, output: WatchedOutput) -> Option<(usize, Transaction)> {
+	fn register_output(&self, output: WatchedOutput) {
 		// <insert code for you to watch for any transactions that spend this
 		// output on-chain>
-		// If you are fetching pre-filtered blocks, and do not fetch in-block
-		// descendants of transactions, return any in-block spend of the given
-		// output.
-		// Otherwise return None.
 	}
 }
 ```
@@ -43,13 +39,9 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 	}
 
 	@Override
-	Option_C2Tuple_usizeTransactionZZ register_output(WatchedOutput output) {
+	public void register_output(WatchedOutput output) {
 		// <insert code for you to watch for any transactions that spend this
 		// output on-chain>
-		// If you are fetching pre-filtered blocks, and do not fetch in-block
-		// descendants of transactions, return any in-block spend of the given
-		// output.
-		// Otherwise return Option_C2Tuple_usizeTransactionZZ.none().
 	}
 });
 ```
