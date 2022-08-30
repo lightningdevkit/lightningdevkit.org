@@ -61,5 +61,5 @@ Without Rapid Gossip Sync, we measured sync data using a random set of 80,000 ch
 
 With Rapid Gossip Sync, a snapshot representing the same graph took up 4.7MB and, after gzip, only 2MB. The time to process and apply that snapshot on a mobile phone was less than 0.4 seconds. For more detailed numbers, please refer to the [Rapid Gossip Sync README](https://github.com/lightningdevkit/rust-lightning/tree/main/lightning-rapid-gossip-sync).
 
-We're excited for you to try Rapid Gossip Sync out and invite you to look at the server code. If you don't wish to operate a Rapid Gossip Sync snapshotting server, feel free to try our deployment, which is available at [rapidsync.lightningdevkit.org.](rapidsync.lightningdevkit.org.)
+We're excited for you to try Rapid Gossip Sync out and invite you to look at the [server code](https://github.com/lightningdevkit/rapid-gossip-sync-server). If you don't wish to operate a Rapid Gossip Sync snapshotting server, feel free to try our deployment, which is available at [rapidsync.lightningdevkit.org.](rapidsync.lightningdevkit.org.)
 
