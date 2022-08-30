@@ -23,7 +23,7 @@ As their names imply, channel announcements are sent when a public channel opens
 
 One of the noteworthy properties of gossip is that a lot of data is duplicated across messages. For example, each channel announcement and update contains the genesis block hash. Similarly, each channel announcement contains both nodes’ public keys, exacerbating data redundancy for well-connected nodes. So, to reduce bandwidth requirements, we decided to see if we could strip data to create a more efficient way of conveying the same information. 
 
-In the next few paragraphs, we'll outline a selection of the various improvements/optimizations we came up with. 
+In the next few paragraphs, we'll outline a selection of the various optimizations we came up with. 
 
 ## Rapid Gossip Sync
 
