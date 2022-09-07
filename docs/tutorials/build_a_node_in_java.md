@@ -167,10 +167,28 @@ class YourObj implements ChannelManagerConstructor.EventHandler {
         else if (e instanceof Event.PaymentReceived) {
             // <insert code to handle this event>
         }
+        else if (e instanceof Event.PaymentClaimed) {
+            // <insert code to handle this event>
+        }
         else if (e instanceof Event.PaymentSent) {
             // <insert code to handle this event>
         }
+        else if (e instanceof Event.PaymentFailed) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.PaymentPathSuccessful) {
+            // <insert code to handle this event>
+        }
         else if (e instanceof Event.PaymentPathFailed) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.ProbeSuccessful) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.ProbeFailed) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.HTLCHandlingFailed) {
             // <insert code to handle this event>
         }
         else if (e instanceof Event.PendingHTLCsForwardable) {
@@ -179,10 +197,16 @@ class YourObj implements ChannelManagerConstructor.EventHandler {
         else if (e instanceof Event.SpendableOutputs) {
             // <insert code to handle this event>
         }
+        else if (e instanceof Event.OpenChannelRequest) {
+            // <insert code to handle this event>
+        }
         else if (e instanceof Event.PaymentForwarded) {
             // <insert code to handle this event>
         }
         else if (e instanceof Event.ChannelClosed) {
+            // <insert code to handle this event>
+        }
+        else if (e instanceof Event.DiscardFunding) {
             // <insert code to handle this event>
         }
     }
@@ -208,7 +232,7 @@ ChannelManagerConstructor.EventHandler customEventHandler = new YourObj();
 * It's important to read the documentation (linked in References) for each event
   to make sure you satisfy the API requirements for handling it
 
-**References:** [Example of handling LDK events in Rust](https://github.com/lightningdevkit/ldk-sample/blob/bc07db6ca4a3323d8718a27f85182b8157a20750/src/main.rs#L101-L240),
+**References:** [Example of handling LDK events in Rust](https://github.com/lightningdevkit/ldk-sample/blob/39dda99b6977b8d976f4827486004503da91a760/src/main.rs#L115-L356),
 [Rust docs for LDK events](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html)
 
 ### 7. Optional: Initialize the Transaction `Filter`
