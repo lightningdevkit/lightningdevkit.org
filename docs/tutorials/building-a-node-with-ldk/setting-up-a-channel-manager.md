@@ -993,8 +993,6 @@ Otherwise, you can use LDK's `Confirm` interface as in the examples above. The h
 
 **What it's used for:** generating routes to send payments over
 
-**Example:** initializing `P2PGossipSync`
-
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
 
 <template v-slot:rust>
