@@ -223,6 +223,11 @@ module.exports = {
               link: discordUrl,
               rel: 'noopener noreferrer'
             },
+            {
+              text: 'LDK Review Club',
+              link: "http://ldk.reviews/",
+              rel: 'noopener noreferrer'
+            },
           ]
         },
         {
