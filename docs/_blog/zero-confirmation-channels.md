@@ -1,5 +1,5 @@
 ---
-title: "Zero Confirmation Channels"
+title: "Zero-Confirmation Channels"
 description: "A 0-conf channel allows peers to start using a channel as soon as the funding transaction is broadcast."
 date: "2022-09-15"
 authors:
