@@ -28,14 +28,14 @@ That brings us to 0-conf channels, which can be used once the transaction appear
 
 0-conf channels are somewhat controversial because one of bitcoin’s main benefits is that it enables peer-to-peer payments without requiring you to trust your peers or any other intermediaries. With 0-conf channels, you trust that your peer won’t attempt to double-spend the transaction inputs and that miners will include and build on top of this transaction. While you can do some things to gain confidence that the transaction will confirm, such as verifying the fee rate and being well connected to the network, you can never be certain.  
 
-Despite the trust required to operate a 0-conf channel, it’s worth noting that in the case of 0-conf channels, the trust is only with your peer, which is not necessarily the person sending you the money. This is quite different from 0-conf on-chain payments where you have to trust every individual sender.
+Despite the trust required to operate a 0-conf channel, it’s worth noting that in the case of 0-conf Lightning channels, the trust is only with your peer, which is not necessarily the person sending you the money. This is quite different from 0-conf on-chain payments where you have to trust every individual sender.
 
 ## Why or when might 0-conf channels be useful?
 
-Well, they enable instant lightning payments where trust is minimized as confirmations occur. This can be useful in situations where you already trust your peers to some extent, such as friends, family, or reliable business relationships.
+Well, they enable instant Lightning payments where trust is minimized as confirmations occur. This can be useful in situations where you already trust your peers to some extent, such as friends, family, or reliable business relationships.
 
 0-conf channels can also enable some interesting liquidity/onboarding use-cases. If you trust your LSP or wallet provider, it’s possible to receive a payment over Lightning without having to set up a channel first.  Your LSP or wallet provider can open a 0-conf channel with you on-demand as your first payment arrives.
 
 ## Conclusion
 
-0-conf channels can be a useful tool in situations where there is some trust. Do not accept 0-conf channels by default or from people you don’t know. Check out [this video](https://www.youtube.com/watch?v=JjuN6aVv9DI) to see how support for 0-conf channels was added to Sensei, an LDK-based lightning node.
+0-conf channels can be a useful tool in situations where there is some trust. Do not accept 0-conf channels by default or from people you don’t know. Check out [this video](https://www.youtube.com/watch?v=JjuN6aVv9DI) to see how support for 0-conf channels was added to Sensei, an LDK-based Lightning node.
