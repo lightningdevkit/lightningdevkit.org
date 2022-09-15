@@ -5,8 +5,7 @@ date: "2022-09-15"
 authors:
   - John Cantrell
 tags:
-  - 0-Conf Channels 
-  - Lightning Network
+  - 0-Conf Channels
 --- 
 
 Support for 0-conf channels became available in the Lightning Development Kit’s June 2022, [107 release](https://github.com/lightningdevkit/rust-lightning/releases/tag/v0.0.107). A 0-conf channel allows peers to start using a channel as soon as the funding transaction is broadcast instead of waiting for multiple confirmations. By temporarily trusting the person initiating the channel open, 0-conf channels enable instant onboarding to the Lightning Network.
