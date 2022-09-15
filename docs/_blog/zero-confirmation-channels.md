@@ -28,7 +28,7 @@ That brings us to 0-conf channels, which can be used once the transaction appear
 
 0-conf channels are somewhat controversial because one of bitcoin’s main benefits is that it enables peer-to-peer payments without requiring you to trust your peers or any other intermediaries. With 0-conf channels, you trust that your peer won’t attempt to double-spend the transaction inputs and that miners will include and build on top of this transaction. While you can do some things to gain confidence that the transaction will confirm, such as verifying the fee rate and being well connected to the network, you can never be certain.  
 
-Despite the trust required to operate a 0-conf channel, it’s worth noting that in the case of 0-conf Lightning channels, the trust is only with your peer, which is not necessarily the person sending you the money. This is quite different from 0-conf on-chain payments where you have to trust every individual sender.
+Despite the trust required when working with 0-conf transactions, it’s worth noting that in the case of 0-conf channels, the trust is only with your peer, which is not necessarily the person sending you the money. This is quite different from 0-conf on-chain payments where you have to trust every individual sender.
 
 ## Why or when might 0-conf channels be useful?
 
