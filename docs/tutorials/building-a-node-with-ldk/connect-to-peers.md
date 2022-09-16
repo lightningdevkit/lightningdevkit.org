@@ -2,7 +2,57 @@
 
 In this section you'll learn how to join the lightning network. 
 
-Firstly we need to have the ability to do high performance I/O operations. LDK provides default implementations for all of your networking needs. If you are using Rust, you can use our simple socket handling library `lightning_net_tokio`. In Java you can use the `NioPeerHandler` which uses Java's NIO I/O interface.
+Firstly we need to have the ability to do high performance I/O operations. LDK provides default implementations for initializing all of your networking needs. If you are using Rust, you can use our simple socket handling library `lightning_net_tokio`. In Java you can use the `NioPeerHandler` which uses Java's NIO I/O interface.
+
+**What it's used for**: making peer connections, facilitating peer data to and from LDK
+
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+  <template v-slot:rust> 
+
+```rust
+use lightning_net_tokio; // use LDK's sample networking module
+
+let listen_port = 9735;
+let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", listen_port))
+    .await.unwrap()
+loop {
+    let tcp_stream = listener.accept().await.unwrap().0;
+    tokio::spawn(async move {
+        // Use LDK's supplied networking battery to facilitate inbound
+        // connections.
+        lightning_net_tokio::setup_inbound(
+            &peer_manager,
+            tcp_stream.into_std().unwrap(),
+        )
+        .await;
+    });
+}
+```
+
+  </template>
+
+  <template v-slot:java>
+  
+```java
+final NioPeerHandler peerHandler = channelManagerConstructor.nio_peer_handler;
+final int port = 9730;
+peerHandler.bind_listener(new InetSocketAddress("0.0.0.0", port));
+```
+
+  </template>
+
+ <template v-slot:kotlin>
+
+```kotlin
+val nioPeerHandler = channelManagerConstructor.nio_peer_handler
+val port = 9777
+nioPeerHandler.bind_listener(InetSocketAddress("127.0.0.1", port))
+```
+
+  </template>
+</CodeSwitcher>
+
+
 
 Connections to other peers are established with `PeerManager`. You'll need to know the pubkey and address of another node that you want as a peer. Once the connection is established and the handshake is complete, `PeerManager` will show the peer's pubkey in its list of peers.
 
