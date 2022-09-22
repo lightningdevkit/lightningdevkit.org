@@ -767,7 +767,7 @@ let persister = YourDataPersister { data_dir: ldk_data_dir.clone() }
 
 **Dependencies:** `ChannelManager`, `NetworkGraph`
 
-**References:** [`Persister` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/trait.Persister.html)
+**References:** [`Persister` docs](https://docs.rs/lightning/*/lightning/util/persist/trait.Persister.html)
 
 ### Step 19. Start Background Processing
 
