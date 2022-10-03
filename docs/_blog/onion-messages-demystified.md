@@ -25,13 +25,13 @@ If Alice doesn’t want to reveal lots of personal information about her channel
 
 By selecting PopularNode from this network chart, Alice’s anonymity set includes all highlighted peers: 
 
-![OM](../assets/OM-image-1.png)
+![OM](../assets/OM-dm-image-1.png)
 
 To Bob and any other observers, any node within two hops of PopularNode could be the destination of the onion message. Adding more hops further expands Alice’s anonymity set. (Note that PopularNode’s direct peers are candidates because blinded routes may contain fake dummy hops.)
 
 After selecting the path from PopularNode, she’ll create an encrypted blob for each hop that contains information about reaching the next hop, which ends at her node. At this point, the blinded route looks like this:
 
-![OM](../assets/OM-image-2.png)
+![OM](../assets/OM-dm-image-2.png)
 
 Finally, she’ll provide this blinded route to Bob, who will find a route to PopularNode and use Alice’s blinded route when constructing the last three hop payloads within the onion packet. 
 
@@ -39,11 +39,11 @@ Finally, she’ll provide this blinded route to Bob, who will find a route to Po
 
 Continuing with this example, let’s say Bob finds this path to Alice’s blinded route: 
 
-![OM](../assets/OM-image-3.png)
+![OM](../assets/OM-dm-image-3.png)
 
 If Bob sends an invoice request through Alice’s blinded route via onion message, his message would look like this:
 
-![OM](../assets/OM-image-4.png)
+![OM](../assets/OM-dm-image-4.png)
 
 So each intermediate layer of the onion contains encrypted forwarding information for the next hop, and the last layer contains the content of the onion message intended for the final hop. This content may include invoice requests and invoices for offers.
 
