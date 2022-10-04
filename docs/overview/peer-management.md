@@ -13,5 +13,5 @@ LDK also handles a number of background tasks that need to happen periodically v
 
 ::: tip Default Implementation
 
-If you are developing in a Rust Tokio environment, LDK ships with a socket handling [crate](https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/) that let's you easily create new connections with peers. 
+If you are developing in a Rust [Tokio](https://tokio.rs/) environment, LDK ships with a socket handling [crate](https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/) that let's you easily create new connections with peers. 
 
