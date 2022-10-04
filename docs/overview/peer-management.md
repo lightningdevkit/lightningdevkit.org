@@ -1,7 +1,7 @@
 # Peer Management
 ![Peer Management](../assets/ldk-peer-management.svg)
 
-One of the first things you'll need to do when building your own lightning node is connect to a peer. In LDK this is handled by the [`PeerManager`](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html).
+One of the first things you'll need to do when building your own Lightning node is connect to a peer. In LDK this is handled by the [`PeerManager`](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html).
 
 The `PeerManager` has two dependencies: 
  - A [`ChannelManager`](https://docs.rs/lightning/*/lightning/ln/channelmanager/index.html) that enables it to notify peers when it wants to do things such as open channels.
