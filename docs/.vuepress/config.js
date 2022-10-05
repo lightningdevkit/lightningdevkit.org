@@ -26,6 +26,7 @@ const docsSidebar = [
         collapsable: true,
         children: [
           ['/overview/architecture', 'Architecture'],
+          ['/overview/peer-management', 'Peer Management'],
           ['/overview/persistent_storage', 'Persistent Storage'],
           ['/overview/blockchain_data', 'Blockchain Data'],
           ['/overview/wallet_management', 'Wallet Management'],
