@@ -15,10 +15,6 @@ This repository contains a sample implementation of LDK as the result of followi
 
 Kotlin based CLI lightning network server based on LDK. Provides HTTP-RPC interface.
 
-### [LDK + BDK Sample Node](https://github.com/johncantrell97/ldk-bdk-sample)
-
-This library hopes to bridge the gap needed to implement a LDK-based lightning client using a `bdk::Wallet`.
-
 ### [Rust node with sample Lightning Signer integration](https://gitlab.com/lightning-signer/lnrod/)
 
 A Rust Lightning node implementation based on the LDK and the Lightning Signer projects. Aims to be production ready at some point.
