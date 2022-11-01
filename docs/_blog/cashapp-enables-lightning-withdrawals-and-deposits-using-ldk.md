@@ -18,7 +18,7 @@ We chose LDK for various reasons over other implementations. It provided us with
 # What we did
 LDK allowed us to develop an extremely scalable lightning node infrastructure. We run multiple wallet nodes and have strict requirements on what peers we can connect to and strict parameters around opening channels. We have logic that does advanced probing in the background, to ensure we have an up to date snapshot of the liquidity on the lighting network.
 
-![CashApp architecture](../assets/cash-app-architecture.png)
+![CashApp architecture](../assets/cash-app-architecture.svg)
 
 We also do probing before every send, so that we can pre fetch a route and execute the send after a customer has confirmed the send. We have utilized LDK’s [phantom node](https://lightningdevkit.org/blog/introducing-phantom-node-payments/) feature, so we can generate invoices that can be claimed by more than one node. We use MySQL to save our channel state data + node metadata, this allows us to quickly shut down and start up nodes at will on different servers. LDK allows us to run AB tests on different pathfinding algorithms.
 
