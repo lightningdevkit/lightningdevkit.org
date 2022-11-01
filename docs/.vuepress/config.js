@@ -144,6 +144,10 @@ const tutorialSidebar = [
             "/tutorials/building-a-node-with-ldk/connect-to-peers",
             "Connect to Peers",
           ],
+          [
+            "/tutorials/building-a-node-with-ldk/opening-a-channel",
+            "Opening a Channel",
+          ],
         ],
       },
     ],
