@@ -1,14 +1,13 @@
 ---
 title: "Cash App Enables Lightning Withdrawals & Deposits Using LDK"
-description: "Learn how Cash App integrated with the Lightning Network, allowing its users to send and receive bitcoin instantly."
-date: "2022-11-01"
+description: "Learn how Cash App integrated with the lightning network, allowing its users to send and receive bitcoin instantly."
+date: "2022-11-15"
 authors:
   - Ryan Loomba
 tags:
   - Case Studies 
 --- 
 
-# Overview
 Our project is the Cash App lightning wallet. We power all lightning bitcoin withdrawals and deposits within Cash App.
 
 Cash App is the #1 finance app in the App Store – we have extremely high standards for product development and the infrastructure that powers all our cool features. We were looking for a solution that would ensure high reliability, high scalability, and a stellar developer experience. Cash App is the financial hub for millions of people and often the first place an individual acquires bitcoin, so having a slick user experience, and the infrastructure to onboard lots of new users is extremely important. As a publicly traded company, we take security very seriously, so having the ability to customize our wallet implementation to adhere to our security standards was necessary.
@@ -24,6 +23,10 @@ We also do probing before every send, so that we can pre-fetch a route and execu
 
 # Results
 
-The outcome was that we were able to relatively quickly build a lightning wallet to power bitcoin withdrawals and deposits on Cash App taking into the complicated constraints we had as a publicly traded company with tens of millions of users.
+The outcome was that we were able to relatively quickly build a lightning wallet to power bitcoin withdrawals and deposits on Cash App taking into account the complicated constraints we had as a publicly traded company with tens of millions of users.
 
 Users can now deposit and withdraw their bitcoin to Cash App over lightning, so essentially instant BTC deposits and withdrawals for free.
+
+To learn more check out this [presentation](https://www.youtube.com/watch?v=kbhL5RqL8Aw) at btc++ explaining some of the trade-offs the Cash App team had to think about when comparing LDK to other solutions.
+
+
