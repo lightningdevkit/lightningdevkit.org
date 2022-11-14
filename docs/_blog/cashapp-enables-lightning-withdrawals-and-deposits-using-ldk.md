@@ -8,7 +8,7 @@ tags:
   - Case Studies 
 --- 
 
-Our project is the Cash App lightning wallet. We power all lightning bitcoin withdrawals and deposits within Cash App.
+Our team builds the Cash App lightning wallet. We power all lightning bitcoin withdrawals and deposits within Cash App.
 
 Cash App is the #1 finance app in the App Store – we have extremely high standards for product development and the infrastructure that powers all our cool features. We were looking for a solution that would ensure high reliability, high scalability, and a stellar developer experience. Cash App is the financial hub for millions of people and often the first place an individual acquires bitcoin, so having a slick user experience, and the infrastructure to onboard lots of new users is extremely important. As a publicly traded company, we take security very seriously, so having the ability to customize our wallet implementation to adhere to our security standards was necessary.
 
