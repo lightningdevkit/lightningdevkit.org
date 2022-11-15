@@ -101,8 +101,11 @@ val keysManager = KeysManager.of(
  </template>
 </CodeSwitcher>
 
+::: tip Protection for on-chain wallet
 
+An advantage to this approach is that the LDK entropy is contained within your initial mnemonic and a user only has one master private key to backup and secure. Another added benefit is that if your lightning keys were to be leaked we reduce the exposure to those funds and not the rest of the on-chain wallet. 
 
+:::
 
 Spending On-Chain Funds
 =======================
