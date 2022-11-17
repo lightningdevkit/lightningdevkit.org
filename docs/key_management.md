@@ -55,9 +55,9 @@ LDK makes it simple to combine an on-chain and off-chain wallet in the same app.
 Using a [BDK](https://bitcoindevkit.org/)-based wallet the steps would be as follows:
  1) Generate a mnemonic/entropy 
  2) Build an HD wallet from that. That's now your on-chain wallet, and you can derive any BIP-compliant on-chain wallet/path for it from there.
- 3) Derive the private key at `m/535'/535'/535'` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
+ 3) Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
 ```rust
@@ -79,6 +79,37 @@ let keys_manager = KeysManager::new(&ldk_seed, cur.as_secs(), cur.subsec_nanos()
 ```
 
  </template>
+
+ <template v-slot:java>
+
+```java
+// Use BDK to create and build the HD wallet
+Mnemonic mnemonic = Mnemonic.Companion.fromString("sock lyrics " +
+                "village put galaxy " +
+                "famous pass act ship second diagram pull");
+
+// Other supported networks include mainnet (Bitcoin), Regtest, Signet
+DescriptorSecretKey bip32RootKey = new DescriptorSecretKey(Network.TESTNET, mnemonic, null);
+
+DerivationPath ldkDerivationPath = new DerivationPath("m/535h");
+DescriptorSecretKey ldkChild = bip32RootKey.derive(ldkDerivationPath);
+        
+ByteArrayOutputStream bos = new ByteArrayOutputStream();
+ObjectOutputStream oos = new ObjectOutputStream(bos);
+oos.writeObject(ldkChild.secretBytes());
+byte[] entropy = bos.toByteArray();
+
+// Seed the LDK KeysManager with the private key at m/535h
+var startupTime = System.currentTimeMillis();
+KeysManager keysManager = KeysManager.of(
+        entropy,
+        startupTime / 1000,
+        (int) (startupTime * 1000)
+);
+```
+
+ </template>
+
  <template v-slot:kotlin>
 
 ```kotlin
