@@ -67,6 +67,7 @@ let mnemonic = Mnemonic::parse_in_normalized(
         "sock lyrics village put galaxy famous pass act ship second diagram pull"
     ).unwrap();
 let seed: [u8; 64] = mnemonic.to_seed_normalized("");
+// Other supported networks include mainnet (Bitcoin), Regtest, Signet
 let master_xprv = ExtendedPrivKey::new_master(Network::Testnet, &seed).unwrap();
 let secp = Secp256k1::new();
 let xprv: ExtendedPrivKey = master_xprv.ckd_priv(&secp, ChildNumber::Hardened { index: 535 }).unwrap();
