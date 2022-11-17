@@ -1,7 +1,7 @@
 ---
 title: "Cash App Enables Lightning Withdrawals & Deposits Using LDK"
 description: "Learn how Cash App integrated with the lightning network, allowing its users to send and receive bitcoin instantly."
-date: "2022-11-16"
+date: "2022-11-17"
 authors:
   - Ryan Loomba
 tags:
