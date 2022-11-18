@@ -716,7 +716,7 @@ let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&ne
 **What it's used for:** to create an invoice payer that retries failed payment paths.
 
 ```rust
-let router = DefaultRouter::new(Arc::clone(&network_graph), &logger, keys_manager.get_secure_random_bytes());
+let router = DefaultRouter::new(Arc::clone(&network_graph), &logger, keys_manager.get_secure_random_bytes(), Arc::clone(&scorer));
 
 let invoice_payer = InvoicePayer::new(
 	Arc::clone(&channel_manager),
@@ -729,7 +729,7 @@ let invoice_payer = InvoicePayer::new(
 
 **Implementation notes:** The scorer is used when finding a route and when handling events from successful and failed paths. The retrier consumes those events by telling the scorer that a path has failed or succeeded and then retries by querying for a (potentially new) path with the updated scorer.
 
-**Dependencies** `ChannelManager`, `DefaultRouter`, `Logger`, `Event`, `RetryAttempts`
+**Dependencies** `ChannelManager`, `DefaultRouter`, `ProbablisticScorer`, `Logger`, `Event`, `RetryAttempts`
 
 **Reference** [`InvoicePayer` docs](https://docs.rs/lightning-invoice/*/lightning_invoice/payment/struct.InvoicePayer.html), [LDK sample node InvoicePayer example](https://github.com/lightningdevkit/ldk-sample/blob/6f6473bf1bb4a1b2149a9a5c3616c39653dec144/src/main.rs#L615-L622)
 
