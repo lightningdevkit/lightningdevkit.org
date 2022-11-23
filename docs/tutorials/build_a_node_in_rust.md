@@ -716,15 +716,14 @@ let scorer = Arc::new(Mutex::new(ProbabilisticScorer::new(params, Arc::clone(&ne
 **What it's used for:** to create an invoice payer that retries failed payment paths.
 
 ```rust
-let router = DefaultRouter::new(Arc::clone(&network_graph), &logger, keys_manager.get_secure_random_bytes());
+let router = DefaultRouter::new(Arc::clone(&network_graph), &logger, keys_manager.get_secure_random_bytes(), Arc::clone(&scorer));
 
 let invoice_payer = InvoicePayer::new(
 	Arc::clone(&channel_manager),
 	router,
-	Arc::clone(&scorer),
 	Arc::clone(&logger),
 	event_handler,
-	payment::RetryAttempts(5),
+	payment::Retry::Attempts(5),
 );
 ```
 
