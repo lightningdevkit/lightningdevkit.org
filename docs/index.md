@@ -44,7 +44,7 @@ Use a local full node, an SPV node, or your own Electrum server with API access 
 </div>
 
 <div class="feature">
-<h3>Single Wallet</h3>
+<h3> Unified Wallet</h3>
 
 No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience. 
 
