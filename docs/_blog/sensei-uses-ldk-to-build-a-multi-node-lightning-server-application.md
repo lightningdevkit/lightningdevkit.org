@@ -1,7 +1,7 @@
 ---
 title: "Sensei uses LDK to Build a Multi-Node Lightning Server App"
 description: "Learn how Sensei built a lightning node app to serve many nodes"
-date: "2022-11-19"
+date: "2022-12-20"
 authors:
   - John Cantrell
 tags:
