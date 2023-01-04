@@ -229,6 +229,11 @@ module.exports = {
               link: "http://ldk.reviews/",
               rel: 'noopener noreferrer'
             },
+            {
+              text: 'Code of Conduct',
+              link: "/code_of_conduct",
+              rel: 'noopener noreferrer'
+            },
           ]
         },
         {
