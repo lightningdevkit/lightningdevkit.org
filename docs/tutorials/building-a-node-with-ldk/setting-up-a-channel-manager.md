@@ -424,7 +424,7 @@ inform LDK about these transactions/outputs in Step 14.
         // <insert code for you to watch for this transaction on-chain>
     }
 
-    override fun register_output(output: WatchedOutput): Option_C2Tuple_usizeTransactionZZ {
+    override fun register_output(output: WatchedOutput) {
         // <insert code for you to watch for any transactions that spend this
         //  output on-chain>
     }
