@@ -225,6 +225,11 @@ module.exports = {
               rel: 'noopener noreferrer'
             },
             {
+              text: 'LDK Calendar',
+              link: "https://calendar.google.com/calendar/embed?src=c_e6fv6vlshbpoob2mmbvblkkoj4%40group.calendar.google.com",
+              rel: 'noopener noreferrer'
+            },
+            {
               text: 'LDK Review Club',
               link: "http://ldk.reviews/",
               rel: 'noopener noreferrer'
