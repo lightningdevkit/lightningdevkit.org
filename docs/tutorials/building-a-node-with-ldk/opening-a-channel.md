@@ -6,7 +6,7 @@ Now that you have a peer, you can open a channel with them using `ChannelManager
 
 - the amount in sats to use when funding the channel,
 - any msats to push to your peer,
-- an id which is given back in the `FundingGenerationReady` event, and
+- an id which is given back in the `FundingGenerationReady` event,
 - an optional `UserConfig` for overriding `ChannelManager` defaults
 
 Channels can be announced to the network or can remain private, which is controlled via `UserConfig::announced_channel`.
