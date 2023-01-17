@@ -234,6 +234,12 @@ module.exports = {
               link: "/code_of_conduct",
               rel: 'noopener noreferrer'
             },
+            {
+              text: 'Reporting a Vulnerability',
+              link: "https://github.com/lightningdevkit/rust-lightning/blob/main/SECURITY.md",
+              rel: 'noopener noreferrer'
+            },
+
           ]
         },
         {
