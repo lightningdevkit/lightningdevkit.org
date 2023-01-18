@@ -19,7 +19,7 @@ We initially had a Python implementation, but as the project evolved we realized
 
 ![TEOS architecture](../assets/teos-architecture-diagram.png)
 
-With respect to LDK, it has allowed TEOS to abstract its interaction with bitcoind, and remove several components of the original design, given that LDK already does a substantial amount of the low-level heavy lifting (e.g. reorg management). Also, for the upcoming features such as lightning P2P communication, Python lacked proper support for most of lightning’s functionality, so using LDK paid for the invested Rust re-implementation time instead of having to implement and maintain all that related tooling in Python.
+While it did take time to perform the Rust re-implementation, it was worth it for several reasons. LDK does a substantial amount of the low-level heavy lifting (e.g. reorg management), allowing us to remove several components of the original design and abstract interaction with bitcoind. Additionally, Python lacks proper support for most of lightning’s functionality, so we would have had to implement and maintain all of the related toolings to support lightning P2P communication features. 
 
 Furthermore, it let us take advantage of any future lightning updates that we may need, such as anchors. At the end of the day, using LDK lets you focus on the product/protocol you are building and have to care less about the low-level lightning/bitcoin parts that are needed. 
 # Results
