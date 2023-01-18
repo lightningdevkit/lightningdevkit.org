@@ -8,7 +8,7 @@ tags:
   - Case Studies 
 --- 
 
-[The Eye of Satoshi (TEOS)](https://github.com/talaia-labs/rust-teos) s a bitcoin watchtower with a specific focus on lightning. Watchtowers are third-party viewing services that help prevent people from cheating on the lightning network by constantly monitoring the bitcoin blockchain for channel breaches. If found, a watchtower will react by penalizing the misbehaving party and sending all funds to its counterpart.
+[The Eye of Satoshi (TEOS)](https://github.com/talaia-labs/rust-teos) is a bitcoin watchtower with a specific focus on lightning. Watchtowers are third-party viewing services that help prevent people from cheating on the lightning network by constantly monitoring the bitcoin blockchain for channel breaches. If found, a watchtower will react by penalizing the misbehaving party and sending all funds to its counterpart.
 
 The Eye of Satoshi (TEOS) needs information from several building blocks in order to work. This includes block data processing (including reacting to forks/chain splits), interaction with a bitcoin node (for transaction broadcasting) and general tooling around bitcoin/lightning (transaction parsing, data encoding and decoding, lightning P2P messaging, etc) 
 
