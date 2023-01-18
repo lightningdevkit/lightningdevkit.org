@@ -28,6 +28,6 @@ The TEOS codebase is now more robust and stable, making it easier to contribute 
 
 In terms of functionality, we recently reached the same state as the old Python codebase. We are currently focusing on new features and integrations. Additionally, using Rust and LDK has allowed us to build a healthier community. It’s easier to make improvements to a project when you use the same tools and literally speak the same language. 
 
-Some additional words on this: LDK’s team has been super helpful both from a Rust to a lightning dev standpoint. They’ve helped us solve several issues and have been open to implementing and accepting PRs for new functionality that we required. 
+It's been a pleasure working with the LDK team. They’ve helped us solve several Rust and LDK issues, and have been open to accepting PRs and implementing new functionality that we require. 
 
 Learn how you can deploy your own TEOS watchtower on the Bitcoin Developers Youtube [channel](https://www.youtube.com/watch?v=8vzNB_NZt2A).
