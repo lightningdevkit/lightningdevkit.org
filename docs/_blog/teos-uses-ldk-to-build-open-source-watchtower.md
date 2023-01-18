@@ -1,7 +1,7 @@
 ---
 title: "TEOS uses LDK to build open-source watchtower"
 description: "Learn how TEOS built an open-source watchtower"
-date: "2023-01-14"
+date: "2023-01-18"
 authors:
   - Sergi Delgado
 tags:
