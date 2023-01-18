@@ -10,7 +10,7 @@ tags:
 
 [The Eye of Satoshi (TEOS)](https://github.com/talaia-labs/rust-teos) is a bitcoin watchtower with a specific focus on lightning. Watchtowers are third-party viewing services that help prevent people from cheating on the lightning network by constantly monitoring the bitcoin blockchain for channel breaches. If found, a watchtower will react by penalizing the misbehaving party and sending all funds to its counterpart.
 
-The Eye of Satoshi (TEOS) needs information from several building blocks in order to work. This includes block data processing (including reacting to forks/chain splits), interaction with a bitcoin node (for transaction broadcasting) and general tooling around bitcoin/lightning (transaction parsing, data encoding and decoding, lightning P2P messaging, etc) 
+In order for TEOS to work, information is needed from several different building blocks. This includes block data processing (such as reacting to forks/chain splits), interaction with a bitcoin node (for transaction broadcasting), and general tooling around bitcoin/lightning (transaction parsing, data encoding/decoding, lightning P2P messaging, etc). 
 
 TEOS does not have strong performance requirements,  as data is checked in newly processed blocks approximately every 10 mins. However, if it services a substantial amount of nodes at once or channels with high traffic, it may need to compare processed info against huge amounts of data.
 # What we did?
