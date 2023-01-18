@@ -12,7 +12,7 @@ tags:
 
 In order for TEOS to work, information is needed from several different building blocks. This includes block data processing (such as reacting to forks/chain splits), interaction with a bitcoin node (for transaction broadcasting), and general tooling around bitcoin/lightning (transaction parsing, data encoding/decoding, lightning P2P messaging, etc). 
 
-TEOS does not have strong performance requirements,  as data is checked in newly processed blocks approximately every 10 mins. However, if it services a substantial amount of nodes at once or channels with high traffic, it may need to compare processed info against huge amounts of data.
+TEOS does not have strong performance requirements, as data is checked in newly processed blocks approximately every 10 mins. However, if it services a substantial amount of nodes at once or channels with high traffic, it may need to compare processed info against huge amounts of data.
 # What we did?
 
 Initially, we had a Python implementation, so we needed to choose between sticking to the original choice of language or re-implementing something that was more robust with better tooling. Rust was an obvious choice given how well it has worked for other bitcoin-related projects. In addition, moving away from Python allowed us to drop a substantial amount of dependencies that were unmaintained or maintained by us, and instead use properly maintained counterparts.
