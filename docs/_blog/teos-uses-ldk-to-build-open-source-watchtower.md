@@ -24,7 +24,7 @@ While it did take time to perform the Rust re-implementation, it was worth it fo
 Furthermore, LDK supports various lightning features that we may need in the future, such as anchors. At the end of the day, LDK makes it possible to focus on the product/protocol you are building and care less about the low-level lightning/bitcoin parts that are needed. 
 # Results
 
-We’ve reached a more robust and stable codebase, easier to contribute to and integrate with other projects.
+The TEOS codebase is now more robust and stable, making it easier to contribute to and integrate with other projects.
 
 Functionality-wise, we recently reached the same state as the old Python codebase. We are currently focusing on new functionality and integrations. From a project health perspective, we’ve achieved a healthier community, primarily due to using Rust and LDK. Also, it’s easier to make improvements to a project when you speak, literally, the same language and use the same tooling. 
 
