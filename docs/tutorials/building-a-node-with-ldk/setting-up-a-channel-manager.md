@@ -28,16 +28,16 @@ To add a `ChannelManager` to your application, run:
   ```java
   import org.ldk.batteries.ChannelManagerConstructor
 
-  ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
+  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
     Network.LDKNetwork_Bitcoin, 
     UserConfig.default(), 
-    best_block_hash,
-    block_height, 
-    keys_manager.as_KeysInterface(), 
-    fee_estimator, 
-    chain_monitor,
+    latestBlockHash,
+    latestBlockHeight, 
+    keysManager.as_KeysInterface(), 
+    feeEstimator, 
+    chainMonitor,
     router, 
-    tx_broadcaster, 
+    txBroadcaster, 
     logger
   );
   ```
@@ -54,10 +54,10 @@ To add a `ChannelManager` to your application, run:
       userConfig,
       latestBlockHash,
       latestBlockHeight,
-      Global.keysManager?.as_KeysInterface(),
+      keysManager.as_KeysInterface(),
       feeEstimator,
-      Global.chainMonitor,
-      Global.router,
+      chainMonitor,
+      router,
       txBroadcaster,
       logger
   );
@@ -68,7 +68,7 @@ To add a `ChannelManager` to your application, run:
 
 There are a few dependencies needed to get this working. Let's walk through setting up each one so we can plug them into our `ChannelManager`.
 
-### Step 1. Initialize the `FeeEstimator`
+### Initialize the `FeeEstimator`
 
 **What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
@@ -114,7 +114,7 @@ There are a few dependencies needed to get this working. Let's walk through sett
       }
   }
 
-  FeeEstimator fee_estimator = FeeEstimator.new_impl(new YourFeeEstimator());
+  FeeEstimator feeEstimator = FeeEstimator.new_impl(new YourFeeEstimator());
   ```
 
   </template>
@@ -122,12 +122,25 @@ There are a few dependencies needed to get this working. Let's walk through sett
    <template v-slot:kotlin>
  
   ```kotlin
-  object LDKFeeEstimator: FeeEstimatorInterface {
-    override fun get_est_sat_per_1000_weight(conf_target: ConfirmationTarget?): Int {
-        // insert code to retieve a fee rate
+  object YourFeeEstimator : FeeEstimatorInterface {
+    override fun get_est_sat_per_1000_weight(confirmationTarget: ConfirmationTarget?): Int {
+        if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Background) {
+            // <insert code to retrieve a background feerate>
+        }
+
+        if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Normal) {
+            // <insert code to retrieve a normal (i.e. within ~6 blocks) feerate>
+        }
+
+        if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_HighPriority) {
+            // <insert code to retrieve a high-priority feerate>
+        }
+        // return default fee rate
     }
-  }
-  ```
+}
+
+val feeEstimator: FeeEstimator = FeeEstimator.new_impl(YourFeeEstimator)
+```
 
   </template>
 </CodeSwitcher>
