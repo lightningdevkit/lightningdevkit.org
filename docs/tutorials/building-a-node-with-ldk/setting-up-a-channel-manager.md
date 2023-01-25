@@ -275,7 +275,7 @@ retrieving fresh ones every time
 
 **References:** [Rust `BroadcasterInterface` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java `BroadcasterInterface` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
-### Step 4. Initialize `Persist`
+### Initialize `Persist`
 **What it's used for:** persisting `ChannelMonitor`s, which contain crucial channel data, in a timely manner
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -311,42 +311,40 @@ retrieving fresh ones every time
   <template v-slot:java>
   
   ```java
-  Persist persister = Persist.new_impl(new Persist.PersistInterface() {
+  class YourPersister implements Persist.PersistInterface {
     @Override
-    public Result_NoneChannelMonitorUpdateErrZ persist_new_channel(OutPoint id,
-      ChannelMonitor data) {
-        byte[] channel_monitor_bytes = data.write();
+    public Result_NoneChannelMonitorUpdateErrZ persist_new_channel(
+      OutPoint id, ChannelMonitor data) {
+        byte[] channelMonitorBytes = data.write();
         // <insert code to write these bytes to disk, keyed by `id`>
     }
 
     @Override
     public Result_NoneChannelMonitorUpdateErrZ update_persisted_channel(
       OutPoint id, ChannelMonitorUpdate update, ChannelMonitor data) {
-        byte[] channel_monitor_bytes = data.write();
+        byte[] channelMonitorBytes = data.write();
         // <insert code to update the `ChannelMonitor`'s file on disk with these
         //  new bytes, keyed by `id`>
     }
-  });
+  }
+
+  PersisterInterface persister = PersisterInterface.new_impl(new YourPersister());
   ```
   </template>
 
   <template v-slot:kotlin>
 
   ```kotlin
-  object LDKPersister: Persist.PersistInterface {
+  object YourPersister: Persist.PersistInterface {
     override fun persist_new_channel(
-        id: OutPoint?,
-        data: ChannelMonitor?,
-        updateId: MonitorUpdateId?
+        id: OutPoint?, data: ChannelMonitor?, updateId: MonitorUpdateId?
     ): Result_NoneChannelMonitorUpdateErrZ? {
         val channelMonitorBytes = data.write()
         // <insert code to write these bytes to disk, keyed by `id`>
     }
 
     override fun update_persisted_channel(
-        id: OutPoint?,
-        update: ChannelMonitorUpdate?,
-        data: ChannelMonitor?,
+        id: OutPoint?, update: ChannelMonitorUpdate?, data: ChannelMonitor?,
         updateId: MonitorUpdateId
     ): Result_NoneChannelMonitorUpdateErrZ? {
         val channelMonitorBytes = data.write()
@@ -354,6 +352,8 @@ retrieving fresh ones every time
         //  new bytes, keyed by `id`>
     }
   }
+
+  val persister: Persist = Persist.new_impl(YourPersister)
   ```
 
   </template>
@@ -418,7 +418,7 @@ inform LDK about these transactions/outputs in Step 14.
   <template v-slot:java>
   
   ```java
-  Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
+  class YourTxFilter implements Filter.FilterInterface {
     @Override
     public void register_tx(byte[] txid, byte[] script_pubkey) {
         // <insert code for you to watch for this transaction on-chain>
@@ -429,14 +429,16 @@ inform LDK about these transactions/outputs in Step 14.
         // <insert code for you to watch for any transactions that spend this
         //  output on-chain>
     }
-});
+  }
+
+  Filter txFilter = Filter.new_impl(YourTxFilter)
   ```
   </template>
 
   <template v-slot:kotlin>
 
   ```kotlin
-  object LDKTxFilter : Filter.FilterInterface {
+  object YourTxFilter : Filter.FilterInterface {
     override fun register_tx(txid: ByteArray, script_pubkey: ByteArray) {
         // <insert code for you to watch for this transaction on-chain>
     }
@@ -445,8 +447,9 @@ inform LDK about these transactions/outputs in Step 14.
         // <insert code for you to watch for any transactions that spend this
         //  output on-chain>
     }
-}
-  
+  }
+
+  val txFilter: Filter = Filter.new_impl(YourTxFilter)
   ```
   </template>
 </CodeSwitcher>
@@ -457,7 +460,7 @@ inform LDK about these transactions/outputs in Step 14.
 
 **References:** [Rust `Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Java `Filter` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Filter.java)
 
-### Step 5. Initialize the `ChainMonitor`
+### Initialize the `ChainMonitor`
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be.
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -466,9 +469,7 @@ inform LDK about these transactions/outputs in Step 14.
   ```rust
   let filter: Option<Box<dyn Filter>> = // leave this as None or insert the Filter trait object
 
-  let chain_monitor = ChainMonitor::new(
-      filter, &broadcaster, &logger, &fee_estimator, &persister
-  );
+  let chain_monitor = ChainMonitor::new(filter, &broadcaster, &logger, &fee_estimator, &persister);
   ```
   </template>
 
@@ -477,9 +478,7 @@ inform LDK about these transactions/outputs in Step 14.
   ```java
   final filter = // leave this as `null` or insert the Filter object.
               
-  final chain_monitor = ChainMonitor.of(filter, tx_broadcaster, logger,
-      fee_estimator, persister);
-  
+  final chainMonitor = ChainMonitor.of(filter, txBroadcaster, logger, feeEstimator, persister);
   ```
   </template>
 
@@ -501,7 +500,7 @@ inform LDK about these transactions/outputs in Step 14.
 
 **References:** [Rust `ChainMonitor` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java `ChainMonitor` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java)
 
-### Step 6. Initialize the `KeysManager`
+### Initialize the `KeysManager`
 **What it's used for:** providing keys for signing Lightning transactions
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -559,7 +558,8 @@ inform LDK about these transactions/outputs in Step 14.
 
   ```kotlin
   val keySeed = ByteArray(32)
-
+  // <insert code to fill key_seed with random bytes OR if restarting, reload the
+  // seed from disk>
   val keysManager = KeysManager.of(
         keySeed,
         System.currentTimeMillis() / 1000,
@@ -583,7 +583,7 @@ generation is unique across restarts.
 
 **References:** [Rust `KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java `KeysManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
 
-### Step 7. Read `ChannelMonitor` state from disk
+### Read `ChannelMonitor` state from disk
 
 **What it's used for:** if LDK is restarting and has at least 1 channel, its `ChannelMonitor`s will need to be (1) fed to the `ChannelManager` and (2) synced to chain.
 
@@ -608,19 +608,19 @@ generation is unique across restarts.
   
   ```java
   // Initialize the array where we'll store the `ChannelMonitor`s read from disk.
-  final ArrayList channel_monitor_list = new ArrayList<>();
+  final ArrayList channelMonitorList = new ArrayList<>();
 
   // For each monitor stored on disk, deserialize it and place it in
   // `channel_monitors`.
   for (... : monitor_files) {
-      byte[] channel_monitor_bytes = // read the bytes from disk the same way you
-                                    // wrote them in Step 4
-    channel_monitor_list.add(channel_monitor_bytes);
+      byte[] channelMonitorBytes = // read the bytes from disk
+                            
+      channelMonitorList.add(channelMonitorBytes);
   }
 
   // Convert the ArrayList into an array so we can pass it to
   // `ChannelManagerConstructor`.
-  final byte[][] channel_monitors = (byte[][])channel_monitor_list.toArray(new byte[1][]);
+  final byte[][] channelMonitors = (byte[][])channelMonitorList.toArray(new byte[1][]);
   
   ```
   </template>
@@ -646,7 +646,7 @@ generation is unique across restarts.
 
 **References:** [Rust `load_outputs_to_watch` docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/struct.ChannelMonitor.html#method.load_outputs_to_watch)
 
-### Step 8. Initialize the `ChannelManager`
+### Initialize the `ChannelManager`
 **What it's used for:** managing channel state
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -706,21 +706,21 @@ generation is unique across restarts.
   ```java
   /* FRESH CHANNELMANAGER */
 
-  int block_height = // <insert current chain tip height>;
-  byte[] best_block_hash = // <insert current chain tip block hash>;
-  ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
-    Network.LDKNetwork_Bitcoin, UserConfig.default(), best_block_hash,
-    block_height, keys_manager.as_KeysInterface(), fee_estimator, chain_monitor,
-    router, tx_broadcaster, logger);
+  int bestBlockHeight = // <insert current chain tip height>;
+  byte[] bestBlockHash = // <insert current chain tip block hash>;
+  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
+    Network.LDKNetwork_Bitcoin, UserConfig.default(), bestBlockHash,
+    bestBlockHeight, keysManager.as_KeysInterface(), feeEstimator, chainMonitor,
+    router, txBroadcaster, logger);
 
   /* RESTARTING CHANNELMANAGER */
 
-  byte[] serialized_channel_manager = // <insert bytes as written to disk in Step 4>
-  ChannelManagerConstructor channel_manager_constructor = new ChannelManagerConstructor(
-    serialized_channel_manager, channel_monitors, keys_manager.as_KeysInterface(),
-    fee_estimator, chain_monitor, filter, router, tx_broadcaster, logger);
+  byte[] serializedChannelManager = // <insert bytes as written to disk in Step 4>
+  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
+    serializedChannelManager, channelMonitors, keysManager.as_KeysInterface(),
+    feeEstimator, chainMonitor, filter, router, txBroadcaster, logger);
 
-  final ChannelManager channel_manager = channel_manager_constructor.channel_manager;  
+  final ChannelManager channelManager = channelManagerConstructor.channel_manager;  
   ```
   </template>
 
@@ -734,11 +734,11 @@ generation is unique across restarts.
               serializedChannelManager,
               channelMonitors,
               userConfig,
-              keysManager?.as_KeysInterface(),
+              keysManager.as_KeysInterface(),
               feeEstimator,
               chainMonitor,
               txFilter,
-              router!!.write(),
+              router.write(),
               txBroadcaster,
               logger
           );
@@ -749,7 +749,7 @@ generation is unique across restarts.
               userConfig,
               latestBlockHash,
               latestBlockHeight,
-              keysManager?.as_KeysInterface(),
+              keysManager.as_KeysInterface(),
               feeEstimator,
               chainMonitor,
               router,
@@ -762,14 +762,14 @@ generation is unique across restarts.
 </CodeSwitcher>
 
 **Implementation notes:** No methods should be called on `ChannelManager` until
-*after* Step 9.
+*after* the `ChannelMonitor`s and `ChannelManager` are synced to the chain tip (next step).
 
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`
 * If restarting: `ChannelMonitor`s and `ChannelManager` bytes from Step 7 and Step 18 respectively
 
 **References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), [Java `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
 
-### Step 9. Sync `ChannelMonitor`s and `ChannelManager` to chain tip
+### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 **What it's used for:** this step is only necessary if you're restarting and have open channels. This step ensures that LDK channel state is up-to-date with the bitcoin blockchain
 
 **Example:**
@@ -953,58 +953,13 @@ Otherwise, you can use LDK's `Confirm` interface as in the examples above. The h
   2. Tell LDK what your best known block header and height is.
   3. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
 
-**More details about LDK's interfaces to provide chain info in Step 14**
-
 **References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/)
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `ChannelMonitor`s
 * If providing providing full blocks or BIP 157/158: set of `ChannelMonitor`s
 * If using Electrum: `ChainMonitor`
 
-### Step 10. Give `ChannelMonitor`s to `ChainMonitor`
-**What it's used for:** `ChainMonitor` is responsible for updating the `ChannelMonitor`s during LDK node operation.
-
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
-  <template v-slot:rust>
-
-  ```rust
-  for (funding_outpoint, channel_monitor) in channel_monitors.drain(..) {
-    chain_monitor.watch_channel(funding_outpoint, channel_monitor).unwrap();
-  }
-  ```
-  </template>
-
-  <template v-slot:java>
-  
-  ```java
-  long[] channel_monitors = chainMonitor.list_monitors()
-
-  for (int k = 0; k < channel_monitors.length; k++) {
-    Outpoint outpoint = channel_monitors[k];
-    ChannelMonitor monitor  = // Retrieve channel monitor saved in step 4
-    chainMonitor.as_Watch().watch_channel(outPoint, monitor)
-  }
-  ```
-  </template>
-
-  <template v-slot:kotlin>
-
-  ```kotlin
-  val channelMonitorlist = chainMonitor.list_monitors()
-  
-  list.iterator().forEach { outPoint ->
-      val monitor  = // Retrieve channel monitor saved in step 4
-      chainMonitor.as_Watch().watch_channel(outPoint, monitor)
-  }
-  ```
-  </template>
-</CodeSwitcher>
-
-**Dependencies:**
-* `ChainMonitor`, set of `ChannelMonitor`s and their funding outpoints
-* Step 9 must be completed prior to this step
-
-### Step 11: Optional: Initialize the `P2PGossipSync`
+###Optional: Initialize the `P2PGossipSync`
 
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
