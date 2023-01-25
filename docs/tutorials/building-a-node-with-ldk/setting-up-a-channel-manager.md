@@ -959,7 +959,7 @@ Otherwise, you can use LDK's `Confirm` interface as in the examples above. The h
 * If providing providing full blocks or BIP 157/158: set of `ChannelMonitor`s
 * If using Electrum: `ChainMonitor`
 
-###Optional: Initialize the `P2PGossipSync`
+### Optional: Initialize the `P2PGossipSync`
 
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
