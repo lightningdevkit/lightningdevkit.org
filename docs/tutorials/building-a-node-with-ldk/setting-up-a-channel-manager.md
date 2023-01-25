@@ -155,7 +155,7 @@ retrieving fresh ones every time
 
 **References:** [Rust `FeeEstimator` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java `FeeEstimator` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
 
-### Step 2. Initialize the `Logger`
+### Initialize the `Logger`
 **What it's used for:** LDK logging
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -202,11 +202,13 @@ retrieving fresh ones every time
    <template v-slot:kotlin>
  
   ```kotlin
-  object LDKLogger : LoggerInterface {
+  object YourLogger : LoggerInterface {
       override fun log(record: Record?) {
           // <insert code to print this log and/or write this log to a file>
       }
   }
+
+  val logger: Logger = Logger.new_impl(YourLogger)
   ```
 
   </template>
@@ -218,7 +220,7 @@ retrieving fresh ones every time
 
 **References:** [Rust `Logger` docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html), [Java `Logger` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
 
-### Step 3. Initialize the `BroadcasterInterface`
+### Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various transactions to the bitcoin network
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -241,7 +243,7 @@ retrieving fresh ones every time
   <template v-slot:java>
  
   ```java
-  class YourBroadcaster implements
+  class YourTxBroadcaster implements
   BroadcasterInterface.BroadcasterInterfaceInterface {
       @Override
       public void broadcast_transaction(byte[] tx) {
@@ -249,7 +251,7 @@ retrieving fresh ones every time
       }
   }
 
-  BroadcasterInterface tx_broadcaster = BroadcasterInterface.new_impl(new YourBroadcaster());
+  BroadcasterInterface tx_broadcaster = BroadcasterInterface.new_impl(new YourTxBroadcaster());
   ```
 
   </template>
@@ -257,11 +259,13 @@ retrieving fresh ones every time
    <template v-slot:kotlin>
  
   ```kotlin
-  object LDKBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
+  object YourTxBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
       override fun broadcast_transaction(tx: ByteArray?) {
           // <insert code to broadcast the given transaction here>
       }
   }
+
+  val txBroadcaster: BroadcasterInterface = BroadcasterInterface.new_impl(YourTxBroadcaster)
   ```
 
   </template>
