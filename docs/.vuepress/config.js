@@ -98,6 +98,7 @@ const tutorialSidebar = [
         children: [
           ['/tutorials/building-a-node-with-ldk/introduction', 'Introduction'],
           ['/tutorials/building-a-node-with-ldk/setting-up-a-channel-manager', 'Setting up a Channel Manager'],
+          ['/tutorials/building-a-node-with-ldk/handling-events', 'Handling Events'],
           ['/tutorials/building-a-node-with-ldk/setting-up-a-peer-manager', 'Setting up a Peer Manager'],
           ['/tutorials/building-a-node-with-ldk/connect-to-peers', 'Connect to Peers'],
           ['/tutorials/building-a-node-with-ldk/opening-a-channel', 'Opening a Channel']
