@@ -137,6 +137,10 @@ const tutorialSidebar = [
             "Setting up a Channel Manager",
           ],
           [
+            "/tutorials/building-a-node-with-ldk/handling-events",
+            "Handling Events",
+          ],
+          [
             "/tutorials/building-a-node-with-ldk/setting-up-a-peer-manager",
             "Setting up a Peer Manager",
           ],
