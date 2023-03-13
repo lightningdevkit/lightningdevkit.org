@@ -26,7 +26,7 @@ In other cases, developers will come to realize more customization is necessary,
 1. Build using the lower-level, more powerful LDK API and reference the LDK Node as an example.
 2. Fork the LDK Node code and make custom modifications themselves. This has the benefit of reusing most of the LDK Node code. However, this requires knowledge of Rust and exposing more of the LDK API in LDK Node.
 
-While LDK Node is written in Rust, it is anticipated many languages will be supported through UniFFI or other mechanisms, including:
+While LDK Node is written in Rust, it is anticipated many languages will be supported through [UniFFI](https://github.com/mozilla/uniffi-rs) or other mechanisms, including:
 * Java/Kotlin (near term)
 * Swift (near term)
 * Python (near term)
