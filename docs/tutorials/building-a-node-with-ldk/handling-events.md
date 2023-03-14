@@ -4,7 +4,7 @@ LDK requires that you handle many different events throughout your app's life cy
 
 To start handling events in your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -22,44 +22,23 @@ To start handling events in your application, run:
 }
   ```
   </template>
-  <template v-slot:java>
- 
-  ```java
-  import org.ldk.batteries.ChannelManagerConstructor
 
-  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
-    Network.LDKNetwork_Bitcoin, 
-    UserConfig.default(), 
-    latestBlockHash,
-    latestBlockHeight, 
-    keysManager.as_KeysInterface(), 
-    feeEstimator, 
-    chainMonitor,
-    router, 
-    txBroadcaster, 
-    logger
-  );
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
-  import org.ldk.batteries.ChannelManagerConstructor
+  import org.ldk.structs.Event
 
-  val channelManagerConstructor = ChannelManagerConstructor(
-      Network.LDKNetwork_Regtest,
-      userConfig,
-      latestBlockHash,
-      latestBlockHeight,
-      keysManager.as_KeysInterface(),
-      feeEstimator,
-      chainMonitor,
-      router,
-      txBroadcaster,
-      logger
-  );
+  if (event is Event.PaymentSent) {
+    // Handle successful payment
+  }
+
+  if (event is Event.PaymentFailed) {
+    // Handle failed payment
+  }
+
+  if (event is Event.FundingGenerationReady) {
+    // Create a funding tx to be broadcast 
+  }
   ```
 
   </template>
