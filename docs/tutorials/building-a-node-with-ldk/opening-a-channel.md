@@ -11,7 +11,7 @@ Now that you have a peer, you can open a channel with them using `ChannelManager
 
 Channels can be announced to the network or can remain private, which is controlled via `UserConfig::announced_channel`.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
 ```rust
@@ -29,21 +29,7 @@ match channel_manager.create_channel(pubkey, amount, push_msat, user_id, Some(co
 ```
 
   </template>
-  <template v-slot:java>
 
-```java
-long amount = 10_000L;
-long push_msat = 1_000L;
-long user_id = 42L;
-UserConfig config = UserConfig.with_defaults();
-config.get_channel_options().set_announced_channel(true);
-
-Result_NoneAPIErrorZ create_channel_result = channel_manager.create_channel(
-    pubkey, amount, push_msat, user_id, config);
-assert create_channel_result instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
-```
-
-  </template>
   <template v-slot:kotlin>
 
 ```kotlin
@@ -72,7 +58,7 @@ val createChannelResult = channelManager.create_channel(
 At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature.
 
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
 <template v-slot:rust>
 
 ```rust
@@ -114,51 +100,6 @@ match event {
 
 </template>
 
-<template v-slot:java>
-
-```java
-// After the peer responds with an `accept_channel` message, an
-// Event.FundingGenerationReady event will be generated.
-
-// In the `handle_event` method of ChannelManagerPersister implementation
-if (e instanceof Event.FundingGenerationReady) {
-	Event.FundingGenerationReady event = (Event.FundingGenerationReady) e;
-	byte[] funding_scriptpubkey = event.output_script;
-	long output_value = event.channel_value_satoshis;
-
-	// This is the same channel created earler
-	assert event.user_channel_id == 42;
-
-	// The output is always a P2WSH:
-	assert funding_scriptpubkey.length == 34 && funding_scriptpubkey[0] == 0 &&
-		funding_scriptpubkey[1] == 32;
-
-	// Generate the funding transaction for the channel based on the channel amount
-	// The following uses the bitcoinj library to do so, but you can use any
-	// standard Bitcoin library for on-chain logic.
-	NetworkParameters bitcoinj_net =
-		NetworkParameters.fromID(NetworkParameters.ID_MAINNET);
-	Transaction funding_tx = new Transaction(bitcoinj_net);
-	funding_tx.addInput(new TransactionInput(bitcoinj_net, funding, new byte[0]));
-	// Note that all inputs in the funding transaction MUST spend SegWit outputs
-	// (and have witnesses)
-	funding_tx.getInputs().get(0).setWitness(new TransactionWitness(2));
-	funding_tx.getInput(0).getWitness().setPush(0, new byte[]{0x1});
-	funding_tx.addOutput(Coin.SATOSHI.multiply(output_value),
-		new Script(funding_scriptpubkey));
-
-	// Give the funding transaction back to the ChannelManager.
-	Result_NoneAPIErrorZ funding_res = channel_manager.funding_transaction_generated(
-		event.temporary_channel_id, funding_tx.bitcoinSerialize());
-	// funding_transaction_generated should only generate an error if the
-	// transaction didn't meet the required format (or the counterparty already
-	// closed the channel on us):
-	assert funding_res instanceof Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_OK;
-}
-```
-
-</template>
-
 <template v-slot:kotlin>
 
 ```kotlin
@@ -170,8 +111,8 @@ if (event is Event.FundingGenerationReady) {
 
     if (funding_spk.size == 34 && funding_spk[0].toInt() == 0 && funding_spk[1].toInt() == 32) {
       // Generate the funding transaction for the channel based on the channel amount
-      // The following uses BDK for on-chain logic
-        val rawTx = OnchainWallet.buildFundingTx(event.channel_value_satoshis, event.output_script)
+      // The following uses BDK (Bitcoin Dev Kit) for on-chain logic
+        val rawTx = buildFundingTx(event.channel_value_satoshis, event.output_script)
 
         channelManager.funding_transaction_generated(
             event.temporary_channel_id,
@@ -180,14 +121,25 @@ if (event is Event.FundingGenerationReady) {
         )
     }
   }
+
+fun buildFundingTx(value: Long, script: ByteArray): ByteArray {
+	val scriptListUByte: List<UByte> = script.toUByteArray().asList()
+	val outputScript = Script(scriptListUByte)
+	val (psbt, _) = TxBuilder()
+		.addRecipient(outputScript, value.toULong())
+		.feeRate(4.0F)
+		.finish(onchainWallet)
+	sign(psbt)
+	val rawTx = psbt.extractTx().toUByteArray().toByteArray()
+	return rawTx
+}
 ```
 
 </template>
 
-
-
-
 </CodeSwitcher>
+
+**References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady),
 
 
 

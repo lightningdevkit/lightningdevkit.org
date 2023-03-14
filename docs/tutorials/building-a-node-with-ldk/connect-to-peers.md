@@ -2,11 +2,11 @@
 
 In this section you'll learn how to join the lightning network. 
 
-Firstly we need to have the ability to do high performance I/O operations. LDK provides default implementations for initializing all of your networking needs. If you are using Rust, you can use our simple socket handling library `lightning_net_tokio`. In Java you can use the `NioPeerHandler` which uses Java's NIO I/O interface.
+Firstly we need to have the ability to do high performance I/O operations. LDK provides default implementations for initializing all of your networking needs. If you are using Rust, you can use our simple socket handling library `lightning_net_tokio`. In Kotlin/Java you can use the `NioPeerHandler` which uses Java's NIO I/O interface.
 
 **What it's used for**: making peer connections, facilitating peer data to and from LDK
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust> 
 
 ```rust
@@ -31,17 +31,7 @@ loop {
 
   </template>
 
-  <template v-slot:java>
-  
-```java
-final NioPeerHandler peerHandler = channelManagerConstructor.nio_peer_handler;
-final int port = 9730;
-peerHandler.bind_listener(new InetSocketAddress("0.0.0.0", port));
-```
-
-  </template>
-
- <template v-slot:kotlin>
+  <template v-slot:kotlin>
 
 ```kotlin
 val nioPeerHandler = channelManagerConstructor.nio_peer_handler
@@ -53,10 +43,9 @@ nioPeerHandler.bind_listener(InetSocketAddress("127.0.0.1", port))
 </CodeSwitcher>
 
 
-
 Connections to other peers are established with `PeerManager`. You'll need to know the pubkey and address of another node that you want as a peer. Once the connection is established and the handshake is complete, `PeerManager` will show the peer's pubkey in its list of peers.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust> 
 
 ```rust
@@ -85,25 +74,7 @@ match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, a
 
   </template>
 
-  <template v-slot:java>
- 
-```java
-try {
-	// Connect and wait for the handshake to complete.
-	SocketAddress address = new InetSocketAddress(host, port);
-	nio_peer_handler.connect(pubkey, address);
-
-	// The peer's pubkey will be present in the list of peer ids.
-	final PeerManager peer_manager = channel_manager_constructor.peer_manager;
-	byte[][] peer_node_ids = peer_manager.get_peer_node_ids();
-} catch (java.io.IOException e) {
-  // Handle failure to successfully connect to a peer.
-}
-```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
 ```kotlin
 try {

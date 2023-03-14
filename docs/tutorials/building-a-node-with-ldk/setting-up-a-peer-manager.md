@@ -7,7 +7,7 @@ The Peer Manager is responsible for managing a set of peer connections and all d
 
 To add a PeerManager to your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -32,17 +32,7 @@ To add a PeerManager to your application, run:
   ```
   </template>
 
-  <template v-slot:java>
- 
-  ```java
-  import org.ldk.structs.PeerManager
-
-  PeerManager peerManager = channelManagerConstructor.peer_manager;
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
   import org.ldk.structs.PeerManager

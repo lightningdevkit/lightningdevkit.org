@@ -6,7 +6,7 @@ The ChannelManager is responsible for several tasks related to managing channel 
 
 To add a `ChannelManager` to your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -23,28 +23,8 @@ To add a `ChannelManager` to your application, run:
 );
   ```
   </template>
-  <template v-slot:java>
- 
-  ```java
-  import org.ldk.batteries.ChannelManagerConstructor
 
-  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
-    Network.LDKNetwork_Bitcoin, 
-    UserConfig.default(), 
-    latestBlockHash,
-    latestBlockHeight, 
-    keysManager.as_KeysInterface(), 
-    feeEstimator, 
-    chainMonitor,
-    router, 
-    txBroadcaster, 
-    logger
-  );
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
   import org.ldk.batteries.ChannelManagerConstructor
@@ -72,7 +52,7 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
 **What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
  
   ```rust
@@ -95,31 +75,7 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
   </template>
 
-  <template v-slot:java>
- 
-  ```java
-  class YourFeeEstimator implements FeeEstimator.FeeEstimatorInterface {
-      @Override
-      public int get_est_sat_per_1000_weight(ConfirmationTarget conf_target) {
-          if (conf_target ==
-              ConfirmationTarget.LDKConfirmationTarget_Background) {
-              // <insert code to retrieve a background feerate>
-          } else if (conf_target ==
-              ConfirmationTarget.LDKConfirmationTarget_Normal) {
-              // <insert code to retrieve a normal (i.e. within ~6 blocks) feerate>
-          } else if (conf_target ==
-              ConfirmationTarget.LDKConfirmationTarget_HighPriority) {
-              // <insert code to retrieve a high-priority feerate>
-          }
-      }
-  }
-
-  FeeEstimator feeEstimator = FeeEstimator.new_impl(new YourFeeEstimator());
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
   object YourFeeEstimator : FeeEstimatorInterface {
@@ -158,7 +114,7 @@ retrieving fresh ones every time
 ### Initialize the `Logger`
 **What it's used for:** LDK logging
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
  
   ```rust
@@ -184,22 +140,7 @@ retrieving fresh ones every time
 
   </template>
 
-  <template v-slot:java>
- 
-  ```java
-  class YourLogger implements Logger.LoggerInterface {
-      @Override
-      public void log(String record) {
-          // <insert code to print this log and/or write this log to a file>
-      }
-  }
-
-  Logger logger = Logger.new_impl(new YourLogger());
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
   object YourLogger : LoggerInterface {
@@ -223,7 +164,7 @@ retrieving fresh ones every time
 ### Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various transactions to the bitcoin network
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
  
   ```rust
@@ -240,23 +181,7 @@ retrieving fresh ones every time
 
   </template>
 
-  <template v-slot:java>
- 
-  ```java
-  class YourTxBroadcaster implements
-  BroadcasterInterface.BroadcasterInterfaceInterface {
-      @Override
-      public void broadcast_transaction(byte[] tx) {
-          // <insert code to broadcast the given transaction here>
-      }
-  }
-
-  BroadcasterInterface tx_broadcaster = BroadcasterInterface.new_impl(new YourTxBroadcaster());
-  ```
-
-  </template>
-
-   <template v-slot:kotlin>
+  <template v-slot:kotlin>
  
   ```kotlin
   object YourTxBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
@@ -278,7 +203,7 @@ retrieving fresh ones every time
 ### Initialize `Persist`
 **What it's used for:** persisting `ChannelMonitor`s, which contain crucial channel data, in a timely manner
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -305,30 +230,6 @@ retrieving fresh ones every time
   }
 
   let persister = YourPersister();
-  ```
-  </template>
-
-  <template v-slot:java>
-  
-  ```java
-  class YourPersister implements Persist.PersistInterface {
-    @Override
-    public Result_NoneChannelMonitorUpdateErrZ persist_new_channel(
-      OutPoint id, ChannelMonitor data) {
-        byte[] channelMonitorBytes = data.write();
-        // <insert code to write these bytes to disk, keyed by `id`>
-    }
-
-    @Override
-    public Result_NoneChannelMonitorUpdateErrZ update_persisted_channel(
-      OutPoint id, ChannelMonitorUpdate update, ChannelMonitor data) {
-        byte[] channelMonitorBytes = data.write();
-        // <insert code to update the `ChannelMonitor`'s file on disk with these
-        //  new bytes, keyed by `id`>
-    }
-  }
-
-  PersisterInterface persister = PersisterInterface.new_impl(new YourPersister());
   ```
   </template>
 
@@ -393,7 +294,7 @@ object to tell you what transactions and outputs to watch for on-chain. You'll
 inform LDK about these transactions/outputs in Step 14.
 
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -412,26 +313,6 @@ inform LDK about these transactions/outputs in Step 14.
   }
 
   let filter = YourTxFilter();
-  ```
-  </template>
-
-  <template v-slot:java>
-  
-  ```java
-  class YourTxFilter implements Filter.FilterInterface {
-    @Override
-    public void register_tx(byte[] txid, byte[] script_pubkey) {
-        // <insert code for you to watch for this transaction on-chain>
-    }
-
-    @Override
-    public Option_C2Tuple_usizeTransactionZZ register_output(WatchedOutput output) {
-        // <insert code for you to watch for any transactions that spend this
-        //  output on-chain>
-    }
-  }
-
-  Filter txFilter = Filter.new_impl(YourTxFilter)
   ```
   </template>
 
@@ -463,22 +344,13 @@ inform LDK about these transactions/outputs in Step 14.
 ### Initialize the `ChainMonitor`
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
   let filter: Option<Box<dyn Filter>> = // leave this as None or insert the Filter trait object
 
   let chain_monitor = ChainMonitor::new(filter, &broadcaster, &logger, &fee_estimator, &persister);
-  ```
-  </template>
-
-  <template v-slot:java>
-  
-  ```java
-  final filter = // leave this as `null` or insert the Filter object.
-              
-  final chainMonitor = ChainMonitor.of(filter, txBroadcaster, logger, feeEstimator, persister);
   ```
   </template>
 
@@ -503,7 +375,7 @@ inform LDK about these transactions/outputs in Step 14.
 ### Initialize the `KeysManager`
 **What it's used for:** providing keys for signing Lightning transactions
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -542,18 +414,6 @@ inform LDK about these transactions/outputs in Step 14.
   
   </template>
 
-  <template v-slot:java>
-  
-  ```java
-  byte[] key_seed = new byte[32];
-  // <insert code to fill key_seed with random bytes OR if restarting, reload the
-  // seed from disk>
-  KeysManager keys_manager = KeysManager.of(key_seed,
-      System.currentTimeMillis() / 1000,
-      (int) (System.currentTimeMillis() * 1000));
-  ```
-  </template>
-
   <template v-slot:kotlin>
 
   ```kotlin
@@ -587,7 +447,7 @@ generation is unique across restarts.
 
 **What it's used for:** if LDK is restarting and has at least 1 channel, its `ChannelMonitor`s will need to be (1) fed to the `ChannelManager` and (2) synced to chain.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -602,27 +462,6 @@ generation is unique across restarts.
   }
   ```
   
-  </template>
-
-  <template v-slot:java>
-  
-  ```java
-  // Initialize the array where we'll store the `ChannelMonitor`s read from disk.
-  final ArrayList channelMonitorList = new ArrayList<>();
-
-  // For each monitor stored on disk, deserialize it and place it in
-  // `channel_monitors`.
-  for (... : monitor_files) {
-      byte[] channelMonitorBytes = // read the bytes from disk
-                            
-      channelMonitorList.add(channelMonitorBytes);
-  }
-
-  // Convert the ArrayList into an array so we can pass it to
-  // `ChannelManagerConstructor`.
-  final byte[][] channelMonitors = (byte[][])channelMonitorList.toArray(new byte[1][]);
-  
-  ```
   </template>
 
   <template v-slot:kotlin>
@@ -649,7 +488,7 @@ generation is unique across restarts.
 ### Initialize the `ChannelManager`
 **What it's used for:** managing channel state
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -701,33 +540,9 @@ generation is unique across restarts.
   ```
   </template>
 
-  <template v-slot:java>
-  
-  ```java
-  /* FRESH CHANNELMANAGER */
-
-  int bestBlockHeight = // <insert current chain tip height>;
-  byte[] bestBlockHash = // <insert current chain tip block hash>;
-  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
-    Network.LDKNetwork_Bitcoin, UserConfig.default(), bestBlockHash,
-    bestBlockHeight, keysManager.as_KeysInterface(), feeEstimator, chainMonitor,
-    router, txBroadcaster, logger);
-
-  /* RESTARTING CHANNELMANAGER */
-
-  byte[] serializedChannelManager = // <insert bytes as written to disk in Step 4>
-  ChannelManagerConstructor channelManagerConstructor = new ChannelManagerConstructor(
-    serializedChannelManager, channelMonitors, keysManager.as_KeysInterface(),
-    feeEstimator, chainMonitor, filter, router, txBroadcaster, logger);
-
-  final ChannelManager channelManager = channelManagerConstructor.channel_manager;  
-  ```
-  </template>
-
   <template v-slot:kotlin>
 
   ```kotlin
-  try {
       if (serializedChannelManager != "") {
           // loading from disk (restarting)
           channelManagerConstructor = ChannelManagerConstructor(
@@ -774,7 +589,7 @@ generation is unique across restarts.
 
 **Example:**
 
-<CodeSwitcher :languages="{full_blocks_rust:'Rust Full Blocks or BIP 157/158', electrum_rust:'Rust Electrum', electrum_java:'Java Electrum'}">
+<CodeSwitcher :languages="{full_blocks_rust:'Rust Full Blocks or BIP 157/158', electrum_java:'Java Electrum'}">
   <template v-slot:full_blocks_rust>
 
   ```rust
@@ -844,40 +659,6 @@ generation is unique across restarts.
       .await
       .unwrap(),
   );
-  ```
-
-  </template>
-  <template v-slot:electrum_rust>
-
-  ```rust
-  // Retrieve transaction IDs to check the chain for un-confirmation.
-  let relevant_txids_1 = channel_manager.as_Confirm().get_relevant_txids();
-  let relevant_txids_2 = chain_monitor.as_Confirm().get_relevant_txids();
-
-  let unconfirmed_txids = // <insert code to find out from your chain source
-                          //  if any of relevant_txids have been reorged out
-                          //  of the chain>
-
-  for txid in unconfirmed_txids.iter() {
-      channel_manager.transaction_unconfirmed(txid);
-      chain_monitor.transaction_unconfirmed(txid);
-  }
-
-  // Retrieve transactions and outputs that were registered through the `Filter`
-
-  // If any of these txs/outputs were confirmed on-chain, then:
-  let header = // insert block header from the block with confirmed tx/output
-  let height = // insert block height of `header`
-  let tx_list = // insert `Filter`-registered transactions that were confirmed in
-                // this block
-
-  channel_manager.transactions_confirmed(header, tx_list, height);
-  chain_monitor.transactions_confirmed(header, tx_list, height);
-
-  byte[] best_header = // <insert code to get your best known header>
-  int best_height = // <insert code to get your best known block height>
-  channel_manager.update_best_block(best_header, best_height);
-  chain_monitor.update_best_block(best_header, best_height);
   ```
 
   </template>
@@ -965,7 +746,7 @@ Otherwise, you can use LDK's `Confirm` interface as in the examples above. The h
 
 **What it's used for:** generating routes to send payments over
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
 
 <template v-slot:rust>
 
@@ -978,21 +759,6 @@ let gossip_sync = Arc::new(P2PGossipSync::new(
   None::<Arc<dyn chain::Access + Send + Sync>>,
   logger.clone(),
 ));
-```
-
-</template>
-
-<template v-slot:java>
-
-```java
-Network network = Network.LDKNetwork_Testnet;
-
-BestBlock genesisBlock = BestBlock.from_genesis(network);
-final byte[] genesisBlockHash = genesisBlock.block_hash();
-
-final byte[] serializedNetworkGraph = // Read network graph bytes from file
-final NetworkGraph networkGraph = NetworkGraph.read(serializedNetworkGraph, logger);
-final P2PGossipSync p2pGossip = P2PGossipSync.of(networkGraph, Option_AccessZ.none(), logger)
 ```
 
 </template>
