@@ -9,7 +9,7 @@ MacOS, Windows and Linux are supported.
 ## Installation
 To add LDK to a project, run:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', javascript:'JavaScript'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', javascript:'JavaScript'}">
   <template v-slot:rust>
  
   ```toml
@@ -26,22 +26,9 @@ To add LDK to a project, run:
   ```
 
   </template>
-  <template v-slot:java>
- 
-  ```xml
-  <!--
-  For Maven, add the following dependency to your POM and replace {VERSION} with the 
-  version number you want to use.
-  -->
+  <template v-slot:kotlin>
 
-  <dependency>
-   <groupId>org.lightningdevkit</groupId>
-   <artifactId>ldk-java</artifactId>
-  <version>{VERSION}</version>
-  </dependency>
-  ```
-
-  ```kotlin
+  ```java
   /* 
   For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
   the version number you want to use.
@@ -52,12 +39,7 @@ To add LDK to a project, run:
     implementation 'org.lightningdevkit:ldk-java:{VERSION}'
    // ...
   }
-  ```
 
-  </template>
-  <template v-slot:kotlin>
-
-  ```kotlin
   /* To include the LDK Kotlin bindings in an Android project download the latest binary from https://github.com/lightningdevkit/ldk-garbagecollected/releases and place it in your libs directory.
   Then add to your build.gradle file:
   */
@@ -70,6 +52,7 @@ To add LDK to a project, run:
   ```
 
   </template>
+
   <template v-slot:javascript>
 
   ```javascript
@@ -81,7 +64,7 @@ To add LDK to a project, run:
 
 Example usage after installation is complete:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', javascript:'JavaScript'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', javascript:'JavaScript'}">
   <template v-slot:rust>
 
   ```rust
@@ -89,16 +72,10 @@ Example usage after installation is complete:
   ```
 
   </template>
-  <template v-slot:java>
   
-  ```java
-  import org.ldk.structs.FeeEstimator
-  ```
-
-  </template> 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   import org.ldk.structs.FeeEstimator
   ```
 

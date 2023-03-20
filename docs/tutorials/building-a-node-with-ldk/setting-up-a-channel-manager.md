@@ -26,7 +26,7 @@ To add a `ChannelManager` to your application, run:
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   import org.ldk.batteries.ChannelManagerConstructor
 
   val channelManagerConstructor = ChannelManagerConstructor(
@@ -77,7 +77,7 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   object YourFeeEstimator : FeeEstimatorInterface {
     override fun get_est_sat_per_1000_weight(confirmationTarget: ConfirmationTarget?): Int {
         if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Background) {
@@ -142,7 +142,7 @@ retrieving fresh ones every time
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   object YourLogger : LoggerInterface {
       override fun log(record: Record?) {
           // <insert code to print this log and/or write this log to a file>
@@ -183,7 +183,7 @@ retrieving fresh ones every time
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   object YourTxBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
       override fun broadcast_transaction(tx: ByteArray?) {
           // <insert code to broadcast the given transaction here>
@@ -235,7 +235,7 @@ retrieving fresh ones every time
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   object YourPersister: Persist.PersistInterface {
     override fun persist_new_channel(
         id: OutPoint?, data: ChannelMonitor?, updateId: MonitorUpdateId?
@@ -318,7 +318,7 @@ inform LDK about these transactions/outputs in Step 14.
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   object YourTxFilter : Filter.FilterInterface {
     override fun register_tx(txid: ByteArray, script_pubkey: ByteArray) {
         // <insert code for you to watch for this transaction on-chain>
@@ -356,7 +356,7 @@ inform LDK about these transactions/outputs in Step 14.
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   val filter : Filter = // leave this as `null` or insert the Filter object.
 
   val chainMonitor = ChainMonitor.of(filter, txBroadcaster, logger, feeEstimator, persister)
@@ -416,7 +416,7 @@ inform LDK about these transactions/outputs in Step 14.
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   val keySeed = ByteArray(32)
   // <insert code to fill key_seed with random bytes OR if restarting, reload the
   // seed from disk>
@@ -466,7 +466,7 @@ generation is unique across restarts.
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
   // Initialize the hashmap where we'll store the `ChannelMonitor`s read from disk.
   // This hashmap will later be given to the `ChannelManager` on initialization.
   var channelMonitors = arrayOf<ByteArray>();
@@ -542,7 +542,7 @@ generation is unique across restarts.
 
   <template v-slot:kotlin>
 
-  ```kotlin
+  ```java
       if (serializedChannelManager != "") {
           // loading from disk (restarting)
           channelManagerConstructor = ChannelManagerConstructor(
@@ -589,10 +589,12 @@ generation is unique across restarts.
 
 **Example:**
 
-<CodeSwitcher :languages="{full_blocks_rust:'Rust Full Blocks or BIP 157/158', electrum_java:'Java Electrum'}">
-  <template v-slot:full_blocks_rust>
-
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+  <template v-slot:rust>
+  
   ```rust
+  // Full Blocks or BIP 157/158
+
   use lightning_block_sync::init;
   use lightning_block_sync::poll;
   use lightning_block_sync::UnboundedCache;
@@ -648,7 +650,7 @@ generation is unique across restarts.
       ));
   }
 
-  // Save the chain tip to be used in Step 14.
+  // Save the chain tip to be used in future steps
   chain_tip = Some(
       init::synchronize_listeners(
           &mut block_source,
@@ -663,47 +665,49 @@ generation is unique across restarts.
 
   </template>
 
-  <template v-slot:electrum_java>
+  <template v-slot:kotlin>
 
   ```java
+  // Electrum/Esplora 
+  
   // Retrieve transaction IDs to check the chain for un-confirmation.
-  byte[][] relevant_txids_1 = channel_manager.as_Confirm().get_relevant_txids();
-  byte[][] relevant_txids_2 = chain_monitor.as_Confirm().get_relevant_txids();
-  byte[][] relevant_txids = ArrayUtils.addAll(relevant_txids_1, relevant_txids_2);
+  val relevantTxIdsFromChannelManager: Array<ByteArray> = channelManager .as_Confirm().get_relevant_txids()
+  val relevantTxIdsFromChannelManager: Array<ByteArray> = chainMonitor.as_Confirm().get_relevant_txids()
+  val relevantTxIds = relevantTxIdsFromChannelManager + relevantTxIdsFromChainMonitor
 
-  byte[][] unconfirmed_txids = // <insert code to find out from your chain source
-                              //  if any of relevant_txids have been reorged out
-                              //  of the chain>
+  val unconfirmedTxs: Array<ByteArray> = // <insert code to find out from your chain source
+                                        //  if any of relevant_txids have been reorged out
+                                        //  of the chain>
 
-  for (byte[] txid : unconfirmed_txids) {
-      channel_manager.transaction_unconfirmed(txid);
-      chain_monitor.transaction_unconfirmed(txid);
+  for (txid in unconfirmedTxs) {
+      channelManager .transaction_unconfirmed(txid)
+      chainMonitor.transaction_unconfirmed(txid)
   }
 
   // Retrieve transactions and outputs that were registered through the `Filter`
   // interface.
 
   // If any of these txs/outputs were confirmed on-chain, then:
-  byte[] header = // insert block header from the block with confirmed tx/output
-  int height = // insert block height of `header`
-  Long tx_index = // insert tx index in block
-  byte[] serialized_tx = // insert tx hex as byte array
-  TwoTuple_usizeTransactionZ tx = TwoTuple_usizeTransactionZ.of(tx_index, serialized_tx);
+  val header: Array<ByteArray> = // insert block header from the block with confirmed tx/output
+  val height: Int = // insert block height of `header`
+  val txIndex: Long = // insert tx index in block
+  val serializedTx: Array<ByteArray> = // insert tx hex as byte array
+  val tx: TwoTuple_usizeTransactionZ = TwoTuple_usizeTransactionZ.of(txIndex, serializedTx);
 
   // Marshall all TwoTuples you built right above into an array
-  TwoTuple_usizeTransactionZ[] tx_list = new TwoTuple_usizeTransactionZ[]{tx, .. };
+  val txList = arrayOf<TwoTuple_usizeTransactionZ>(TwoTuple_usizeTransactionZ.of(tx.., ..));
 
-  channel_manager.transactions_confirmed(header, height, tx_list);
-  chain_monitor.transactions_confirmed(header, height, tx_list);
+  channelManager.transactions_confirmed(header, height, txList);
+  chainMonitor.transactions_confirmed(header, height, txList);
 
-  byte[] best_header = // <insert code to get your best known header>
-  int best_height = // <insert code to get your best known block height>
-  channel_manager.update_best_block(best_header, best_height);
-  chain_monitor.update_best_block(best_header, best_height);
+  val bestHeader: Array<ByteArray> = // <insert code to get your best known header>
+  val bestHeight: Int = // <insert code to get your best known block height>
+  channelManager.update_best_block(bestHeader, bestHeight);
+  chainMonitor.update_best_block(bestHeader, bestHeight);
 
   // Finally, tell LDK that chain sync is complete. This will also spawn several
   // background threads to handle networking and event processing.
-  channel_manager_constructor.chain_sync_completed(customEventHandler);
+  channelManagerConstructor.chain_sync_completed(customEventHandler);
   ```
 
   </template>
@@ -719,28 +723,30 @@ If you are connecting full blocks or using BIP 157/158, then it is recommended t
 LDK's `lightning_block_sync` sample module as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
 
 1. Get the last blockhash that each object saw.
-    * `ChannelManager`'s is in `channel_manager_constructor.channel_manager_latest_block_hash`
-    * Each `ChannelMonitor`'s is in `channel_manager_constructor.channel_monitors`, as the 2nd element in each tuple
+    * Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
+    * Each `ChannelMonitor`'s is in `channel_manager.channel_monitors`, as the 2nd element in each tuple
 2. For each object, if its latest known blockhash has been reorged out of the chain, then disconnect blocks using `channel_manager.as_Listen().block_disconnected(..)` or `channel_monitor.block_disconnected(..)` until you reach the last common ancestor with the main chain.
 3. For each object, reconnect blocks starting from the common ancestor until it gets to your best known chain tip using `channel_manager.as_Listen().block_connected(..)` and/or `channel_monitor.block_connected(..)`.
-4. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
+4. Call `channel_manager.chain_sync_completed(..)` to complete the initial sync process.
 
+**Esplora**
 
+Alternatively, you can use LDK's `lightning-block-sync` crate. This provides utilities for syncing LDK via the transaction-based Confirm interface.
 
-**Electrum**
+**Electrum/Esplora**
 
-Otherwise, you can use LDK's `Confirm` interface as in the examples above. The high-level steps are as    follows:
+Otherwise, you can use LDK's `Confirm` interface directly as in the examples above. The high-level steps are as follows:
   1. Tell LDK about relevant confirmed and unconfirmed transactions.
   2. Tell LDK what your best known block header and height is.
   3. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
 
-**References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/)
+**References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/), [Rust `lightning_transaction_sync` module docs](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/)
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `ChannelMonitor`s
 * If providing providing full blocks or BIP 157/158: set of `ChannelMonitor`s
 * If using Electrum: `ChainMonitor`
 
-### Optional: Initialize the `P2PGossipSync`
+### Optional: Initialize `P2PGossipSync or RapidGossipSync`
 
 **You must follow this step if:** you need LDK to provide routes for sending payments (i.e. you are *not* providing your own routes)
 
@@ -765,7 +771,7 @@ let gossip_sync = Arc::new(P2PGossipSync::new(
 
 <template v-slot:kotlin>
 
-```kotlin
+```java
 val genesisBlock : BestBlock = BestBlock.from_genesis(Network.LDKNetwork_Testnet)
 val genesisBlockHash : String = byteArrayToHex(genesisBlock.block_hash())
 
@@ -786,4 +792,5 @@ val p2pGossip : P2PGossipSync = P2PGossipSync.of(networkGraph, Option_AccessZ.no
 
 **Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
-**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java)
+**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java `RapidGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RapidGossipSync.java)
+
