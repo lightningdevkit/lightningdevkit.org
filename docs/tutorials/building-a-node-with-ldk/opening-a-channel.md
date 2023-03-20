@@ -55,8 +55,13 @@ val createChannelResult = channelManager.create_channel(
 
 # FundingGenerationReady Event Handling
 
-At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature.
+At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature. 
 
+::: tip Note
+
+Remember that the funding transaction must only spend SegWit inputs.
+
+:::
 
 <CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
 <template v-slot:rust>
