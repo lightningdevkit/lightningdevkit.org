@@ -731,7 +731,7 @@ LDK's `lightning_block_sync` sample module as in the example above: the high-lev
 
 **Esplora**
 
-Alternatively, you can use LDK's `lightning-block-sync` crate. This provides utilities for syncing LDK via the transaction-based Confirm interface.
+Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provides utilities for syncing LDK via the transaction-based `Confirm` interface.
 
 **Electrum/Esplora**
 
@@ -792,5 +792,5 @@ val p2pGossip : P2PGossipSync = P2PGossipSync.of(networkGraph, Option_AccessZ.no
 
 **Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
-**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java `RapidGossipSync` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RapidGossipSync.java)
+**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RapidGossipSync.java)
 

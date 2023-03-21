@@ -107,7 +107,7 @@ match event {
 
 <template v-slot:kotlin>
 
-```kotlin
+```java
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 
@@ -127,7 +127,7 @@ if (event is Event.FundingGenerationReady) {
     }
   }
 
-fun buildFundingTx(value: Long, script: ByteArray): ByteArray {
+fun buildFundingTx(value: Long, script: ByteArray): Transaction {
 	val scriptListUByte: List<UByte> = script.toUByteArray().asList()
 	val outputScript = Script(scriptListUByte)
 	val (psbt, _) = TxBuilder()
@@ -135,8 +135,8 @@ fun buildFundingTx(value: Long, script: ByteArray): ByteArray {
 		.feeRate(4.0F)
 		.finish(onchainWallet)
 	sign(psbt)
-	val rawTx = psbt.extractTx().toUByteArray().toByteArray()
-	return rawTx
+	val rawTx = psbt.extractTx().serialize().toUByteArray().toByteArray()
+	return psbt.extractTx()
 }
 ```
 
@@ -144,7 +144,78 @@ fun buildFundingTx(value: Long, script: ByteArray): ByteArray {
 
 </CodeSwitcher>
 
-**References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady),
+**References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady), [Java `FundingGenerationReady` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L95)
+# Broadcasting the Funding Transaction
+
+After crafting the funding transaction you'll need to send it to the Bitcoin network where it will hopefully be mined and added to the blockchain. You'll need to watch this transaction and wait for a minimum of 6 confirmations before the channel is ready to use.
+
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+  <template v-slot:rust>
+
+```rust
+// Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
+impl BroadcasterInterface for YourTxBroadcaster {
+	fn broadcast_transaction(&self, tx: &Transaction) {
+		let locked_runtime = self.tokio_runtime.read().unwrap();
+		if locked_runtime.as_ref().is_none() {
+			log_error!(self.logger, "Failed to broadcast transaction: No runtime.");
+			return;
+		}
+
+		let res = tokio::task::block_in_place(move || {
+			locked_runtime
+				.as_ref()
+				.unwrap()
+				.block_on(async move { self.blockchain.broadcast(tx).await })
+		});
+
+		match res {
+			Ok(_) => {}
+			Err(err) => {
+				log_error!(self.logger, "Failed to broadcast transaction: {}", err);
+			}
+		}
+	}
+}
+
+```
+
+  </template>
+
+  <template v-slot:kotlin>
+
+```java
+
+// Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
+object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
+    override fun broadcast_transaction(tx: ByteArray?) {
+		val esploraURL = "esploraUrl"
+        val blockchainConfig = BlockchainConfig.Esplora(EsploraConfig(esploraURL, null, 5u, 20u, null))
+        val blockchain = Blockchain(blockchainConfig)
+
+		val uByteArray = UByteArray(tx.size) { tx[it].toUByte() }
+		val transaction = Transaction(uByteArray.toList())
+
+		tx?.let {
+            CoroutineScope(Dispatchers.IO).launch { 
+				blockchain.broadcast(transaction) 
+			}
+        } ?: throw(IllegalStateException("Broadcaster attempted to broadcast a null transaction"))
+
+    }
+}
+
+```
+
+  </template>
+</CodeSwitcher>
+
+::: tip Keep LDK in sync
+
+Remember if you are restarting and have open channels then you should [let LDK know about the latest channel state.](./setting-up-a-channel-manager/#sync-channelmonitors-and-channelmanager-to-chain-tip)
+
+:::
+
 
 
 

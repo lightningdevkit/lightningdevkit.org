@@ -34,7 +34,7 @@ To add a PeerManager to your application, run:
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   import org.ldk.structs.PeerManager
   
   val peerManager: PeerManager = channelManagerConstructor.peer_manager;
@@ -47,5 +47,5 @@ To add a PeerManager to your application, run:
 
 **Dependencies:** `ChannelManager`, `RoutingMessageHandler`, `KeysManager`, random bytes, `Logger`
 
-**References:** [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/*/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `PeerManager` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Java `RoutingMessageHandler` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
+**References:** [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/*/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Java `RoutingMessageHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
 
