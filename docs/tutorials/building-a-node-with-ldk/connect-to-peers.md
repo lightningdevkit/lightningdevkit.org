@@ -33,7 +33,7 @@ loop {
 
   <template v-slot:kotlin>
 
-```kotlin
+```java
 val nioPeerHandler = channelManagerConstructor.nio_peer_handler
 val port = 9777
 nioPeerHandler.bind_listener(InetSocketAddress("127.0.0.1", port))
@@ -76,7 +76,7 @@ match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, a
 
   <template v-slot:kotlin>
  
-```kotlin
+```java
 try {
     // Connect and wait for the handshake to complete.
     val address: SocketAddress = InetSocketAddress(hostname, port)
@@ -87,7 +87,7 @@ try {
     val peerNodeIds = peerManager._peer_node_ids
 
     } catch (e: IOException) {
-    // Handle failure to successfully connect to a peer.
+    // Handle failure when connecting to a peer.
 }
 ```
 
@@ -96,8 +96,8 @@ try {
 
 **Dependencies:** `PeerManager`
 
-**References:** [Rust `lightning-net-tokio` docs](https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/), [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Java `NioPeerHandler` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/batteries/NioPeerHandler.java),
-[Java `PeerManager` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java),
+**References:** [Rust `lightning-net-tokio` docs](https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/), [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Java `NioPeerHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/batteries/NioPeerHandler.java),
+[Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java),
 
 
 

@@ -25,7 +25,7 @@ To start handling events in your application, run:
 
   <template v-slot:kotlin>
  
-  ```kotlin
+  ```java
   import org.ldk.structs.Event
 
   if (event is Event.PaymentSent) {
@@ -44,3 +44,4 @@ To start handling events in your application, run:
   </template>
 </CodeSwitcher>
 
+References: [Rust `Event` docs](https://docs.rs/lightning/0.0.114/lightning/util/events/enum.Event.html), [Java `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java)
