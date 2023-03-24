@@ -101,7 +101,8 @@ const tutorialSidebar = [
           ['/tutorials/building-a-node-with-ldk/handling-events', 'Handling Events'],
           ['/tutorials/building-a-node-with-ldk/setting-up-a-peer-manager', 'Setting up a Peer Manager'],
           ['/tutorials/building-a-node-with-ldk/connect-to-peers', 'Connect to Peers'],
-          ['/tutorials/building-a-node-with-ldk/opening-a-channel', 'Opening a Channel']
+          ['/tutorials/building-a-node-with-ldk/opening-a-channel', 'Opening a Channel'],
+          ['/tutorials/building-a-node-with-ldk/sending-payments', 'Sending Payments']
         ]
       },
     ],
