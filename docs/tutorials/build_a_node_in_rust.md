@@ -809,6 +809,6 @@ loop {
 }
 ```
 
-**Dependencies:** `ChannelManager`
+**Dependencies:** `PeerManager`
 
-**References:** [`ChannelManager::broadcast_node_announcement` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html#method.broadcast_node_announcement)
+**References:** [`PeerManager::broadcast_node_announcement` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html#method.broadcast_node_announcement)
