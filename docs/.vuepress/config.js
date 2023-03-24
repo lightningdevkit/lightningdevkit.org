@@ -152,6 +152,10 @@ const tutorialSidebar = [
             "/tutorials/building-a-node-with-ldk/opening-a-channel",
             "Opening a Channel",
           ],
+          [
+            "/tutorials/building-a-node-with-ldk/sending-payments",
+            "Sending Payments",
+          ],
         ],
       },
     ],
