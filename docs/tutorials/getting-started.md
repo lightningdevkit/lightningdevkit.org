@@ -2,7 +2,7 @@
 
 Welcome to the Lightning Development Kit documentation!
 
-If you have any questions about anything related to LDK, feel free to ask our community on [GitHub Discussions](https://github.com/orgs/lightningdevkit/discussions) or join us on [Discord](https://discord.gg/5AcknnMfBw). 
+If you have any questions about anything related to LDK, feel free to ask our community on [GitHub Discussions](https://github.com/orgs/lightningdevkit/discussions) or join us on [Discord](https://discord.gg/xaYE3pDQpm). 
 
 ## System Requirements
 MacOS, Windows and Linux are supported.
