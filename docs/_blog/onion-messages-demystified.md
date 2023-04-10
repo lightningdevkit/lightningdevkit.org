@@ -53,9 +53,10 @@ While offers were the original point of onion messages, their flexible format un
 
 For context, a significant problem facing the Lightning Network is that users running noncustodial Lightning wallets on phones must have their wallet app in the foreground to receive payments. This is a big departure from the Cash App-like UX that users want and even expect. 
 
-A key part of the solution here is that all mobile wallets are likely to be using Lightning Service Providers (LSPs), which manage channel liquidity and stay online on behalf of end users.
+A key part of the solution here is for mobile wallets to have always-online channel counterparties. These counterparties are likely to be Lightning Service Providers (LSPs), which manage channel liquidity and stay online on behalf of end users, but they may be any always-online node.
 
-Enter asynchronous Lightning payments. Async payments utilize LSPs on both ends, sender and receiver. The sender’s LSP will hold onto a payment until it receives an onion message from the recipient's LSP indicating the recipient is online and ready to receive funds. At this point, the sender’s LSP releases the payment.
+Enter asynchronous Lightning payments. Async payments utilize always-online channel counterparties on both ends, sender and receiver. The sender’s counterparty will hold onto a payment until it receives an onion message from the recipient's counterparty indicating the recipient is online and ready to receive funds. At this point, the sender’s counterparty releases the payment. Note that the sender's "counterparty" may be the sender themselves, if they are always online and sending to an
+often-offline receiver.
 
 While it may sound like it, this does not tie up network liquidity via long CLTV timeouts like today's "async payments" because the only locked liquidity is the sender's, and the sender has already bid farewell to those funds.
 
