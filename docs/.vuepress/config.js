@@ -4,7 +4,7 @@ const themeConfig = require('squarecrypto-vuepress-devkit-theme/config')
 const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
 const githubUrl = 'https://github.com/lightningdevkit'
-const discordUrl = 'https://discord.gg/5AcknnMfBw'
+const discordUrl = 'https://discord.gg/xaYE3pDQpm'
 const themeColor = '#ffffff'
 
 const docsSidebar = [

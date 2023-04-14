@@ -8,7 +8,7 @@ tags:
   - Roadmap
 --- 
 
-LDK is going to have a big year. Several key features are actively being developed or expected to be developed in the next few quarters. There are also a few projects of interest that don’t yet have any committed developers. If you want to get involved, hop into the [Discord Server](https://discord.gg/5AcknnMfBw) or [GitHub repo](https://github.com/lightningdevkit).
+LDK is going to have a big year. Several key features are actively being developed or expected to be developed in the next few quarters. There are also a few projects of interest that don’t yet have any committed developers. If you want to get involved, hop into the [Discord Server](https://discord.gg/xaYE3pDQpm) or [GitHub repo](https://github.com/lightningdevkit).
 
 As a reminder, the LDK project is community-driven with no centralized authority. Anyone is welcome to contribute and propose ideas at any point. Additionally, it’s extremely important to listen to LDK users. The timeline listed below is just an estimate that may shift if a user request needs to be prioritized over another project.
 
