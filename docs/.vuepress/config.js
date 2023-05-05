@@ -152,6 +152,10 @@ module.exports = {
         link: '/tutorials/getting-started'
       },
       {
+        text: 'Case Studies',
+        link: '/case-studies'
+      },
+      {
         text: 'Blog',
         link: '/blog/'
       },
