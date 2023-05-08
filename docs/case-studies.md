@@ -41,19 +41,7 @@ lastUpdated: false
     <h3><a>Mercury</a></h3>
     </div>
     <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
-    <h3><a>Portico</a></h3>
-    </div>
-     <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
-    <h3><a>Portico</a></h3>
-    </div>
-     <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
-    <h3><a>Portico</a></h3>
-    </div>
-    <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <img src="./assets/portico.png" target="_blank" />
     <h3><a>Portico</a></h3>
     </div>
     </div>
