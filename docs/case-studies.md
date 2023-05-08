@@ -8,18 +8,18 @@ actionLink: "https://github.com/orgs/lightningdevkit/discussions/1554"
 features:
   - title: "The Eye of Satoshi"
     details: "A watchtower with a specific focus on lightning"
-    imageSrc: "/"
-    imageAlt: "teos logo"
+    image: "/"
+    imageAlt: ""
     caseStudyLink: "/blog/teos-uses-ldk-to-build-open-source-watchtower/"
   - title: "Cash App"
     details: "The easy way to send, spend, bank, and invest"
-    imageSrc: "/img/cash-app-logo.png"
+    image: "/img/cash-app-logo.png"
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
   - title: "Sensei"
     details: "A lightning node implementation for everyone"
-    imageSrc: "/"
-    imageAlt: "sensei logo"
+    image: "/"
+    imageAlt: ""
     caseStudyLink: "/blog/sensei-uses-ldk-to-build-a-multi-node-lightning-server-application/"
 editLink: false
 lastUpdated: false
@@ -29,9 +29,34 @@ lastUpdated: false
    Meet all the projects using LDK!
 </h1>
 
-<CodeSwitcher :languages="{noncustodial:'Non-Custodial Wallets', custodial:'Custodial Wallets', infra:'Non-Custodial Infrastructure', router:'LN Router', lsp:'LSP', experiments:'Experiments', education: 'Educational Apps'}">
+<CodeSwitcher :languages="{noncustodial:'Non-Custodial Wallets', custodial:'Custodial Wallets', infra:'Non-Custodial Infrastructure', router:'LN Routers', lsp:'LSPs', experiments:'Experiments', education: 'Educational Apps'}">
   <template v-slot:noncustodial>
-
+    <div class="case-studies">
+    <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Blue Wallet</a></h3>
+    </div>
+    <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Mercury</a></h3>
+    </div>
+    <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Portico</a></h3>
+    </div>
+     <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Portico</a></h3>
+    </div>
+     <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Portico</a></h3>
+    </div>
+    <div class="case-study-item">
+    <img src="./assets/cash-app-logo.png" target="_blank" />
+    <h3><a>Portico</a></h3>
+    </div>
+    </div>
   </template>
 
   <template v-slot:custodial>
