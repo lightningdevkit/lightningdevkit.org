@@ -32,17 +32,20 @@ lastUpdated: false
 <CodeSwitcher :languages="{noncustodial:'Non-Custodial Wallets', custodial:'Custodial Wallets', infra:'Non-Custodial Infrastructure', router:'LN Routers', lsp:'LSPs', experiments:'Experiments', education: 'Educational Apps'}">
   <template v-slot:noncustodial>
     <div class="case-studies">
-    <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
-    <h3><a>Blue Wallet</a></h3>
+   <div class="case-study-item">
+    <img src="./assets/portico.png" />
+    <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
+    <p>Portico is a DEX that enables people to swap between bitcoin layers and sidechains</p>
     </div>
     <div class="case-study-item">
-    <img src="./assets/cash-app-logo.png" target="_blank" />
-    <h3><a>Mercury</a></h3>
+    <img src="./assets/portico.png" />
+    <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
+    <p>Portico is a DEX that enables people to swap between bitcoin layers and sidechains</p>
     </div>
     <div class="case-study-item">
-    <img src="./assets/portico.png" target="_blank" />
-    <h3><a>Portico</a></h3>
+    <img src="./assets/portico.png" />
+    <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
+    <p>Portico is a DEX that enables people to swap between bitcoin layers and sidechains</p>
     </div>
     </div>
   </template>
