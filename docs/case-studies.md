@@ -131,7 +131,7 @@ lastUpdated: false
   <div class="case-study-item">
     <img src="./assets/lexe.png" />
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
-    <p>Lexe is...</p>
+    <p>An LN-in-the-cloud soultion that uses LDK on Intel SGX</p>
   </div>
   <div class="case-study-item">
     <img src="./assets/voltage.png" />
@@ -236,7 +236,7 @@ lastUpdated: false
   <div class="case-study-item">
     <img src="./assets/lexe.png" />
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
-    <p>Lexe is...</p>
+    <p>An LN-in-the-cloud soultion that uses LDK on Intel SGX</p>
   </div>
   <div class="case-study-item">
     <img src="./assets/voltage.png" />
