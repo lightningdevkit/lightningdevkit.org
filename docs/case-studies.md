@@ -153,11 +153,43 @@ lastUpdated: false
     <h3><a href="https://cequals.xyz/" target="_blank">C=</a></h3>
     <p>Building tools and services to help connect people to the Lightning Network</p>
   </div>
+  <div class="case-study-item">
+    <img src="./assets/github.png" />
+    <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
+    <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
+  </div>
   </div>
 
   </template>
 
   <template v-slot:misc>
+      <div class="case-studies">
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
+          <p>An experimental attempt at using LDK to implement BOLT12 features for LND</p>
+        </div>
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
+          <p>A Rust library for working with Discreet Log Contracts</p>
+        </div>
+         <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden Lightning Network</a></h3>
+          <p>Probes the Lightning Network for the detection of private channels</p>
+        </div>
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank">ldk-sample with Tor</a></h3>
+          <p>An experimentation with tor by adapting the ldk-sample node</p>
+        </div>
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank">uMlando</a></h3>
+          <p>An educational Android demo wallet</p>
+        </div>
+      </div>
 
   </template>
 
@@ -258,6 +290,26 @@ lastUpdated: false
     <h3><a href="https://cequals.xyz/" target="_blank">C=</a></h3>
     <p>Building tools and services to help connect people to the Lightning Network</p>
   </div>
+  <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
+          <p>A Rust library for working with Discreet Log Contracts</p>
+        </div>
+         <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden Lightning Network</a></h3>
+          <p>Probes the Lightning Network for the detection of private channels</p>
+        </div>
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank">ldk-sample with Tor</a></h3>
+          <p>An experimentation with tor by adapting the ldk-sample node</p>
+        </div>
+        <div class="case-study-item">
+          <img src="./assets/github.png" />
+          <h3><a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank">uMlando</a></h3>
+          <p>An educational Android demo wallet</p>
+        </div>
   </div>
 
   </template>
