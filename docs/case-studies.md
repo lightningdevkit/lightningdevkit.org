@@ -120,7 +120,7 @@ lastUpdated: false
   <div class="case-studies">
   <div class="case-study-item">
     <img src="./assets/teos.png" />
-    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">C=</a></h3>
+    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
     <p>A bitcoin watchtower with a specific focus on lightning</p>
   </div>
   <div class="case-study-item">
@@ -225,7 +225,7 @@ lastUpdated: false
     </div>
     <div class="case-study-item">
     <img src="./assets/teos.png" />
-    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">C=</a></h3>
+    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
     <p>A bitcoin watchtower with a specific focus on lightning</p>
   </div>
   <div class="case-study-item">
@@ -236,7 +236,7 @@ lastUpdated: false
   <div class="case-study-item">
     <img src="./assets/lexe.png" />
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
-    <p>An LN-in-the-cloud soultion that uses LDK on Intel SGX</p>
+    <p>exe offers managed non-custodial Lightning nodes based on Intel SGX, accessible via mobile app</p>
   </div>
   <div class="case-study-item">
     <img src="./assets/voltage.png" />
