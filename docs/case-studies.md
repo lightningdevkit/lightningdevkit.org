@@ -12,7 +12,7 @@ features:
     imageAlt: ""
     caseStudyLink: "/blog/teos-uses-ldk-to-build-open-source-watchtower/"
   - title: "Cash App"
-    details: "The easy way to send, spend, bank, and invest"
+    details: "Send and spend, bank, and buy stocks or bitcoin "
     image: "/img/cash-app-logo.png"
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
