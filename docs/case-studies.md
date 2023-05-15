@@ -29,7 +29,7 @@ lastUpdated: false
    Meet all the projects using LDK!
 </h1>
 
-<CodeSwitcher :languages="{all: 'All Projects', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', misc:'Misc',}">
+<CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', library: 'LDK Libraries', misc:'Misc',}">
   <template v-slot:mobile>
     <div class="case-studies">
     <div class="case-study-item">
@@ -45,12 +45,32 @@ lastUpdated: false
     <div class="case-study-item">
     <a href="https://twitter.com/kumulydev" target="_blank"><img src="./assets/kumuly.png" /></a>
     <h3><a href="https://twitter.com/kumulydev" target="_blank">Kumuly</a></h3>
-    <p>A Colomnia-based mobile bitcoin and Lightning wallet</p>
+    <p>Colombian-based mobile bitcoin and Lightning wallet</p>
     </div>
     <div class="case-study-item">
     <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
     <h3><a href="https://lipa.swiss/" target="_blank">Lipa</a></h3>
     <p>Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
+    </div>
+     <div class="case-study-item">
+      <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
+      <h3><a href="https://mercurywallet.com/" target="_blank">Mercury</a></h3>
+      <p>A Lighting wallet that enables BTC transfers without requiring an on-chain transaction</p>
+    </div>
+     <div class="case-study-item">
+      <a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank"><img src="./assets/portico.png" /></a>
+      <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
+      <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
+    </div>
+     <div class="case-study-item">
+      <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
+      <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
+      <p>Enables businesses to integrate Lightning payments into websites, mobile applications, and more</p>
+    </div>
+     <div class="case-study-item">
+      <a href="https://10101.finance/" target="_blank"><img src="./assets/10101.png" /></a>
+      <h3><a href="https://10101.finance/" target="_blank">10101</a></h3>
+      <p>An on-chain and off-chain wallet that allows trading</p>
     </div>
     </div>
   </template>
@@ -64,24 +84,9 @@ lastUpdated: false
       <p>A Lighting wallet that enables BTC transfers without requiring an on-chain transaction</p>
     </div>
     <div class="case-study-item">
-      <a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank"><img src="./assets/portico.png" /></a>
-      <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
-      <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
-    </div>
-    <div class="case-study-item">
-      <a href="https://10101.finance/" target="_blank"><img src="./assets/10101.png" /></a>
-      <h3><a href="https://10101.finance/" target="_blank">10101</a></h3>
-      <p>An on-chain and off-chain wallet that allows trading</p>
-    </div>
-    <div class="case-study-item">
       <h3><a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a></h3>
       <h3><a href="https://mutinywallet.com/" target="_blank">Mutiny</a></h3>
       <p>Mutiny is a web-first lightning wallet</p>
-    </div>
-    <div class="case-study-item">
-      <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
-      <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
-      <p>Enables businesses to integrate Lightning payments into websites, mobile applications, and more</p>
     </div>
   </div>
 
@@ -89,6 +94,11 @@ lastUpdated: false
 
   <template v-slot:desktop>
       <div class="case-studies">
+       <div class="case-study-item">
+        <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
+        <h3><a href="https://mercurywallet.com/" target="_blank">Mercury</a></h3>
+        <p>A Lighting wallet that enables BTC transfers without requiring an on-chain transaction</p>
+       </div>
       <div class="case-study-item">
         <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
         <h3><a href="https://atomicdex.io/en/" target="_blank">AtomicDEX</a></h3>
@@ -119,22 +129,13 @@ lastUpdated: false
 
   <div class="case-studies">
   <div class="case-study-item">
-    <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
-    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
-    <p>A bitcoin watchtower with a specific focus on lightning</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
-    <h3><a href="https://vls.tech/" target="_blank">VLS</a></h3>
-    <p>Separates lightning private keys and security rule validation from nodes, into a discrete signing device</p>
-  </div>
-  <div class="case-study-item">
     <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
     <p>An LN-in-the-cloud soultion that uses LDK on Intel SGX</p>
   </div>
   <div class="case-study-item">
     <a href="https://voltage.cloud/" target="_blank"><img src="./assets/voltage.png" /></a>
+    <h3><a href="https://voltage.cloud/" target="_blank">Voltage</a></h3>
     <p>Provides enterprise grade infrastructure for the Lightning Network</p>
   </div>
   <div class="case-study-item">
@@ -149,13 +150,30 @@ lastUpdated: false
   </div>
   <div class="case-study-item">
     <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
-    <h3><a href="https://cequals.xyz/" target="_blank">C=</a></h3>
+    <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
     <p>Building tools and services to help connect people to the Lightning Network</p>
   </div>
+  </div>
+
+  </template>
+
+  <template v-slot:library>
+
+  <div class="case-studies">
   <div class="case-study-item">
     <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
     <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
+    <h3><a href="https://vls.tech/" target="_blank">VLS</a></h3>
+    <p>Separates lightning private keys and security rule validation from nodes, into a discrete signing device</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
+    <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
+    <p>A bitcoin watchtower with a specific focus on lightning</p>
   </div>
   </div>
 
@@ -163,11 +181,6 @@ lastUpdated: false
 
   <template v-slot:misc>
       <div class="case-studies">
-        <div class="case-study-item">
-          <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/github.png" /></a>
-          <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
-          <p>An experimental attempt at using LDK to implement BOLT12 features for LND</p>
-        </div>
         <div class="case-study-item">
           <a href="https://github.com/p2pderivatives/rust-dlc" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
@@ -207,7 +220,7 @@ lastUpdated: false
    <div class="case-study-item">
     <a href="https://twitter.com/kumulydev" target="_blank"><img src="./assets/kumuly.png" /></a>
     <h3><a href="https://twitter.com/kumulydev" target="_blank">Kumuly</a></h3>
-    <p>A Colomnia-based mobile bitcoin and Lightning wallet</p>
+    <p>Colombian-based mobile bitcoin and Lightning wallet</p>
   </div>
   <div class="case-study-item">
     <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
@@ -237,7 +250,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
     <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
-    <p>Enables businesses to integrate Lightning payments into websites, mobile applications, and more</p>
+    <p>A way to integrate Lightning into websites, mobile applications, and more.</p>
   </div>
   <div class="case-study-item">
     <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
@@ -286,7 +299,7 @@ lastUpdated: false
   </div>
   <div class="case-study-item">
     <h3><a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a></h3>
-    <h3><a href="https://cequals.xyz/" target="_blank">C=</a></h3>
+    <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
     <p>Building tools and services to help connect people to the Lightning Network</p>
   </div>
   <div class="case-study-item">
