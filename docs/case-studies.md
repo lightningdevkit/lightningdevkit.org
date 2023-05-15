@@ -35,7 +35,7 @@ lastUpdated: false
     <div class="case-study-item">
     <a href="https://bluewallet.io/" target="_blank"><img src="./assets/blue-wallet.png" /></a>
     <h3><a href="https://bluewallet.io/" target="_blank">Blue Wallet</a></h3>
-    <p>A mobile bitcoin and lightning wallet.</p>
+    <p>A radically simple and powerful bitcoin and Lightning wallet</p>
     </div>
    <div class="case-study-item">
     <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
