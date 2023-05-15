@@ -40,7 +40,7 @@ lastUpdated: false
    <div class="case-study-item">
     <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
     <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
-    <p>A mobile wallet that features portable web profiles and passwordless web accounts</p>
+    <p>A mobile app that hands you the keys to your money, profile, contacts, and web accounts</p>
     </div>
     <div class="case-study-item">
     <a href="https://twitter.com/kumulydev" target="_blank"><img src="./assets/kumuly.png" /></a>
