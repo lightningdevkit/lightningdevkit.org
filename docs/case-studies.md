@@ -275,7 +275,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
     <h3><a href="https://vls.tech/" target="_blank">VLS</a></h3>
-    <p>Separates lightning private keys and security rule validation from nodes, into a discrete signing device</p>
+    <p>Separates Lightning private keys and security rule validation from nodes, into a discrete signing device</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/lexe-tech" target="_blank"> <img src="./assets/lexe.png" /></a>
