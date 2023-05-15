@@ -29,7 +29,7 @@ lastUpdated: false
    Meet all the projects using LDK!
 </h1>
 
-<CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', library: 'LDK Libraries', misc:'Misc',}">
+<CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', library: 'Libraries', misc:'Misc',}">
   <template v-slot:mobile>
     <div class="case-studies">
     <div class="case-study-item">
