@@ -7,7 +7,7 @@ actionText: "Let us know!"
 actionLink: "https://github.com/orgs/lightningdevkit/discussions/1554"
 features:
   - title: "The Eye of Satoshi"
-    details: "A watchtower with a specific focus on lightning"
+    details: "A watchtower with a specific focus on Lightning"
     image: "/img/teos-main.png"
     imageAlt: ""
     caseStudyLink: "/blog/teos-uses-ldk-to-build-open-source-watchtower/"
