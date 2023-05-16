@@ -170,7 +170,7 @@ lastUpdated: false
       <div class="case-studies">
          <div class="case-study-item">
           <a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank"><img src="./assets/github.png" /></a>
-          <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">Hidden Lightning Network</a></h3>
+          <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden LN</a></h3>
           <p>Probes the Lightning Network for the detection of private channels</p>
         </div>
         <div class="case-study-item">
@@ -286,7 +286,7 @@ lastUpdated: false
   </div>
   <div class="case-study-item">
     <a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank"><img src="./assets/github.png" /></a>
-    <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden Lightning Network</a></h3>
+    <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden LN</a></h3>
     <p>Probes the Lightning Network for the detection of private channels</p>
   </div>
   <div class="case-study-item">
