@@ -29,7 +29,7 @@ lastUpdated: false
    Meet all the projects using LDK!
 </h1>
 
-<CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', library: 'Libraries', misc:'Misc',}">
+<CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', misc:'Misc',}">
   <template v-slot:mobile>
     <div class="case-studies">
      <div class="case-study-item">
@@ -134,31 +134,14 @@ lastUpdated: false
     <p>A turn-key, end-to-end solution for running self-hosted nodes, anywhere</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
-    <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
-    <p>Managed non-custodial Lightning nodes based on Intel SGX, accessible via mobile ap</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://valera.co/" target="_blank"><img src="./assets/valera.png" /></a>
-    <h3><a href="https://valera.co/" target="_blank">Valera</a></h3>
-    <p>A financial infrastructure suite for developers and users</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://voltage.cloud/" target="_blank"><img src="./assets/voltage.png" /></a>
-    <h3><a href="https://voltage.cloud/" target="_blank">Voltage</a></h3>
-    <p>Enterprise-grade infrastructure for the Lightning Network</p>
-  </div>  
-  </div>
-
-  </template>
-
-  <template v-slot:library>
-
-  <div class="case-studies">
-  <div class="case-study-item">
     <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
     <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
+    <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
+    <p>Managed non-custodial Lightning nodes based on Intel SGX, accessible via mobile ap</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
@@ -166,10 +149,20 @@ lastUpdated: false
     <p>A bitcoin watchtower with a specific focus on Lightning</p>
   </div>
   <div class="case-study-item">
+    <a href="https://valera.co/" target="_blank"><img src="./assets/valera.png" /></a>
+    <h3><a href="https://valera.co/" target="_blank">Valera</a></h3>
+    <p>A financial infrastructure suite for developers and users</p>
+  </div>
+  <div class="case-study-item">
     <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
     <h3><a href="https://vls.tech/" target="_blank">VLS</a></h3>
     <p>Separates Lightning private keys and security rule validation from nodes, into a discrete signing device</p>
   </div>
+  <div class="case-study-item">
+    <a href="https://voltage.cloud/" target="_blank"><img src="./assets/voltage.png" /></a>
+    <h3><a href="https://voltage.cloud/" target="_blank">Voltage</a></h3>
+    <p>Enterprise-grade infrastructure for the Lightning Network</p>
+  </div>  
   </div>
 
   </template>
