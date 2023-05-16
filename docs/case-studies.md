@@ -1,9 +1,8 @@
 ---
 cases: true
 sidebar: false
-heroText: "Case Studies"
-tagline: "A list of bitcoin applications building with LDK. If you’re using LDK we’d love to hear about your experience."
-actionText: "Let us know!"
+tagline: "Bitcoin applications building with LDK"
+actionText: "Add your project"
 actionLink: "https://github.com/orgs/lightningdevkit/discussions/1554"
 features:
   - title: "The Eye of Satoshi"
