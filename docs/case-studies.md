@@ -140,7 +140,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
-    <p>Managed non-custodial Lightning nodes based on Intel SGX, accessible via mobile ap</p>
+    <p>Managed non-custodial Lightning nodes based on Intel SGX, accessible via mobile app</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
