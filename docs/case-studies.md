@@ -25,7 +25,7 @@ lastUpdated: false
 ---
 
 <h1 class="more-cases-heading">
-   Meet all the projects using LDK!
+   Meet all the projects using LDK
 </h1>
 
 <CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', misc:'Misc',}">
