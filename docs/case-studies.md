@@ -78,11 +78,6 @@ lastUpdated: false
   <template v-slot:web>
 
   <div class="case-studies">
-     <div class="case-study-item">
-      <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
-      <h3><a href="https://mercurywallet.com/" target="_blank">Mercury</a></h3>
-      <p>A layer 2 bitcoin wallet that enables users to send and swap bitcoin privately</p>
-    </div>
     <div class="case-study-item">
       <h3><a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a></h3>
       <h3><a href="https://mutinywallet.com/" target="_blank">Mutiny</a></h3>
