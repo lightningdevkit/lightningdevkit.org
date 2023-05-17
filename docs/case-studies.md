@@ -179,6 +179,11 @@ lastUpdated: false
           <h3><a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank">ldk-sample with Tor</a></h3>
           <p>An experimentation with tor that adapts the ldk-sample node</p>
         </div>
+        <div class="case-study-item">
+          <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
+          <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
+          <p>LN node based on ldk-sample supporting RGB assets</p>
+        </div>
          <div class="case-study-item">
           <a href="https://github.com/p2pderivatives/rust-dlc" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
@@ -188,11 +193,6 @@ lastUpdated: false
           <a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank">uMlando</a></h3>
           <p>An educational Android demo wallet</p>
-        </div>
-         <div class="case-study-item">
-          <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
-          <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
-          <p>LN node based on ldk-sample supporting RGB assets</p>
         </div>
       </div>
 
@@ -280,6 +280,11 @@ lastUpdated: false
     <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
     <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
   </div>
+  <div class="case-study-item">
+          <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
+          <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
+          <p>LN node based on ldk-sample supporting RGB assets</p>
+        </div>
   <div class="case-study-item">
     <a href="https://github.com/p2pderivatives/rust-dlc" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
