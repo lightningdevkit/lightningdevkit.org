@@ -177,7 +177,7 @@ lastUpdated: false
         <div class="case-study-item">
           <a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank">ldk-sample with Tor</a></h3>
-          <p>An experimentation with tor by adapting the ldk-sample node</p>
+          <p>An experimentation with tor that adapts the ldk-sample node</p>
         </div>
          <div class="case-study-item">
           <a href="https://github.com/p2pderivatives/rust-dlc" target="_blank"><img src="./assets/github.png" /></a>
