@@ -55,7 +55,7 @@ lastUpdated: false
     <div class="case-study-item">
     <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
     <h3><a href="https://lipa.swiss/" target="_blank">Lipa</a></h3>
-    <p>A Swiss-based app that offers a bitcoin wallet for individuals and businesses</p>
+    <p>Swiss-based app that offers a bitcoin wallet for individuals and businesses</p>
     </div>
      <div class="case-study-item">
       <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
