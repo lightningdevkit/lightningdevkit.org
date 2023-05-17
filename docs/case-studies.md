@@ -2,6 +2,7 @@
 cases: true
 sidebar: false
 tagline: "Bitcoin applications building with LDK"
+description: "A list of bitcoin applications and services building with LDK"
 actionText: "Add your project"
 actionLink: "https://github.com/orgs/lightningdevkit/discussions/1554"
 features:
@@ -133,7 +134,7 @@ lastUpdated: false
     <p>A turn-key, end-to-end solution for running self-hosted nodes, anywhere</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/github.png" /></a>
+    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
     <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
     <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
   </div>
@@ -187,6 +188,11 @@ lastUpdated: false
           <a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank">uMlando</a></h3>
           <p>An educational Android demo wallet</p>
+        </div>
+         <div class="case-study-item">
+          <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
+          <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
+          <p>LN node based on ldk-sample supporting RGB assets</p>
         </div>
       </div>
 
@@ -255,7 +261,7 @@ lastUpdated: false
     <p>A Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/github.png" /></a>
+    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
     <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
     <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
   </div>
