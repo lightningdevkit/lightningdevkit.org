@@ -203,7 +203,7 @@ lastUpdated: false
     <div class="case-study-item">
       <a href="https://10101.finance/" target="_blank"><img src="./assets/10101.png" /></a>
       <h3><a href="https://10101.finance/" target="_blank">10101</a></h3>
-      <p>An on-chain and off-chain wallet infused with trading to unleash trustless decentralized finance</p>
+      <p>An on and off-chain wallet infused with trading</p>
     </div>
     <div class="case-study-item">
       <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
