@@ -134,8 +134,8 @@ lastUpdated: false
     <p>A turn-key, end-to-end solution for running self-hosted nodes, anywhere</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
-    <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
+    <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
+    <h3><a href="https://github.com/lndk-org/lndk" target="_blank">LNDK</a></h3>
     <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
   </div>
   <div class="case-study-item">
@@ -261,8 +261,8 @@ lastUpdated: false
     <p>Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
-    <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
+    <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
+    <h3><a href="https://github.com/lndk-org/lndk" target="_blank">LNDK</a></h3>
     <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
   </div>
   <div class="case-study-item">
