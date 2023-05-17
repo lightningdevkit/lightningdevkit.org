@@ -70,7 +70,7 @@ lastUpdated: false
      <div class="case-study-item">
       <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
       <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
-      <p>Enables businesses to integrate Lightning payments into websites, mobile applications, and more</p>
+      <p>A way to integrate Lightning into websites, mobile applications, and more</p>
     </div>
     </div>
   </template>
@@ -308,7 +308,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
     <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
-    <p>A way to integrate Lightning into websites, mobile applications, and more.</p>
+    <p>A way to integrate Lightning into websites, mobile applications, and more</p>
   </div>
   <div class="case-study-item">
     <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
