@@ -97,7 +97,7 @@ lastUpdated: false
       <div class="case-study-item">
         <a href="https://hydranet.ai/" target="_blank"><img src="./assets/hydranet.png" /></a>
         <h3><a href="https://hydranet.ai/" target="_blank">Hydranet</a></h3>
-        <p>A layer 3 decentralized exchange - a solution for trading with native tokens between blockchains</p>
+        <p>A layer 3 decentralized exchange, allowing trading with native tokens between blockchains</p>
       </div>
       <div class="case-study-item">
         <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
