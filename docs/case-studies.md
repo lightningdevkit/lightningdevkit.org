@@ -126,7 +126,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
     <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
-    <p>Tools and services that help connect people to the Lightning Network</p>
+    <p>Tools and services that connect people to the Lightning Network</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/kuutamolabs/lightning-knd" target="_blank"><img src="./assets/kuutamo.png" /></a>
