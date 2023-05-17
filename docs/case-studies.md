@@ -213,7 +213,7 @@ lastUpdated: false
     <div class="case-study-item">
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
       <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
-      <p>A mobile app that hands you the keys to your money, profile, contacts, and web accounts</p>
+      <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
     </div>
     <div class="case-study-item">
       <a href="https://bluewallet.io/" target="_blank"><img src="./assets/blue-wallet.png" /></a>
@@ -223,7 +223,7 @@ lastUpdated: false
     <div class="case-study-item">
       <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
       <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
-      <p>Tools and services that help connect people to the Lightning Network</p>
+      <p>Tools and services that connect people to the Lightning Network</p>
     </div>
     <div class="case-study-item">
       <a href="https://cash.app/" target="_blank"> <img src="./assets/cash-app-logo.png" /></a>
@@ -233,7 +233,7 @@ lastUpdated: false
     <div class="case-study-item">
       <a href="https://hydranet.ai/" target="_blank"><img src="./assets/hydranet.png" /></a>
       <h3><a href="https://hydranet.ai/" target="_blank">Hydranet</a></h3>
-      <p>A layer 3 decentralized exchange - a solution for trading with native tokens between blockchains</p>
+      <p>A layer 3 decentralized exchange, allowing trading with native tokens between blockchains</p>
     </div>
    <div class="case-study-item">
     <a href="https://twitter.com/kumulydev" target="_blank"><img src="./assets/kumuly.png" /></a>
@@ -248,7 +248,7 @@ lastUpdated: false
    <div class="case-study-item">
     <a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/TonyGiorgio/ldk-sample-tor" target="_blank">ldk-sample with Tor</a></h3>
-    <p>An experimentation with tor by adapting the ldk-sample node</p>
+    <p>An experimentation with tor that adapts the ldk-sample node</p>
    </div>
    <div class="case-study-item">
     <a href="https://github.com/lexe-tech" target="_blank"> <img src="./assets/lexe.png" /></a>
@@ -258,7 +258,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
     <h3><a href="https://lipa.swiss/" target="_blank">Lipa</a></h3>
-    <p>A Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
+    <p>Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
