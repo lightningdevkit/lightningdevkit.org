@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const themeConfig = require('squarecrypto-vuepress-devkit-theme/config')
+const themeConfig = require('@spiralbtc/vuepress-devkit-theme/config')
 
 const title = 'Lightning Dev Kit Documentation'
 const baseUrl = 'https://lightningdevkit.org'
@@ -113,7 +113,7 @@ const blogSidebar = [
 module.exports = {
   title,
   description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
-  theme: resolve(__dirname, '../../node_modules/squarecrypto-vuepress-devkit-theme'),
+  theme: resolve(__dirname, '../../node_modules/@spiralbtc/vuepress-devkit-theme'),
   ...themeConfig({
     baseUrl,
     title,
@@ -150,6 +150,10 @@ module.exports = {
       {
         text: 'Tutorials',
         link: '/tutorials/getting-started'
+      },
+      {
+        text: 'Case Studies',
+        link: '/case-studies'
       },
       {
         text: 'Blog',
