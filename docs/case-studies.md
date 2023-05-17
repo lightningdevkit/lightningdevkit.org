@@ -130,7 +130,7 @@ lastUpdated: false
   </div>
   <div class="case-study-item">
     <a href="https://github.com/kuutamolabs/lightning-knd" target="_blank"><img src="./assets/kuutamo.png" /></a>
-    <h3><a href="https://github.com/kuutamolabs/lightning-knd" target="_blank">Kuutamo</a></h3>
+    <h3><a href="https://github.com/kuutamolabs/lightning-knd" target="_blank">kuutamo</a></h3>
     <p>A turn-key, end-to-end solution for running self-hosted nodes, anywhere</p>
   </div>
   <div class="case-study-item">
