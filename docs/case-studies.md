@@ -17,7 +17,7 @@ features:
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
   - title: "Sensei"
-    details: "A lightning node implementation for everyone"
+    details: "A Lightning node implementation for everyone"
     image: "/img/sensei-main.png"
     imageAlt: "sensei logo"
     caseStudyLink: "/blog/sensei-uses-ldk-to-build-a-multi-node-lightning-server-application/"
