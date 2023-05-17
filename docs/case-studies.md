@@ -263,7 +263,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://github.com/carlaKC/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
     <h3><a href="https://github.com/carlaKC/lndk" target="_blank">LNDK</a></h3>
-    <p>LNDK is an experimental attempt at using LDK to implement BOLT12 features for LND</p>
+    <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
   </div>
   <div class="case-study-item">
     <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
