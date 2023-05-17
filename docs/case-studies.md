@@ -40,7 +40,7 @@ lastUpdated: false
     <div class="case-study-item">
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
       <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
-      <p>A mobile app that hands you the keys to your money, profile, contacts, and web accounts</p>
+      <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
     </div>
     <div class="case-study-item">
       <a href="https://bluewallet.io/" target="_blank"><img src="./assets/blue-wallet.png" /></a>
