@@ -146,7 +146,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
     <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
-    <p>A lightning node implementation for everyone</p>
+    <p>A Lightning node implementation for everyone</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
@@ -298,7 +298,7 @@ lastUpdated: false
   <div class="case-study-item">
     <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
     <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
-    <p>A lightning node implementation for everyone</p>
+    <p>A Lightning node implementation for everyone</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
