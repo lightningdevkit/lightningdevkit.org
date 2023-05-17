@@ -26,7 +26,7 @@ lastUpdated: false
 ---
 
 <h1 class="more-cases-heading">
-   Meet all the projects using LDK
+   Meet all the projects building with LDK
 </h1>
 
 <CodeSwitcher :languages="{all: 'All', mobile:'Mobile', web:'Web', desktop:'Desktop', custodial: 'Custodial', infra:'Infrastructure', misc:'Misc',}">
@@ -142,6 +142,11 @@ lastUpdated: false
     <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
     <p>Managed non-custodial Lightning nodes inside secure hardware</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
+    <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
+    <p>A lightning node implementation for everyone</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
@@ -281,14 +286,19 @@ lastUpdated: false
     <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
   </div>
   <div class="case-study-item">
-          <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
-          <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
-          <p>LN node based on ldk-sample supporting RGB assets</p>
-        </div>
+    <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
+    <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
+    <p>LN node based on ldk-sample supporting RGB assets</p>
+  </div>
   <div class="case-study-item">
     <a href="https://github.com/p2pderivatives/rust-dlc" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/p2pderivatives/rust-dlc" target="_blank">rust-dlc</a></h3>
     <p>A Rust library for working with Discreet Log Contracts</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
+    <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
+    <p>A lightning node implementation for everyone</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
