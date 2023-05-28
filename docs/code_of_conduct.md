@@ -1,73 +1,153 @@
 # LDK Code of Conduct
 
-The LDK community is open to pretty much anyone. To ensure that project forums such as the Discord server and GitHub repository are open and friendly, we count on maintainers and project representatives to behave in a way that is not disruptive to LDK's culture or to any one participant's well-being.
+The LDK community consitutes a public forum dedicated to the development of the Lightning Development Kit software, the Lightning protocol and any related module. While as a community we cannot generally
+restrict the content of the speech expressed by a community contributor, we still enforce restrictions if they're content-neutral and if they meet a reasonable time, place or manner restriction of such expression.
 
-Therefore, we came up with some easy to follow guidelines.
- * Be friendly. Interact in a way that fosters openness, inclusivity, and collaboration.
- * Be respectful. We may disagree, but disagreement is no excuse for rude behavior or personal attacks.
- * Be considerate. Provide and accept constructive criticism.
+As of version 0.0.1, the communication channels considered as part of the Lightning Development Kit public forum are: a) the community website ("lightningdevkit.org"), b) the Github repository ("lightningdevkit"), c)
+the Twitter feed (@lightningdevkit), d) the Discord server ("Lightning Dev Kit"), e) the LDK Review Club website ("ldk.reviews").
 
-Private or public harassment of any kind will not be tolerated. Since harassment can take many forms, here's a non-exhaustive list of what we consider unacceptable behavior:
- * Offensive language directed at individuals or groups of people
- * Bullying (verbal, physical, social, or cyber)
- * Interfering with someone's ability to contribute, like with excessive nitpicking
- * Continued one-on-one communication after a party has requested it cease
- * Stalking online or offline
- * Doxing or unauthorized publication of private information or communication
- * Unwelcomed sexual attention
- * Inappropriate visual displays such as sexually-oriented or offensive  photography, cartoons, drawings, or gestures
- * Retaliation for reporting or threatening to report harassment
+As a type of expression which is not protected under this framework:
+- false statement of facts
+- commercial speech
+- fighting words
+- obscenity and pornography
 
-Additionally, spam and other content which disrupts or prevents LDK contributors from working on LDK is not acceptable.
+As an additional concern on the protection , the LDK community aims to observe high standards of ethical FOSS behaviors among its contributors and prevents the constitution of conflict of interests.
+
+We invite the community contributors to read the ACM Code of Ethics and Professional Conduct: https://www.acm.org/code-of-ethics
 
 ## The Code of Conduct Team
 
-A small team of LDK contributors has volunteered to enforce the LDK Code of Conduct. If you feel like a community member has engaged in inappropriate behavior, please don't hesitate to contact one of the following LDK contributors via email or on Discord:
- * Matt Corallo - ldkcocpoc on mattcorallo.com
- * Val Wallace - vwallace on protonmail.com
- * Devrandom - devrandom99 on proton.me
+A team of LDK contributors has been self-appointted based on historical merits.
 
-## The Code of Conduct Team’s Responsibilities
+* Matt Corallo - ldkcocpoc on mattcorallo.com
+* Val Wallace - vwallace on protonmail.com
+* Devrandom - devrandom99 on proton.me
 
-Team members are tasked with responding to reports within 24 hours. They will review each incident and determine, to the best of their ability:
- * Does the event constitute a Code of Conduct violation?
- * Is the behavior on our list of inappropriate behavior? Is it borderline inappropriate?
- * Did the event occur in a space within our Code of Conduct's scope?
-   * If the incident occurred outside community forums and the individual is seen as a project representative or identifies as an LDK contributor, the incident may be in scope.
-   * Additionally, an incident may be in scope if a community member's ability to contribute to LDK is impacted.
- * Did this incident occur in a private conversation or in a public space?
- * Is the situation isolated or ongoing?
- * How is the reported person's behavior negatively impacting others?
- * Does the incident impact the ability of individuals to freely contribute to LDK?
- * Does this incident include sexual harassment?
- * Does this pose a safety risk or severely negatively impact someone's mental health?
- * Is there a risk of this behavior being repeated?
- * Does the reported person understand why their behavior was inappropriate?
+The appointment of the Code of Conduct team is for 2 years.
 
-If a report is insufficiently detailed or involves multiple parties, the Code of Conduct Team may seek additional information from witnesses or the accused. Neither party should contact the other to discuss the incident. Likewise, the team will do its best not to disclose who reported a given incident, either to the accused or generally, though we recognize that circumstantial disclosures to the accused might be unavoidable.
+TODO: defined the appointment process of the Code of Conduct team ?
 
-The Code of Conduct Team aims to resolve all reports within one week. If a resolution is not possible within that time frame, the team will respond to the reporter(s) with an adjusted one.
+The Code of Conduct Team is not a formal body and therefore unable to enter into any non-disclosure agreements.
 
-## Possible responses to an incident include:
+### Ethical Responsibilites of the Code of Conduct Team
 
-### Taking no further action:
-If the Code of Conduct Team determines that no action is needed, they will inform the reporter.
+In the conduct of their janitiorial responsibilitis, the Code of Conduct team should uphold ethical and be mindful of conflicts of interests.
 
-### Simple warning:
-This applies to disruptive behavior, but not insulting behavior. The Code of Conduct Team will contact the individual(s) and request that they stop.
+As the following ethical canons:
+- a CoC team member should uphold the integrity and the indenpendence of the LDK's Code of Conduct process.
+- a CoC team member should avoid impropriety and the appearance of the impropriety in its open-source activities.
+- a Coc team member should perform the janitorial responsibiities fairly, impartially and diligently.
 
-### Final warning:
-If an incident or series of incidents creates sustained toxicity within the LDK Community, the Code of Conduct Team will sternly warn the reported party and raise the possibility of further disciplinary action. In addition, they may request that the reported party:
- * Not use specific language
- * Not participate in specific types of discussions
- * Not send private messages to a community member
- * Not review a particular person's PRs on GitHub (but still allow them to privately share review comments with a maintainer)
- * Not lead sub-projects like code review sessions
- * Take a step away for a short period to cool off
- * Lose maintainer/merge access
+The Coc team member should be mindful about conflict of interests, where they have a financial interest in the subject matter in controvery or in a party in the incident process, or any other interest that could be
+affected substantially by the outcome of the process.
 
-### 2-3 months imposed break:
-If the Code of Conduct Team’s warning goes unheeded, the individual(s) may be asked to avoid participating with the LDK Community on its preferred platforms for several months. After time has passed, the individual(s) will have the option of meeting with the team to discuss returning to the community.
+## Harrasment Protection
 
-### Extended or permanent ban:
-If a temporary break does not remedy a serious offense, the offender may be removed from the Discord server and Github repository. The Code of Conduct Team may also choose to un-ban a user for a first offense, depending on its severity and pending that the user has offered the offended party a genuine apology.
+The LDK community aims to protect its contributors against harassment committed by other contributors.
+
+LDK harassment rules and enforcement process are always subject to the scrutinity test to respect community contributor free speech.
+
+By essence, LDK contributors are proposing competing ideas and codes in the LDK public forum, as such any harrasment claim should be under scrutinity they do not consistute a conspiracy or a collusion to damage
+the credebility of another LDK contributor, and as such constitutes a distorsion of the LDK public forum of ideas.
+
+## Incident Process
+
+### 1. Incident Reception
+
+The CoC team should reply to the victim or witness incident report in a delay of 72 hours.
+
+The Coc team can provide 3 replies:
+- dismiss the report as moot
+- ask for more evidences from the victm or witness
+- designate a Coc team member as responsible of the investigation
+
+TODO: appeal of the dismissal ?
+
+### 2. Investigation Process
+
+The designated Coc team member should lead the investigation, collect evidences and interrogate witnesses.
+
+The investigation can take a limit of 3 months. 
+
+The incident report author can ask update of the investigation every week.
+
+### 3. Incrimination Proces
+
+TODO: dissociate investigation from incrimination in function of severity of the sanction ?
+
+### 4. Accused Notification
+
+The accused should be notified the full incrimination report on a public endpoint. By default the email address used for commits, or in the lack of them the Discord DM.
+
+The accused has 2 weeks to prepare a written defense and send it to the Code of Conduct team.
+
+The accused can be assisted by another LDK contributor in the defense of its case.
+
+### 5. Hearing and Plea Bargaining
+
+After the delay of 2 weeks, the CoC team hears the accused on its version of the wrongdoing.
+
+The CoC team hears the accused on its version of the wrongdoing.
+
+The accused can be assisted by another LDK contributor during the hearing.
+
+During the hearing, the CoC team can:
+- dimiss the case
+- recall the ACM Code of Ethics
+- recall the definition of harassment
+- offers a mediation with the victim
+- pursue the process for a disciplinary audition
+
+If the case is dismissed, it must be notified to the incident report author.
+
+After the hearing, 2 more weeks are offered to the accused to prepare its defense.
+
+During the lapse of time, new evidences from the victm or the accused can be communicated to the Code of Conduct team.
+
+### 6. Disciplinary Audition
+
+The disciplinary audition gathers the victim or its representant, the accused or its representant and the CoC team.
+
+TODO: define the audition process either based on on common law system or civil law system ?
+
+After the audition is finished, the CoC team has a delay of 1 week to give a sentence.
+
+The sentence must be communicated both to the victim and the accused.
+
+### 7. Appeal
+
+The victim or the accused can appeal the decision within a delay of 2 weeks from the notification of the sentence by the Code of Conduct team.
+
+TODO: define the appeal process ?
+
+## Clause of Time-Sensitive Technical Issues Exemption
+
+The Code of Conduct team is not competent to judge on technical issues.
+
+In case of time-sensitive technical issues (e.g deployment of coordinated new features), the accused can require a halt of the incident process until end of time-sensitive period.
+
+TODO: list all the time-sensitive tasks and janitorial roles recognized under the exemptions.
+
+## Sanctions to sentenced wrongdoings
+
+TODO: delete content ? remove someone from janitorial roles in case of ethical issues ? offers to do a mediation between victim and accused ?
+
+## Timestamping of the Code of Conduct team communications
+
+All the communications between the Code of Conduct team and the external parties should be timestamped in the Bitcoin chain as defined by the Code of Conduct team full-nodes
+consensus rules using a notary protocol (e.g OpenTimestamps).
+
+## Presumption of innocence
+
+The presumption of innocence is the principle that every person accused of a wrongdoing is considered innocent until proven responsible.
+
+If reasonable doubt remains on the accused responsibility, the incident case must be dismissed.
+
+## Protection of the Code of Conduct team
+
+TODO: how to protect the Code of Conduct team from retaliations and threats from any parties ?
+
+## Versioning
+
+Code of Conduct v0.0.1 - This document is placed in the public domain
