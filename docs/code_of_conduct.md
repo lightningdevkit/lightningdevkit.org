@@ -71,3 +71,11 @@ If the Code of Conduct Team’s warning goes unheeded, the individual(s) may be 
 
 ### Extended or permanent ban:
 If a temporary break does not remedy a serious offense, the offender may be removed from the Discord server and Github repository. The Code of Conduct Team may also choose to un-ban a user for a first offense, depending on its severity and pending that the user has offered the offended party a genuine apology.
+
+## Security Incident Response Exemption
+
+The Code of Conduct do not apply to the LDK security team (as defined in main git tree's SECURITY.md) in the conduct of their security incident response (disclosure, mitigation dev and patch release), the associated ad hoc or permanent communication channels and the public communication channels if those public channels are used in the context of a response.
+
+In case of improper behavior of a LDK security team member during a security incident, the incident should be handled by the security team internally on a group communication channel.
+
+In case of conflict between the Code of Conduct team and the security team on the interpretation of this exemption, the security team interpretation should take precedence.
