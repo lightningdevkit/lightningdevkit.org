@@ -9,7 +9,7 @@ tags:
   - Mobile
 ---
 
-[LDK Node][github_repo] is a ready-to-go Lightning node library built using [LDK][bdk] and [BDK][bdk]. LDK Node provides a straightforward interface and an integrated on-chain wallet, enabling users to quickly and easily set up a self-custodial Lightning node. With LDK Node, developers can get a Lightning Node up and running within a day.
+[LDK Node][github_repo] is a ready-to-go Lightning node library built using [LDK][ldk] and [BDK][bdk]. LDK Node provides a straightforward interface and an integrated on-chain wallet, enabling users to quickly and easily set up a self-custodial Lightning node. With LDK Node, developers can get a Lightning Node up and running within a day.
 
 ## A Lightweight Solution
 LDK fully implements the Lightning protocol as a highly modular Rust library. LDK's flexibility allows developers to integrate Lightning functionality into [many types of applications][ldk_case_studies], including those with pre-existing infrastructure or complex architectures. The public API comprises more than 900 exposed methods, letting users adjust and interact with protocol layers in great detail. While this customization is great for builders, it often comes with the added cost of increased complexity.
