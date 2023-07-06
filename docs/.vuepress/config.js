@@ -82,7 +82,9 @@ const docsSidebar = [
           ['https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/', 'lightning-transaction-sync']
         ]
       },
-      ['https://github.com/arik-so/SwiftLightning/tree/master/Documentation', 'Swift']
+      ['https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk', 'Java/Kotlin'],
+      ['https://github.com/lightningdevkit/ldk-swift', 'Swift'],
+      ['https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/ts', 'TypeScript'],
     ],
   }
 ]
