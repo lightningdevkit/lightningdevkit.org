@@ -78,10 +78,13 @@ const docsSidebar = [
           ['https://docs.rs/lightning-invoice/*/lightning_invoice/', 'lightning-invoice'],
           ['https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/', 'lightning-net-tokio'],
           ['https://docs.rs/lightning-persister/*/lightning_persister/', 'lightning-persister'],
-          ['https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/', 'lightning-rapid-gossip-sync']
+          ['https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/', 'lightning-rapid-gossip-sync'],
+          ['https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/', 'lightning-transaction-sync']
         ]
       },
-      ['https://github.com/arik-so/SwiftLightning/tree/master/Documentation', 'Swift']
+      ['https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk', 'Java/Kotlin'],
+      ['https://github.com/lightningdevkit/ldk-swift', 'Swift'],
+      ['https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/ts', 'TypeScript'],
     ],
   }
 ]
