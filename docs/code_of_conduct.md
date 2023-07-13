@@ -20,12 +20,21 @@ Private or public harassment of any kind will not be tolerated. Since harassment
 
 Additionally, spam and other content which disrupts or prevents LDK contributors from working on LDK is not acceptable.
 
+In case of a concrete issue that raises a deadlock about the application of the code of conduct, 2 additional members should be selected by consensus of the code of conduct team from the community of
+active LDK contributors to join the team in its decision-making process to adjudicate the case. The decision of the majority of the 5 members is binding.
+
 ## The Code of Conduct Team
 
 A small team of LDK contributors has volunteered to enforce the LDK Code of Conduct. If you feel like a community member has engaged in inappropriate behavior, please don't hesitate to contact one of the following LDK contributors via email or on Discord:
  * Matt Corallo - ldkcocpoc on mattcorallo.com
  * Val Wallace - vwallace on protonmail.com
  * Devrandom - devrandom99 on proton.me
+
+The Code of Conduct team should be renew every 2 years with a transparent nomination process opened to the whole community of active LDK contributors.
+
+The next nomination should happen in December 2024. Current Code of conduct team members can be reconducted in their roles.
+
+Nomination process should be defined in its ulterior document.
 
 ## The Code of Conduct Team’s Responsibilities
 
