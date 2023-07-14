@@ -30,13 +30,11 @@ A small team of LDK contributors has volunteered to enforce the LDK Code of Cond
  * Val Wallace - vwallace on protonmail.com
  * Devrandom - devrandom99 on proton.me
 
-The Code of Conduct team should be renew every 2 years with a transparent nomination process opened to the whole community of active LDK contributors.
+The Code of Conduct team should be renew every 3 years with a transparent nomination process opened to the whole community of active LDK contributors.
 
-The next nomination should happen in December 2024. Current Code of conduct team members can be reconducted in their roles.
+The next nomination should happen in December 2025. Current Code of conduct team members can be reconducted in their roles.
 
 Code of conduct team members should have realized at least 50 code commits in the main LDK git tree and the first commit should have been merged more than 2 years at the date of nomination.
-
-Nomination process should be defined in its ulterior document.
 
 ## The Code of Conduct Team’s Responsibilities
 
