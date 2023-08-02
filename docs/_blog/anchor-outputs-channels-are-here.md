@@ -1,7 +1,7 @@
 ---
 title: "Anchor Outputs Channels Are Here"
 description: "LDK v0.0.116 added support for opening channels with anchor outputs."
-date: "2023-08-01"
+date: "2023-08-02"
 authors:
   - Wilmer Paulino
 tags:
