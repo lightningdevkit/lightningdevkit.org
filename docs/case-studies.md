@@ -10,7 +10,7 @@ features:
     details: "A self-custodial lightning wallet that runs in the browser"
     image: "/img/mutiny-featured.png"
     imageAlt: "mutiny logo"
-    caseStudyLink: "/blog/mutiny-first-lightning-wallet-for-the-web/"
+    caseStudyLink: "/blog/mutiny-uses-ldk-the-first-lightning-wallet-for-the-web/"
   - title: "Cash App"
     details: "Send and spend, bank, and buy stocks or bitcoin "
     image: "/img/cash-app-logo.png"
