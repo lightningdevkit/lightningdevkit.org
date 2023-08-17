@@ -1,14 +1,11 @@
 # Key Management
 
-LDK provides a simple interface that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html)
+LDK provides a simple default `KeysManager` implementation that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html).
 
-LDK Private Key Information is primarily provided through the `chain::keysinterface::KeysInterface` trait. It includes a few basic methods to get public and private key information, as well as a method to get an instance of a second trait which provides per-channel information - `chain::keysinterface::ChannelKeys`.
- 
-While a custom `KeysInterface` implementation allows simple flexibility to control derivation of private keys, `ChannelKeys` focuses on signing lightning transactions and is primarily useful if you want to store private key material on a separate device which enforces lightning protocol details.
+However, LDK also allows to customize the way key material and entropy are sourced through custom implementations of the `NodeSigner`, `SignerProvider`, and `EntropySource` traits located in `chain::keysinterface`. These traits include basic methods to provide public and private key material, as well as pseudorandom numbers.
 
-A simple implementation of `KeysInterface` is provided in the form of `chain::keysinterface::KeysManager`, see its documentation for more details on its key derivation. It uses `chain::keysinterface::InMemoryChannelKeys` for channel signing, which is likely an appropriate signer for custom `KeysInterface` implementations as well.
 
-A `KeysManager` can be constructed simply with only a 32-byte seed and some integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`).
+A `KeysManager` can be constructed simply with only a 32-byte seed and some random integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`):
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
   <template v-slot:rust>
@@ -50,12 +47,14 @@ val keys_manager = KeysManager.of(
 </CodeSwitcher>
 
 # Creating a Unified Wallet
-LDK makes it simple to combine an on-chain and off-chain wallet in the same app. This means users don’t need to worry about storing 2 different recovery phrases. For apps containing a hierarchical deterministic wallet (or “HD Wallet”) we recommend using the entropy from a [hardened child key derivation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc#hardened-child-key-derivation) path for your LDK seed.
+LDK makes it simple to combine an on-chain and off-chain wallet in the same app. This means users don’t need to worry about storing two different recovery phrases. For apps containing a hierarchical deterministic wallet (or "HD Wallet") we recommend using the entropy from a [hardened child key derivation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc#hardened-child-key-derivation) path for your LDK seed.
 
 Using a [BDK](https://bitcoindevkit.org/)-based wallet the steps would be as follows:
- 1) Generate a mnemonic/entropy 
+
+ 1) Generate a mnemonic/entropy source.
  2) Build an HD wallet from that. That's now your on-chain wallet, and you can derive any BIP-compliant on-chain wallet/path for it from there.
  3) Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
+ 4) Optional: use a custom `SignerProvider` implementation to have the BDK wallet provide the destination and shutdown scripts (see [Spending On-Chain Funds](#spending-on-chain-funds)).
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
   <template v-slot:rust>
@@ -93,7 +92,7 @@ DescriptorSecretKey bip32RootKey = new DescriptorSecretKey(Network.TESTNET, mnem
 
 DerivationPath ldkDerivationPath = new DerivationPath("m/535h");
 DescriptorSecretKey ldkChild = bip32RootKey.derive(ldkDerivationPath);
-        
+
 ByteArrayOutputStream bos = new ByteArrayOutputStream();
 ObjectOutputStream oos = new ObjectOutputStream(bos);
 oos.writeObject(ldkChild.secretBytes());
@@ -146,4 +145,132 @@ When a channel has been closed and some outputs on chain are spendable only by u
 If you're using `KeysManager` directly, a utility method is provided which can generate a signed transaction given a list of `
 SpendableOutputDescriptor` objects. `KeysManager::spend_spendable_outputs` can be called any time after receiving the `SpendableOutputDescriptor` objects to build a spending transaction, including delaying until sending funds to an external destination or opening a new channel. Note that if you open new channels directly with `SpendableOutputDescriptor` objects, you must ensure all closing/destination scripts provided to LDK are SegWit (either native or P2SH-wrapped).
 
-If you are not using `KeysManager` for keys generation, you must re-derive the private keys yourself. Any `BaseSign` object must provide a unique id via the `channel_keys_id` function, whose value is provided back to you in the `SpendableOutputs` objects. A `SpendableOutputDescriptor::StaticOutput` element does not have this information as the output is sent to an output which used only `KeysInterface` data, not per-channel data.
+If you are not using `KeysManager` for keys generation, you must re-derive the private keys yourself. Any `ChannelSigner` object must provide a unique id via the `channel_keys_id` function, whose value is provided back to you in the `SpendableOutputs` objects. A `SpendableOutputDescriptor::StaticOutput` element does not have this information as the output is sent to an output which used only `KeysInterface` data, not per-channel data.
+
+In order to make the outputs from channel closing spendable by a third-party wallet, a middleground between using the default `KeysManager` and an entirely custom implementation of `SignerProvider`/`NodeSigner`/`EntropySource` could be to implement a wrapper around `KeysManager`. Such a wrapper would need to override the respective methods returning the destination and shutdown scripts while simply dropping any instances of `SpendableOutputDescriptor::StaticOutput`, as these then could be spent by the third-party wallet from which the scripts had been derived.
+
+For example, a wrapper based on BDK's [`Wallet`](https://docs.rs/bdk/*/bdk/wallet/struct.Wallet.html) could look like this:
+<CodeSwitcher :languages="{rust:'Rust'}">
+  <template v-slot:rust>
+
+```rust
+pub struct BDKKeysManager<D>
+where
+	D: bdk::database::BatchDatabase,
+{
+	inner: KeysManager,
+	wallet: Arc<Mutex<bdk::Wallet<D>>>,
+}
+
+impl<D> BDKKeysManager<D>
+where
+	D: bdk::database::BatchDatabase,
+{
+	pub fn new(
+		seed: &[u8; 32], starting_time_secs: u64, starting_time_nanos: u32, wallet: Arc<Mutex<bdk::Wallet<D>>>,
+	) -> Self {
+		let inner = KeysManager::new(seed, starting_time_secs, starting_time_nanos);
+		Self { inner, wallet }
+	}
+
+	// We drop all occurences of `SpendableOutputDescriptor::StaticOutput` (since they will be
+	// spendable by the BDK wallet) and forward any other descriptors to
+	// `KeysManager::spend_spendable_outputs`.
+	//
+	// Note you should set `locktime` to the current block height to mitigate fee sniping.
+	// See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
+	pub fn spend_spendable_outputs<C: Signing>(
+		&self, descriptors: &[&SpendableOutputDescriptor], outputs: Vec<TxOut>,
+		change_destination_script: Script, feerate_sat_per_1000_weight: u32,
+		locktime: Option<PackedLockTime>, secp_ctx: &Secp256k1<C>,
+	) -> Result<Transaction, ()> {
+		let only_non_static = &descriptors
+			.iter()
+			.filter(|desc| {
+				if let SpendableOutputDescriptor::StaticOutput { .. } = desc {
+					false
+				} else {
+					true
+				}
+			})
+			.copied()
+			.collect::<Vec<_>>();
+		self.inner.spend_spendable_outputs(
+			only_non_static,
+			outputs,
+			change_destination_script,
+			feerate_sat_per_1000_weight,
+			locktime,
+			secp_ctx,
+		)
+	}
+}
+
+impl<D> SignerProvider for BDKKeysManager<D>
+where
+	D: bdk::database::BatchDatabase,
+{
+	type Signer = InMemorySigner;
+
+	// We return the destination and shutdown scripts derived by the BDK wallet.
+	fn get_destination_script(&self) -> Result<Script, ()> {
+		let address = self.wallet.lock().unwrap()
+			.get_address(bdk::wallet::AddressIndex::New)
+			.map_err(|e| {
+				eprintln!("Failed to retrieve new address from wallet: {:?}", e);
+			})?;
+		Ok(address.script_pubkey())
+	}
+
+	fn get_shutdown_scriptpubkey(&self) -> Result<ShutdownScript, ()> {
+		let address = self.wallet.lock().unwrap()
+			.get_address(bdk::wallet::AddressIndex::New)
+			.map_err(|e| {
+				eprintln!("Failed to retrieve new address from wallet: {:?}", e);
+			})?;
+		match address.payload {
+			bitcoin::util::address::Payload::WitnessProgram { version, program } => {
+				ShutdownScript::new_witness_program(version, &program).map_err(|e| {
+					eprintln!("Invalid shutdown script: {:?}", e);
+				})
+			}
+			_ => panic!("Tried to use a non-witness address. This must not ever happen."),
+		}
+	}
+
+	// ... and redirect all other trait method implementations to the `inner` `KeysManager`.
+	fn generate_channel_keys_id(
+		&self, inbound: bool, channel_value_satoshis: u64, user_channel_id: u128,
+	) -> [u8; 32] {
+		self.inner.generate_channel_keys_id(inbound, channel_value_satoshis, user_channel_id)
+	}
+
+	fn derive_channel_signer(
+		&self, channel_value_satoshis: u64, channel_keys_id: [u8; 32],
+	) -> Self::Signer {
+		self.inner.derive_channel_signer(channel_value_satoshis, channel_keys_id)
+	}
+
+	fn read_chan_signer(&self, reader: &[u8]) -> Result<Self::Signer, DecodeError> {
+		self.inner.read_chan_signer(reader)
+	}
+}
+
+impl<D> NodeSigner for BDKKeysManager<D>
+where
+	D: bdk::database::BatchDatabase,
+{
+// ... snip
+}
+
+impl<D> EntropySource for BDKKeysManager<D>
+where
+	D: bdk::database::BatchDatabase,
+{
+// ... snip
+}
+
+```
+
+  </template>
+</CodeSwitcher>
