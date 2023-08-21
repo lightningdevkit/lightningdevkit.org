@@ -4,7 +4,6 @@ LDK provides a simple default `KeysManager` implementation that takes a 32-byte 
 
 However, LDK also allows to customize the way key material and entropy are sourced through custom implementations of the `NodeSigner`, `SignerProvider`, and `EntropySource` traits located in `chain::keysinterface`. These traits include basic methods to provide public and private key material, as well as pseudorandom numbers.
 
-
 A `KeysManager` can be constructed simply with only a 32-byte seed and some random integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`):
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
@@ -47,14 +46,15 @@ val keys_manager = KeysManager.of(
 </CodeSwitcher>
 
 # Creating a Unified Wallet
+
 LDK makes it simple to combine an on-chain and off-chain wallet in the same app. This means users don’t need to worry about storing two different recovery phrases. For apps containing a hierarchical deterministic wallet (or "HD Wallet") we recommend using the entropy from a [hardened child key derivation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc#hardened-child-key-derivation) path for your LDK seed.
 
 Using a [BDK](https://bitcoindevkit.org/)-based wallet the steps would be as follows:
 
- 1) Generate a mnemonic/entropy source.
- 2) Build an HD wallet from that. That's now your on-chain wallet, and you can derive any BIP-compliant on-chain wallet/path for it from there.
- 3) Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
- 4) Optional: use a custom `SignerProvider` implementation to have the BDK wallet provide the destination and shutdown scripts (see [Spending On-Chain Funds](#spending-on-chain-funds)).
+1.  Generate a mnemonic/entropy source.
+2.  Build an HD wallet from that. That's now your on-chain wallet, and you can derive any BIP-compliant on-chain wallet/path for it from there.
+3.  Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
+4.  Optional: use a custom `SignerProvider` implementation to have the BDK wallet provide the destination and shutdown scripts (see [Spending On-Chain Funds](#spending-on-chain-funds)).
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
   <template v-slot:rust>
@@ -134,12 +134,12 @@ val keysManager = KeysManager.of(
 
 ::: tip Protection for on-chain wallet
 
-An advantage to this approach is that the LDK entropy is contained within your initial mnemonic and a user only has one master private key to backup and secure. Another added benefit is that if your lightning keys were to be leaked we reduce the exposure to those funds and not the rest of the on-chain wallet. 
+An advantage to this approach is that the LDK entropy is contained within your initial mnemonic and a user only has one master private key to backup and secure. Another added benefit is that if your lightning keys were to be leaked we reduce the exposure to those funds and not the rest of the on-chain wallet.
 
 :::
 
-Spending On-Chain Funds
-=======================
+# Spending On-Chain Funds
+
 When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `util::events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `chain::keysinterface::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it.
 
 If you're using `KeysManager` directly, a utility method is provided which can generate a signed transaction given a list of `
@@ -150,8 +150,9 @@ If you are not using `KeysManager` for keys generation, you must re-derive the p
 In order to make the outputs from channel closing spendable by a third-party wallet, a middleground between using the default `KeysManager` and an entirely custom implementation of `SignerProvider`/`NodeSigner`/`EntropySource` could be to implement a wrapper around `KeysManager`. Such a wrapper would need to override the respective methods returning the destination and shutdown scripts while simply dropping any instances of `SpendableOutputDescriptor::StaticOutput`, as these then could be spent by the third-party wallet from which the scripts had been derived.
 
 For example, a wrapper based on BDK's [`Wallet`](https://docs.rs/bdk/*/bdk/wallet/struct.Wallet.html) could look like this:
+
 <CodeSwitcher :languages="{rust:'Rust'}">
-  <template v-slot:rust>
+<template v-slot:rust>
 
 ```rust
 pub struct BDKKeysManager<D>
