@@ -1,52 +1,22 @@
 ---
 home: true
 heroText: Build LN applications your way with LDK
-tagline: An SDK that is a compatible LN implementation
+tagline: A LN implementation packaged as an SDK
 actionText: Get started
 actionLink: /introduction/
 features:
-  - title: "Customizable"
-    details: "Designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
+  - title: "Flexible and customizable "
+    details: "All supporting modules can be configured to your application needs, such as persistent storage, backup logic, chain sources, and key management."
     image: "customizable"
-  - title: "Focus on what matters"
-    details: "A full implementation of the Lightning Network protocol, so you can focus on crafting custom-tailored user experiences."
+  - title: "High performance and scalability"
+    details: "As lightweight and compact as you need it to be. LDK fits in small-footprint devices and can run in the cloud"
     image: "focus"
-  - title: "High performance & compact"
-    details: "As lightweight as you need it to be and optimized to run on all embedded devices such as mobile phones, IoT devices, PoS terminals and more."
+  - title: "Any language, any platform"
+    details: "Work in the language you're comfortable with. Run a Lightning node in any environment, such as mobile phones, web browsers, LSPs, or existing infrastructure."
     image: "mobile"
 ---
 
 <div class="intro">
 <h2>Why LDK?</h2>
-<p>Easily integrate Lightning features into any Bitcoin wallet</p>
-</div>
 
-<div class="features">
-<div class="feature">
-<h3>Multi-Language Support</h3>
-
-We support native API's including Rust, C, Swift, Java & Kotlin so you can build Lightning applications in your preferred programming language.
-
-</div>
-
-<div class="feature">
-<h3>Custom Persistent Storage</h3>
-
-Our API's let you choose how to backup channel state. This gives you multi-wallet device access and lets you save state locally, to the cloud or an alternative backup scheme.
-
-</div>
-
-<div class="feature">
-<h3>Custom Block Data Sources</h3>
-
-Use a local full node, an SPV node, or your own Electrum server with API access to source data about the blockchain and feed it to LDK for decision-making about whether to sign a state update.
-
-</div>
-
-<div class="feature">
-<h3>Unified Wallet</h3>
-
-No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience.
-
-</div>
 </div>
