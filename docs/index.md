@@ -33,7 +33,15 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
     <div>
       <h2>Trusted by the best</h2>
       <p class="description">Innovative projects are building with LDK</p>
-      <a>All case studies -></a>
+      <a href="/case-studies/">All case studies -></a>
     </div>
+  </div>
+</div>
+
+<div class="cross-promo">
+  <div class="cross-promo-inner">
+    <img src="./assets/bdk-logo.svg" />
+    <div class="divider"></div>
+    <p class="cross-promo-description">The onchain companion to LDK</p>
   </div>
 </div>
