@@ -14,9 +14,26 @@ features:
   - title: "Any language, any platform"
     details: "Work in the language you're comfortable with. Run a Lightning node in any environment, such as mobile phones, web browsers, LSPs, or existing infrastructure."
     image: "mobile"
+promo: true
+promoImage: "customizable"
+promoTitle: "LDK Node"
+promoDescription: "Build a mobile LN wallet fast with our ready-to-go solution. Built on top of LDK."
+promoActionText: "Get Started"
+promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 ---
 
-<div class="intro">
-<h2>Why LDK?</h2>
-
+<div class="case-studies">
+  <div class="case-studies-inner">
+    <div class="logo-wrapper">
+      <img src="./assets/10101.png" />
+      <img src="./assets/10101.png" />
+      <img src="./assets/10101.png" />
+      <img src="./assets/10101.png" />
+    </div>
+    <div>
+      <h2>Trusted by the best</h2>
+      <p class="description">Innovative projects are building with LDK</p>
+      <a>All case studies -></a>
+    </div>
+  </div>
 </div>
