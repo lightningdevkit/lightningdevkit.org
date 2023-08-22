@@ -48,8 +48,9 @@ val keys_manager = KeysManager.of(
 
 ```swift
 let seed = [UInt8](repeating: 0, count: 32)
+// Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
+let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
 self.myKeysManager = KeysManager(
 	seed: seed, 
 	startingTimeSecs: timestampSeconds, 
@@ -159,7 +160,7 @@ let ldkChild = try bip32RootKey.derive(path: ldkDerivationPath)
 let ldkSeed = ldkChild.secretBytes()
 
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
+let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
 
 // Seed the LDK KeysManager with the private key at m/535h
 let keysManager = KeysManager(
@@ -321,7 +322,7 @@ where
 class MyKeysManager {
     let inner: KeysManager
     let wallet: BitcoinDevKit.Wallet
-	let signerProvider: MySignerProvider
+    let signerProvider: MySignerProvider
     
     init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
         self.inner = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
@@ -336,8 +337,9 @@ class MyKeysManager {
     //
     // Note you should set `locktime` to the current block height to mitigate fee sniping.
     // See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
-    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut], 
-	changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32, locktime: UInt32?) -> Result_TransactionNoneZ {
+    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut],
+                               changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32,
+                               locktime: UInt32?) -> Result_TransactionNoneZ {
         let onlyNonStatic: [SpendableOutputDescriptor] = descriptors.filter { desc in
             if desc.getValueType() == .StaticOutput {
                 return false
@@ -345,12 +347,12 @@ class MyKeysManager {
             return true
         }
         let res = self.inner.spendSpendableOutputs(
-			descriptors: onlyNonStatic, 
-			outputs: outputs, 
-			changeDestinationScript: changeDestinationScript, 
-			feerateSatPer1000Weight: feerateSatPer1000Weight, 
-			locktime: locktime
-		)
+            descriptors: onlyNonStatic,
+            outputs: outputs,
+            changeDestinationScript: changeDestinationScript,
+            feerateSatPer1000Weight: feerateSatPer1000Weight,
+            locktime: locktime
+        )
         return res
     }
 }
@@ -364,7 +366,7 @@ class MySignerProvider: SignerProvider {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
             return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
-            return myKeysManager!.inner.asSignerProvider().getDestinationScript()
+            return .initWithErr()
         }
     }
     
@@ -415,26 +417,26 @@ class MySignerProvider: SignerProvider {
                     return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }
             }
-            return myKeysManager!.inner.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         } catch {
-            return myKeysManager!.inner.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         }
     }
     
     // ... and redirect all other trait method implementations to the `inner` `KeysManager`.
     override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
         return myKeysManager!.inner.asSignerProvider().deriveChannelSigner(
-			channelValueSatoshis: channelValueSatoshis, 
-			channelKeysId: channelKeysId
-		)
+            channelValueSatoshis: channelValueSatoshis,
+            channelKeysId: channelKeysId
+        )
     }
     
     override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
         return myKeysManager!.inner.asSignerProvider().generateChannelKeysId(
-			inbound: inbound, 
-			channelValueSatoshis: channelValueSatoshis, 
-			userChannelId: userChannelId
-		)
+            inbound: inbound,
+            channelValueSatoshis: channelValueSatoshis,
+            userChannelId: userChannelId
+        )
     }
     
     override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
