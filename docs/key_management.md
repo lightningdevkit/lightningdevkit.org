@@ -10,8 +10,8 @@ A `KeysManager` can be constructed simply with only a 32-byte seed and some rand
   <template v-slot:rust>
 
 ```rust
-let mut random_32_bytes = [0; 32];
 // Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
+let mut random_32_bytes = [0; 32];
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
 let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
 ```
@@ -21,8 +21,8 @@ let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(&ran
   <template v-slot:java>
 
 ```java
+// Fill in key_seed with secure random data, or, on restart, reload the seed from disk.
 byte[] key_seed = new byte[32];
-// Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 KeysManager keys_manager = KeysManager.of(key_seed,
     System.currentTimeMillis() / 1000,
     (int) (System.currentTimeMillis() * 1000)
@@ -34,8 +34,8 @@ KeysManager keys_manager = KeysManager.of(key_seed,
   <template v-slot:kotlin>
 
 ```kotlin
+// Fill in key_seed with secure random data, or, on restart, reload the seed from disk.
 val key_seed = ByteArray(32)
-// Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 val keys_manager = KeysManager.of(
     key_seed,
     System.currentTimeMillis() / 1000, (System.currentTimeMillis() * 1000).toInt()
@@ -47,8 +47,8 @@ val keys_manager = KeysManager.of(
   <template v-slot:swift>
 
 ```swift
+// Fill in seed with secure random data, or, on restart, reload the seed from disk.
 let seed = [UInt8](repeating: 0, count: 32)
-// Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
 let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
 self.myKeysManager = KeysManager(
