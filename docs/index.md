@@ -25,10 +25,10 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 <div class="case-studies">
   <div class="case-studies-inner">
     <div class="logo-wrapper">
-      <img src="./assets/10101.png" />
-      <img src="./assets/10101.png" />
-      <img src="./assets/10101.png" />
-      <img src="./assets/10101.png" />
+      <img src="./assets/atomicdex.svg" />
+      <img src="./assets/bluewallet.svg" />
+      <img src="./assets/cashapp.svg" />
+      <img src="./assets/teos.svg" />
     </div>
     <div>
       <h2>Trusted by the best</h2>
@@ -40,7 +40,7 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 
 <div class="cross-promo">
   <div class="cross-promo-inner">
-    <img src="./assets/bdk-logo.svg" />
+    <a href="https://bitcoindevkit.org/"><img src="./assets/bdk-logo.svg" /></a>
     <div class="divider"></div>
     <p class="cross-promo-description">The onchain companion to LDK</p>
   </div>
