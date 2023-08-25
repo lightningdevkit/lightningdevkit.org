@@ -1,7 +1,7 @@
 ---
 home: true
 heroText: Build LN applications your way with LDK
-tagline: A LN implementation packaged as an SDK
+tagline: A complete LN implementation packaged as an SDK
 actionText: Get started
 actionLink: /introduction/
 features:
