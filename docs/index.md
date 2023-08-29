@@ -1,7 +1,7 @@
 ---
 home: true
-heroText: Build LN applications your way with LDK
-tagline: A complete LN implementation packaged as an SDK
+heroText: Build Lightning applications your way with LDK
+tagline: A complete Lightning implementation packaged as an SDK
 actionText: Get started
 actionLink: /introduction/
 features:
@@ -17,7 +17,7 @@ features:
 promo: true
 promoImage: "customizable"
 promoTitle: "LDK Node"
-promoDescription: "Build a mobile LN wallet fast with our ready-to-go solution."
+promoDescription: "Build a mobile Lightning wallet fast with our ready-to-go solution."
 promoActionText: "Get Started"
 promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 ---
