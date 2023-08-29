@@ -6,18 +6,18 @@ actionText: Get started
 actionLink: /introduction/
 features:
   - title: "Flexible and customizable "
-    details: "All supporting modules can be configured to your application needs, such as persistent storage, backup logic, chain sources, and key management."
+    details: "Persistence. Networking. Chain sourcing. Routing. Key management. You name it. LDK easily configures to your application’s needs."
     image: "customizable"
   - title: "High performance and scalability"
-    details: "As lightweight and compact as you need it to be. LDK fits in small-footprint devices and can run in the cloud"
+    details: "As lightweight and compact as you need it to be, LDK performs on small-footprint devices and scales in the cloud."
     image: "focus"
   - title: "Any language, any platform"
-    details: "Work in the language you're comfortable with. Run a Lightning node in any environment, such as mobile phones, web browsers, LSPs, or existing infrastructure."
+    details: "LDK provides a native API in many languages. Run a Lightning node in any environment, including mobile phones, web browsers, HSMs, LSPs, or your existing infrastructure."
     image: "mobile"
 promo: true
 promoImage: "customizable"
 promoTitle: "LDK Node"
-promoDescription: "Build a mobile LN wallet fast with our ready-to-go solution. Built on top of LDK."
+promoDescription: "Build a mobile LN wallet fast with our ready-to-go solution."
 promoActionText: "Get Started"
 promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 ---
