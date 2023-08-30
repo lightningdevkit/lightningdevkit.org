@@ -1,53 +1,49 @@
 ---
 home: true
-heroText: Lightning Dev Kit
-tagline: The simplest way to integrate Lightning into your Bitcoin wallet
+heroText: Build Lightning applications your way with LDK
+tagline: A complete Lightning implementation packaged as an SDK
 actionText: Get started
 actionLink: /introduction/
 features:
-- title: "Customizable"
-  details: "Designed from the ground up to be easily customized to your application needs: persistence, networking, chain source, routing, key management, wallet, you name it."
-  image: "customizable"
-- title: "Focus on what matters"
-  details: "A full implementation of the Lightning Network protocol, so you can focus on crafting custom-tailored user experiences."
-  image: "focus"
-- title: "High performance & compact"
-  details: "As lightweight as you need it to be and optimized to run on all embedded devices such as mobile phones, IoT devices, PoS terminals and more."
-  image: "mobile"
+  - title: "Flexible and customizable "
+    details: "Persistence. Networking. Chain sourcing. Routing. Key management. You name it. LDK easily configures to your application’s needs."
+    image: "customizable"
+  - title: "High performance and scalability"
+    details: "As lightweight and compact as you need it to be, LDK performs on small-footprint devices and scales in the cloud."
+    image: "focus"
+  - title: "Any language, any platform"
+    details: "LDK provides a native API in many languages. Run a Lightning node in any environment, including mobile phones, web browsers, HSMs, LSPs, or your existing infrastructure."
+    image: "mobile"
+promo: true
+promoImage: "customizable"
+promoTitle: "LDK Node"
+promoDescription: "Build a mobile Lightning wallet fast with our ready-to-go solution."
+promoActionText: "Get Started"
+promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 ---
 
-<div class="intro">
-<h2>Why LDK?</h2>
-<p>Easily integrate Lightning features into any Bitcoin wallet</p>
+<div class="case-studies">
+  <div class="case-studies-inner">
+    <div class="logo-wrapper">
+      <img src="./assets/atomicdex.svg" />
+      <img src="./assets/bluewallet.svg" />
+      <img src="./assets/cashapp.svg" />
+      <img src="./assets/teos.svg" />
+    </div>
+    <div>
+      <h2>Trusted by the best</h2>
+      <p class="description">Innovative projects are building with LDK</p>
+      <a href="/case-studies/">All case studies -></a>
+    </div>
+  </div>
 </div>
 
-<div class="features">
-<div class="feature">
-<h3>Multi-Language Support</h3>
-
-We support native API's including Rust, C, Swift, Java & Kotlin so you can build Lightning applications in your preferred programming language. 
-
+<div class="cross-promo">
+  <a href="https://bitcoindevkit.org/">
+  <div class="cross-promo-inner">
+    <img src="./assets/bdk-logo.svg" />
+    <div class="divider"></div>
+    <p class="cross-promo-description">The onchain companion to LDK</p>
+  </div>
+  </a>
 </div>
-
-<div class="feature">
-<h3>Custom Persistent Storage</h3>
-
-Our API's let you choose how to backup channel state. This gives you multi-wallet device access and lets you save state locally, to the cloud or an alternative backup scheme.
-
-</div>
-
-<div class="feature">
-<h3>Custom Block Data Sources</h3>
-
-Use a local full node, an SPV node, or your own Electrum server with API access to source data about the blockchain  and feed it to LDK for decision-making about whether to sign a state update.
-
-</div>
-
-<div class="feature">
-<h3>Unified Wallet</h3>
-
-No need to create separate Bitcoin & Lightning wallets, forcing users to backup an additional recovery phrase. Instead, we let you define your own wallet and create one unified experience. 
-
-</div>
-</div>
-
