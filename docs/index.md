@@ -30,8 +30,8 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
       <img src="./assets/cashapp.svg" />
       <img src="./assets/teos.svg" />
     </div>
-    <div>
-      <h2>Trusted by the best</h2>
+    <div class="case-studies-inner-content">
+      <h1>Trusted by the best</h1>
       <p class="description">Innovative projects are building with LDK</p>
       <a href="/case-studies/">All case studies -></a>
     </div>
@@ -43,7 +43,7 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
   <div class="cross-promo-inner">
     <img src="./assets/bdk-logo.svg" />
     <div class="divider"></div>
-    <p class="cross-promo-description">The onchain companion to LDK</p>
+    <p class="cross-promo-description">The on-chain companion to LDK</p>
   </div>
   </a>
 </div>
