@@ -17,7 +17,7 @@ features:
 promo: true
 promoImage: "customizable"
 promoTitle: "LDK Node"
-promoDescription: "Build a mobile Lightning wallet fast with our ready-to-go solution."
+promoDescription: "Build a mobile Lightning wallet fast with our ready-to-go solution"
 promoActionText: "Get Started"
 promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 ---
