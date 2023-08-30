@@ -30,7 +30,7 @@
     "linkcheck:local": "$npm_package_config_linkcheck http://localhost:$npm_package_config_port"
   },
   "devDependencies": {
-    "@spiralbtc/vuepress-devkit-theme": "^0.11.0",
+    "@spiralbtc/vuepress-devkit-theme": "^0.12.0",
     "broken-link-checker": "0.7.8",
     "serve": "14.2.0",
     "start-server-and-test": "2.0.0",
