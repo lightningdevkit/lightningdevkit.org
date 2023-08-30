@@ -8,11 +8,11 @@ features:
   - title: "Flexible and customizable "
     details: "Persistence. Networking. Chain sourcing. Routing. Key management. You name it. LDK easily configures to your application’s needs."
     image: "customizable"
-  - title: "High performance and scalability"
+  - title: "High performance"
     details: "As lightweight and compact as you need it to be, LDK performs on small-footprint devices and scales in the cloud."
     image: "focus"
   - title: "Any language, any platform"
-    details: "LDK provides a native API in many languages. Run a Lightning node in any environment, including mobile phones, web browsers, HSMs, LSPs, or your existing infrastructure."
+    details: "LDK provides a multi-language native API. Run a Lightning node on mobile, web browsers, HSMs, LSPs, or your existing infrastructure."
     image: "mobile"
 promo: true
 promoImage: "customizable"
