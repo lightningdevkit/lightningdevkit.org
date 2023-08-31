@@ -12,7 +12,7 @@ features:
     details: "As lightweight and compact as you need it to be, LDK performs on small-footprint devices and scales in the cloud."
     image: "focus"
   - title: "Any language, any platform"
-    details: "LDK provides a multi-language native API. Run a Lightning node on mobile, web browsers, HSMs, LSPs, or your existing infrastructure."
+    details: "LDK provides a multi-language native API. Run a Lightning node on mobile, web, HSMs, LSPs, or your existing infrastructure."
     image: "mobile"
 promo: true
 promoImage: "customizable"
