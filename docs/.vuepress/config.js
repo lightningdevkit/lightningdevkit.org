@@ -249,7 +249,7 @@ module.exports = {
           ],
         },
         {
-          title: "Docs",
+          title: "Documentation",
           children: [
             {
               text: "Introduction",
