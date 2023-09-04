@@ -15,7 +15,7 @@ features:
     details: "LDK provides a multi-language native API. Run a Lightning node on mobile, web, HSMs, LSPs, or your existing infrastructure."
     image: "mobile"
 promo: true
-promoImage: "customizable"
+promoImage: "ldk-node"
 promoTitle: "LDK Node"
 promoDescription: "Build a mobile Lightning wallet fast with our ready-to-go solution"
 promoActionText: "Get Started"
