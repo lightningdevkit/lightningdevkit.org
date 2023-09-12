@@ -25,10 +25,10 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
 <div class="case-studies">
   <div class="case-studies-inner">
     <div class="logo-wrapper">
-      <img src="./assets/atomicdex.svg" />
-      <img src="./assets/bluewallet.svg" />
+      <img src="./assets/bitkit.svg" />
+      <img src="./assets/mutiny.svg" />
       <img src="./assets/cashapp.svg" />
-      <img src="./assets/teos.svg" />
+      <img src="./assets/teos.png" />
     </div>
     <div class="case-studies-inner-content">
       <h1>Trusted by the best</h1>
