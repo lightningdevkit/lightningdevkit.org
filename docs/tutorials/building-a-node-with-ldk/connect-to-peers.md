@@ -1,13 +1,13 @@
 # Connect to Peers
 
-In this section you'll learn how to join the lightning network. 
+In this section you'll learn how to join the lightning network.
 
 Firstly we need to have the ability to do high performance I/O operations. LDK provides default implementations for initializing all of your networking needs. If you are using Rust, you can use our simple socket handling library `lightning_net_tokio`. In Kotlin/Java you can use the `NioPeerHandler` which uses Java's NIO I/O interface.
 
 **What it's used for**: making peer connections, facilitating peer data to and from LDK
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
-  <template v-slot:rust> 
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+  <template v-slot:rust>
 
 ```rust
 use lightning_net_tokio; // use LDK's sample networking module
@@ -40,13 +40,23 @@ nioPeerHandler.bind_listener(InetSocketAddress("127.0.0.1", port))
 ```
 
   </template>
-</CodeSwitcher>
 
+  <template v-slot:swift>
+
+```Swift
+let peerHandler = channelManagerConstructor.getTCPPeerHandler()
+let port = 9777
+peerHandler.bind(address: "127.0.0.1", port: port)
+```
+
+  </template>
+
+</CodeSwitcher>
 
 Connections to other peers are established with `PeerManager`. You'll need to know the pubkey and address of another node that you want as a peer. Once the connection is established and the handshake is complete, `PeerManager` will show the peer's pubkey in its list of peers.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
-  <template v-slot:rust> 
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+  <template v-slot:rust>
 
 ```rust
 match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, address).await {
@@ -88,20 +98,32 @@ try {
 
     } catch (e: IOException) {
     // Handle failure when connecting to a peer.
+
 }
-```
+
+````
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+// Connect and wait for the handshake to complete.
+let pubKey = // Insert code to retrieve peer's pubKey as byte array
+let address = // Insert code to retrieve peer's address
+let port = // Insert code to retrieve peer's port
+let _ = peerHandler.connect(address: address, port: port, theirNodeId: pubKey)
+
+// The peer's pubkey will be present in the list of peer ids.
+let peerManager: PeerManager = channelManagerConstructor.peerManager
+let peerNodeIds = peerManager.getPeerNodeIds()
+````
+
+  </template>
+  
 </CodeSwitcher>
 
 **Dependencies:** `PeerManager`
 
 **References:** [Rust `lightning-net-tokio` docs](https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/), [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Java `NioPeerHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/batteries/NioPeerHandler.java),
 [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java),
-
-
-
-
-
-
-

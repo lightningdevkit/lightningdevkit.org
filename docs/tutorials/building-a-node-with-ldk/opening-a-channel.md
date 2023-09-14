@@ -11,7 +11,7 @@ Now that you have a peer, you can open a channel with them using `ChannelManager
 
 Channels can be announced to the network or can remain private, which is controlled via `UserConfig::announced_channel`.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -51,11 +51,37 @@ val createChannelResult = channelManager.create_channel(
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+let amount: UInt64 = 100000
+let pushMsat: UInt64 = 1000
+let userId: [UInt8] = toBytesArray(UUID().uuid)
+
+// public aka announced channel
+let userConfig = UserConfig.initWithDefault()
+let channelHandshakeConfig = ChannelHandshakeConfig.initWithDefault()
+channelConfig.setAnnouncedChannel(val: true)
+
+userConfig.setChannelHandshakeConfig(val: channelConfig)
+
+let createChannelResults = channelManager.createChannel(
+	theirNetworkKey: pubKey,
+	channelValueSatoshis: amount,
+	pushMsat: pushMsat,
+	userChannelId: userId,
+	overrideConfig: userConfig
+)
+```
+
+  </template>
+
 </CodeSwitcher>
 
 # FundingGenerationReady Event Handling
 
-At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature. 
+At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature.
 
 ::: tip Note
 
@@ -63,7 +89,7 @@ Remember that the funding transaction must only spend SegWit inputs.
 
 :::
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
 <template v-slot:rust>
 
 ```rust
@@ -142,14 +168,52 @@ fun buildFundingTx(value: Long, script: ByteArray): Transaction {
 
 </template>
 
+<template v-slot:swift>
+
+```Swift
+// After the peer responds with an `accept_channel` message, an
+// Event.FundingGenerationReady event will be generated.
+
+if let event = event.getValueAsFundingGenerationReady() {
+    let script = Script(rawOutputScript: event.getOutputScript())
+    let channelValue = event.getChannelValueSatoshis()
+    let rawTx = buildFundingTx(script: script, amount: channelValue)
+    if let rawTx = rawTx {
+        channelManager.fundingTransactionGenerated(
+			temporaryChannelId: event.getTemporaryChannelId(),
+			counterpartyNodeId: event.getCounterpartyNodeId(),
+			fundingTransaction: rawTx.serialize()
+		)
+    }
+}
+
+// Building transaction using BDK
+func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
+    do {
+        let transaction = try TxBuilder().addRecipient(
+            script: script,
+            amount: amount)
+			.feeRate(satPerVbyte: 4.0)
+            .finish(wallet: onchainWallet)
+        let _ = try onchainWallet.sign(psbt: transaction.psbt, signOptions: nil)
+        return transaction.psbt.extractTx()
+    } catch {
+        return nil
+    }
+}
+```
+
+</template>
+
 </CodeSwitcher>
 
 **References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady), [Java `FundingGenerationReady` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L95)
+
 # Broadcasting the Funding Transaction
 
 After crafting the funding transaction you'll need to send it to the Bitcoin network where it will hopefully be mined and added to the blockchain. You'll need to watch this transaction and wait for a minimum of 6 confirmations before the channel is ready to use.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -197,8 +261,8 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 		val transaction = Transaction(uByteArray.toList())
 
 		tx?.let {
-            CoroutineScope(Dispatchers.IO).launch { 
-				blockchain.broadcast(transaction) 
+            CoroutineScope(Dispatchers.IO).launch {
+				blockchain.broadcast(transaction)
 			}
         } ?: throw(IllegalStateException("Broadcaster attempted to broadcast a null transaction"))
 
@@ -208,6 +272,30 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+// Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
+class MyBroacaster: BroadcasterInterface {
+    override func broadcastTransaction(tx: [UInt8]) {
+        let esploraURL = "esploraUrl"
+		let esploraConfig = EsploraConfig(baseUrl: esploraURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
+        let blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
+		let blockchain = Blockchain(config: blockchainConfig)
+
+		do {
+			let transaction = try Transaction(transactionBytes: tx)
+			try blockchain.broadcast(transaction: transaction)
+		} catch {
+			print("Failed to broadcast transaction: \(error.localizedDescription)")
+		}
+    }
+}
+```
+
+  </template>
+
 </CodeSwitcher>
 
 ::: tip Keep LDK in sync
@@ -215,9 +303,3 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 Remember if you are restarting and have open channels then you should [let LDK know about the latest channel state.](./setting-up-a-channel-manager/#sync-channelmonitors-and-channelmanager-to-chain-tip)
 
 :::
-
-
-
-
-
-

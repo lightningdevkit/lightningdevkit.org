@@ -5,7 +5,7 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -127,6 +127,28 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+let invoiceStr = // get an invoice from the payee
+let parsedInvoice = Invoice.fromStr(s: invoiceStr)
+
+if parsedInvoice.getValue() != nil {
+  let invoicePaymentResult = Bindings.payInvoice(
+    invoice: invoice,
+    retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
+    channelmanager: channelManager
+  )
+
+  if invoicePaymentResult.isOk() {
+    // Payment Sent
+  }
+}
+```
+
+  </template>
+
 </CodeSwitcher>
 
 An event is generated once a payment has completed. Successful payments result
@@ -134,7 +156,7 @@ in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -166,4 +188,18 @@ else if (e instanceof Event.PaymentFailed) {
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+// In the `handleEvent` method of ChannelManagerPersister implementation
+if let paymentSentEvent = event.getValueAsPaymentSent() {
+  // Handle successful payment
+} else if let paymentFailedEvent = event.getValueAsPaymentFailed() {
+  // Handle failed payment
+}
+```
+
+  </template>
+
 </CodeSwitcher>

@@ -7,7 +7,7 @@ The Peer Manager is responsible for managing a set of peer connections and all d
 
 To add a PeerManager to your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
   ```rust
@@ -41,6 +41,17 @@ To add a PeerManager to your application, run:
   ```
 
   </template>
+
+  <template v-slot:swift>
+ 
+  ```Swift
+  import LightningDevKit
+  
+  let peerManager: PeerManager = channelManagerConstructor.peerManager
+  ```
+
+  </template>
+
 </CodeSwitcher>
 
 **Implementation notes:** if you did not initialize `P2PGossipSync` in the previous step, you can initialize your own struct (which can be a dummy struct) that implements `RoutingMessageHandler`
@@ -48,4 +59,3 @@ To add a PeerManager to your application, run:
 **Dependencies:** `ChannelManager`, `RoutingMessageHandler`, `KeysManager`, random bytes, `Logger`
 
 **References:** [Rust `PeerManager` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), [Rust `RoutingMessageHandler` docs](https://docs.rs/lightning/*/lightning/ln/msgs/trait.RoutingMessageHandler.html), [Java `PeerManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/PeerManager.java), [Java `RoutingMessageHandler` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RoutingMessageHandler.java)
-
