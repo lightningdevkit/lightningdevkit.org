@@ -4,7 +4,7 @@ const themeConfig = require("@spiralbtc/vuepress-devkit-theme/config");
 const title = "Lightning Dev Kit Documentation";
 const baseUrl = "https://lightningdevkit.org";
 const githubUrl = "https://github.com/lightningdevkit";
-const discordUrl = "https://discord.gg/xaYE3pDQpm";
+const discordUrl = "https://discord.gg/5AcknnMfBw";
 const themeColor = "#ffffff";
 
 const docsSidebar = [
@@ -109,13 +109,8 @@ const docsSidebar = [
         ],
       },
       [
-        "https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk",
-        "Java/Kotlin",
-      ],
-      ["https://github.com/lightningdevkit/ldk-swift", "Swift"],
-      [
-        "https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/ts",
-        "TypeScript",
+        "https://github.com/arik-so/SwiftLightning/tree/master/Documentation",
+        "Swift",
       ],
     ],
   },
@@ -155,6 +150,10 @@ const tutorialSidebar = [
           [
             "/tutorials/building-a-node-with-ldk/sending-payments",
             "Sending Payments",
+          ],
+          [
+            "/tutorials/building-a-node-with-ldk/closing-a-channel",
+            "Closing a Channel",
           ],
         ],
       },
@@ -220,10 +219,6 @@ module.exports = {
         link: "/tutorials/getting-started",
       },
       {
-        text: "Case Studies",
-        link: "/case-studies",
-      },
-      {
         text: "Blog",
         link: "/blog/",
       },
@@ -246,6 +241,39 @@ module.exports = {
     },
     footer: {
       links: [
+        {
+          title: "Docs",
+          children: [
+            {
+              text: "Introduction",
+              link: "/introduction/",
+            },
+            {
+              text: "Sample LDK node",
+              link: "/running-a-sample-ldk-node/",
+            },
+            {
+              text: "Architecture",
+              link: "/overview/architecture/",
+            },
+            {
+              text: "Payments",
+              link: "/payments/",
+            },
+            {
+              text: "Blockchain Data",
+              link: "/blockchain_data/introduction/",
+            },
+            {
+              text: "Key Management",
+              link: "/key_management/",
+            },
+            {
+              text: "Examples",
+              link: "/examples/",
+            },
+          ],
+        },
         {
           title: "Community",
           children: [
@@ -341,8 +369,16 @@ module.exports = {
             },
             {
               text: "Reporting a Vulnerability",
-              link: "https://github.com/lightningdevkit/rust-lightning/blob/main/SECURITY.md",
               rel: "noopener noreferrer",
+            },
+          ],
+        },
+        {
+          title: "More",
+          children: [
+            {
+              text: "Blog",
+              link: "/blog/",
             },
           ],
         },
