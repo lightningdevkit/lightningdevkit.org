@@ -264,7 +264,7 @@ generation is unique across restarts.
 
 **Dependencies:** random bytes
 
-**References:** [`KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Key Management guide](/key_management.md)
+**References:** [`KeysManager` docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html), [Key Management guide](/key_management.md)
 
 ### Step 7. Read `ChannelMonitor` state from disk
 

@@ -1,8 +1,8 @@
 # Key Management
 
-LDK provides a simple default `KeysManager` implementation that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html).
+LDK provides a simple default `KeysManager` implementation that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html).
 
-However, LDK also allows to customize the way key material and entropy are sourced through custom implementations of the `NodeSigner`, `SignerProvider`, and `EntropySource` traits located in `chain::keysinterface`. These traits include basic methods to provide public and private key material, as well as pseudorandom numbers.
+However, LDK also allows to customize the way key material and entropy are sourced through custom implementations of the `NodeSigner`, `SignerProvider`, and `EntropySource` traits located in `sign`. These traits include basic methods to provide public and private key material, as well as pseudorandom numbers.
 
 A `KeysManager` can be constructed simply with only a 32-byte seed and some random integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`):
 
@@ -13,7 +13,7 @@ A `KeysManager` can be constructed simply with only a 32-byte seed and some rand
 // Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let mut random_32_bytes = [0; 32];
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
-let keys_interface_impl = lightning::chain::keysinterface::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
+let keys_interface_impl = lightning::sign::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
 ```
 
   </template>
@@ -181,7 +181,7 @@ An advantage to this approach is that the LDK entropy is contained within your i
 
 # Spending On-Chain Funds
 
-When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `util::events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `chain::keysinterface::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it.
+When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `util::events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `sign::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it.
 
 If you're using `KeysManager` directly, a utility method is provided which can generate a signed transaction given a list of `
 SpendableOutputDescriptor` objects. `KeysManager::spend_spendable_outputs` can be called any time after receiving the `SpendableOutputDescriptor` objects to build a spending transaction, including delaying until sending funds to an external destination or opening a new channel. Note that if you open new channels directly with `SpendableOutputDescriptor` objects, you must ensure all closing/destination scripts provided to LDK are SegWit (either native or P2SH-wrapped).

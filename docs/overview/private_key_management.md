@@ -4,4 +4,4 @@ LDK provides a default implementation for key management, but you can choose to 
 
 While LDK's default implementation is currently located within the `rust-lightning` crate, it is still considered a sample module.
 
-[LDK's `KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html).
+[LDK's `KeysManager` docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html).

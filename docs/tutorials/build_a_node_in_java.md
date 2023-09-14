@@ -310,7 +310,7 @@ generation is unique across restarts.
 
 **Dependencies:** random bytes
 
-**References:** [Rust docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java), [Key Management guide](/key_management.md)
+**References:** [Rust docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html), [Java bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java), [Key Management guide](/key_management.md)
 
 ### 10. Read `ChannelMonitor`s from disk
 
