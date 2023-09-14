@@ -140,6 +140,10 @@ const tutorialSidebar = [
             "/tutorials/building-a-node-with-ldk/setting-up-a-peer-manager",
             "Setting up a Peer Manager",
           ],
+          [
+            "/tutorials/building-a-node-with-ldk/connect-to-peers",
+            "Connect to Peers",
+          ],
         ],
       },
     ],
