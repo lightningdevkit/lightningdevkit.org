@@ -7,6 +7,6 @@ This makes it environment agnostic, allowing you to choose your own data storage
 
 LDK also uses an event-driven architecture which allows for asynchronous result notification. For example you perform actions like making payments without waiting for the result and are later made aware via an event if the payment was successful or not.
 
-::: tip Langauge Bindings
+::: tip Language Bindings
 
 Although the core SDK is written in Rust, LDK supports many other programming languages. These include Java/Kotlin, Swift, JavaScript/TypeScript (Beta), C++ (Alpha). Check out [examples](../examples.md) to see some of the implementations out in the wild!
