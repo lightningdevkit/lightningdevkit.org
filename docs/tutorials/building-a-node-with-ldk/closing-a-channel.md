@@ -1,6 +1,38 @@
 # Closing a Channel
 
-Closing Channel using Custom KeysManager. (Single Fees)
+Close Channel
+
+<CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
+  <template v-slot:rust>
+
+```rust
+// TODO: Add Rust Code Here
+```
+
+  </template>
+  <template v-slot:java>
+
+```java
+// TODO: Add Java Code Here
+```
+
+  </template>
+  <template v-slot:swift>
+
+```Swift
+let channelId: [UInt8] = // Add Channel Id in bytes
+let counterpartyNodeId: [UInt8] = // Add Counterparty Node Id in bytes
+let res = channelManager.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+if res!.isOk() {
+    print("Channel Closed")
+}
+```
+
+  </template>
+</CodeSwitcher>
+
+
+Claim Funds using Custom KeysManager. (Single Fees)
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
@@ -114,7 +146,7 @@ class MySignerProvider: SignerProvider {
   </template>
 </CodeSwitcher>
 
-Closing Channel using Events. (Double Fees)
+Claim Funds using Events. (Double Fees)
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
