@@ -68,9 +68,9 @@ userConfig.setChannelHandshakeConfig(val: channelConfig)
 
 let createChannelResults = channelManager.createChannel(
 	theirNetworkKey: pubKey,
-	channelValueSatoshis: amount,
-	pushMsat: pushMsat,
-	userChannelId: userId,
+	channelValueSatoshis: amount, 
+	pushMsat: pushMsat, 
+	userChannelId: userId, 
 	overrideConfig: userConfig
 )
 ```
@@ -81,7 +81,7 @@ let createChannelResults = channelManager.createChannel(
 
 # FundingGenerationReady Event Handling
 
-At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature.
+At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature. 
 
 ::: tip Note
 
@@ -180,8 +180,8 @@ if let event = event.getValueAsFundingGenerationReady() {
     let rawTx = buildFundingTx(script: script, amount: channelValue)
     if let rawTx = rawTx {
         channelManager.fundingTransactionGenerated(
-			temporaryChannelId: event.getTemporaryChannelId(),
-			counterpartyNodeId: event.getCounterpartyNodeId(),
+			temporaryChannelId: event.getTemporaryChannelId(), 
+			counterpartyNodeId: event.getCounterpartyNodeId(), 
 			fundingTransaction: rawTx.serialize()
 		)
     }
@@ -208,7 +208,6 @@ func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
 </CodeSwitcher>
 
 **References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady), [Java `FundingGenerationReady` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L95)
-
 # Broadcasting the Funding Transaction
 
 After crafting the funding transaction you'll need to send it to the Bitcoin network where it will hopefully be mined and added to the blockchain. You'll need to watch this transaction and wait for a minimum of 6 confirmations before the channel is ready to use.
@@ -261,8 +260,8 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 		val transaction = Transaction(uByteArray.toList())
 
 		tx?.let {
-            CoroutineScope(Dispatchers.IO).launch {
-				blockchain.broadcast(transaction)
+            CoroutineScope(Dispatchers.IO).launch { 
+				blockchain.broadcast(transaction) 
 			}
         } ?: throw(IllegalStateException("Broadcaster attempted to broadcast a null transaction"))
 
@@ -277,19 +276,22 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 
 ```Swift
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
-class MyBroacaster: BroadcasterInterface {
-    override func broadcastTransaction(tx: [UInt8]) {
-        let esploraURL = "esploraUrl"
-		let esploraConfig = EsploraConfig(baseUrl: esploraURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
-        let blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
-		let blockchain = Blockchain(config: blockchainConfig)
+import BitcoinDevKit
 
-		do {
-			let transaction = try Transaction(transactionBytes: tx)
-			try blockchain.broadcast(transaction: transaction)
-		} catch {
-			print("Failed to broadcast transaction: \(error.localizedDescription)")
-		}
+class MyBroacaster: BroadcasterInterface {
+    override func broadcastTransactions(txs: [[UInt8]]) {
+        let esploraURL = "esploraUrl"
+        let esploraConfig = EsploraConfig(baseUrl: esploraURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
+        let blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
+        do {
+            let blockchain = try Blockchain(config: blockchainConfig)
+            for tx in txs {
+                let transaction = try Transaction(transactionBytes: tx)
+                try blockchain.broadcast(transaction: transaction)
+            }
+        } catch {
+            print("Failed to broadcast transaction: \(error.localizedDescription)")
+        }
     }
 }
 ```

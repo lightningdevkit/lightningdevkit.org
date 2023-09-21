@@ -266,7 +266,7 @@ retrieving fresh ones every time
  
   ```Swift
   class MyBroacaster: BroadcasterInterface {
-    override func broadcastTransaction(tx: [UInt8]) {
+    override func broadcastTransactions(txs: [[UInt8]]) {
         // Insert code to broadcast the given transaction
     }
   }
@@ -1036,9 +1036,10 @@ if readResult.isOk() {
 }
 
 // If Network Graph does not exist, create a new one
-netGraph = NetworkGraph(network: network, logger: logger)
+let netGraph = NetworkGraph(network: network, logger: logger)
 
-let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger) // Initialise RGS
+// Initialise RGS
+let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger)
 if let lastSync = netGraph.getLastRapidGossipSyncTimestamp(), let snapshot = getSnapshot(lastSyncTimeStamp: lastSync) {
   let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
   let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: timestampSeconds)
@@ -1055,7 +1056,8 @@ if let lastSync = netGraph.getLastRapidGossipSyncTimestamp(), let snapshot = get
 
 // Get current snapshot from the RGS Server
 func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
-  let url: URL = URL(string: "https://rapidsync.lightningdevkit.org/snapshot/\(lastSyncTimeStamp)")! // Use LDK's RGS Server or use your own Server
+  // Use LDK's RGS Server or use your own Server
+  let url: URL = URL(string: "https://rapidsync.lightningdevkit.org/snapshot/\(lastSyncTimeStamp)")!
   let data = // Use the url to get the data
   if let data = data {
     return [UInt8](data)
@@ -1077,3 +1079,74 @@ func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
 **Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
 **References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RapidGossipSync.java)
+
+### Optional: Initialize `Probabilistic Scorer`
+
+**You must follow this step if:** TODO
+
+**What it's used for:** TODO
+
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+
+<template v-slot:rust>
+
+```rust
+// TODO: Add Rust Code Here
+```
+
+</template>
+
+<template v-slot:kotlin>
+
+```java
+// TODO: Add Java Code Here
+```
+
+</template>
+
+<template v-slot:swift>
+
+```Swift
+// If Scorer exists, then read from disk
+let serializedScorer = // Read Scorer bytes from file
+let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
+let serializedProbabilisticScorer = ProbabilisticScorer.read(
+  ser: serializedScorer, 
+  argA: decayParams, 
+  argB: netGraph, 
+  argC: logger
+)
+if let res = serializedProbabilisticScorer.getValue() {
+  let probabilisticScorer = res
+  let score = probabilisticScorer.asScore()
+
+  // Scorer loaded
+  let scorer = MultiThreadedLockableScore(score: score)
+}
+
+// If Scorer does not exist, create a new one
+let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
+let probabilisticScorer = ProbabilisticScorer(
+  decayParams: decayParams, 
+  networkGraph: netGraph, 
+  logger: logger
+)
+let score = probabilisticScorer.asScore()
+
+// Scorer loaded
+let scorer = MultiThreadedLockableScore(score: score)
+```
+
+</template>
+
+
+</CodeSwitcher>
+
+
+**Implementation notes:** TODO
+
+**Dependencies:** TODO
+
+**Optional dependency:** TODO
+
+**References:** TODO

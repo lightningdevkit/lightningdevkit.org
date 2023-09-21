@@ -130,22 +130,22 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 
   <template v-slot:swift>
 
-```Swift
-let invoiceStr = // get an invoice from the payee
-let parsedInvoice = Invoice.fromStr(s: invoiceStr)
+  ```Swift
+  let invoiceStr = // get an invoice from the payee
+  let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
 
-if parsedInvoice.getValue() != nil {
-  let invoicePaymentResult = Bindings.payInvoice(
-    invoice: invoice,
-    retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
-    channelmanager: channelManager
-  )
+  if let invoiceVal = parsedInvoice.getValue() {
+    let invoicePaymentResult = Bindings.payInvoice(
+      invoice: invoiceVal,
+      retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
+      channelmanager: channelManager
+    )
 
-  if invoicePaymentResult.isOk() {
-    // Payment Sent
+    if invoicePaymentResult.isOk() {
+      // Payment Sent
+    }
   }
-}
-```
+  ```
 
   </template>
 

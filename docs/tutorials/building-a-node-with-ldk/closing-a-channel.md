@@ -24,7 +24,7 @@ let channelId: [UInt8] = // Add Channel Id in bytes
 let counterpartyNodeId: [UInt8] = // Add Counterparty Node Id in bytes
 let res = channelManager.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
 if res!.isOk() {
-    print("Channel Closed")
+    // Channel Closed
 }
 ```
 
@@ -52,12 +52,13 @@ Claim Funds using Custom KeysManager. (Single Fees)
   <template v-slot:swift>
 
 ```Swift
+// Custom KeysManager to get funds directly back to the BDK wallet after Channel Close
 class MyKeysManager {
     let keysManager: KeysManager
-    let signerProvider: MySignerProvider // Use signerProvider instead of asSignerProvider()
-    let wallet: Wallet
-
-    init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: Wallet) {
+    let signerProvider: MySignerProvider
+    let wallet: BitcoinDevKit.Wallet
+    
+    init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
         self.keysManager = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
         self.wallet = wallet
         signerProvider = MySignerProvider()
@@ -65,6 +66,7 @@ class MyKeysManager {
     }
 }
 
+// Custom SignerProvider to override getDestinationScript() and getShutdownScriptpubkey()
 class MySignerProvider: SignerProvider {
     weak var myKeysManager: MyKeysManager?
     override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
@@ -79,16 +81,16 @@ class MySignerProvider: SignerProvider {
         return myKeysManager!.keysManager.asSignerProvider().readChanSigner(reader: reader)
     }
     
-    override func getDestinationScript() -> [UInt8] {
+    override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
-            return address.address.scriptPubkey().toBytes()
+            return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
             return myKeysManager!.keysManager.asSignerProvider().getDestinationScript()
         }
     }
-
-    override func getShutdownScriptpubkey() -> Bindings.ShutdownScript {
+    
+    override func getShutdownScriptpubkey() -> Bindings.Result_ShutdownScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new).address
             let payload = address.payload()
@@ -132,7 +134,7 @@ class MySignerProvider: SignerProvider {
                 }
                 let res = ShutdownScript.newWitnessProgram(version: ver, program: program)
                 if res.isOk() {
-                    return res.getValue()!
+                    return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }
             }
             return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()
@@ -141,6 +143,7 @@ class MySignerProvider: SignerProvider {
         }
     }
 }
+
 ```
 
   </template>
@@ -170,14 +173,22 @@ func handleEvent(event: Event) {
     if let event = event.getValueAsSpendableOutputs() {
         let outputs = event.getOutputs()
         do {
-            let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
+            let address = // Get an address to transfer the funds
             let script = try Address(address: address).scriptPubkey().toBytes()
-            let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
-            if res!.isOk() {
-                ldkManager.broadcaster.broadcastTransaction(tx: res!.getValue()!)
+            let res = ldkManager.keysManager.spendSpendableOutputs(
+                descriptors: outputs,
+                outputs: [],
+                changeDestinationScript: script,
+                feerateSatPer1000Weight: 1000,
+                locktime: nil
+            )
+            if res.isOk() {
+                var txs: [[UInt8]] = []
+                txs.append(res.getValue()!)
+                ldkManager.broadcaster.broadcastTransactions(txs: txs)
             }
         } catch {
-            print(error)
+            print(error.localizedDescription)
         }
     }
 }
