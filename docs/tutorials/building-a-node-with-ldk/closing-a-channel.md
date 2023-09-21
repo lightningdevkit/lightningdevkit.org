@@ -1,6 +1,6 @@
 # Closing a Channel
 
-Close Channel
+Close Channel.
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
@@ -32,7 +32,7 @@ if res!.isOk() {
 </CodeSwitcher>
 
 
-Claim Funds using Custom KeysManager. (Single Fees)
+Claim Funds directly into the BDK wallet using Custom KeysManager.
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
@@ -52,41 +52,58 @@ Claim Funds using Custom KeysManager. (Single Fees)
   <template v-slot:swift>
 
 ```Swift
-// Custom KeysManager to get funds directly back to the BDK wallet after Channel Close
+import Foundation
+import LightningDevKit
+import BitcoinDevKit
+
 class MyKeysManager {
-    let keysManager: KeysManager
-    let signerProvider: MySignerProvider
+    let inner: KeysManager
     let wallet: BitcoinDevKit.Wallet
+    let signerProvider: MySignerProvider
     
     init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
-        self.keysManager = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
+        self.inner = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
         self.wallet = wallet
         signerProvider = MySignerProvider()
         signerProvider.myKeysManager = self
     }
+
+    // We drop all occurences of `SpendableOutputDescriptor::StaticOutput` (since they will be
+    // spendable by the BDK wallet) and forward any other descriptors to
+    // `KeysManager::spend_spendable_outputs`.
+    //
+    // Note you should set `locktime` to the current block height to mitigate fee sniping.
+    // See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
+    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut],
+                               changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32,
+                               locktime: UInt32?) -> Result_TransactionNoneZ {
+        let onlyNonStatic: [SpendableOutputDescriptor] = descriptors.filter { desc in
+            if desc.getValueType() == .StaticOutput {
+                return false
+            }
+            return true
+        }
+        let res = self.inner.spendSpendableOutputs(
+            descriptors: onlyNonStatic,
+            outputs: outputs,
+            changeDestinationScript: changeDestinationScript,
+            feerateSatPer1000Weight: feerateSatPer1000Weight,
+            locktime: locktime
+        )
+        return res
+    }
 }
 
-// Custom SignerProvider to override getDestinationScript() and getShutdownScriptpubkey()
 class MySignerProvider: SignerProvider {
     weak var myKeysManager: MyKeysManager?
-    override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
-        return myKeysManager!.keysManager.asSignerProvider().deriveChannelSigner(channelValueSatoshis: channelValueSatoshis, channelKeysId: channelKeysId)
-    }
     
-    override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
-        return myKeysManager!.keysManager.asSignerProvider().generateChannelKeysId(inbound: inbound, channelValueSatoshis: channelValueSatoshis, userChannelId: userChannelId)
-    }
-    
-    override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
-        return myKeysManager!.keysManager.asSignerProvider().readChanSigner(reader: reader)
-    }
-    
+    // We return the destination and shutdown scripts derived by the BDK wallet.
     override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
             return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
-            return myKeysManager!.keysManager.asSignerProvider().getDestinationScript()
+            return .initWithErr()
         }
     }
     
@@ -137,19 +154,38 @@ class MySignerProvider: SignerProvider {
                     return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }
             }
-            return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         } catch {
-            return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         }
     }
+    
+    // ... and redirect all other trait method implementations to the `inner` `KeysManager`.
+    override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
+        return myKeysManager!.inner.asSignerProvider().deriveChannelSigner(
+            channelValueSatoshis: channelValueSatoshis,
+            channelKeysId: channelKeysId
+        )
+    }
+    
+    override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
+        return myKeysManager!.inner.asSignerProvider().generateChannelKeysId(
+            inbound: inbound,
+            channelValueSatoshis: channelValueSatoshis,
+            userChannelId: userChannelId
+        )
+    }
+    
+    override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
+        return myKeysManager!.inner.asSignerProvider().readChanSigner(reader: reader)
+    }
 }
-
 ```
 
   </template>
 </CodeSwitcher>
 
-Claim Funds using Events. (Double Fees)
+Handle Spendable Outputs event.
 
 <CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
   <template v-slot:rust>
@@ -171,21 +207,21 @@ Claim Funds using Events. (Double Fees)
 ```Swift
 func handleEvent(event: Event) {
     if let event = event.getValueAsSpendableOutputs() {
+        print("handleEvent: trying to spend output")
         let outputs = event.getOutputs()
         do {
-            let address = // Get an address to transfer the funds
+            let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
             let script = try Address(address: address).scriptPubkey().toBytes()
-            let res = ldkManager.keysManager.spendSpendableOutputs(
+            let res = ldkManager!.myKeysManager.spendSpendableOutputs(
                 descriptors: outputs,
                 outputs: [],
                 changeDestinationScript: script,
                 feerateSatPer1000Weight: 1000,
-                locktime: nil
-            )
+                locktime: nil)
             if res.isOk() {
                 var txs: [[UInt8]] = []
                 txs.append(res.getValue()!)
-                ldkManager.broadcaster.broadcastTransactions(txs: txs)
+                ldkManager!.broadcaster.broadcastTransactions(txs: txs)
             }
         } catch {
             print(error.localizedDescription)
