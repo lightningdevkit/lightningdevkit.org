@@ -299,7 +299,7 @@ module.exports = {
           children: [
             {
               text: "Tutorials",
-              link: "/tutorials/",
+              link: "/tutorials/getting-started/",
             },
             {
               text: "Bitcoin Dev Kit",
