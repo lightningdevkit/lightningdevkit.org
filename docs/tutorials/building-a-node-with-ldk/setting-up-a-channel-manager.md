@@ -16,17 +16,21 @@ To add a `ChannelManager` to your application, run:
     &fee_estimator,
     &chain_monitor,
     &broadcaster,
+    &router,
     &logger,
-    &keys_manager,
+    &entropy_source,
+    &node_signer,
+    &signer_provider,
     user_config,
     chain_params,
+    current_timestamp
 );
   ```
   </template>
 
   <template v-slot:kotlin>
  
-  ```java
+  ```kotlin
   import org.ldk.batteries.ChannelManagerConstructor
 
   val channelManagerConstructor = ChannelManagerConstructor(
@@ -34,10 +38,14 @@ To add a `ChannelManager` to your application, run:
       userConfig,
       latestBlockHash,
       latestBlockHeight,
-      keysManager.as_KeysInterface(),
+      keysManager.as_EntropySource(),
+      keysManager.as_NodeSigner(),
+      keysManager.as_SignerProvider(),
       feeEstimator,
       chainMonitor,
       router,
+      scoringParams,
+      routerWrapper, // optional 
       txBroadcaster,
       logger
   );
@@ -162,6 +170,47 @@ retrieving fresh ones every time
 **Dependencies:** *none*
 
 **References:** [Rust `FeeEstimator` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java `FeeEstimator` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
+
+### Initialize the `Router`
+
+**What it's used for:** Finds a Route for a payment between the given payer and a payee.
+
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+  <template v-slot:rust>
+ 
+  ```rust
+  let router = DefaultRouter::new(
+    network_graph.clone(),
+    logger.clone(),
+    keys_manager.get_secure_random_bytes(),
+    scorer.clone(),
+    ProbabilisticScoringFeeParameters::default()
+  )
+  ```
+
+  </template>
+
+  <template v-slot:kotlin>
+ 
+  ```java
+  
+  ```
+
+  </template>
+
+  <template v-slot:swift>
+ 
+  ```Swift
+  
+  ```
+
+  </template>
+
+</CodeSwitcher>
+
+**Dependencies:** `P2PGossipSync`, `Logger`, `KeysManager`, `Scorer`
+
+**References:** [Rust `Router` docs](https://docs.rs/lightning/*/lightning/routing/router/trait.Router.html), [Java `Router` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Router.java)
 
 ### Initialize the `Logger`
 **What it's used for:** LDK logging

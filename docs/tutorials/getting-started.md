@@ -9,7 +9,7 @@ MacOS, Windows and Linux are supported.
 ## Installation
 To add LDK to a project, run:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', javascript:'JavaScript'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
  
   ```toml
@@ -53,18 +53,11 @@ To add LDK to a project, run:
 
   </template>
 
-  <template v-slot:javascript>
-
-  ```javascript
-    npm i lightningdevkit --save
-  ```
-
-  </template>
 </CodeSwitcher>
 
 Example usage after installation is complete:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', javascript:'JavaScript'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
   <template v-slot:rust>
 
   ```rust
@@ -80,16 +73,9 @@ Example usage after installation is complete:
   ```
 
   </template>
-  <template v-slot:javascript>
-
-  ```javascript
-  import { FeeEstimator } from "lightningdevkit";
-  import * as fs from "fs";
-  import { strict as assert } from "assert";
   
-  const wasm_file = fs.readFileSync("node_modules/lightningdevkit/liblightningjs.wasm");
-  await ldk.initializeWasmFromBinary(wasm_file);
-  ```
-
-  </template>
 </CodeSwitcher>
+
+::: tip Installing LDK Swift
+Import LDK through the Swift package manager
+:::
