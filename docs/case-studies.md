@@ -124,6 +124,11 @@ lastUpdated: false
 
   <div class="case-studies">
   <div class="case-study-item">
+    <a href="https://github.com/aciedo" target="_blank"><img src="./assets/aciedo.svg" /></a>
+    <h3><a href="https://github.com/aciedo" target="_blank">Aciedo</a></h3>
+    <p>A financial infrastructure suite for developers and users</p>
+  </div>
+  <div class="case-study-item">
     <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
     <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
     <p>Tools and services that connect people to the Lightning Network</p>
@@ -152,11 +157,6 @@ lastUpdated: false
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
     <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
     <p>A bitcoin watchtower with a specific focus on Lightning</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://valera.co/" target="_blank"><img src="./assets/valera.png" /></a>
-    <h3><a href="https://valera.co/" target="_blank">Valera</a></h3>
-    <p>A financial infrastructure suite for developers and users</p>
   </div>
   <div class="case-study-item">
     <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
@@ -209,6 +209,11 @@ lastUpdated: false
       <a href="https://10101.finance/" target="_blank"><img src="./assets/10101.png" /></a>
       <h3><a href="https://10101.finance/" target="_blank">10101</a></h3>
       <p>An on and off-chain wallet infused with trading</p>
+    </div>
+    <div class="case-study-item">
+    <a href="https://github.com/aciedo" target="_blank"><img src="./assets/aciedo.svg" /></a>
+    <h3><a href="https://github.com/aciedo" target="_blank">Aciedo</a></h3>
+    <p>A financial infrastructure suite for developers and users</p>
     </div>
     <div class="case-study-item">
       <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
@@ -314,11 +319,6 @@ lastUpdated: false
     <a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/ConorOkus/uMlando-wallet" target="_blank">uMlando</a></h3>
     <p>An educational Android demo wallet</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://valera.co/" target="_blank"><img src="./assets/valera.png" /></a>
-    <h3><a href="https://valera.co/" target="_blank">Valera</a></h3>
-    <p>A financial infrastructure suite for developers and users</p>
   </div>
   <div class="case-study-item">
     <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
