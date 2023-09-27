@@ -179,7 +179,7 @@ module.exports = {
     },
     nav: [
       {
-        text: "Documentation",
+        text: "Docs",
         link: "/introduction/",
       },
       {
@@ -249,7 +249,7 @@ module.exports = {
           ],
         },
         {
-          title: "Documentation",
+          title: "Docs",
           children: [
             {
               text: "Introduction",
