@@ -1,35 +1,39 @@
 # Setting up a PeerManager
 
-The Peer Manager is responsible for managing a set of peer connections and all data associated with those peers.
+The Peer Manager is responsible for managing a set of peer connections and data associated with those peers.
 
-
-## Adding a PeerManager
+## Adding a `PeerManager`
 
 To add a PeerManager to your application, run:
 
 <CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
-  ```rust
-  use lightning::ln::peer_handler::{PeerManager};
+```rust
+use lightning::ln::peer_handler::{PeerManager};
 
-  let mut ephemeral_bytes = [0; 32];
-  rand::thread_rng().fill_bytes(&mut ephemeral_bytes);
+let mut ephemeral_bytes = [0; 32];
+rand::thread_rng().fill_bytes(&mut ephemeral_bytes);
 
-  let lightning_msg_handler = MessageHandler {
-    chan_handler: &channel_manager,
-    route_handler: &gossip_sync,
-  };
+let lightning_msg_handler = MessageHandler {
+  chan_handler: channel_manager,
+  route_handler: gossip_sync,
+  onion_message_handler: onion_messenger,
+  custom_message_handler: IgnoringMessageHandler {}
+};
 
-  let ignoring_custom_msg_handler = IgnoringMessageHandler {};
-  let peer_manager = PeerManager::new(
-      lightning_msg_handler,
-      keys_manager.get_node_secret(),
-      &ephemeral_bytes,
-      &logger,
-      &ignoring_custom_msg_handler,
-  );
-  ```
+let peer_manager = PeerManager::new(
+    lightning_msg_handler,
+    cur_time.as_secs().try_into().map_err(|e| {
+			log_error!(logger, "Failed to get current time: {}", e);
+			BuildError::InvalidSystemTime
+	  })?,
+    &ephemeral_bytes,
+    &logger,
+    &keys_manager
+);
+```
+
   </template>
 
   <template v-slot:kotlin>

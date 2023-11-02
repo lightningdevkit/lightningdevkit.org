@@ -9,10 +9,10 @@ For an integrated example of an LDK node in Rust, see the [Sample Node](https://
 The following tutorials will show you how to build the simplest lightning node using LDK, that fufills the following tasks:
 
 1. **Connecting to Peers**
-2. **Open Channels**
-3. **Send Payments**
-4. **Receive Payments**
-5. **Close Channels**
+2. **Opening Channels**
+3. **Sending Payments**
+4. **Receiving Payments**
+5. **Closing Channels**
 
 ### Foundational Components
 

@@ -5,7 +5,7 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', kotlin:'Kotlin', swift:'Swift'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -39,90 +39,17 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 ```
 
   </template>
-  <template v-slot:java>
-
-```java
-String invoice_str = // get an invoice from the payee
-Result_InvoiceNoneZ parsed_invoice = Invoice.from_str(invoice_str);
-
-if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
-	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
-    long amt_msat = 0;
-    if (invoice.amount_pico_btc() instanceof Option_u64Z.Some) {
-        amt_msat = ((Option_u64Z.Some)invoice.amount_pico_btc()).some / 10;
-    }
-    if (amt_msat == 0) {
-        // <Handle a zero-value invoice>
-    }
-
-    Route route;
-    try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
-        NetworkGraph graph = netgraph.graph();
-        Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
-			channel_manager.get_our_node_id(),
-            graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice.route_hints(),
-            amt_msat, invoice.min_final_cltv_expiry(), logger);
-        assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
-        route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
-    }
-
-    Result_NonePaymentSendFailureZ payment_res = channel_manager.send_payment(
-		route, invoice.payment_hash(), invoice.payment_secret());
-    assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
-}
-```
-
-  </template>
-    <template v-slot:kotlin>
+  <template v-slot:kotlin>
 
 ```java
 // Get an invoice from the recipient/payee
-val parsedInvoice = Invoice.from_str(recipientInvoice)
-if (!parsedInvoice.is_ok) {
-    // Unable to parse invoice
-}
+val parsedInvoice = Bolt11Invoice.from_str(recipientInvoice)
+val invoiceVal = (parsedInvoice as Result_Bolt11InvoiceSignOrCreationErrorZ.Result_Bolt11InvoiceSignOrCreationErrorZ_OK).res
 
-val invoice = (parsedInvoice as Result_InvoiceParseOrSemanticErrorZ.Result_InvoiceParseOrSemanticErrorZ_OK).res
+val res = UtilMethods.pay_invoice(invoice, Retry.attempts(6), channelManager)
 
-var amountSats: Long = 0
-if (invoice.amount_milli_satoshis() is Option_u64Z.Some) {
-    amountSats = (invoice.amount_milli_satoshis() as Option_u64Z.Some).some * 1000
-}
-
-if (amountSats == 0L) {
-    // Handle a zero-value invoice
-}
-
-val res = channelManagerConstructor.payer.pay_invoice(invoice)
-
-
-
-if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
-	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
-    long amt_msat = 0;
-    if (invoice.amount_pico_btc() instanceof Option_u64Z.Some) {
-        amt_msat = ((Option_u64Z.Some)invoice.amount_pico_btc()).some / 10;
-    }
-    if (amt_msat == 0) {
-        // <Handle a zero-value invoice>
-    }
-
-    Route route;
-    try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
-        NetworkGraph graph = netgraph.graph();
-        Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
-			channel_manager.get_our_node_id(),
-            graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice.route_hints(),
-            amt_msat, invoice.min_final_cltv_expiry(), logger);
-        assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
-        route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
-    }
-
-    Result_NonePaymentSendFailureZ payment_res = channel_manager.send_payment(
-		route, invoice.payment_hash(), invoice.payment_secret());
-    assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
+if (res.is_ok) {
+  // Payment success
 }
 ```
 
@@ -130,22 +57,22 @@ if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
 
   <template v-slot:swift>
 
-  ```Swift
-  let invoiceStr = // get an invoice from the payee
-  let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
+```Swift
+let invoiceStr = // get an invoice from the payee
+let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
 
-  if let invoiceVal = parsedInvoice.getValue() {
-    let invoicePaymentResult = Bindings.payInvoice(
-      invoice: invoiceVal,
-      retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
-      channelmanager: channelManager
-    )
+if let invoiceVal = parsedInvoice.getValue() {
+   let invoicePaymentResult = Bindings.payInvoice(
+    invoice: invoiceVal,
+    retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
+    channelmanager: channelManager
+  )
 
-    if invoicePaymentResult.isOk() {
-      // Payment Sent
-    }
+  if invoicePaymentResult.isOk() {
+    // Payment Sent
   }
-  ```
+}
+```
 
   </template>
 
@@ -156,7 +83,7 @@ in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java', swift:'Swift'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -173,17 +100,16 @@ match event {
 ```
 
   </template>
-  <template v-slot:java>
+  <template v-slot:kotlin>
 
 ```java
-// In the `handle_event` method of ChannelManagerPersister implementation
-else if (e instanceof Event.PaymentSent) {
-	// Handle successful payment
-	Event.PaymentSent event = ((Event.PaymentSent) e);
+// In the `handleEvent` method of ChannelManagerPersister implementation
+if(event is Event.PaymentSent) {
+    // Handle successful payment
 }
-else if (e instanceof Event.PaymentFailed) {
-	// Handle failed payment
-	Event.PaymentFailed event = ((Event.PaymentFailed) e);
+
+if(event is Event.PaymentFailed) {
+    // Handle failed payment
 }
 ```
 

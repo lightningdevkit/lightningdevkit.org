@@ -13,12 +13,14 @@ use lightning::util::events::{Event};
 // In the event handler passed to BackgroundProcessor::start
 match event {
   Event::PaymentSent { payment_preimage } => {
-          // Handle successful payment
+    // Handle successful payment
   }
   Event::PaymentFailed { payment_hash, rejected_by_dest } => {
-          // Handle failed payment
+    // Handle failed payment
   }
-  Event::FundingGenerationReady { .. } =>
+  Event::FundingGenerationReady { .. } => {
+    // Generate the funding transaction for the channel
+  }
 }
 ```
 
