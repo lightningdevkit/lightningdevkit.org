@@ -68,9 +68,9 @@ userConfig.setChannelHandshakeConfig(val: channelConfig)
 
 let createChannelResults = channelManager.createChannel(
 	theirNetworkKey: pubKey,
-	channelValueSatoshis: amount, 
-	pushMsat: pushMsat, 
-	userChannelId: userId, 
+	channelValueSatoshis: amount,
+	pushMsat: pushMsat,
+	userChannelId: userId,
 	overrideConfig: userConfig
 )
 ```
@@ -81,11 +81,11 @@ let createChannelResults = channelManager.createChannel(
 
 # FundingGenerationReady Event Handling
 
-At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature. 
+At this point, an outbound channel has been initiated with your peer and it will appear in `ChannelManager::list_channels`. However, the channel is not yet funded. Once your peer accepts the channel, you will be notified with a `FundingGenerationReady` event. It's then your responsibility to construct the funding transaction and pass it to ChannelManager, which will broadcast it once it receives your channel counterparty's signature.
 
 ::: tip Note
 
-Remember that the funding transaction must only spend SegWit inputs.
+Remember that the funding transaction must only spend [SegWit](https://bitcoinops.org/en/topics/segregated-witness/) inputs.
 
 :::
 
@@ -93,7 +93,8 @@ Remember that the funding transaction must only spend SegWit inputs.
 <template v-slot:rust>
 
 ```rust
-// In the event handler passed to BackgroundProcessor::start
+// After the peer responds with an `accept_channel` message, an
+// Event.FundingGenerationReady event will be generated.
 match event {
 	Event::FundingGenerationReady {
 		temporary_channel_id,
@@ -101,29 +102,19 @@ match event {
 		output_script,
 		user_channel_id,
 	} => {
-		// This is the same channel created earler.
-		assert_eq!(event.user_channel_id, 42);
+	   // Generate the funding transaction for the channel based on the channel amount
+      // The following uses BDK (Bitcoin Dev Kit) for on-chain logic
+		let (psbt, _) = {
+		let mut builder = wallet.build_tx();
+			builder
+				.add_recipient(output_script, channel_value_satoshis)
+				.fee_rate(fee_rate)
+				.enable_rbf()
+			builder.finish()?
+	  	};
+		let finalized = wallet.sign(&mut psbt, SignOptions::default())?;
+		let raw_tx = finalized.extract_tx()
 
-		// Construct the raw transaction with one output, that is paid the amount of the
-		// channel.
-		let network = bitcoin_bech32::constants::Network::Testnet;
-		let address = WitnessProgram::from_scriptpubkey(&output_script[..], network)
-			.unwrap().to_address;
-		let mut outputs = vec![HashMap::with_capacity(1)];
-		outputs[0].insert(address, channel_value_satoshis as f64 / 100_000_000.0);
-		let raw_tx = bitcoind_client.create_raw_transaction(outputs).await;
-
-		// Have your wallet put the inputs into the transaction such that the output is
-		// satisfied.
-		let funded_tx = bitcoind_client.fund_raw_transaction(raw_tx).await;
-		assert!(funded_tx.changepos == 0 || funded_tx.changepos == 1);
-
-		// Sign the funding transaction and give it to ChannelManager to broadcast.
-		let signed_tx = bitcoind_client.sign_raw_transaction_with_wallet(funded_tx.hex).await;
-		assert_eq!(signed_tx.complete, true);
-		let final_tx: Transaction =
-			encode::deserialize(&hex_utils::to_vec(&signed_tx.hex).unwrap()).unwrap();
-		channel_manager.funding_transaction_generated(&temporary_channel_id, final_tx).unwrap();
 	}
 	// ...
 }
@@ -136,13 +127,10 @@ match event {
 ```java
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
-
 if (event is Event.FundingGenerationReady) {
-    val funding_spk = event.output_script
+    val fundingSpk = event.output_script
 
-    if (funding_spk.size == 34 && funding_spk[0].toInt() == 0 && funding_spk[1].toInt() == 32) {
-      // Generate the funding transaction for the channel based on the channel amount
-      // The following uses BDK (Bitcoin Dev Kit) for on-chain logic
+    if (fundingSpk.size == 34 && fundingSpk[0].toInt() == 0 && fundingSpk[1].toInt() == 32) {
         val rawTx = buildFundingTx(event.channel_value_satoshis, event.output_script)
 
         channelManager.funding_transaction_generated(
@@ -153,6 +141,8 @@ if (event is Event.FundingGenerationReady) {
     }
   }
 
+// Generate the funding transaction for the channel based on the channel amount
+// The following uses BDK (Bitcoin Dev Kit) for on-chain logic
 fun buildFundingTx(value: Long, script: ByteArray): Transaction {
 	val scriptListUByte: List<UByte> = script.toUByteArray().asList()
 	val outputScript = Script(scriptListUByte)
@@ -173,21 +163,21 @@ fun buildFundingTx(value: Long, script: ByteArray): Transaction {
 ```Swift
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
-
 if let event = event.getValueAsFundingGenerationReady() {
     let script = Script(rawOutputScript: event.getOutputScript())
     let channelValue = event.getChannelValueSatoshis()
     let rawTx = buildFundingTx(script: script, amount: channelValue)
     if let rawTx = rawTx {
         channelManager.fundingTransactionGenerated(
-			temporaryChannelId: event.getTemporaryChannelId(), 
-			counterpartyNodeId: event.getCounterpartyNodeId(), 
+			temporaryChannelId: event.getTemporaryChannelId(),
+			counterpartyNodeId: event.getCounterpartyNodeId(),
 			fundingTransaction: rawTx.serialize()
 		)
     }
 }
 
-// Building transaction using BDK
+// Generate the funding transaction for the channel based on the channel amount
+// The following uses BDK (Bitcoin Dev Kit) for on-chain logic
 func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
     do {
         let transaction = try TxBuilder().addRecipient(
@@ -208,6 +198,7 @@ func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
 </CodeSwitcher>
 
 **References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady), [Java `FundingGenerationReady` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L95)
+
 # Broadcasting the Funding Transaction
 
 After crafting the funding transaction you'll need to send it to the Bitcoin network where it will hopefully be mined and added to the blockchain. You'll need to watch this transaction and wait for a minimum of 6 confirmations before the channel is ready to use.
@@ -218,18 +209,18 @@ After crafting the funding transaction you'll need to send it to the Bitcoin net
 ```rust
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
 impl BroadcasterInterface for YourTxBroadcaster {
-	fn broadcast_transaction(&self, tx: &Transaction) {
-		let locked_runtime = self.tokio_runtime.read().unwrap();
-		if locked_runtime.as_ref().is_none() {
-			log_error!(self.logger, "Failed to broadcast transaction: No runtime.");
-			return;
-		}
+	fn broadcast_transactions(&self, txs: &[&Transaction]) {
+		let server_url = DEFAULT_ESPLORA_SERVER_URL.to_string();
+		let tx_sync = Arc::new(EsploraSyncClient::new(server_url, Arc::clone(&logger)));
+		let blockchain = EsploraBlockchain::from_client(tx_sync.client().clone(), BDK_CLIENT_STOP_GAP)
+						.with_concurrency(BDK_CLIENT_CONCURRENCY);
+		(blockchain, tx_sync)
 
 		let res = tokio::task::block_in_place(move || {
 			locked_runtime
 				.as_ref()
 				.unwrap()
-				.block_on(async move { self.blockchain.broadcast(tx).await })
+				.block_on(async move { blockchain.broadcast(tx).await })
 		});
 
 		match res {
@@ -251,20 +242,22 @@ impl BroadcasterInterface for YourTxBroadcaster {
 
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
 object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
-    override fun broadcast_transaction(tx: ByteArray?) {
-		val esploraURL = "esploraUrl"
+    override fun broadcast_transactions(txs: Array<out ByteArray>??) {
+		val esploraURL = "esplora url"
         val blockchainConfig = BlockchainConfig.Esplora(EsploraConfig(esploraURL, null, 5u, 20u, null))
-        val blockchain = Blockchain(blockchainConfig)
+		val blockchain = Blockchain(blockchainConfig)
 
-		val uByteArray = UByteArray(tx.size) { tx[it].toUByte() }
-		val transaction = Transaction(uByteArray.toList())
+        txs?.let { transactions ->
+            CoroutineScope(Dispatchers.IO).launch {
+                transactions.forEach { txByteArray ->
+                    val uByteArray = txByteArray.toUByteArray()
+                    val transaction = Transaction(uByteArray.toList())
 
-		tx?.let {
-            CoroutineScope(Dispatchers.IO).launch { 
-				blockchain.broadcast(transaction) 
-			}
+                    blockchain.broadcast(transaction)
+                    Log.i(LDKTAG, "The raw transaction broadcast is: ${txByteArray.toHex()}")
+                }
+            }
         } ?: throw(IllegalStateException("Broadcaster attempted to broadcast a null transaction"))
-
     }
 }
 
