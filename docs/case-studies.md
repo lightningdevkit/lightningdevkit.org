@@ -286,11 +286,6 @@ lastUpdated: false
     <p>A web-first unstoppable bitcoin wallet for everyone</p>
   </div>
   <div class="case-study-item">
-    <a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank"><img src="./assets/portico.png" /></a>
-    <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
-    <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
-  </div>
-  <div class="case-study-item">
     <a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank"><img src="./assets/github.png" /></a>
     <h3><a href="https://github.com/RGB-Tools/rgb-lightning-sample" target="_blank">rgb-lightning-sample</a></h3>
     <p>LN node based on ldk-sample supporting RGB assets</p>
