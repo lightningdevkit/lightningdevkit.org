@@ -63,11 +63,6 @@ lastUpdated: false
       <p>A layer 2 bitcoin wallet that enables users to send and swap bitcoin privately</p>
     </div>
      <div class="case-study-item">
-      <a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank"><img src="./assets/portico.png" /></a>
-      <h3><a href="https://porticoexchange.github.io/porticoexchangev2.github.io/" target="_blank">Portico</a></h3>
-      <p>A DEX that enables people to swap between bitcoin layers and sidechains</p>
-    </div>
-     <div class="case-study-item">
       <a href="https://www.velascommerce.com/" target="_blank"><img src="./assets/velas.png" /></a>
       <h3><a href="https://www.velascommerce.com/" target="_blank">Velas</a></h3>
       <p>A way to integrate Lightning into websites, mobile applications, and more</p>
@@ -106,7 +101,6 @@ lastUpdated: false
       </div>
       </div>
   </template>
-
 
   <template v-slot:custodial>
 
