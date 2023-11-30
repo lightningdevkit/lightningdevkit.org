@@ -52,11 +52,6 @@ lastUpdated: false
     <h3><a href="https://twitter.com/kumulydev" target="_blank">Kumuly</a></h3>
     <p>Colombian-based mobile bitcoin and Lightning wallet</p>
     </div>
-    <div class="case-study-item">
-    <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
-    <h3><a href="https://lipa.swiss/" target="_blank">Lipa</a></h3>
-    <p>Swiss-based app that offers a bitcoin wallet for individuals and businesses</p>
-    </div>
      <div class="case-study-item">
       <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
       <h3><a href="https://mercurywallet.com/" target="_blank">Mercury</a></h3>
@@ -258,11 +253,6 @@ lastUpdated: false
     <a href="https://github.com/lexe-tech" target="_blank"> <img src="./assets/lexe.png" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
     <p>Managed non-custodial Lightning nodes inside secure hardware</p>
-  </div>
-  <div class="case-study-item">
-    <a href="https://lipa.swiss/" target="_blank"><img src="./assets/lipa.png" /></a>
-    <h3><a href="https://lipa.swiss/" target="_blank">Lipa</a></h3>
-    <p>Swiss-based mobile app that offers a bitcoin wallet for individuals and businesses</p>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
