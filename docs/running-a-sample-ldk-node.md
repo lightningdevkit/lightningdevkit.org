@@ -35,7 +35,7 @@ cd ldk-sample
 ```
 Now, run the following command:
 ```
-cargo run polaruser:polarpass@127.0.0.1:18443 ./ 9732 regtest hellolightning 0.0.0.0
+cargo run polaruser:polarpass@127.0.0.1:18443 ./ 9732 regtest hellolightning 0.0.0.0:9732
 ```
 
 If you have a different setup that doesn't involve Polar you can modify this command so that it contains different credentials. 
