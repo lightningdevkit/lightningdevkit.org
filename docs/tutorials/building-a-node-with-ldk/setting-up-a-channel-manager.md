@@ -658,7 +658,7 @@ let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, st
 
 **Dependencies:** random bytes
 
-**References:** [Rust `KeysManager` docs](https://docs.rs/lightning/*/lightning/chain/keysinterface/struct.KeysManager.html), [Java `KeysManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
+**References:** [Rust `KeysManager` docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html), [Java `KeysManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
 
 ### Read `ChannelMonitor` state from disk
 
