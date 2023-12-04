@@ -102,6 +102,10 @@ const docsSidebar = [
             "https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/",
             "lightning-transaction-sync",
           ],
+          [
+            "https://docs.rs/lightning-custom-message/*/lightning_custom_message/",
+            "lightning-custom-message",
+          ],
         ],
       },
       [
