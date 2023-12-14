@@ -1,6 +1,6 @@
 ---
 title: "The Challenges of Developing Non-Custodial Lightning on Mobile"
-description: "A 0-conf channel allows peers to start using a channel as soon as the funding transaction is broadcast."
+description: "Lightning development is tough. While going custodial simplifies the process, it means sacrificing user privacy, censorship resistance, and self-sovereignty, all of which contradict bitcoin’s ethos."
 date: "2023-12-14"
 authors:
   - Matt Corallo
