@@ -48,6 +48,11 @@ lastUpdated: false
       <p>A radically simple and powerful bitcoin and Lightning wallet</p>
     </div>
     <div class="case-study-item">
+      <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
+      <h3><a href="https://github.com/EttaWallet/EttaWallet" target="_blank">EttaWallet</a></h3>
+      <p>A simple open-source wallet with a strong bias toward usability, accessibility, and UX</p>
+    </div>
+    <div class="case-study-item">
     <a href="https://twitter.com/kumulydev" target="_blank"><img src="./assets/kumuly.png" /></a>
     <h3><a href="https://twitter.com/kumulydev" target="_blank">Kumuly</a></h3>
     <p>Colombian-based mobile bitcoin and Lightning wallet</p>
@@ -163,6 +168,11 @@ lastUpdated: false
 
   <template v-slot:misc>
       <div class="case-studies">
+        <div class="case-study-item">
+          <a href="https://github.com/fiksn/gossiper" target="_blank"><img src="./assets/github.png" /></a>
+          <h3><a href="https://github.com/fiksn/gossiper" target="_blank">Gossiper</a></h3>
+          <p>Lightning Gossip Ingestion</p>
+        </div>
          <div class="case-study-item">
           <a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank"><img src="./assets/github.png" /></a>
           <h3><a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank">The Hidden LN</a></h3>
@@ -228,6 +238,16 @@ lastUpdated: false
       <a href="https://cash.app/" target="_blank"> <img src="./assets/cash-app-logo.png" /></a>
       <h3><a href="https://cash.app/" target="_blank">Cash App</a></h3>
       <p>Send and spend, bank, and buy stocks or bitcoin</p>
+    </div>
+    <div class="case-study-item">
+        <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
+        <h3><a href="https://github.com/EttaWallet/EttaWallet" target="_blank">EttaWallet</a></h3>
+        <p>A simple open-source wallet with a strong bias toward usability, accessibility, and UX</p>
+    </div>
+    <div class="case-study-item">
+        <a href="https://github.com/fiksn/gossiper" target="_blank"><img src="./assets/github.png" /></a>
+        <h3><a href="https://github.com/fiksn/gossiper" target="_blank">Gossiper</a></h3>
+        <p>Lightning Gossip Ingestion</p>
     </div>
     <div class="case-study-item">
       <a href="https://hydranet.ai/" target="_blank"><img src="./assets/hydranet.png" /></a>
