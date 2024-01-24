@@ -16,11 +16,11 @@ features:
     image: "/img/cash-app-logo.png"
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
-  - title: "The Eye of Satoshi"
-    details: "A watchtower with a specific focus on Lightning"
-    image: "/img/teos-main.png"
+  - title: "Bitkit"
+    details: "Bitkit hands you the keys to your money, profile, contacts, and web accounts"
+    image: "/img/bitkit.svg"
     imageAlt: ""
-    caseStudyLink: "/blog/teos-uses-ldk-to-build-open-source-watchtower/"
+    caseStudyLink: "/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/"
 editLink: false
 lastUpdated: false
 ---
