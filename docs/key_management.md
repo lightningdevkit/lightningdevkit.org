@@ -316,16 +316,16 @@ class LDKKeysManager(seed: ByteArray, startTimeSecs: Long, startTimeNano: Int, w
 class LDKSignerProvider : SignerProvider.SignerProviderInterface {
   var ldkkeysManager: LDKKeysManager? = null
 
-  override fun generate_channel_keys_id(p0: Boolean, p1: Long, p2: UInt128?): ByteArray {
-      return ldkkeysManager!!.inner.as_SignerProvider().generate_channel_keys_id(p0, p1, p2)
+  override fun generate_channel_keys_id(inbound: Boolean, channelValueSatoshis: Long, userChannelId: UInt128?): ByteArray {
+      return ldkkeysManager!!.inner.as_SignerProvider().generate_channel_keys_id(inbound, channelValueSatoshis, userChannelId)
   }
 
-  override fun derive_channel_signer(p0: Long, p1: ByteArray?): WriteableEcdsaChannelSigner {
-      return ldkkeysManager!!.inner.as_SignerProvider().derive_channel_signer(p0, p1)
+  override fun derive_channel_signer(channelValueSatoshis: Long, channelKeysId: ByteArray?): WriteableEcdsaChannelSigner {
+      return ldkkeysManager!!.inner.as_SignerProvider().derive_channel_signer(channelValueSatoshis, channelKeysId)
   }
 
-  override fun read_chan_signer(p0: ByteArray?): Result_WriteableEcdsaChannelSignerDecodeErrorZ {
-      return ldkkeysManager!!.inner.as_SignerProvider().read_chan_signer(p0)
+  override fun read_chan_signer(reader: ByteArray?): Result_WriteableEcdsaChannelSignerDecodeErrorZ {
+      return ldkkeysManager!!.inner.as_SignerProvider().read_chan_signer(reader)
   }
 
   // We return the destination and shutdown scripts derived by the BDK wallet.
