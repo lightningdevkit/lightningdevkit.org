@@ -318,7 +318,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: "Copyright © 2023 LDK Developers",
+      copyright: "Copyright © 2024 LDK Developers",
     },
   },
 };
