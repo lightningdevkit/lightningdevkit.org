@@ -196,6 +196,10 @@ module.exports = {
         link: "/introduction/",
       },
       {
+        text: "Case Studies",
+        link: "/case-studies/",
+      },
+      {
         text: "Blog",
         link: "/blog/",
       },
