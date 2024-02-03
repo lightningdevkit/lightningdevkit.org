@@ -23,7 +23,7 @@ channel_manager.force_close_channel(&channel_id).expect("ERROR: Failed to close 
   <template v-slot:kotlin>
 
 ```kotlin
-val res = channelManager!!.close_channel(channelId, pubKey)
+val res = channelManager.close_channel(channelId, pubKey)
 
 if (res is Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_Err) {
     // Handle error
@@ -119,7 +119,6 @@ if (event is Event.SpendableOutputs) {
 
 ```Swift
 // Example where we spend straight to our BDK based wallet
-
 func handleEvent(event: Event) {
     if let event = event.getValueAsSpendableOutputs() {
         let outputs = event.getOutputs()
@@ -147,3 +146,5 @@ func handleEvent(event: Event) {
   </template>
 
 </CodeSwitcher>
+
+**References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/0.0.121/lightning/events/enum.Event.html#variant.SpendableOutputs), [Java/Kotlin `SpendableOutputs` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L802)

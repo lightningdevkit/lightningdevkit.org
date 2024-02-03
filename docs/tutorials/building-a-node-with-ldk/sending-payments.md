@@ -78,6 +78,8 @@ if let invoiceVal = parsedInvoice.getValue() {
 
 </CodeSwitcher>
 
+# PaymentSent & PaymentFailed Event Handling
+
 An event is generated once a payment has completed. Successful payments result
 in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
@@ -129,3 +131,5 @@ if let paymentSentEvent = event.getValueAsPaymentSent() {
   </template>
 
 </CodeSwitcher>
+
+**References:** [Rust `PaymentSent` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentSent),[Rust `PaymentFailed` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentFailed), [Java/Kotlin `PaymentSent` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L464), [Java/Kotlin `PaymentFailed` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L512)
