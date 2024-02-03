@@ -6,10 +6,7 @@ You can build a Lightning node without needing to worry about getting all of the
 
 Our [sample node](https://github.com/lightningdevkit/ldk-sample) showcases how LDK can be customised. It fetches blockchain data and transacts on-chain via Bitcoin Core RPC/REST. The individual components of the sample are composable. For example, the sample writes channel state to the local filesystem, but this component could be replaced with one that writes this data to the cloud or to multiple locations. You can pick the off-the-shelf parts you want and replace the rest.
 
-## To jump into integrating LDK with your application
-
-* [Click here for Java](../tutorials/build_a_node_in_java.md)
-* [Click here for Rust](../tutorials/build_a_node_in_rust.md)
+To start building a node with LDK [click here.](../building-a-node-with-ldk/introduction.md)
 
 ## References
 
