@@ -17,13 +17,12 @@ supports routing data being fetched via the Lightning P2P protocol, an external
 service, or routes can be calculated off-device. It also provides cross-platform
 compatibility for free, allowing synchronization of Lightning state across
 devices and, as long as there is protection from simultaneous updates, users to
-access their wallet on any device. See the [Overview](../../overview/architecture) page for more
+access their wallet on any device. See the [architecure](../architecture) page for more
 details on the interfaces LDK provides for integration.
 
 ## HSMs (Hardware Security Modules)
 
-LDK Supports various HSM configurations. In conjunction with the [Lightning
-Signer project](https://github.com/lightning-signer/) , an external HSM can be
+LDK Supports various HSM configurations. In conjunction with the [Validating Lightning Signer](https://vls.tech/)project, an external HSM can be
 used to verify most protocol details about states before signing, ensuring host
 compromise cannot steal funds by broadcasting revoked states. For nodes seeking
 a higher level of assurance, the entire LDK channel state machine can

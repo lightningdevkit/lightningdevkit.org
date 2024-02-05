@@ -5,7 +5,7 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -39,49 +39,53 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 ```
 
   </template>
-  <template v-slot:java>
+  <template v-slot:kotlin>
 
 ```java
-String invoice_str = // get an invoice from the payee
-Result_InvoiceNoneZ parsed_invoice = Invoice.from_str(invoice_str);
+// Get an invoice from the recipient/payee
+val parsedInvoice = Bolt11Invoice.from_str(recipientInvoice)
+val invoiceVal = (parsedInvoice as Result_Bolt11InvoiceSignOrCreationErrorZ.Result_Bolt11InvoiceSignOrCreationErrorZ_OK).res
 
-if (parsed_invoice instanceof Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) {
-	Invoice invoice = ((Result_InvoiceNoneZ.Result_InvoiceNoneZ_OK) parsed_invoice).res;
-    long amt_msat = 0;
-    if (invoice.amount_pico_btc() instanceof Option_u64Z.Some) {
-        amt_msat = ((Option_u64Z.Some)invoice.amount_pico_btc()).some / 10;
-    }
-    if (amt_msat == 0) {
-        // <Handle a zero-value invoice>
-    }
+val res = UtilMethods.pay_invoice(invoice, Retry.attempts(6), channelManager)
 
-    Route route;
-    try (LockedNetworkGraph netgraph = router.read_locked_graph()) {
-        NetworkGraph graph = netgraph.graph();
-        Result_RouteLightningErrorZ route_res = UtilMethods.get_route(
-			channel_manager.get_our_node_id(),
-            graph, invoice.recover_payee_pub_key(), invoice.features(),
-            channel_manager.list_usable_channels(), invoice.route_hints(),
-            amt_msat, invoice.min_final_cltv_expiry(), logger);
-        assert route_res instanceof Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK;
-        route = ((Result_RouteLightningErrorZ.Result_RouteLightningErrorZ_OK) route_res).res;
-    }
-
-    Result_NonePaymentSendFailureZ payment_res = channel_manager.send_payment(
-		route, invoice.payment_hash(), invoice.payment_secret());
-    assert payment_res instanceof Result_NonePaymentSendFailureZ.Result_NonePaymentSendFailureZ_OK;
+if (res.is_ok) {
+  // Payment success
 }
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+let invoiceStr = // get an invoice from the payee
+let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
+
+if let invoiceVal = parsedInvoice.getValue() {
+   let invoicePaymentResult = Bindings.payInvoice(
+    invoice: invoiceVal,
+    retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
+    channelmanager: channelManager
+  )
+
+  if invoicePaymentResult.isOk() {
+    // Payment Sent
+  }
+}
+```
+
+  </template>
+
 </CodeSwitcher>
+
+# PaymentSent & PaymentFailed Event Handling
 
 An event is generated once a payment has completed. Successful payments result
 in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
 
 ```rust
@@ -98,19 +102,34 @@ match event {
 ```
 
   </template>
-  <template v-slot:java>
+  <template v-slot:kotlin>
 
 ```java
-// In the `handle_event` method of ChannelManagerPersister implementation
-else if (e instanceof Event.PaymentSent) {
-	// Handle successful payment
-	Event.PaymentSent event = ((Event.PaymentSent) e);
+// In the `handleEvent` method of ChannelManagerPersister implementation
+if(event is Event.PaymentSent) {
+    // Handle successful payment
 }
-else if (e instanceof Event.PaymentFailed) {
-	// Handle failed payment
-	Event.PaymentFailed event = ((Event.PaymentFailed) e);
+
+if(event is Event.PaymentFailed) {
+    // Handle failed payment
 }
 ```
 
   </template>
+
+  <template v-slot:swift>
+
+```Swift
+// In the `handleEvent` method of ChannelManagerPersister implementation
+if let paymentSentEvent = event.getValueAsPaymentSent() {
+  // Handle successful payment
+} else if let paymentFailedEvent = event.getValueAsPaymentFailed() {
+  // Handle failed payment
+}
+```
+
+  </template>
+
 </CodeSwitcher>
+
+**References:** [Rust `PaymentSent` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentSent),[Rust `PaymentFailed` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentFailed), [Java/Kotlin `PaymentSent` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L464), [Java/Kotlin `PaymentFailed` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L512)
