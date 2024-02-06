@@ -452,6 +452,58 @@ let persister = FilesystemPersister::new(ldk_data_dir_path);
 
 **References:** [Rust `Persister` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/trait.Persist.html), [Java/Kotlin `Persister` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
 
+### Start Background Processing
+
+**What it's used for:** running tasks periodically in the background to keep LDK operational.
+
+<CodeSwitcher :languages="{rust:'Rust'}">
+  <template v-slot:rust>
+
+```rust
+let background_processor = BackgroundProcessor::start(
+  persister,
+  Arc::clone(&invoice_payer),
+  Arc::clone(&chain_monitor),
+  Arc::clone(&channel_manager),
+  Arc::clone(&net_graph_msg_handler),
+  Arc::clone(&peer_manager),
+  Arc::clone(&logger),
+);
+```
+
+  </template>
+</CodeSwitcher>
+
+**Dependencies:** `ChannelManager`, `ChainMonitor`, `PeerManager`, `Logger`
+
+**References:** [Rust `BackgroundProcessor::Start` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/struct.BackgroundProcessor.html#method.start)
+
+### Regularly Broadcast Node Announcement
+
+**What it's used for:** if you have 1 or more public channels, you may need to announce your node and its channels occasionally. LDK will automatically announce channels when they are created, but there are no guarantees you have connected peers at that time or that your peers will propagate such announcements. The broader node-announcement message is not automatically broadcast.
+
+<CodeSwitcher :languages="{rust:'Rust'}">
+  <template v-slot:rust>
+
+```rust
+let mut interval = tokio::time::interval(Duration::from_secs(60));
+loop {
+	interval.tick().await;
+	channel_manager.broadcast_node_announcement(
+		[0; 3], // insert your node's RGB color
+		node_alias,
+		vec![ldk_announced_listen_addr],
+	);
+}
+```
+
+  </template>
+</CodeSwitcher>
+
+**Dependencies:** `Peer Manager`
+
+**References:** [`PeerManager::broadcast_node_announcement` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html#method.broadcast_node_announcement)
+
 ### Optional: Initialize the Transaction `Filter`
 
 **You must follow this step if:** you are _not_ providing full blocks to LDK,
