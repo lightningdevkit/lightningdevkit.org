@@ -426,11 +426,11 @@ let persister = MyPersister()
 
 </CodeSwitcher>
 
-<CodeSwitcher :languages="{rust:'Using LDK Sample Filesystem Persistence Module in Rust'}">
+<CodeSwitcher :languages="{rust:'Using LDK Sample Filesystem Persistence Crate in Rust'}">
   <template v-slot:rust>
 
 ```rust
-use lightning_persister::FilesystemPersister; // import LDK sample persist module
+use lightning_persister::FilesystemPersister; // import LDK sample persist crate
 
 let persister = FilesystemPersister::new(ldk_data_dir_path);
 ```
@@ -726,7 +726,7 @@ let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, st
   <template v-slot:rust>
 
 ```rust
-// Use LDK's sample persister module provided method
+// Use LDK's sample persister crate provided method
 let mut channel_monitors =
   persister.read_channelmonitors(keys_manager.clone()).unwrap();
 
@@ -1121,7 +1121,7 @@ There are 2 main options for synchronizing to chain on startup:
 **Full Blocks or BIP 157/158**
 
 If you are connecting full blocks or using BIP 157/158, then it is recommended to use
-LDK's `lightning_block_sync` sample module as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
+LDK's `lightning_block_sync` sample crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
 
 1. Get the last blockhash that each object saw.
    - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
@@ -1142,7 +1142,7 @@ Otherwise, you can use LDK's `Confirm` interface directly as in the examples abo
 2. Tell LDK what your best known block header and height is.
 3. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
 
-**References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` module docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/), [Rust `lightning_transaction_sync` module docs](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/)
+**References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` crate docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/), [Rust `lightning_transaction_sync` crate docs](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/)
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `ChannelMonitor`s
 
