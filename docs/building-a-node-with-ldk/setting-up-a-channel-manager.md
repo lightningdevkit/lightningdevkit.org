@@ -4,7 +4,7 @@ The ChannelManager is responsible for several tasks related to managing channel 
 
 ## Adding a ChannelManager
 
-To add a `ChannelManager` to your application, run:
+Adding a `ChannelManager` to your application should look something like this:
 
 <CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
