@@ -147,4 +147,4 @@ func handleEvent(event: Event) {
 
 </CodeSwitcher>
 
-**References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/0.0.121/lightning/events/enum.Event.html#variant.SpendableOutputs), [Java/Kotlin `SpendableOutputs` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L802)
+**References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.SpendableOutputs), [Java/Kotlin `SpendableOutputs` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L802)
