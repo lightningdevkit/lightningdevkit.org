@@ -1130,24 +1130,9 @@ LDK's `lightning_block_sync` sample crate as in the example above: the high-leve
 3. For each object, reconnect blocks starting from the common ancestor until it gets to your best known chain tip using `channel_manager.as_Listen().block_connected(..)` and/or `channel_monitor.block_connected(..)`.
 4. Call `channel_manager.chain_sync_completed(..)` to complete the initial sync process.
 
-**Esplora**
-
-Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provides utilities for syncing LDK via the transaction-based `Confirm` interface.
-
 **Electrum/Esplora**
 
-Otherwise, you can use LDK's `Confirm` interface directly as in the examples above. The high-level steps are as follows:
-
-1. Tell LDK about relevant confirmed and unconfirmed transactions.
-2. Tell LDK what your best known block header and height is.
-3. Call `channel_manager_constructor.chain_sync_completed(..)` to complete the initial sync process.
-
-**References:** [Rust `Confirm` docs](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html), [Rust `Listen` docs](https://docs.rs/lightning/*/lightning/chain/trait.Listen.html), [Rust `lightning_block_sync` crate docs](https://docs.rs/lightning-block-sync/*/lightning_block_sync/), [Rust `lightning_transaction_sync` crate docs](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/)
-
-**Dependencies:** `ChannelManager`, `ChainMonitor`, `ChannelMonitor`s
-
-- If providing providing full blocks or BIP 157/158: set of `ChannelMonitor`s
-- If using Electrum: `ChainMonitor`
+Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provides utilities for syncing LDK via the transaction-based `Confirm` interface.
 
 ### Optional: Initialize `P2PGossipSync or RapidGossipSync`
 
