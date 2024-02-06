@@ -18,8 +18,8 @@ The following tutorials will show you how to build the simplest lightning node u
 
 Let's start by looking at the core components we'll need to make this node work for the tasks we outlined above.
 
-1. A [`PeerManager`](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), for establishing TCP/IP connections to other nodes on the lightning network.
-2. A [`ChannelManager`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), to open and close channels.
+1. A [`ChannelManager`](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), to open and close channels.
+2. A [`PeerManager`](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html), for establishing TCP/IP connections to other nodes on the lightning network.
 3. Payments & Routing, ability to create and pay invoices.
 
 To make the above work we also need to setup a series of supporting modules, including:
