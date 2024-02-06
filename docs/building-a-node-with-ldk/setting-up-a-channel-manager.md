@@ -1121,7 +1121,7 @@ There are 2 main options for synchronizing to chain on startup:
 **Full Blocks or BIP 157/158**
 
 If you are connecting full blocks or using BIP 157/158, then it is recommended to use
-LDK's `lightning_block_sync` sample crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
+LDK's `lightning_block_sync` crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
 
 1. Get the last blockhash that each object saw.
    - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
