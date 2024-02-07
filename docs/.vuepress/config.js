@@ -26,7 +26,10 @@ const docsSidebar = [
           ["/introduction/networking", "Networking"],
           ["/introduction/private_key_management", "Private Key Management"],
           ["/introduction/transactions", "Transactions"],
-          ["/introduction/random_number_generation", "Random Number Generation"],
+          [
+            "/introduction/random_number_generation",
+            "Random Number Generation",
+          ],
         ],
       },
       {
@@ -37,36 +40,21 @@ const docsSidebar = [
           ["/building-a-node-with-ldk/installation", "Installation"],
           [
             "/building-a-node-with-ldk/setting-up-a-channel-manager",
-            "Setting up a Channel Manager",
+            "Setting up a Channel Manager"
           ],
-          [
-            "/building-a-node-with-ldk/handling-events",
-            "Handling Events",
-          ],
+          ["/building-a-node-with-ldk/handling-events", "Handling Events"],
           [
             "/building-a-node-with-ldk/setting-up-a-peer-manager",
-            "Setting up a Peer Manager",
+            "Setting up a Peer Manager"
           ],
-          [
-            "/building-a-node-with-ldk/connect-to-peers",
-            "Connect to Peers",
-          ],
-          [
-            "/building-a-node-with-ldk/opening-a-channel",
-            "Opening a Channel",
-          ],
-          [
-            "/building-a-node-with-ldk/sending-payments",
-            "Sending Payments",
-          ],
+          ["/building-a-node-with-ldk/connect-to-peers", "Connect to Peers"],
+          ["/building-a-node-with-ldk/opening-a-channel", "Opening a Channel"],
+          ["/building-a-node-with-ldk/sending-payments", "Sending Payments"],
           [
             "/building-a-node-with-ldk/receiving-payments",
-            "Receiving Payments",
+            "Receiving Payments"
           ],
-          [
-            "/building-a-node-with-ldk/closing-a-channel",
-            "Closing a Channel",
-          ],
+          ["/building-a-node-with-ldk/closing-a-channel", "Closing a Channel"],
         ],
       },
       "/running-a-sample-ldk-node",
@@ -82,7 +70,7 @@ const docsSidebar = [
           ["/blockchain_data/confirmed_transactions", "Confirmed Transactions"],
           [
             "/blockchain_data/transaction_broadcasting",
-            "Transaction Broadcasting",
+            "Transaction Broadcasting"
           ],
         ],
       },
@@ -101,35 +89,35 @@ const docsSidebar = [
           ["https://docs.rs/lightning/*/lightning/", "lightning"],
           [
             "https://docs.rs/lightning-background-processor/*/lightning_background_processor/",
-            "lightning-background-processor",
+            "lightning-background-processor"
           ],
           [
             "https://docs.rs/lightning-block-sync/*/lightning_block_sync/",
-            "lightning-block-sync",
+            "lightning-block-sync"
           ],
           [
             "https://docs.rs/lightning-invoice/*/lightning_invoice/",
-            "lightning-invoice",
+            "lightning-invoice"
           ],
           [
             "https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/",
-            "lightning-net-tokio",
+            "lightning-net-tokio"
           ],
           [
             "https://docs.rs/lightning-persister/*/lightning_persister/",
-            "lightning-persister",
+            "lightning-persister"
           ],
           [
             "https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/",
-            "lightning-rapid-gossip-sync",
+            "lightning-rapid-gossip-sync"
           ],
           [
             "https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/",
-            "lightning-transaction-sync",
+            "lightning-transaction-sync"
           ],
           [
             "https://docs.rs/lightning-custom-message/*/lightning_custom_message/",
-            "lightning-custom-message",
+            "lightning-custom-message"
           ],
         ],
       },
@@ -140,7 +128,6 @@ const docsSidebar = [
     ],
   },
 ];
-
 
 const blogSidebar = [
   {
