@@ -821,11 +821,15 @@ let (channel_manager_blockhash, mut channel_manager) = {
         &fee_estimator,
         &chain_monitor,
         &broadcaster,
+        &router,
         &logger,
-        &keys_manager,
+        &entropy_source,
+        &node_signer,
+        &signer_provider,
         user_config,
         chain_params,
-    );
+        current_timestamp
+      );
     (best_blockhash, fresh_channel_manager)
 };
 
