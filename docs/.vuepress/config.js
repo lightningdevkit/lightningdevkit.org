@@ -299,6 +299,7 @@ module.exports = {
             },
             {
               text: "Reporting a Vulnerability",
+              link: "https://github.com/lightningdevkit/rust-lightning/blob/main/SECURITY.md",
               rel: "noopener noreferrer",
             },
           ],
