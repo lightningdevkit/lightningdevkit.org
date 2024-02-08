@@ -1219,7 +1219,7 @@ func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
 
 </CodeSwitcher>
 
-**Implementation notes:** this struct is not required if you are providing your own routes. It will be used internally in `ChannelManager` to build a `NetworkGraph`. Other networking options are: `LDKNetwork_Bitcoin`, `LDKNetwork_Regtest` and `LDKNetwork_Testnet`
+**Implementation notes:** this struct is not required if you are providing your own routes. It will be used internally in `ChannelManager` to build a `NetworkGraph`. Network options include: `Mainnet`,`Regtest`,`Testnet`,`Signet`
 
 **Dependencies:** `Logger`
 
