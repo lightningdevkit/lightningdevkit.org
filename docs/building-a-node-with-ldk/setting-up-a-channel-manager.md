@@ -1,6 +1,6 @@
 # Setting up a ChannelManager
 
-The ChannelManager is responsible for several tasks related to managing channel state. This includes keeping track of many channels, sending messages to appropriate channels, creating channels and more.
+The `ChannelManager` is responsible for several tasks related to managing channel state. This includes keeping track of many channels, sending messages to appropriate channels, creating channels and more.
 
 ## Adding a ChannelManager
 
