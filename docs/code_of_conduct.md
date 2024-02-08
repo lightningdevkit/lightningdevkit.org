@@ -20,12 +20,26 @@ Private or public harassment of any kind will not be tolerated. Since harassment
 
 Additionally, spam and other content which disrupts or prevents LDK contributors from working on LDK is not acceptable.
 
+Deadlock can arise about the application fo the code of conduct to a concrete issue, where a deadlock is defined as lack of unanimity between the Code of Conduct team on the decision to be taken.
+
+In that case, 2 additional members should be selected by consensus of the code of conduct team from the community of active LDK contributors to join the team in its decision-making process to adjudicate
+the issue. The decision of the majority of 5 members is binding.
+
 ## The Code of Conduct Team
 
 A small team of LDK contributors has volunteered to enforce the LDK Code of Conduct. If you feel like a community member has engaged in inappropriate behavior, please don't hesitate to contact one of the following LDK contributors via email or on Discord:
  * Matt Corallo - ldkcocpoc on mattcorallo.com
  * Val Wallace - vwallace on protonmail.com
  * Devrandom - devrandom99 on proton.me
+
+The Code of Conduct team should be renewed every 3 years with a transparent nomination process open to the whole community of active LDK contributors. An active LDK contributor is someone with 10 commits during the 2 years
+preceeding the nomination.
+
+The next nomination should happen in December 2025. 2 new additional members should be added to the Code of Conduct team to favor a staggered approach where elder members can provide experience to newer members. Current Code of conduct team members can be reconducted in their roles.
+
+Code of conduct team members should have realized at least 50 code commits in the main LDK git tree and the first commit should have been merged more than 2 years at the date of nomination.
+
+In case of a current Code of conduct team stepping down on its own initiative, the vacant place should be fulfilled according to the transparent nomination process defined above.
 
 ## The Code of Conduct Team’s Responsibilities
 
