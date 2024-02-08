@@ -4,7 +4,7 @@ The `PeerManager` is responsible for managing a set of peer connections and data
 
 ## Adding a `PeerManager`
 
-To add a PeerManager to your application, run:
+To add a `PeerManager` to your application, run:
 
 <CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
   <template v-slot:rust>
