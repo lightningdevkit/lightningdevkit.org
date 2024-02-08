@@ -1,6 +1,6 @@
 # Setting up a PeerManager
 
-The Peer Manager is responsible for managing a set of peer connections and data associated with those peers.
+The `PeerManager` is responsible for managing a set of peer connections and data associated with those peers.
 
 ## Adding a `PeerManager`
 
