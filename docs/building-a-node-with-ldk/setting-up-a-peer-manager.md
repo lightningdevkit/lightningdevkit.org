@@ -1,4 +1,4 @@
-# Setting up a PeerManager
+# Setting up a `PeerManager`
 
 The `PeerManager` is responsible for managing a set of peer connections and data associated with those peers.
 
