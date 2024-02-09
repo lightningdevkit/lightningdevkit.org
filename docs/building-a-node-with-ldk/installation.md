@@ -23,9 +23,9 @@ Add LDK to a project by configuring the respective config files:
     lightning-background-processor = { version = {VERSION} }
     lightning-rapid-gossip-sync = { version = {VERSION} }
 
-````
-
-</template>
+  ```
+  </template>
+  
 <template v-slot:kotlin>
 
 ```java
