@@ -4,7 +4,7 @@ const themeConfig = require("@spiralbtc/vuepress-devkit-theme/config");
 const title = "Lightning Dev Kit Documentation";
 const baseUrl = "https://lightningdevkit.org";
 const githubUrl = "https://github.com/lightningdevkit";
-const discordUrl = "https://discord.gg/xaYE3pDQpm";
+const discordUrl = "https://discord.gg/5AcknnMfBw";
 const themeColor = "#ffffff";
 
 const docsSidebar = [
@@ -16,35 +16,48 @@ const docsSidebar = [
         title: "Introduction",
         path: "/introduction/",
         collapsable: true,
-        children: [["/introduction/use_cases", "Use Cases"]],
+        children: [
+          ["/introduction/use-cases", "Use Cases"],
+          ["/introduction/architecture", "Architecture"],
+          ["/introduction/peer-management", "Peer Management"],
+          ["/introduction/persistent_storage", "Persistent Storage"],
+          ["/introduction/blockchain_data", "Blockchain Data"],
+          ["/introduction/wallet_management", "Wallet Management"],
+          ["/introduction/networking", "Networking"],
+          ["/introduction/private_key_management", "Private Key Management"],
+          ["/introduction/transactions", "Transactions"],
+          [
+            "/introduction/random_number_generation",
+            "Random Number Generation",
+          ],
+        ],
+      },
+      {
+        title: "Building a node with LDK",
+        collapsable: true,
+        children: [
+          ["/building-a-node-with-ldk/introduction", "Introduction"],
+          ["/building-a-node-with-ldk/installation", "Installation"],
+          [
+            "/building-a-node-with-ldk/setting-up-a-channel-manager",
+            "Setting up a Channel Manager"
+          ],
+          ["/building-a-node-with-ldk/handling-events", "Handling Events"],
+          [
+            "/building-a-node-with-ldk/setting-up-a-peer-manager",
+            "Setting up a Peer Manager"
+          ],
+          ["/building-a-node-with-ldk/connect-to-peers", "Connect to Peers"],
+          ["/building-a-node-with-ldk/opening-a-channel", "Opening a Channel"],
+          ["/building-a-node-with-ldk/sending-payments", "Sending Payments"],
+          [
+            "/building-a-node-with-ldk/receiving-payments",
+            "Receiving Payments"
+          ],
+          ["/building-a-node-with-ldk/closing-a-channel", "Closing a Channel"],
+        ],
       },
       "/running-a-sample-ldk-node",
-      {
-        title: "Overview",
-        collapsable: true,
-        children: [
-          ["/overview/architecture", "Architecture"],
-          ["/overview/peer-management", "Peer Management"],
-          ["/overview/persistent_storage", "Persistent Storage"],
-          ["/overview/blockchain_data", "Blockchain Data"],
-          ["/overview/wallet_management", "Wallet Management"],
-          ["/overview/networking", "Networking"],
-          ["/overview/private_key_management", "Private Key Management"],
-          ["/overview/transactions", "Transactions"],
-          ["/overview/random_number_generation", "Random Number Generation"],
-        ],
-      },
-      {
-        title: "Payments",
-        path: "/payments/",
-        collapsable: true,
-        children: [
-          ["/payments/connecting_peers", "Connecting Peers"],
-          ["/payments/managing_channels", "Managing Channels"],
-          ["/payments/sending_payments", "Sending Payments"],
-          ["/payments/receiving_payments", "Receiving Payments"],
-        ],
-      },
       {
         title: "Blockchain Data",
         collapsable: true,
@@ -57,7 +70,7 @@ const docsSidebar = [
           ["/blockchain_data/confirmed_transactions", "Confirmed Transactions"],
           [
             "/blockchain_data/transaction_broadcasting",
-            "Transaction Broadcasting",
+            "Transaction Broadcasting"
           ],
         ],
       },
@@ -76,59 +89,42 @@ const docsSidebar = [
           ["https://docs.rs/lightning/*/lightning/", "lightning"],
           [
             "https://docs.rs/lightning-background-processor/*/lightning_background_processor/",
-            "lightning-background-processor",
+            "lightning-background-processor"
           ],
           [
             "https://docs.rs/lightning-block-sync/*/lightning_block_sync/",
-            "lightning-block-sync",
+            "lightning-block-sync"
           ],
           [
             "https://docs.rs/lightning-invoice/*/lightning_invoice/",
-            "lightning-invoice",
+            "lightning-invoice"
           ],
           [
             "https://docs.rs/lightning-net-tokio/*/lightning_net_tokio/",
-            "lightning-net-tokio",
+            "lightning-net-tokio"
           ],
           [
             "https://docs.rs/lightning-persister/*/lightning_persister/",
-            "lightning-persister",
+            "lightning-persister"
           ],
           [
             "https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/",
-            "lightning-rapid-gossip-sync",
+            "lightning-rapid-gossip-sync"
           ],
           [
             "https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/",
-            "lightning-transaction-sync",
+            "lightning-transaction-sync"
           ],
           [
             "https://docs.rs/lightning-custom-message/*/lightning_custom_message/",
-            "lightning-custom-message",
+            "lightning-custom-message"
           ],
         ],
       },
       [
-        "https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/src/main/java/org/ldk",
-        "Java/Kotlin",
+        "https://github.com/arik-so/SwiftLightning/tree/master/Documentation",
+        "Swift",
       ],
-      ["https://github.com/lightningdevkit/ldk-swift", "Swift"],
-      [
-        "https://github.com/lightningdevkit/ldk-garbagecollected/tree/main/ts",
-        "TypeScript",
-      ],
-    ],
-  },
-];
-
-const tutorialSidebar = [
-  {
-    title: "Tutorials",
-    collapsable: false,
-    children: [
-      "/tutorials/getting-started",
-      "/tutorials/build_a_node_in_java",
-      "/tutorials/build_a_node_in_rust",
     ],
   },
 ];
@@ -187,12 +183,8 @@ module.exports = {
         link: "/introduction/",
       },
       {
-        text: "Tutorials",
-        link: "/tutorials/getting-started",
-      },
-      {
         text: "Case Studies",
-        link: "/case-studies",
+        link: "/case-studies/",
       },
       {
         text: "Blog",
@@ -212,11 +204,43 @@ module.exports = {
     sidebar: {
       "/_blog/": blogSidebar,
       "/blog/": blogSidebar,
-      "/tutorials/": tutorialSidebar,
       "/": docsSidebar,
     },
     footer: {
       links: [
+        {
+          title: "Docs",
+          children: [
+            {
+              text: "Introduction",
+              link: "/introduction/",
+            },
+            {
+              text: "Building a node with LDK",
+              link: "/building-a-node-with-ldk/introduction",
+            },
+            {
+              text: "Running a sample LDK node",
+              link: "/running-a-sample-ldk-node/",
+            },
+            {
+              text: "Architecture",
+              link: "/introduction/architecture/",
+            },
+            {
+              text: "Blockchain Data",
+              link: "/blockchain_data/introduction/",
+            },
+            {
+              text: "Key Management",
+              link: "/key_management/",
+            },
+            {
+              text: "Examples",
+              link: "/examples/",
+            },
+          ],
+        },
         {
           title: "Community",
           children: [
@@ -253,39 +277,6 @@ module.exports = {
           ],
         },
         {
-          title: "Docs",
-          children: [
-            {
-              text: "Introduction",
-              link: "/introduction/",
-            },
-            {
-              text: "Sample LDK node",
-              link: "/running-a-sample-ldk-node/",
-            },
-            {
-              text: "Architecture",
-              link: "/overview/architecture/",
-            },
-            {
-              text: "Payments",
-              link: "/payments/",
-            },
-            {
-              text: "Blockchain Data",
-              link: "/blockchain_data/introduction/",
-            },
-            {
-              text: "Key Management",
-              link: "/key_management/",
-            },
-            {
-              text: "Examples",
-              link: "/examples/",
-            },
-          ],
-        },
-        {
           title: "Resources",
           children: [
             {
@@ -301,10 +292,6 @@ module.exports = {
         {
           title: "Other",
           children: [
-            {
-              text: "Tutorials",
-              link: "/tutorials/getting-started/",
-            },
             {
               text: "Bitcoin Dev Kit",
               link: "https://bitcoindevkit.org/",
