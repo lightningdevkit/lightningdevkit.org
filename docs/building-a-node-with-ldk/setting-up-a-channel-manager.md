@@ -931,16 +931,18 @@ _after_ the `ChannelMonitor`s and `ChannelManager` are synced to the chain tip (
 
 ### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 
-**What it's used for:** this step is only necessary if you're restarting and have open channels. This step ensures that LDK channel state is up-to-date with the bitcoin blockchain
+**What it's used for:** this step is only necessary if you're restarting and have open channels. This step ensures that LDK channel state is up-to-date with the bitcoin blockchain.
+
+There are 2 main options for synchronizing to chain on startup:
+
+#### Full Blocks or BIP 157/158 (Compact Block Filters)
 
 **Example:**
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+<CodeSwitcher :languages="{rust:'Rust'}">
   <template v-slot:rust>
   
   ```rust
-  // Full Blocks or BIP 157/158
-
 use lightning_block_sync::init;
 use lightning_block_sync::poll;
 use lightning_block_sync::UnboundedCache;
@@ -1006,17 +1008,74 @@ chain_tip = Some(
     .await
     .unwrap(),
 );
+```
 
+</template>
+
+</CodeSwitcher>
+
+**Implementation notes:**
+
+If you are connecting full blocks or using BIP 157/158, then it is recommended to use
+LDK's [`lightning_block_sync`](https://docs.rs/lightning-block-sync/*/lightning_block_sync/) crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
+
+1. Get the last blockhash that each object saw.
+   - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
+   - Each `ChannelMonitor`'s is in `channel_manager.channel_monitors`, as the 2nd element in each tuple
+2. For each object, if its latest known blockhash has been reorged out of the chain, then disconnect blocks using `channel_manager.as_Listen().block_disconnected(..)` or `channel_monitor.block_disconnected(..)` until you reach the last common ancestor with the main chain.
+3. For each object, reconnect blocks starting from the common ancestor until it gets to your best known chain tip using `channel_manager.as_Listen().block_connected(..)` and/or `channel_monitor.block_connected(..)`.
+4. Call `channel_manager.chain_sync_completed(..)` to complete the initial sync process.
+
+
+#### Electrum or Esplora
+
+Alternatively, you can use LDK's [`lightning-transaction-sync`](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/) crate. This provides utilities for syncing LDK via the transaction-based [`Confirm`](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html)interface.
+
+**Example:**
+
+<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+  <template v-slot:rust>
   
-````
+  ```rust
+let tx_sync = Arc::new(EsploraSyncClient::new(
+	esplora_server_url,
+	Arc::clone(&some_logger),
+));
+
+let chain_monitor = Arc::new(ChainMonitor::new(
+	Some(Arc::clone(&tx_sync)),
+	Arc::clone(&some_broadcaster),
+	Arc::clone(&some_logger),
+	Arc::clone(&some_fee_estimator),
+	Arc::clone(&some_persister),
+));
+
+let channel_manager = Arc::new(ChannelManager::new(
+	Arc::clone(&some_fee_estimator),
+	Arc::clone(&chain_monitor),
+	Arc::clone(&some_broadcaster),
+	Arc::clone(&some_router),
+	Arc::clone(&some_logger),
+	Arc::clone(&some_entropy_source),
+	Arc::clone(&some_node_signer),
+	Arc::clone(&some_signer_provider),
+	user_config,
+	chain_params,
+));
+
+let confirmables = vec![
+	&*channel_manager as &(dyn Confirm + Sync + Send),
+	&*chain_monitor as &(dyn Confirm + Sync + Send),
+];
+
+tx_sync.sync(confirmables).unwrap();
+```
 
 </template>
 
 <template v-slot:kotlin>
 
 ```java
-// Electrum/Esplora
-
 // Retrieve transaction IDs to check the chain for un-confirmation.
 val relevantTxIdsFromChannelManager: Array<ByteArray> = channelManager .as_Confirm().get_relevant_txids()
 val relevantTxIdsFromChannelManager: Array<ByteArray> = chainMonitor.as_Confirm().get_relevant_txids()
@@ -1062,8 +1121,6 @@ channelManagerConstructor.chain_sync_completed(customEventHandler);
   <template v-slot:swift>
 
 ```Swift
-// Electrum/Esplora
-
 // Retrieve transaction IDs to check the chain for un-confirmation.
 let relevantTxIds1 = channelManager?.asConfirm().getRelevantTxids() ?? []
 let relevantTxIds2 = chainMonitor?.asConfirm().getRelevantTxids() ?? []
@@ -1118,25 +1175,6 @@ channelManagerConstructor.chainSyncCompleted(persister: channelManagerPersister)
 
 </CodeSwitcher>
 
-**Implementation notes:**
-
-There are 2 main options for synchronizing to chain on startup:
-
-**Full Blocks or BIP 157/158**
-
-If you are connecting full blocks or using BIP 157/158, then it is recommended to use
-LDK's `lightning_block_sync` crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
-
-1. Get the last blockhash that each object saw.
-   - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
-   - Each `ChannelMonitor`'s is in `channel_manager.channel_monitors`, as the 2nd element in each tuple
-2. For each object, if its latest known blockhash has been reorged out of the chain, then disconnect blocks using `channel_manager.as_Listen().block_disconnected(..)` or `channel_monitor.block_disconnected(..)` until you reach the last common ancestor with the main chain.
-3. For each object, reconnect blocks starting from the common ancestor until it gets to your best known chain tip using `channel_manager.as_Listen().block_connected(..)` and/or `channel_monitor.block_connected(..)`.
-4. Call `channel_manager.chain_sync_completed(..)` to complete the initial sync process.
-
-**Electrum/Esplora**
-
-Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provides utilities for syncing LDK via the transaction-based `Confirm` interface.
 
 ### Optional: Initialize `P2PGossipSync or RapidGossipSync`
 
