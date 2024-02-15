@@ -1029,7 +1029,7 @@ LDK's [`lightning_block_sync`](https://docs.rs/lightning-block-sync/*/lightning_
 
 #### Electrum or Esplora
 
-Alternatively, you can use LDK's [`lightning-transaction-sync`](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/) crate. This provides utilities for syncing LDK via the transaction-based [`Confirm`](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html)interface.
+Alternatively, you can use LDK's [`lightning-transaction-sync`](https://docs.rs/lightning-transaction-sync/*/lightning_transaction_sync/) crate. This provides utilities for syncing LDK via the transaction-based [`Confirm`](https://docs.rs/lightning/*/lightning/chain/trait.Confirm.html) interface.
 
 **Example:**
 
