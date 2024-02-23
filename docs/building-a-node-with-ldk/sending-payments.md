@@ -62,13 +62,21 @@ let invoiceStr = // get an invoice from the payee
 let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
 
 if let invoiceVal = parsedInvoice.getValue() {
-   let invoicePaymentResult = Bindings.payInvoice(
-    invoice: invoiceVal,
-    retryStrategy: Bindings.Retry.initWithTimeout(a: 15),
-    channelmanager: channelManager
+  let invoicePaymentResult = Bindings.paymentParametersFromInvoice(invoice: invoiceVal)
+  guard invoicePaymentResult.isOk() else {
+    return false
+  }
+  let (paymentHash, recipientOnion, routeParams) = Bindings.paymentParametersFromInvoice(invoice: invoiceVal).getValue()!
+  let paymentId = invoice.paymentHash()!
+  let res = channelManager.sendPayment(
+    paymentHash: paymentHash, 
+    recipientOnion: recipientOnion, 
+    paymentId: paymentId, 
+    routeParams: routeParams, 
+    retryStrategy: .initWithTimeout(a: 15)
   )
 
-  if invoicePaymentResult.isOk() {
+  if res.isOk() {
     // Payment Sent
   }
 }

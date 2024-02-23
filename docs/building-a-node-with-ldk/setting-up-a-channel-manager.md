@@ -152,16 +152,18 @@ val feeEstimator: FeeEstimator = FeeEstimator.new_impl(YourFeeEstimator)
   <template v-slot:swift>
  
   ```Swift
-  class MyFeeEstimator: FeeEstimator {
+class MyFeeEstimator: FeeEstimator {
     override func getEstSatPer1000Weight(confirmationTarget: Bindings.ConfirmationTarget) -> UInt32 {
-        if confirmationTarget == .Background {
-            // Fetch Background Feerate
-        } else if confirmationTarget == .Normal {
-            // Fetch Normal Feerate (~6 blocks)
-        } else if confirmationTarget == .HighPriority {
-            // Fetch High Feerate
-        }
-        // Fetch Default Feerate
+      if confirmationTarget == .MinAllowedNonAnchorChannelRemoteFee {
+          return 253
+      } else if confirmationTarget == .ChannelCloseMinimum {
+          return 1000
+      } else if confirmationTarget == .NonAnchorChannelFee {
+          return 7500
+      } else if confirmationTarget == .OnChainSweep {
+          return 7500
+      }
+      return 7500
     }
 }
 
