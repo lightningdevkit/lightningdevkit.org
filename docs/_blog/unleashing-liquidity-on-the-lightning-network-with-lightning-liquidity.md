@@ -1,7 +1,7 @@
 ---
 title: 'Unleashing Liquidity on the Lightning Network with "lightning-liquidity"'
 description: "The lightning-liquidity crate is an easy-to-integrate rust library that wallet developers and LSP operators can use to implement the LSP specification"
-date: "2024-02-28"
+date: "2024-02-29"
 authors:
   - John Cantrell
 tags:
