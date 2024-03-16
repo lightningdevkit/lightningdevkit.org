@@ -1,6 +1,6 @@
 # Handling Events
 
-LDK requires that you handle many different events throughout your app's life cycle. You can learn more by reading about our event-driven [architecture](/overview/architecture.md).
+LDK requires that you handle many different events throughout your app's life cycle. You can learn more by reading about our event-driven [architecture](/introduction/architecture.md).
 
 To start handling events in your application, run:
 
