@@ -43,10 +43,17 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 
 ```java
 // Get an invoice from the recipient/payee
-val parsedInvoice = Bolt11Invoice.from_str(recipientInvoice)
-val invoiceVal = (parsedInvoice as Result_Bolt11InvoiceSignOrCreationErrorZ.Result_Bolt11InvoiceSignOrCreationErrorZ_OK).res
+val invoice = Bolt11Invoice.from_str(recipientInvoice)
+val invoiceResult = (invoice as Result_Bolt11InvoiceParseOrSemanticErrorZ.Result_Bolt11InvoiceParseOrSemanticErrorZ_OK).res
+val paymentParams = UtilMethods.payment_parameters_from_invoice(invoiceResult)
+val paymentParamsResult = (paymentParams as Result_C3Tuple_ThirtyTwoBytesRecipientOnionFieldsRouteParametersZNoneZ.Result_C3Tuple_ThirtyTwoBytesRecipientOnionFieldsRouteParametersZNoneZ_OK).res
 
-val res = UtilMethods.pay_invoice(invoice, Retry.attempts(6), channelManager)
+val paymentHash = paymentParamsResult._a
+val recipientOnion = paymentParamsResult._b
+val paymentId = paymentParamsResult._a
+val routeParams = paymentParamsResult._c
+
+val res = channelManager.send_payment(paymentHash, recipientOnion, paymentId, routeParams, Retry.attempts(5))
 
 if (res.is_ok) {
   // Payment success

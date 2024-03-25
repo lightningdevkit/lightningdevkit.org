@@ -35,7 +35,7 @@ match channel_manager.create_channel(pubkey, amount, push_msat, user_id, Some(co
 ```kotlin
 val amount = 100_000L
 val pushMsat = 1_000L
-val userId = 42L
+val userChannelId = UInt128(Random.nextLong())
 
 // public aka announced channel
 val userConfig = UserConfig.with_default()
@@ -46,7 +46,7 @@ channelHandshakeConfig._announced_channel = true
 userConfig._channel_handshake_config = channelHandshakeConfig
 
 val createChannelResult = channelManager.create_channel(
-    pubKey.toByteArray(), amount, pushMsat, userId, userConfig
+    pubKey.toByteArray(), amount, pushMsat, userChannelId, userConfig
 )
 ```
 
