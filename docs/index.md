@@ -28,7 +28,7 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
       <img src="./assets/bitkit.svg" />
       <img src="./assets/mutiny.svg" />
       <img src="./assets/cashapp.svg" />
-      <img src="./assets/teos.png" />
+      <img src="./assets/lightspark.png" />
     </div>
     <div class="case-studies-inner-content">
       <h1>Trusted by the best</h1>
