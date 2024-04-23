@@ -138,7 +138,7 @@ lastUpdated: false
     <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
   </div>
   <div class="case-study-item">
-    <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.png" /></a>
+    <a href="https://github.com/lexe-tech" target="_blank"><img src="./assets/lexe.jpeg" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
     <p>Managed non-custodial Lightning nodes inside secure hardware</p>
   </div>
@@ -275,7 +275,7 @@ lastUpdated: false
     <p>An experimentation with tor that adapts the ldk-sample node</p>
    </div>
    <div class="case-study-item">
-    <a href="https://github.com/lexe-tech" target="_blank"> <img src="./assets/lexe.png" /></a>
+    <a href="https://github.com/lexe-tech" target="_blank"> <img src="./assets/lexe.jpeg" /></a>
     <h3><a href="https://github.com/lexe-tech" target="_blank">Lexe</a></h3>
     <p>Managed non-custodial Lightning nodes inside secure hardware</p>
   </div>
