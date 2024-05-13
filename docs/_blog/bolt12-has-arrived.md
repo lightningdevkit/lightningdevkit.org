@@ -96,11 +96,11 @@ As the recipient, you only need to wait for an event to claim the payment.
 ```rust
 channel_manager.process_pending_events(&|event| match event {
     Event::PaymentClaimable { payment_hash, purpose, .. } => match purpose {
-    	PaymentPurpose::InvoicePayment { payment_preimage: Some(payment_preimage), .. } => {
+        PaymentPurpose::Bolt12OfferPayment { payment_preimage: Some(payment_preimage), .. } => {
             println!("Claiming payment {}", payment_hash);
             channel_manager.claim_funds(payment_preimage);
         },
-    	PaymentPurpose::InvoicePayment { payment_preimage: None, .. } => {
+        PaymentPurpose::Bolt12OfferPayment { payment_preimage: None, .. } => {
             println!("Unknown payment hash: {}", payment_hash);
     	},
         // ...
@@ -123,7 +123,7 @@ channel_manager.process_pending_events(&|event| match event {
 });
 ```
 
-These examples work swimmingly when building a Lightning wallet programmatically. However, LDK uniquely exposes the underlying [offers](https://docs.rs/lightning/0.0.123-beta/lightning/offers/index.html), [blinded paths](https://docs.rs/lightning/0.0.123-beta/lightning/blinded_path/index.html), and [onion message](https://docs.rs/lightning/0.0.123-beta/lightning/onion_message/index.html) modules for direct use. This means you can experiment with building your applications or add BOLT12 support to LND, such as the [LNDK](https://github.com/lndk-org/lndk) project.
+These examples work swimmingly when building a Lightning wallet programmatically. However, LDK uniquely exposes the underlying [offers](https://docs.rs/lightning/0.0.123/lightning/offers/index.html), [blinded paths](https://docs.rs/lightning/0.0.123/lightning/blinded_path/index.html), and [onion message](https://docs.rs/lightning/0.0.123/lightning/onion_message/index.html) modules for direct use. This means you can experiment with building your applications or add BOLT12 support to LND, such as the [LNDK](https://github.com/lndk-org/lndk) project.
 
 ## Wait, what about refunds?
 
@@ -144,7 +144,7 @@ let refund = channel_manager
 let bech32_refund = refund.to_string();
 ```
 
-Like when paying an offer, LDK will track a pending payment and surface events just the same.
+Like when paying an offer, LDK will track a pending payment and surface events just the same. However, for inbound payments the events will use `PaymentPurpose::Bolt12RefundPayment` instead.
 
 ## Achieving statelessness
 
