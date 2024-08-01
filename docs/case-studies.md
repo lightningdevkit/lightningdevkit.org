@@ -285,11 +285,6 @@ lastUpdated: false
     <p>Enterprise-grade, fast, secure payments on Lightning</p>
   </div>
   <div class="case-study-item">
-    <a href="https://www.lightspark.com/" target="_blank"> <img src="./assets/lightspark.png" /></a>
-    <h3><a href="https://www.lightspark.com/" target="_blank">Lightspark</a></h3>
-    <p>Enterprise-grade, fast, secure payments on Lightning</p>
-  </div>
-  <div class="case-study-item">
     <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
     <h3><a href="https://github.com/lndk-org/lndk" target="_blank">LNDK</a></h3>
     <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
