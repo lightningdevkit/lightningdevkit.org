@@ -35,17 +35,7 @@ pub trait FeeEstimator {
 ```
 
 ## The ```ConfirmationTarget```
-The ```ConfirmationTarget``` enables the user to define the feerate that LDK will use for a variety of on-chain and off-chain tasks. The various options and a description are listed below. For a detailed description of each ```ConfirmationTarget```, please visit [here](https://docs.rs/lightning/latest/lightning/chain/chaininterface/enum.ConfirmationTarget.html#variant.OnChainSweep).
-
-| ConfirmationTarget| Description |
-| :---------------- | :------ |
-| OnChainSweep        |  We have funds available that need to be spent in a timely manner, such as confirming a claim transaction before a timelock expiration. **Therefore, this tends to be a relatively high feerate.**|
-| MinAllowedAnchorChannelRemoteFee           |   This is the lowest feerate we will allow our channel counterparty to have in an anchor channel in order to close the channel if a channel party goes away.  **A good estimate is the expected mempool minimum at the time of force-closure**. Using a simple long-term fee estimate or tracking of the mempool minimum is a good approach. |
-| MinAllowedNonAnchorChannelRemoteFee    | The lowest feerate we will allow our channel counterparty to have in a non-anchor channel. **Given that this feerate must be sufficient to enter a block at an arbitrary time in the future, it's important not to estimate too low, as this may prohibit channels from closing if the feerates rise too high.**|
-| AnchorChannelFee |  This is the feerate on the transaction which we (or our counterparty) will broadcast in order to close the channel if a channel party goes away.  **A good estimate is the expected mempool minimum at the time of force-closure**. Using a simple long-term fee estimate or tracking of the mempool minimum is a good approach. |
-| NonAnchorChannelFee |  This feerate represents the fee we pick now, which must be sufficient to enter a block at an arbitrary time in the future. **Given future fees are unpredictable and difficult to calculate, it's recommended to either set a relatively high feerate or to prefer anchor channels, which allow you to increase the feerate of a transaction at the time of broadcasting.**|
-| ChannelCloseMinimum |  This is the minimum feerate we will accept when cooperatively closing a channel. **It's recommended to set this to be, at least, within a day or or so worth of blocks.** |
-| OutputSpendingFee | The feeratee used to ensure that all funds are eventually swept to an onchain address that the user controls after closing a channel. **Setting a value (slightly above) the mempool minimum should suffice. However, as this value will influence how long funds will be unavailable after channel closure, ```FeeEstimator``` implementers might want to choose a higher feerate to regain control over funds faster.** |
+The ```ConfirmationTarget``` enables the user to define the feerate that LDK will use for a variety of on-chain and off-chain tasks. For a detailed description of each ```ConfirmationTarget```, please visit [here](https://docs.rs/lightning/latest/lightning/chain/chaininterface/enum.ConfirmationTarget.html#variant.OnChainSweep).
 
 ## Best Practices
 
@@ -218,7 +208,7 @@ pub fn get_fee_rate(&self, confirmation_target: ConfirmationTarget) -> u32 {
 ```
 
 ### Building A Fall-Back Plan 
-Great, we now have a function that will return a feerate, provided by mempool.space, for a given ```ConfirmationTarget```. But, there is a vulnerability here! What if mempool.space is down or our API call fails for some reason? If we're in urgent need of a feerate estimate, we'll need to return *something*. In a real production environment, we'd likely have a local mempool that we're sourcing feerates from and, perhaps, one ore more third-party services. However, for this demo, we'll hard-code fallback feerates and return those if we're unable to retrieve a feerate from mepool.space.
+Great, we now have a function that will return a feerate, provided by mempool.space, for a given ```ConfirmationTarget```. But, there is a vulnerability here! What if mempool.space is down or our API call fails for some reason? If we're in urgent need of a feerate estimate, we'll need to return *something*. In a real production environment, we'd likely have a local mempool that we're sourcing feerates from and, perhaps, one ore more third-party services. However, for this demo, we'll hard-code fallback feerates and return those if we're unable to retrieve a feerate from mempool.space.
 
 We'll start by writing a function that will return a feerate for a given ```ConfirmationTarget```. For simplicity, feerates below are presented as sats/vByte * 250 so that they are easier to read but, ultimately, stored within the cache as sats/KW. Note, this function is also a method within ```MyAppFeeEstimator```.
 
