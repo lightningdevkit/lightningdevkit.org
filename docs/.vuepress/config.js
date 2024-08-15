@@ -75,6 +75,7 @@ const docsSidebar = [
         ],
       },
       "/key_management",
+      "/fee_estimation",
       "/examples",
     ],
   },
@@ -234,6 +235,10 @@ module.exports = {
             {
               text: "Key Management",
               link: "/key_management/",
+            },
+            {
+              text: "Fee Estimation",
+              link: "/fee_estimation/",
             },
             {
               text: "Examples",
