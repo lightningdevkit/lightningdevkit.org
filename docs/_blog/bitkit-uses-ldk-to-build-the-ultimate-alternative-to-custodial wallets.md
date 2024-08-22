@@ -5,10 +5,10 @@ date: "2024-01-24"
 authors:
   - Matt Carvalho
 tags:
-  - Case Studies
+  - Case-Studies
 ---
 
-In 2020, the Lightning Network was in its early stages, and most people used custodial wallets. We believe this trend towards custodial wallets contradicts the Bitcoin ethos, so we decided to create a self-custodial alternative that offers a great user experience for all, not just technical users. 
+In 2020, the Lightning Network was in its early stages, and most people used custodial wallets. We believe this trend towards custodial wallets contradicts the Bitcoin ethos, so we decided to create a self-custodial alternative that offers a great user experience for all, not just technical users.
 
 [And that's how Bitkit was born.](https://bitkit.to/)
 
@@ -26,7 +26,7 @@ If we were frustrated, Bitkit users would be, too. This reminded us of the secon
 
 LND was not designed to be modular, making it challenging to swap out Neutrino. To provide the user experience we wanted, we'd need to develop Bitkit on top of a more flexible library. Otherwise, the user experience of self-custodial wallets would continue to fall short, and custodial wallets would remain more popular.
 
-Meanwhile, LDK had come a long way since the early Rust-Lightning days. After revisiting it, its mobile-friendliness convinced us it was the right path forward. The switching cost was high, but we believed our decision would pay off in the long run. So we archived our [React Native Lightning library](https://github.com/synonymdev/react-native-lightning) and merged a [pull request](https://github.com/synonymdev/bitkit/pull/146), subtracting more than a year of work. 
+Meanwhile, LDK had come a long way since the early Rust-Lightning days. After revisiting it, its mobile-friendliness convinced us it was the right path forward. The switching cost was high, but we believed our decision would pay off in the long run. So we archived our [React Native Lightning library](https://github.com/synonymdev/react-native-lightning) and merged a [pull request](https://github.com/synonymdev/bitkit/pull/146), subtracting more than a year of work.
 
 It was time for LDK.
 
@@ -57,4 +57,3 @@ Migrating to LDK wasn't an easy decision, but time has proven it to be the corre
 LDK enables us to focus on building a great wallet instead of getting bogged down by the complexities of the Lightning Network protocol.
 
 Ultimately, LDK helps us to narrow the user experience gap between custodial and self-custodial wallets. As long as the lack of options leads people to rely on custodians, LDK will be pivotal in helping us to build a better alternative.
-
