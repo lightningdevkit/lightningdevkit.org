@@ -6,18 +6,18 @@ description: "A list of bitcoin applications and services building with LDK"
 actionText: "Add your project"
 actionLink: "https://github.com/orgs/lightningdevkit/discussions/1554"
 features:
-  - title: "Mutiny"
-    details: "A self-custodial lightning wallet that runs in the browser"
-    image: "/img/mutiny-featured.png"
-    imageAlt: "mutiny logo"
-    caseStudyLink: "/blog/mutiny-uses-ldk-the-first-lightning-wallet-for-the-web/"
+  - title: "Alby Hub"
+    details: "Equipped with its own lightning node, ready to connect you to numerous applications"
+    image: "/img/alby-hub-featured.svg"
+    imageAlt: "alby hub logo"
+    caseStudyLink: "/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/"
   - title: "Cash App"
     details: "Send and spend, bank, and buy stocks or bitcoin "
     image: "/img/cash-app-logo.png"
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
   - title: "Bitkit"
-    details: "Bitkit hands you the keys to your money, profile, contacts, and web accounts"
+    details: "Hands you the keys to your money, profile, contacts, and web accounts"
     image: "/img/bitkit.svg"
     imageAlt: ""
     caseStudyLink: "/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/"
@@ -74,9 +74,14 @@ lastUpdated: false
 
   <div class="case-studies">
     <div class="case-study-item">
-      <h3><a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a></h3>
+      <a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a>
       <h3><a href="https://mutinywallet.com/" target="_blank">Mutiny</a></h3>
       <p>A web-first unstoppable bitcoin wallet for everyone</p>
+    </div>
+    <div class="case-study-item">
+      <a href="https://getalby.com/" target="_blank"><img src="./assets/alby.svg" /></a>
+      <h3><a href="https://getalby.com/" target="_blank">Alby Hub</a></h3>
+      <p>With its own lightning node, connecting you to numerous applications</p>
     </div>
   </div>
 
@@ -218,6 +223,11 @@ lastUpdated: false
     <a href="https://github.com/aciedo" target="_blank"><img src="./assets/aciedo.svg" /></a>
     <h3><a href="https://github.com/aciedo" target="_blank">Aciedo</a></h3>
     <p>A financial infrastructure suite for developers and users</p>
+    </div>
+    <div class="case-study-item">
+      <a href="https://getalby.com/" target="_blank"><img src="./assets/alby.svg" /></a>
+      <h3><a href="https://getalby.com/" target="_blank">Alby Hub</a></h3>
+      <p>With its own lightning node, connecting you to numerous apps</p>
     </div>
     <div class="case-study-item">
       <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
