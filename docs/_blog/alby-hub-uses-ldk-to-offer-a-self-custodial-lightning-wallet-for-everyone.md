@@ -1,7 +1,7 @@
 ---
 title: "Alby Hub uses LDK to offer a self-custodial lightning wallet for everyone"
 description: "Learn how Alby uses LDK to empower users & builders with easy but important tools"
-date: "2024-08-27"
+date: "2024-09-03"
 authors:
   - Moritz Kaminski
 tags:
@@ -27,7 +27,7 @@ Alby Hub also integrates with Lightning Service Providers (LSPs) through an API,
 
 The integrated [NWC](https://nwc.dev/) wallet service is what makes Alby Hub a new kind of a self-custodial lightning wallet. NWC allows direct connections to [third-party apps](https://github.com/getAlby/awesome-nwc), greatly extending the app's functionality. This means users can plug in their Hub by copying a connection string into other apps instead of depositing funds before using an app.
 
-![Alby architecture](../assets/alby-architecture.svg)
+![Alby architecture](../assets/alby-architecture.png)
 
 # Results
 
