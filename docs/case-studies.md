@@ -79,8 +79,8 @@ lastUpdated: false
       <p>A web-first unstoppable bitcoin wallet for everyone</p>
     </div>
     <div class="case-study-item">
-      <a href="https://getalby.com/" target="_blank"><img src="./assets/alby.svg" /></a>
-      <h3><a href="https://getalby.com/" target="_blank">Alby Hub</a></h3>
+      <a href="https://albyhub.com/" target="_blank"><img src="./assets/alby.svg" /></a>
+      <h3><a href="https://albyhub.com/" target="_blank">Alby Hub</a></h3>
       <p>With its own lightning node, connecting you to numerous applications</p>
     </div>
   </div>
@@ -225,8 +225,8 @@ lastUpdated: false
     <p>A financial infrastructure suite for developers and users</p>
     </div>
     <div class="case-study-item">
-      <a href="https://getalby.com/" target="_blank"><img src="./assets/alby.svg" /></a>
-      <h3><a href="https://getalby.com/" target="_blank">Alby Hub</a></h3>
+      <a href="https://albyhub.com/" target="_blank"><img src="./assets/alby.svg" /></a>
+      <h3><a href="https://albyhub.com/" target="_blank">Alby Hub</a></h3>
       <p>With its own lightning node, connecting you to numerous apps</p>
     </div>
     <div class="case-study-item">
