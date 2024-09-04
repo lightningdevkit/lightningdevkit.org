@@ -13,7 +13,7 @@ features:
     caseStudyLink: "/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/"
   - title: "Cash App"
     details: "Send and spend, bank, and buy stocks or bitcoin "
-    image: "/img/cash-app-logo.png"
+    image: "/img/cashapp-badge.svg"
     imageAlt: "cash app logo"
     caseStudyLink: "/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/"
   - title: "Bitkit"
