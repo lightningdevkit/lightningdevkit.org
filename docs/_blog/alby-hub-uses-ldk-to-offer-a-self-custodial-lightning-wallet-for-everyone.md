@@ -1,7 +1,7 @@
 ---
 title: "Alby Hub uses LDK to offer a self-custodial lightning wallet for everyone"
 description: "Learn how Alby uses LDK to empower users & builders with easy but important tools"
-date: "2024-09-03"
+date: "2024-09-04"
 authors:
   - Moritz Kaminski
 tags:
