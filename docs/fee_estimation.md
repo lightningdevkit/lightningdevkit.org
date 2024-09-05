@@ -3,15 +3,17 @@
 ## Overview
 LDK provides a ```FeeEstimator``` trait which, once implemented, assists in variety of on-chain and off-chain tasks. It's important to note that the ```FeeEstimator``` only describes the architectural requirements that must be satisfied to successfully incorporate LDK into your project. It does not, itself, provide the logic or implementation to calculate a feerate. 
 
-In LDK, feerates are separated into seven categories. Each category is known as a ```ConfirmationTarget```. We'll provide a brief review of these shortly, but, for now, it's sufficient to understand that these categories represent various scenarios in which we need feerate information. For example, one ```ConfirmationTarget``` is ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee```, which describes the lowest feerate we will allow our channel counterparty to have in an anchor channel.
+In LDK, feerates are separated into eight categories. Each category is known as a ```ConfirmationTarget```. We'll provide a brief review of these shortly, but, for now, it's sufficient to understand that these categories represent various scenarios in which we need feerate information. For example, one ```ConfirmationTarget``` is ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee```, which describes the lowest feerate we will allow our channel counterparty to have in an anchor channel.
 
 Feerates and their functionality within LDK can be conceptually separated into on-chain (Bitcoin) and off-chain (Lightning Network) tasks.
 
 #### On-Chain
-Lightning's security model is dependent on the ability to confirm a claim transaction under a variety of circumstances, such as before a timelock expires. To ensure that LDK is able to confirm claim transactions in a timely manner or bump the fee on an existing transaction, LDK utilizes the ```FeeEstimator``` to fetch feerates for high priority transactions. For example, the ```ConfirmationTarget::OnChainSweep``` specifies the feerate used when we have funds available on-chain that must be spent before a certain expiry time, beyond which our counterparty could potentially steal them. Additionally, the ```ConfirmationTarget::OutputSpendingFee``` is used by the ```OutputSweeper``` utility to ensure that, after channel closure, all funds are eventually swept to an onchain address controlled by the user.
+Lightning's security model is dependent on the ability to confirm a claim transaction under a variety of circumstances, such as before a timelock expires. To ensure that LDK is able to confirm claim transactions in a timely manner or bump the fee on an existing transaction, LDK utilizes the ```FeeEstimator``` to fetch feerates for high priority transactions. For example, the ```ConfirmationTarget::UrgentOnChainSweep``` specifies the feerate used when we have funds available on-chain that must be spent before a certain expiry time, beyond which our counterparty could potentially steal them. Additionally, the ```ConfirmationTarget::OutputSpendingFee``` is used by the ```OutputSweeper``` utility to ensure that, after channel closure, all funds are eventually swept to an onchain address controlled by the user.
 
 #### Off-Chain
-From an off-chain perspective, the ```FeeEstimator``` provides vital information that is used when opening, closing, and operating channels with peers on the Lightning Network. For example, when opening an inbound channel or updating an existing channel with a counterparty, LDK will compare the counterparty's proposed feerate with the minimum feerate that is allowed for that type of channel (ex: anchor or non-anchor channel). If the proposed fee is too low, LDK may return an error and suggest closing the channel. During these operations, LDK will reference the ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee``` and the ```ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee```. Therefore, it's recommended to ensure that the minimum allowable fees are not set too high, thus increasing the risk that a peer's proposed feerate is too low, potentially resulting in a force closure. See the [**Best Practices**](#best-practices) section in this documentation for more helpful tips when implementing LDK's ```FeeEstimator```.
+From an off-chain perspective, the ```FeeEstimator``` provides vital information that is used when opening, closing, and operating channels with peers on the Lightning Network. For example, when opening an inbound channel or updating an existing channel with a counterparty, LDK will compare the counterparty's proposed feerate with the minimum feerate that is allowed for that type of channel (e.g., anchor or non-anchor channel). If the proposed fee is too low, LDK may return an error and suggest closing the channel. During these operations, LDK will reference the ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee``` and the ```ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee```. Therefore, it's recommended to ensure that the minimum allowable fees are not set too high, thus increasing the risk that a peer's proposed feerate is too low, potentially resulting in a force closure.
+
+On the other hand, when determining if a counterparty's proposed feerate is too high, LDK will reference the ```ConfirmationTarget::MaximumFeeEstimate```. This ```ConfirmationTarget``` is particularly important, as it helps a node distinguish between reasonably high fees (e.g., during high-fee environments) and purposefully high fees (e.g., griefing attacks). See the [**Best Practices**](#best-practices) section in this documentation for more helpful tips when implementing LDK's ```FeeEstimator```.
 
 Another instance where LDK utilizes the ```FeeEstimator``` is during a cooperative channel closure. In this case, LDK references the ```ConfirmationTarget::ChannelCloseMinimum``` and ```ConfirmationTarget::NonAnchorChannelFee``` to estimate a feerate range, which is then proposed to the counterparty for closing the channel.
 
@@ -43,20 +45,22 @@ The ```ConfirmationTarget``` enables the user to define the feerate that LDK wil
 ### Estimating Fees
 The end goal is to implement the function ```get_est_sat_per_1000_weight``` such that it will return a feerate in sats/KW (satoshis-per-byte * 250) for each of the ```ConfirmationTarget``` options. Therefore, the question is: **how should we determine the right feerate to provide when ```get_est_sat_per_1000_weight``` is called?**
 
-A popular approach is to fetch feerate information from a third-party such as mempool.space by sending a GET request to their [get-recommended-fees](https://mempool.space/docs/api/rest#get-recommended-fees) endpoint. Another option is to connect to your own local mempool. Depending on which approach you take, you may get fee estimates that are already separated into categories (ex: high, medium, low), or you may have to request fee estimates with a specific confirmation target in mind (ex: fetching fees for a transaction that you want to be mined within the next 6 blocks). Regardless of your approach, you will ultimately have to map the feerate estimate back to each ```ConfirmationTarget```. To help make this easier, a table has been provided below with recommendations for how you could map each ```ConfirmationTarget``` to both a mempool.space fee category and the estimated number of blocks each ```ConfirmationTarget``` may represent. Please keep in mind, these are only recommendations. In practice, confirmation targets are influenced by each developer's fee strategy and risk-tolerance and may change accordingly.
+A popular approach is to fetch feerate information from a third-party such as mempool.space by sending a GET request to their [get-recommended-fees](https://mempool.space/docs/api/rest#get-recommended-fees) endpoint. Another option is to connect to your own local mempool. Depending on which approach you take, you may get fee estimates that are already separated into categories (e.g., high, medium, low), or you may have to request fee estimates with a specific confirmation target in mind (e.g., fetching fees for a transaction that you want to be mined within the next 6 blocks). Regardless of your approach, you will ultimately have to map the feerate estimate back to each ```ConfirmationTarget```. To help make this easier, a table has been provided below with recommendations for how you could map each ```ConfirmationTarget``` to both a mempool.space fee category and the estimated number of blocks each ```ConfirmationTarget``` may represent. Please keep in mind, these are only recommendations. In practice, confirmation targets are influenced by each developer's fee strategy and risk-tolerance and may change accordingly.
 
 | ConfirmationTarget| mempool.space Category | Number of Blocks |
 | :---------------- | :------: | :----: |
-| OnChainSweep        |   hour_fee   | 6 |
-| MinAllowedAnchorChannelRemoteFee           |   minimum_fee   | 1008 |
-| MinAllowedNonAnchorChannelRemoteFee    |  economy_fee   | 144 |
-| AnchorChannelFee |  minimum_fee   | 1008 |
-| NonAnchorChannelFee |  economy_fee   | 12 |
-| ChannelCloseMinimum |  economy_fee   | 144 |
-| OutputSpendingFee |  economy_fee   | 12 |
+| MaximumFeeEstimate        |   fastestFee   | 1 |
+| UrgentOnChainSweep        |   hourFee   | 6 |
+| MinAllowedAnchorChannelRemoteFee           |   minimumFee   | 1008 |
+| MinAllowedNonAnchorChannelRemoteFee    |  economyFee   | 144 |
+| AnchorChannelFee |  economyFee   | 144 |
+| NonAnchorChannelFee |  economyFee   | 12 |
+| ChannelCloseMinimum |  economyFee   | 144 |
+| OutputSpendingFee |  economyFee   | 12 |
 
-**NOTE**: Setting ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee``` or ```ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee``` **too high**, will increase the risk that a peer's proposed feerate is, comparatively, too low, potentially resulting in a force closure. Similarly, setting ```ConfirmationTarget::AnchorChannelFee``` or ```ConfirmationTarget::NonAnchorChannelFee``` **too low**, will increase the risk that your node's proposed feerate is, comparatively, too low, potentially resulting in a force closure.
+**NOTE**: Setting ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee``` or ```ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee``` **too high**, will increase the risk that a peer's proposed feerate is, comparatively, too low, potentially resulting in a force closure. Similarly, setting ```ConfirmationTarget::AnchorChannelFee``` or ```ConfirmationTarget::NonAnchorChannelFee``` **too low**, will increase the risk that your node's proposed feerate is, comparatively, too low, potentially resulting in a force closure. 
 
+Relatedly, recall that ```ConfirmationTarget::MaximumFeeEstimate``` helps to avoid force-closures by setting the upper bound for an acceptable proposed feerate from a peer. Therefore, this should be the most aggressive (i.e., highest) feerate estimate available.
 
 ### General Architecture Approaches
 Now that we've seen a few approaches towards retrieving feerate estimates such that we can return a recommended fee for each ```ConfirmationTarget```, let's review some best practices for ```FeeEstimator``` architecture.
@@ -79,11 +83,11 @@ A savvy reader may have noticed that the above architecture is not very performa
 While mempool.space serves as the primary example in this documentation, it is not the only third-party option for retrieving feerate estimates. A few more options are listed below. For completeness, mempool.space is also included below.
 | Third Party| API Documentation | Response Type |
 | :---------------- | :------: | :----: |
-| Mempool.space  |   [API Docs](https://mempool.space/docs/api/rest#get-recommended-fees) | Categories (ex: fastestFee, halfHourFee, hourFee, economyFee, minimumFee)|
+| Mempool.space  |   [API Docs](https://mempool.space/docs/api/rest#get-recommended-fees) | Categories (e.g., fastestFee, halfHourFee, hourFee, economyFee, minimumFee)|
 | Blockstream  |   [API Docs](https://github.com/Blockstream/esplora/blob/master/API.md#get-fee-estimates)  | Confirmation Targets (in blocks) |
 | bitcoiner.live    |  [API Docs](https://bitcoiner.live/doc/api)   | Confirmation Targets (in minutes) |
 | BitGo |  [API Docs](https://developers.bitgo.com/api/v2.tx.getfeeestimate)   | Confirmation Targets (in blocks) |
-| blockchain.info |  Missing Documentation. API is here: https://api.blockchain.info/mempool/fees  | Categories (ex: regular, priority) |
+| blockchain.info |  Missing Documentation. API is here: https://api.blockchain.info/mempool/fees  | Categories (e.g., regular, priority) |
 
 ## Coding Example
 Now that we've reviewed the basic architecture, let's code up an example to demonstrate how you can implement the ```FeeEstimator``` in your project. 
@@ -102,16 +106,16 @@ Once you've created the directory, open the ```Cargo.toml``` file, which Cargo u
 [package]
 name = "ldk-fee-estimator"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-lightning = { version = "0.0.123", features = ["max_level_trace"] }
-lightning-block-sync = { version = "0.0.123", features = [ "rpc-client" ] }
+lightning = { version = "0.0.124", features = ["max_level_trace"] }
+lightning-block-sync = { version = "0.0.124", features = [ "rpc-client" ] }
 lightning-invoice = { version = "0.31.0" }
-lightning-net-tokio = { version = "0.0.123" }
-lightning-persister = { version = "0.0.123" }
-lightning-background-processor = { version = "0.0.123" }
-lightning-rapid-gossip-sync = { version = "0.0.123" }
+lightning-net-tokio = { version = "0.0.124" }
+lightning-persister = { version = "0.0.124" }
+lightning-background-processor = { version = "0.0.124" }
+lightning-rapid-gossip-sync = { version = "0.0.124" }
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }  # Async runtime, required for reqwest
@@ -178,12 +182,13 @@ Another reason we need default fee estimates is so that we can create instances 
 ```rust
 pub fn default_fee_from_conf_target(confirmation_target: ConfirmationTarget) -> u32 {
     match confirmation_target {
+        ConfirmationTarget::MaximumFeeEstimate => 75 * 250,
         ConfirmationTarget::MinAllowedAnchorChannelRemoteFee => 10 * 250,
         ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee => 10 * 250,
         ConfirmationTarget::ChannelCloseMinimum => 20 * 250,
         ConfirmationTarget::AnchorChannelFee => 20 * 250,
         ConfirmationTarget::NonAnchorChannelFee => 30 * 250,
-        ConfirmationTarget::OnChainSweep => 50 * 250,
+        ConfirmationTarget::UrgentOnChainSweep => 50 * 250,
         ConfirmationTarget::OutputSpendingFee => 10 * 250,
     }
 }
@@ -196,9 +201,16 @@ Now that we've built the functionality to fetch feerates, we can start linking e
 pub fn new() -> Self {
     let mut fee_rate_cache = HashMap::new();
     use ConfirmationTarget::*;
-    for target in &[MinAllowedAnchorChannelRemoteFee, MinAllowedNonAnchorChannelRemoteFee,
-                    ChannelCloseMinimum, AnchorChannelFee, NonAnchorChannelFee,
-                    OnChainSweep, OutputSpendingFee] {
+        for target in &[
+            MinAllowedAnchorChannelRemoteFee,
+            MinAllowedNonAnchorChannelRemoteFee,
+            ChannelCloseMinimum,
+            AnchorChannelFee,
+            NonAnchorChannelFee,
+            UrgentOnChainSweep,
+            OutputSpendingFee,
+            MaximumFeeEstimate,
+        ] {
         let default_fee = Self::default_fee_from_conf_target(*target);
         fee_rate_cache.insert(*target, default_fee);
     }
@@ -220,7 +232,8 @@ pub async fn update_fees(&mut self) -> Result<(), reqwest::Error> {
 
     match fee_rates {
         Ok(rates) => {
-            self.fee_rate_cache.insert(ConfirmationTarget::OnChainSweep, rates.fastest_fee * 250 as u32);
+            self.fee_rate_cache.insert(ConfirmationTarget::MaximumFeeEstimate, rates.fastest_fee * 250 as u32);
+            self.fee_rate_cache.insert(ConfirmationTarget::UrgentOnChainSweep, rates.fastest_fee * 250 as u32);
             self.fee_rate_cache.insert(ConfirmationTarget::OutputSpendingFee, rates.fastest_fee * 250 as u32);
             self.fee_rate_cache.insert(ConfirmationTarget::NonAnchorChannelFee, rates.economy_fee * 250 as u32);
             self.fee_rate_cache.insert(ConfirmationTarget::AnchorChannelFee, rates.minimum_fee * 250 as u32);
@@ -267,7 +280,7 @@ Now that the ```MyAppFeeEstimator``` has been completed, we can  create an insta
 
 In the below code, we start by creating ```fee_estimator```, an instance of the ```MyAppFeeEstimator```. Remember, since the ```fee_estimator``` is originally initialized with default values, we'll have to call ```update_fees()``` to fetch feerates from mempool.space and insert those updates into our cache.
 
-We then define two fee targets, ```high_fee_target``` and ```low_fee_target``` for the ```ConfirmationTarget::OnChainSweep``` and ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee```. Finally, we'll pass these confirmation targets into ```fee_estimator.get_est_sat_per_1000_weight``` and print the feerates (sats/KW) to the terminal.
+We then define two fee targets, ```high_fee_target``` and ```low_fee_target``` for the ```ConfirmationTarget::UrgentOnChainSweep``` and ```ConfirmationTarget::MinAllowedAnchorChannelRemoteFee```. Finally, we'll pass these confirmation targets into ```fee_estimator.get_est_sat_per_1000_weight``` and print the feerates (sats/KW) to the terminal.
 
 One best-practice that was not implemented in this demo but is left as an exercise to the developer is refreshing the updates every 5-10 minutes. One approach toward accomplishing that would be to keep track of the last time the ```fee_estimator``` fees were refreshed and create a background process to update those fees periodically. Another exercise that is left to the reader is to create additional functionality within the ```MyAppFeeEstimator``` to retrieve the feerate for custom circumstances. For example, you could create a function called ```get_high_feerate```, which takes no arguments and, instead, returns the feerate that should be used for a high-priority transaction. If you'd like to review a production-quality implementation of a ```FeeEstimator```, you can review LDK Node's implementation [here](https://github.com/lightningdevkit/ldk-node/blob/main/src/fee_estimator.rs).
 ```rust
@@ -280,7 +293,7 @@ async fn main() {
     }
 
     // Example of calling 'get_est_sat_per_1000_weight' with a specific confirmation target
-    let high_fee_target = ConfirmationTarget::OnChainSweep;
+    let high_fee_target = ConfirmationTarget::UrgentOnChainSweep;
     let low_fee_target = ConfirmationTarget::MinAllowedAnchorChannelRemoteFee;
     println!("Feerate for {:?}: {:?}", high_fee_target, fee_estimator.get_est_sat_per_1000_weight(high_fee_target));
     println!("Feerate for {:?}: {:?}", low_fee_target, fee_estimator.get_est_sat_per_1000_weight(low_fee_target));
@@ -331,7 +344,16 @@ impl MyAppFeeEstimator {
     pub fn new() -> Self {
         let mut fee_rate_cache = HashMap::new();
         use ConfirmationTarget::*;
-        for target in &[MinAllowedAnchorChannelRemoteFee, MinAllowedNonAnchorChannelRemoteFee, ChannelCloseMinimum, AnchorChannelFee, NonAnchorChannelFee, OnChainSweep, OutputSpendingFee] {
+        for target in &[
+            MinAllowedAnchorChannelRemoteFee,
+            MinAllowedNonAnchorChannelRemoteFee,
+            ChannelCloseMinimum,
+            AnchorChannelFee,
+            NonAnchorChannelFee,
+            UrgentOnChainSweep,
+            OutputSpendingFee,
+            MaximumFeeEstimate,
+        ] {
             let default_fee = Self::default_fee_from_conf_target(*target);
             fee_rate_cache.insert(*target, default_fee);
         }
@@ -346,7 +368,8 @@ impl MyAppFeeEstimator {
 
         match fee_rates {
             Ok(rates) => {
-                self.fee_rate_cache.insert(ConfirmationTarget::OnChainSweep, rates.fastest_fee * 250 as u32);
+                self.fee_rate_cache.insert(ConfirmationTarget::MaximumFeeEstimate, rates.fastest_fee * 250 as u32);
+                self.fee_rate_cache.insert(ConfirmationTarget::UrgentOnChainSweep, rates.fastest_fee * 250 as u32);
                 self.fee_rate_cache.insert(ConfirmationTarget::OutputSpendingFee, rates.fastest_fee * 250 as u32);
                 self.fee_rate_cache.insert(ConfirmationTarget::NonAnchorChannelFee, rates.economy_fee * 250 as u32);
                 self.fee_rate_cache.insert(ConfirmationTarget::AnchorChannelFee, rates.minimum_fee * 250 as u32);
@@ -370,12 +393,13 @@ impl MyAppFeeEstimator {
 
     pub fn default_fee_from_conf_target(confirmation_target: ConfirmationTarget) -> u32 {
         match confirmation_target {
+            ConfirmationTarget::MaximumFeeEstimate => 75 * 250,
             ConfirmationTarget::MinAllowedAnchorChannelRemoteFee => 3 * 250,
             ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee => 3 * 250,
             ConfirmationTarget::ChannelCloseMinimum => 10 * 250,
             ConfirmationTarget::AnchorChannelFee => 10 * 250,
             ConfirmationTarget::NonAnchorChannelFee => 20 * 250,
-            ConfirmationTarget::OnChainSweep => 50 * 250,
+            ConfirmationTarget::UrgentOnChainSweep => 50 * 250,
             ConfirmationTarget::OutputSpendingFee => 50 * 250,
         }
     }
@@ -398,7 +422,7 @@ async fn main() {
     }
 
     // Example of calling 'get_est_sat_per_1000_weight' with a specific confirmation target
-    let high_fee_target = ConfirmationTarget::OnChainSweep;
+    let high_fee_target = ConfirmationTarget::UrgentOnChainSweep;
     let low_fee_target = ConfirmationTarget::MinAllowedAnchorChannelRemoteFee;
     println!("Feerate for {:?}: {:?}", high_fee_target, fee_estimator.get_est_sat_per_1000_weight(high_fee_target));
     println!("Feerate for {:?}: {:?}", low_fee_target, fee_estimator.get_est_sat_per_1000_weight(low_fee_target));
