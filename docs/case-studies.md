@@ -43,11 +43,6 @@ lastUpdated: false
       <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
     </div>
     <div class="case-study-item">
-      <a href="https://bluewallet.io/" target="_blank"><img src="./assets/blue-wallet.png" /></a>
-      <h3><a href="https://bluewallet.io/" target="_blank">Blue Wallet</a></h3>
-      <p>A radically simple and powerful bitcoin and Lightning wallet</p>
-    </div>
-    <div class="case-study-item">
       <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
       <h3><a href="https://github.com/EttaWallet/EttaWallet" target="_blank">EttaWallet</a></h3>
       <p>A simple open-source wallet with a strong bias toward usability, accessibility, and UX</p>
@@ -238,11 +233,6 @@ lastUpdated: false
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
       <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
       <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
-    </div>
-    <div class="case-study-item">
-      <a href="https://bluewallet.io/" target="_blank"><img src="./assets/blue-wallet.png" /></a>
-      <h3><a href="https://bluewallet.io/" target="_blank">Blue Wallet</a></h3>
-      <p>A radically simple and powerful bitcoin and Lightning wallet</p>
     </div>
     <div class="case-study-item">
       <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>

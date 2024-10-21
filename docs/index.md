@@ -26,7 +26,7 @@ promoActionLink: "https://docs.rs/ldk-node/*/ldk_node/"
   <div class="case-studies-inner">
     <div class="logo-wrapper">
       <img src="./assets/bitkit.svg" />
-      <img src="./assets/mutiny.svg" />
+      <img src="./assets/alby.svg" />
       <img src="./assets/cashapp.svg" />
       <img src="./assets/lightspark.png" />
     </div>
