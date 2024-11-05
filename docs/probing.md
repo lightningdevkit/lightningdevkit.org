@@ -1,15 +1,15 @@
 # Probing and Path Finding
 
 ## The Challenge of Routing Payments on the Lightning Network
-The Lightning Development Kit (LDK) provides you with the software tools to run a node on the Lightning Network - a collection of tens of thousands of nodes that, together, enable cheap and private Bitcoin transactions. 
+The Lightning Development Kit (LDK) provides you with the software tools to build a node on the Lightning Network. The Lightning Network is a collection of tens of thousands of nodes that, together, enable cheap and private Bitcoin transactions.
 
-The challenge is that your node is just one among tens of thousands. While each node has its own internal representation of the Lightning Network Graph, the information within this graph is incomplete to optimally route payments. This is largely because, when nodes announce new (or updated) channels to the network, they do not specify how the capacity is distributed between the two channel parties, making it difficult to know for certain if a given channel is a viable option when routing payments. To further complicate things, your node may not be entirely certain that a given channel is online when routing a payment, further increasing the risk of payment failure.
+The challenge is that your node is just one among tens of thousands. While each node has its own internal representation of the Lightning Network graph, the information within this graph is incomplete to optimally route payments. This is largely because, when nodes announce new (or updated) channels to the network, they do not specify how the capacity is distributed between the two channel parties, making it difficult to know for certain if a given channel is a viable option when routing payments. To complicate matters further, liquidity distributions across channels fluctuate as payments move throughout the network. Without regular monitoring, your node’s estimates can quickly become outdated. There’s also the added uncertainty of whether a given channel is online when initiating a payment, increasing the likelihood of payment failure.
 
 This presents two fundamental challenges when routing payments on the Lightning Network:
 1) **Missing Information**: Nodes may not know if a given channel's liquidity is prohibitively unbalanced.
 2) **Path-Finding Optimization**: If multiple payment paths exist, we must decide which path is the best.
 
-To help address both of the above challenges, LDK provides a ```ProbabilisticScorer``` struct. This structure holds information about our node's current view of the Lightning Network graph, including an estimate of available liquidity within each channel. It also records historical liquidity observations, which are updated each time our node either fails or succeeds at making a payment (or probe). It's important to note that our node can have multiple ```ProbabilisticScorer``` in use simultaneously. Furthermore, this can actually be quite beneficial, as it allows our node to leverage multiple perspectives of the Lightning Network graph, helping to ensure we don't become too reliant on the same paths when exploring potential payment paths.
+To help address both of the above challenges, LDK provides a [```ProbabilisticScorer```](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScorer.html) struct. This structure holds information about our node's current view of the Lightning Network graph, including estimates of available liquidity within each channel. It also records historical liquidity observations, which are updated each time our node either fails or succeeds at making a payment (or probe).
 
 Ultimately, a ```ProbabilisticScorer``` is used to identify the optimal path for routing a payment by scoring each channel in a candidate path. With this information, the ```ProbabilisticScorer``` helps identify routes with a high probability of success while minimizing transaction fees.
 
@@ -31,22 +31,21 @@ If we'd like, we can repeat this process with varying amounts of sats to gain a 
 
 Probing best practices are discussed in more detail in  [**Best Practices**](#best-practices), however, for now, it's sufficient to note that LDK will update its view of the graph each time real and test payments either succeed or fail. Successes and failures are communicated to our LDK node via the [ScoreUpdate](https://docs.rs/lightning/latest/lightning/routing/scoring/trait.ScoreUpdate.html) trait. These successes and failures serve as historical data points and influence our node's current estimate of available liquidity for each channel.
 
-Given that the Lightning Network graph is constantly changing as payments flow throughout the ecosystem, our LDK node must account for the passage of time and assume that channel balances will change even if our node has not probed or otherwise interacted with a channel in a while. To accomplish this, LDK provides ```ProbabilisticScoringDecayParameters```. These parameters configure how each channel’s available liquidity estimates are updated over time. For example, one ```ProbabilisticScoringDecayParameters```configuration is ```liquidity_offset_half_life```. This configuration determines how frequently a channel's upper bound and lower bound available liquidity estimations are updated. For example, after the set time passes (default 6 hours), the channel’s lower bound estimate is cut in half, and the upper bound moves halfway to the channel’s total capacity. For example, if a channel has a 1 million sat capacity, and our node currently estimates its lower bound to be 200,000 sats and an upper bound to be 600,000 sats, then, after ```liquidity_offset_half_life```, it will be updated to 100,000 sats and 800,000 sats. While the ```ProbabilisticScoringDecayParameters``` can be customized, default parameters are provided. You can read more about the ```ProbabilisticScoringDecayParameters``` [here](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringDecayParameters.html).
+Given that the Lightning Network graph is constantly changing as payments flow throughout the ecosystem, our LDK node must account for the passage of time and assume that channel balances will change even if our node has not probed or otherwise interacted with a channel in a while. To accomplish this, LDK provides ```ProbabilisticScoringDecayParameters```. These parameters configure how each channel’s available liquidity estimates are updated over time. For example, one ```ProbabilisticScoringDecayParameters```configuration is ```liquidity_offset_half_life```. This configuration determines how frequently a channel's upper bound and lower bound available liquidity estimations are updated. For example, after the set time passes (default 6 hours), the channel’s lower bound estimate is cut in half, and the upper bound moves halfway to the channel’s total capacity. For example, if a channel has a 1 million sat capacity, and our node currently estimates its lower bound to be 200,000 sats and an upper bound to be 600,000 sats, then, after ```liquidity_offset_half_life```, it will be updated to 100,000 sats and 800,000 sats. The ```ProbabilisticScoringDecayParameters``` can be customized, but default settings are also available. For more details, please see the ```ProbabilisticScoringDecayParameters``` [docs](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringDecayParameters.html).
 
 ### Finding the Optimal Path
-The ```ProbabilisticScorer``` assists in finding the optimal path by providing our node with a perspective of the Lightning Network graph and the estimated available liquidity for each channel. To assist in finding the optimal payment route, LDK provides ```ProbabilisticScoringFeeParameters```. These fee parameters impact how our node optimizes its routing decisions. Broadly speaking, ```ProbabilisticScoringFeeParameters``` contains various parameters that help select paths with desirable properties (ex: fewer hops, reliable, private, low fees, etc.). For example, one setting is ```liquidity_penalty_amount_multiplier_msat```. This configuration defines a multiplier that is used in conjunction with the total amount flowing over the given channel and our node's estimated probability of successfully routing the payment through the channel. This configuration will give a larger penalty to channels that have a low probability of success, and that penalty will grow larger as the payment amount increases.
+The ```ProbabilisticScorer``` assists in finding the optimal path by providing our node with a perspective of the Lightning Network graph and the estimated available liquidity for each channel. To assist in finding the optimal payment route, LDK provides ```ProbabilisticScoringFeeParameters```. These fee parameters impact how our node optimizes its routing decisions. Broadly speaking, ```ProbabilisticScoringFeeParameters``` contains various parameters that help select paths with desirable properties (ex: fewer hops, reliable, private, low fees, etc.). For example, one setting is ```liquidity_penalty_amount_multiplier_msat```. This configuration defines a multiplier that is used in conjunction with the payment amount flowing over the given channel and our node's estimated probability of successfully routing the total amount (i.e., the payment and any inflight HTLCs) through the channel. This configuration will give a larger penalty to channels that have a low probability of success, and that penalty will grow larger as the payment amount increases.
 
-Similar to the ```ProbabilisticScoringDecayParameters```, ```ProbabilisticScoringFeeParameters``` parameters are customizable, but defaults are provided. You can read more about the ```ProbabilisticScoringFeeParameters``` [here](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringFeeParameters.html).
+Similar to the ```ProbabilisticScoringDecayParameters```, ```ProbabilisticScoringFeeParameters``` parameters are customizable, but defaults are provided. For more information, please visit the ```ProbabilisticScoringFeeParameters``` [docs](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringFeeParameters.html).
 
 ## The ```ProbabilisticScorer```
 
 As discussed earlier, the ```ProbabilisticScorer``` (seen below) is responsible for maintaining and updating our node's estimates of available channel liquidity.
 
 A ```ProbabilisticScorer``` has the following fields:
-- ```decay_params```: This field holds the decay parameters (```ProbabilisticScoringDecayParameters```) for the scorer. As mentioned above, these are customizable, but LDK also provides defaults. You can learn more about them [here](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringDecayParameters.html).
+- ```decay_params```: This field holds the decay parameters (```ProbabilisticScoringDecayParameters```) for the scorer. As mentioned above, these are customizable, but LDK also provides defaults. You can read more about them in the [docs](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringDecayParameters.html).
 - ```network_graph```: This field holds a reference to the network graph.
 - ```logger```: This field holds a reference to the logger.
-- ```channel_liquidities```: This field holds a ```HashMap```, which maps **short channel IDs** to ```ChannelLiquidity``` objects. These objects include liquidity estimates, historical data for the respective channels, and timestamps indicating when the liquidity estimates were last updated.
 
 Once implemented, the ```ProbabilisticScorer```, along with its parameters (```ProbabilisticScoringDecayParameters``` and ```ProbabilisticScoringFeeParameters```), becomes the backbone of path-finding in LDK. The next section will describe best practices for implementing, training, and serving the ```ProbabilisticScorer``` within your application.
 
@@ -56,7 +55,6 @@ where L::Target: Logger {
 	decay_params: ProbabilisticScoringDecayParameters,
 	network_graph: G,
 	logger: L,
-	channel_liquidities: HashMap<u64, ChannelLiquidity>,
 }
 ```
 
@@ -65,7 +63,7 @@ where L::Target: Logger {
 Before digging into best practices for probing, it's important to note that popular Lightning Network implementations such as Core Lightning (CLN), Lightning Network Daemon (LND), and Lightning Development Kit (LDK), have different internal representations of the Lightning Network. Therefore, it's not possible to simply "feed" CLN, LND, or LDK the same scoring file or information when setting up path-finding functionality.
 
 ### General Architecture Approaches
-Now, let's review general architectural approaches for implementing and updating a ```ProbabilisticScorer``` in an LDK node. Before getting into the weeds, it's important to note that a ```ProbabilisticScorer``` does not perform the probing itself. Instead, it is passed as a parameter when our node finds a route. For a simple analogy, imagine you seeking advice on how to get from New York City to Washington, DC. There are many paths you can take, but the path you choose will depend on the person you ask. One may suggest taking a train, another a bus, and another a plane.
+Now, let's review general architectural approaches for implementing and updating a ```ProbabilisticScorer``` in an LDK node. Before getting into the weeds, it's important to note that a ```ProbabilisticScorer``` does not perform the probing itself. Instead, it is passed as a parameter when our node finds a route. For a simple analogy, imagine you're seeking advice on how to get from New York City to Washington, DC. There are many paths you can take, but the path you choose will depend on the person you ask. One may suggest taking a train, another a bus, and another a plane.
 
 Similarly, the route-finding functionality in LDK is separate from the ```ProbabilisticScorer```, but it takes the scorer as input. If you provide a well-trained scorer, you will likely get a different route than if you provide a fresh scorer.
 
@@ -82,14 +80,19 @@ Regardless of which architectural approach you're taking, if you're setting up y
 2) **Leverage Your Routing History**: If you record a history of payments forwarded by your node, you can leverage that by identifying large or well-ranked nodes that are 1 or 2 hops beyond frequent next-hops from your node. The goal here is to attempt to identify heavily used paths for payments that route through your node. Of course, you do not know the final destination of each payment, which is why you will need to use some heuristics (ex: channel capacity, node rank, etc.) to estimate which paths are heavily used.
 3) **Probe Large Nodes**: As mentioned above, it can be beneficial to probe large nodes on the network, such as ACINQ. This is because large nodes can often be the final destination for payments, so probing these nodes will help your LDK node understand which paths are viable for varying payment amounts. It's also worth noting that since many channels on the Lightning Network are connected to large nodes, you will likely succeed in probing large nodes via the "Random Probing" approach.
 4) **Use Multiple ```ProbabilisticScorer```**: Your node can leverage multiple ```ProbabilisticScorer``` at once. Remember, each scorer has its own internal liquidity estimates and payment history for each channel it knows about. Therefore, it may be beneficial to use a new scorer, which has not been updated, to select a route and then update a different scorer. This approach would help ensure that your node doesn't keep probing the same paths, as your node's updated scorer will likely begin to identify and prefer certain paths once it's sufficiently updated.
-5) **Varry The Payment Amount**: Remember, a central part of the path-finding algorithm involves generating penalties for each channel so that your node can select the best path. A key variable when calculating the penalty for each channel is the payment amount. You will likely get different paths for the same source --> destination payment, depending on the amount. Therefore, it's important to varry the payment amount when setting up your application to probe the network. You can read more about the ```ProbabilisticScoringFeeParameters``` [here](https://docs.rs/lightning/latest/lightning/routing/scoring/struct.ProbabilisticScoringFeeParameters.html).
+5) **Vary The Payment Amount**: An intelligent probing setup will vary payment amounts. Two important reasons for doing this are listed below.
+   - **Finding New Routes**: Remember, a central part of the path-finding algorithm involves generating penalties for each channel so that your node can select the best path. A key variable when calculating the penalty for each channel is the payment amount. You will likely get different paths for the same source --> destination payment, depending on the amount.
+   - **Refining Channel Liquidity Estimates**: You can refine your node's estimates of a channel's liquidity by selectively probing that channel with an amount that falls between your node's minimum and maximum liquidity estimates for that channel. To do this, you would leverage [```lightning::routing::router::build_route_from_hops```](https://docs.rs/lightning/latest/lightning/routing/router/fn.build_route_from_hops.html). This function allows you to construct a custom route by providing the public keys of the nodes along the route. The success or failure of this probe payment will help your node narrow its liquidity estimate for the channel so that it's closer to the actual available liquidity.
+
+### A Note For Mobile Developers
+For mobile applications, developers should explore **Rapid Gossip Sync (RGS)**, which provides a quick and efficient way to update your node's view of the Lightning Network graph. By leveraging RGS, your application can quickly retrieve an up-to-date snapshot of the network graph from a semi-trusted server, significantly reducing sync time and data usage. For more information on RGS, you can read LDK's RGS [article](https://lightningdevkit.org/blog/announcing-rapid-gossip-sync/).
 
 ## Setting Up A ```ProbabilisticScorer```
 
 Now that we've reviewed the ```ProbabilisticScorer``` and provided an overview of what it does within LDK, let's discuss how to implement it so that our node can find the optimal route for a payment.
 
 #### Initializing the ```ProbabilisticScorer```
-We'll start by initializing the ```ProbabilisticScorer```. For this example, we'll assume that various components, such as a ```Logger``` and ```ChannelManager```, have already been created. If you would like to view documentation on how to initialize these, please see [here](https://lightningdevkit.org/building-a-node-with-ldk/setting-up-a-channel-manager/).
+We'll start by initializing the ```ProbabilisticScorer```. For this example, we'll assume that various components, such as a ```Logger``` and ```ChannelManager```, have already been created. If you would like to view the documentation on how to initialize these, please see the [docs](https://lightningdevkit.org/building-a-node-with-ldk/setting-up-a-channel-manager/).
 
 ```rust
 // Initialize the Logger.
@@ -126,7 +129,7 @@ pub(crate) fn read_scorer(
 ```
 
 #### Setting Up Our Probing Logic
-For this example, we'll build a simple prober that fetches a random node from our ```NetworkGraph``` and attempts to send that node a random payment - up to 500,000,000 milli-satoshis. We'll start by creating a function that fetches a random node from our ```NetworkGraph```. If we cannot find a node, the function will return, and we will not probe any nodes. If we're able to identify a node to probe, then we'll select a random payment amount of up to 500,000,000 milli-satoshis. As a reminder, 1 satoshi = 1,000 milli-satoshis. Finally, we'll get the public key for the node we selected and call ```send_probe```, which is defined below.
+For this example, we'll build a simple prober that fetches a random node from our ```NetworkGraph``` and attempts to send that node a random payment. We'll start by creating a function that fetches a random node from our ```NetworkGraph```. If we cannot find a node, the function will return, and we will not probe any nodes. If we're able to identify a node to probe, then we'll select a random payment amount of up to 500,000,000 milli-satoshis. As a reminder, 1 satoshi = 1,000 milli-satoshis. Finally, we'll get the public key for the node we selected and call ```send_probe```, which is defined later in this documentation.
 
 ```rust
 fn send_rand_probe(
@@ -216,9 +219,9 @@ fn send_probe(
 
 #### Updating Our Scorer 
 
-LDK leverages an event-driven architecture, allowing for asynchronous result notification. Therefore, to update our scorer over time, we'll want to inform our application that it should be on the lookout for payment or probing-related events, as these are what indicate to our node that a given route has succeeded or failed. The specific events that we should be watching for and handling are ```Event::PaymentPathFailed```, ```Event::PaymentPathSuccessful```, ```Event::ProbeSuccessful```, and ```Event::ProbeFailed```. There are many other event types. For extensive documentation of LDK events, please see [here](https://docs.rs/lightning/latest/lightning/events/enum.Event.html).
+LDK leverages an event-driven architecture, allowing for asynchronous result notification. Therefore, to update our scorer over time, we'll want to inform our application that it should be on the lookout for payment or probing-related events, as these are what indicate to our node that a given route has succeeded or failed. The specific events that we should be watching for and handling are ```Event::PaymentPathFailed```, ```Event::PaymentPathSuccessful```, ```Event::ProbeSuccessful```, and ```Event::ProbeFailed```. There are many other event types. For extensive documentation of LDK events, please see the [documentation](https://docs.rs/lightning/latest/lightning/events/enum.Event.html).
 
-To handle the above events and other tasks that either can or should run in the background, LDK provides the ```process_events_async``` function within the ```lightning-background-processor``` crate. When instantiated, this starts an asynchronous process of handling lightning network node operations, such as maintaining our node's view of the network graph, updating the scorer, and more. 
+To handle the above events and other tasks that either can or should run in the background, LDK provides the [```process_events_async```](https://docs.rs/lightning-background-processor/latest/lightning_background_processor/fn.process_events_async.html) function within the ```lightning-background-processor``` crate. When instantiated, this starts an asynchronous process of handling lightning network node operations, such as maintaining our node's view of the network graph, updating the scorer, and more. 
 
 To instantiate the background processor, you need to pass in the required components, handlers, and configuration parameters. It's worth noting that one of the handlers that is passed into this function is our own application's event handler. When the background processor picks up a new event, it will first intercept the event and, if applicable, handle it itself (ex: update and persist the scorer) before passing it on to the user's event handler.
 
@@ -255,7 +258,9 @@ let mut background_processor = tokio::spawn(process_events_async(
 ));
 ```
 
-Once the background processor is started, it will call ```update_scorer``` as it handles relevant events. For informational purposes, the code that is executed within the background processor to update the scorer is provided below, but you do not need to implement this yourself. As you can see, when payments or probes fail, we update our scorer, further refining its internal estimations of available liquidity on the Lightning Network so that we're better able to route "real" payments when the time comes.
+Once the background processor is started, it will call ```update_scorer``` as it handles relevant events. For informational purposes, the code that is executed within the background processor to update the scorer is provided below, but you do not need to implement this yourself.
+
+As you can see, when payments or probes fail, we update our scorer, further refining its internal estimations of available liquidity on the Lightning Network so that we're better able to route "real" payments when the time comes.
 
 ```rust
 /// Updates scorer based on event and returns whether an update occurred so we can decide whether
@@ -292,7 +297,7 @@ fn update_scorer<'a, S: 'static + Deref<Target = SC> + Send + Sync, SC: 'a + Wri
 }
 ```
 
-It's important that our scorer also observes the passage of time. This is because if our scorer has not received any recent updates for a channel, it will need to broaden its current estimates for available channel liquidity. You can read more about the ```time_passed``` parameter [here](https://docs.rs/lightning/latest/lightning/routing/scoring/trait.ScoreUpdate.html#tymethod.time_passed).
+It's important that our scorer also observes the passage of time. This is because if our scorer has not received any recent updates for a channel, it will need to broaden its current estimates for available channel liquidity. You can read more about the ```time_passed``` parameter in the [docs](https://docs.rs/lightning/latest/lightning/routing/scoring/trait.ScoreUpdate.html#tymethod.time_passed).
 
 Similar to handling payment and probe-related events, the background processor that we created in the previous section will call ```time_passed``` on our scorer and persist the updated scorer every 5 minutes.
 
@@ -307,7 +312,12 @@ Within your application, you will likely have a main entry point where you initi
 let probing_cm = Arc::clone(&channel_manager);
 let probing_graph = Arc::clone(&network_graph);
 let probing_logger = Arc::clone(&logger);
-let probing_scorer = Arc::clone(&scorer);
+// Create a fresh scorer for probing.
+let probing_scorer = Arc::new(RwLock::new(ProbabilisticScorer::new(
+	ProbabilisticScoringDecayParameters::default(),
+	probing_graph.clone(),
+	probing_logger.clone(),
+)));
 tokio::spawn(async move {
 	let mut probe_interval = tokio::time::interval(Duration::from_secs(60));
 	loop {
