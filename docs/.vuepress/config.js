@@ -76,6 +76,7 @@ const docsSidebar = [
       },
       "/key_management",
       "/fee_estimation",
+      "/probing",
       "/examples",
     ],
   },
@@ -239,6 +240,10 @@ module.exports = {
             {
               text: "Fee Estimation",
               link: "/fee_estimation/",
+            },
+            {
+              text: "Probing and Path Finding",
+              link: "/probing/",
             },
             {
               text: "Examples",
