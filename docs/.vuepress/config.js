@@ -281,7 +281,7 @@ module.exports = {
             },
             {
               text: "Code of Conduct",
-              link: "/code-of-conduct",
+              link: "/code-of-conduct/",
             },
           ],
         },
