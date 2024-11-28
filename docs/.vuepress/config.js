@@ -282,7 +282,6 @@ module.exports = {
             {
               text: "Code of Conduct",
               link: "/code_of_conduct",
-              rel: "noopener noreferrer",
             },
           ],
         },
