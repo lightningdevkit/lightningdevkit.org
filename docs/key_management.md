@@ -116,6 +116,7 @@ let ldkDerivationPath = try DerivationPath(path: "m/535h")
 let ldkChild = try bip32RootKey.derive(path: ldkDerivationPath)
 let ldkSeed = ldkChild.secretBytes()
 
+// Retrieve the current system time for uniqueness across restarts.
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
 let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
 
