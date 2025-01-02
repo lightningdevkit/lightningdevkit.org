@@ -13,7 +13,7 @@ To help address both of the above challenges, LDK provides a [```ProbabilisticSc
 
 Ultimately, a ```ProbabilisticScorer``` is used to identify the optimal path for routing a payment by scoring each channel in a candidate path. With this information, the ```ProbabilisticScorer``` helps identify routes with a high probability of success while minimizing transaction fees.
 
-### Estimating Channel Ballance Distribution
+### Estimating Channel Balance Distribution
 There is a bit of a "cold-start problem" when encountering a new channel, as we have little information on which to base our initial estimates for available liquidity. Therefore, it's important to start gathering data to build up our LDK node's internal estimates of channel balance distributions. To do this, we **"probe"** the network. **Probing** is a process where we send a payment with an *invalid* payment hash along a route. Since the payment hash is invalid, we know the payment will ultimately fail, so we're not concerned with losing funds. However, we can pay special attention to how the payment fails and learn important information about the Lightning Network graph. 
 
 For example, imagine our node has, via the gossip protocol, learned about the below path:
