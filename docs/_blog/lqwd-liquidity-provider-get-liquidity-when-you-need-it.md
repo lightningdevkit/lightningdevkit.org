@@ -17,6 +17,8 @@ Before the advent of LSPS2, receiving payments on the Lightning Network was frau
 Liquidity allocation was inefficient: static channels often resulted in unused capacity, tying up valuable funds that could have been better utilized elsewhere. Furthermore, scaling liquidity across the network required substantial investment and extensive pre-planning, making it
 challenging to achieve the flexibility and responsiveness required for a growing user base.
 
+![LQWD architecture](../assets/lqwd_lsp_node.png)
+
 # Why LSPS2 with LDK Node and Lightning Liquidity?
 
 LSPS2, integrated with LDK Node and the Lightning Liquidity crate, offers a transformative solution to these challenges. Its dynamic liquidity management enables channels to be created on demand, perfectly aligning with real-time payment requirements and eliminating the need for
