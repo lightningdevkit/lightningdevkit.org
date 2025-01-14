@@ -34,7 +34,7 @@ The process begins when a client initiates a liquidity request by interacting wi
 
 Following this, the client prepares an invoice that embeds the SCID and the LSP Node ID as route hints, ensuring that the payment route is well-defined. This invoice is then shared with the payer.
 
-When the payment is received with the SCID, the LSP Node takes over to execute a Just-In-Time(JIT) channel creation. A zero-confirmation channel is opened to the client, facilitating the payment transfer. The LSP Node seamlessly forwards the payment to the client while deducting
+When the payment is received with the SCID, the LSP Node takes over to execute a Just-In-Time (JIT) channel creation. A zero-confirmation channel is opened to the client, facilitating the payment transfer. The LSP Node seamlessly forwards the payment to the client while deducting
 the applicable channel fees, ensuring both efficiency and reliability throughout the process
 
 # Immediate Benefits
