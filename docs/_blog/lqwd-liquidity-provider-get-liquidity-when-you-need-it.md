@@ -44,6 +44,6 @@ creation eliminates the necessity for upfront investments in liquidity, making t
 
 # Conclusion
 
-The LSP Liquidity Provider (LQwD), built on LDK Node and the Lightning Liquidity crate, showcases how LSPS2 can revolutionize liquidity management on the Lightning Network. By offering JIT channels, this solution simplifies onboarding, reduces costs, and aligns network resources with real-time needs, paving the way for a more accessible and scalable Lightning Network.
+The LSP Liquidity Provider (LQwD), built on LDK Node and the Lightning Liquidity crate, showcases how LSPS2 / bLIP-52 can revolutionize liquidity management on the Lightning Network. By offering JIT channels, this solution simplifies onboarding, reduces costs, and aligns network resources with real-time needs, paving the way for a more accessible and scalable Lightning Network.
 
 For more information or collaboration opportunities, visit the LQwD [website](https://lqwdtech.com/).
