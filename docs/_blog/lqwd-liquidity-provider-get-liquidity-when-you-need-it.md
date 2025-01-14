@@ -21,7 +21,7 @@ challenging to achieve the flexibility and responsiveness required for a growing
 
 # Why LSPS2 / bLIP-52 with LDK Node and Lightning Liquidity?
 
-LSPS2, integrated with LDK Node and the Lightning Liquidity crate, offers a transformative solution to these challenges. Its dynamic liquidity management enables channels to be created on demand, perfectly aligning with real-time payment requirements and eliminating the need for
+LSPS2 / bLIP-52, integrated with LDK Node and the Lightning Liquidity crate, offers a transformative solution to these challenges. Its dynamic liquidity management enables channels to be created on demand, perfectly aligning with real-time payment requirements and eliminating the need for
 pre-established liquidity.
 
 The flexible and modular design of LDK Node, built on Rust and enhanced by the Lightning Liquidity crate, allows for the development of a highly customized and efficient LSP Node tailored to meet dynamic liquidity needs.
