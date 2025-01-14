@@ -39,7 +39,7 @@ the applicable channel fees, ensuring both efficiency and reliability throughout
 
 # Immediate Benefits
 
-The implementation of LSPS2 brings significant advantages to liquidity management on the Lightning Network. Clients can now receive funds without the need for pre-established channels, which greatly reduces friction during the onboarding process. The dynamic nature of channel
+The implementation of LSPS2 / bLIP-52 brings significant advantages to liquidity management on the Lightning Network. Clients can now receive funds without the need for pre-established channels, which greatly reduces friction during the onboarding process. The dynamic nature of channel
 creation eliminates the necessity for upfront investments in liquidity, making the solution both scalable and cost-effective. Furthermore, payment processing is optimized, with Just-In-Timechannels ensuring faster and more reliable transactions, enhancing the overall user experience.
 
 # Conclusion
