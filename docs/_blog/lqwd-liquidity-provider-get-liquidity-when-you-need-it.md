@@ -1,7 +1,7 @@
 ---
 title: "LQWD Liquidity Provider: Get Liquidity When You Need It"
 description: "Learn how LQWD built a custom LSP"
-date: "2025-01-13"
+date: "2025-01-14"
 authors:
   - Aziz Pulatov
 tags:
