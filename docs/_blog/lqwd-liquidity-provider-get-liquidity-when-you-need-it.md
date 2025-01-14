@@ -12,7 +12,7 @@ The rapid growth of the Lightning Network has created unprecedented demand for l
 
 # Challenges Before LSPS2 / bLIP-52
 
-Before the advent of LSPS2, receiving payments on the Lightning Network was fraught with limitations. Users were required to have pre-established channels, creating significant friction during the onboarding process and hindering adoption.
+Before the advent of LSPS2 / bLIP-52, receiving payments on the Lightning Network was fraught with limitations. Users were required to have pre-established channels, creating significant friction during the onboarding process and hindering adoption.
 
 Liquidity allocation was inefficient: static channels often resulted in unused capacity, tying up valuable funds that could have been better utilized elsewhere. Furthermore, scaling liquidity across the network required substantial investment and extensive pre-planning, making it
 challenging to achieve the flexibility and responsiveness required for a growing user base.
