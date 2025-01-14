@@ -10,7 +10,7 @@ tags:
 
 The rapid growth of the Lightning Network has created unprecedented demand for liquidity. Traditionally, receiving payments on the Lightning Network required pre-established channels which posed barriers to new users and hindered scalability. With the introduction of [LSPS2](https://github.com/lightning/blips/blob/master/blip-0052.md) and its Just-In-Time (JIT) channel negotiation capabilities, the Lightning Network can now provide liquidity exactly when needed, improving both accessibility and efficiency. By leveraging [LDK Node](https://lightningdevkit.org/blog/announcing-ldk-node/) (a higher-level wrapper of LDK) and the [Lightning Liquidity crate](https://github.com/lightningdevkit/rust-lightning/tree/main/lightning-liquidity)—both Rust-based implementations—we developed a specialized LSP Node [(LQwD)](https://lqwdtech.com/). This node enables real-time liquidity provisioning by dynamically creating channels, ensuring payments can be received without prior investments in channel capacity.
 
-# Challenges Before LSPS2
+# Challenges Before LSPS2 / bLIP-52
 
 Before the advent of LSPS2, receiving payments on the Lightning Network was fraught with limitations. Users were required to have pre-established channels, creating significant friction during the onboarding process and hindering adoption.
 
