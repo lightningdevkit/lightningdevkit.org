@@ -1,7 +1,7 @@
 ---
 title: "How we built our Sparknodes using LDK"
 description: "Learn how Lightspark used LDK to build their Lightning Network infrastructure"
-date: "2024-01-20"
+date: "2025-01-20"
 authors:
   - Lightspark Engineering
 tags:
