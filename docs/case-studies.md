@@ -148,6 +148,11 @@ lastUpdated: false
     <p>Enterprise-grade, fast, secure payments on Lightning</p>
   </div>
   <div class="case-study-item">
+    <a href="https://www.lqwdtech.com/" target="_blank"> <img src="./assets/lqwd.png" /></a>
+    <h3><a href="https://www.lqwdtech.com/" target="_blank">LQWD</a></h3>
+    <p>At the forefront of building transaction infrastructure on the Lightning Network</p>
+  </div>
+  <div class="case-study-item">
     <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
     <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
     <p>A Lightning node implementation for everyone</p>
@@ -288,6 +293,11 @@ lastUpdated: false
     <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
     <h3><a href="https://github.com/lndk-org/lndk" target="_blank">LNDK</a></h3>
     <p>A standalone daemon that aims to externally implement BOLT 12 functionality for LND</p>
+  </div>
+  <div class="case-study-item">
+    <a href="https://www.lqwdtech.com/" target="_blank"> <img src="./assets/lqwd.png" /></a>
+    <h3><a href="https://www.lqwdtech.com/" target="_blank">LQWD</a></h3>
+    <p>At the forefront of building transaction infrastructure on the Lightning Network</p>
   </div>
   <div class="case-study-item">
     <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
