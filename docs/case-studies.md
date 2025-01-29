@@ -41,6 +41,9 @@ lastUpdated: false
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
       <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
       <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
+      <a href="/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
       <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
@@ -72,11 +75,17 @@ lastUpdated: false
       <a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a>
       <h3><a href="https://mutinywallet.com/" target="_blank">Mutiny</a></h3>
       <p>A web-first unstoppable bitcoin wallet for everyone</p>
+      <a href="/blog/mutiny-uses-ldk-the-first-lightning-wallet-for-the-web/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
       <a href="https://albyhub.com/" target="_blank"><img src="./assets/alby.svg" /></a>
       <h3><a href="https://albyhub.com/" target="_blank">Alby Hub</a></h3>
       <p>With its own lightning node, connecting you to numerous applications</p>
+      <a href="/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
   </div>
 
@@ -109,6 +118,9 @@ lastUpdated: false
     <a href="https://cash.app/" target="_blank"> <img src="./assets/cash-app-logo.png" /></a>
     <h3><a href="https://cash.app/" target="_blank">Cash App</a></h3>
     <p>Send and spend, bank, and buy stocks or bitcoin</p>
+    <a href="/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   </div>
 
@@ -151,16 +163,25 @@ lastUpdated: false
     <a href="https://www.lqwdtech.com/" target="_blank"> <img src="./assets/lqwd.png" /></a>
     <h3><a href="https://www.lqwdtech.com/" target="_blank">LQWD</a></h3>
     <p>At the forefront of building transaction infrastructure on the Lightning Network</p>
+    <a href="/blog/lqwd-liquidity-provider-get-liquidity-when-you-need-it/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
     <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
     <p>A Lightning node implementation for everyone</p>
+    <a href="/blog/sensei-uses-ldk-to-build-a-multi-node-lightning-server-application/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
     <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
     <p>A bitcoin watchtower with a specific focus on Lightning</p>
+    <a href="/blog/teos-uses-ldk-to-build-open-source-watchtower/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://vls.tech/" target="_blank"><img src="./assets/vls.png" /></a>
@@ -228,6 +249,9 @@ lastUpdated: false
       <a href="https://albyhub.com/" target="_blank"><img src="./assets/alby.svg" /></a>
       <h3><a href="https://albyhub.com/" target="_blank">Alby Hub</a></h3>
       <p>With its own lightning node, connecting you to numerous apps</p>
+      <a href="/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
       <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
@@ -238,6 +262,9 @@ lastUpdated: false
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
       <h3><a href="https://bitkit.to/" target="_blank">Bitkit</a></h3>
       <p>The ultimate bitcoin toolkit, take charge of your digital life</p>
+      <a href="/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
       <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
@@ -248,6 +275,9 @@ lastUpdated: false
       <a href="https://cash.app/" target="_blank"> <img src="./assets/cash-app-logo.png" /></a>
       <h3><a href="https://cash.app/" target="_blank">Cash App</a></h3>
       <p>Send and spend, bank, and buy stocks or bitcoin</p>
+      <a href="/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
         <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
@@ -298,6 +328,9 @@ lastUpdated: false
     <a href="https://www.lqwdtech.com/" target="_blank"> <img src="./assets/lqwd.png" /></a>
     <h3><a href="https://www.lqwdtech.com/" target="_blank">LQWD</a></h3>
     <p>At the forefront of building transaction infrastructure on the Lightning Network</p>
+    <a href="/blog/lqwd-liquidity-provider-get-liquidity-when-you-need-it/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://mercurywallet.com/" target="_blank"><img src="./assets/mercury.png" /></a>
@@ -308,6 +341,9 @@ lastUpdated: false
     <a href="https://mutinywallet.com/" target="_blank"><img src="./assets/mutiny.png" /></a>
     <h3><a href="https://mutinywallet.com/" target="_blank">Mutiny</a></h3>
     <p>A web-first unstoppable bitcoin wallet for everyone</p>
+    <a href="/blog/mutiny-uses-ldk-the-first-lightning-wallet-for-the-web/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/RGB-Tools/rgb-lightning-node" target="_blank"><img src="./assets/github.png" /></a>
@@ -323,11 +359,17 @@ lastUpdated: false
     <a href="https://github.com/L2-Technology/sensei" target="_blank"><img src="./assets/sensei.png" /></a>
     <h3><a href="https://github.com/L2-Technology/sensei" target="_blank">Sensei</a></h3>
     <p>A Lightning node implementation for everyone</p>
+    <a href="/blog/sensei-uses-ldk-to-build-a-multi-node-lightning-server-application/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/talaia-labs/rust-teos" target="_blank"><img src="./assets/teos.png" /></a>
     <h3><a href="https://github.com/talaia-labs/rust-teos" target="_blank">TEOS</a></h3>
     <p>A bitcoin watchtower with a specific focus on Lightning</p>
+    <a href="/blog/teos-uses-ldk-to-build-open-source-watchtower/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/BitcoinDevShop/hidden-lightning-network" target="_blank"><img src="./assets/github.png" /></a>
