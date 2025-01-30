@@ -21,11 +21,6 @@ features:
     image: "/img/bitkit.svg"
     imageAlt: ""
     caseStudyLink: "/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/"
-  - title: "Fedimint"
-    details: "Manage federated ecash and a lightning node all in one application"
-    image: "/img/fedimint.png"
-    imageAlt: ""
-    caseStudyLink: "/blog/fedimint-lightning-gateway-uses-ldk-node-to-simplify-deployment-and-liquidity-management/"
 editLink: false
 lastUpdated: false
 ---
@@ -136,6 +131,9 @@ lastUpdated: false
     <a href="https://fedimint.org/" target="_blank"><img src="./assets/fedimint.png" /></a>
     <h3><a href="https://fedimint.org/" target="_blank">Fedimint</a></h3>
     <p>Server application for managing federated ecash and a self-custodial lightning node</p>
+    <a href="/blog/fedimint-lightning-gateway-uses-ldk-node-to-simplify-deployment-and-liquidity-management/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/kuutamolabs/lightning-knd" target="_blank"><img src="./assets/kuutamo.png" /></a>
@@ -263,6 +261,9 @@ lastUpdated: false
       <a href="https://fedimint.org/" target="_blank"><img src="./assets/fedimint.png" /></a>
       <h3><a href="https://fedimint.org/" target="_blank">Fedimint</a></h3>
       <p>Server application for managing federated ecash and a self-custodial lightning node</p>
+      <a href="/blog/fedimint-lightning-gateway-uses-ldk-node-to-simplify-deployment-and-liquidity-management/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
         <a href="https://github.com/fiksn/gossiper" target="_blank"><img src="./assets/github.png" /></a>
