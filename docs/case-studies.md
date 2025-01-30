@@ -140,6 +140,14 @@ lastUpdated: false
     <p>Tools and services that connect people to the Lightning Network</p>
   </div>
   <div class="case-study-item">
+    <a href="https://fedimint.org/" target="_blank"><img src="./assets/fedimint.png" /></a>
+    <h3><a href="https://fedimint.org/" target="_blank">Fedimint</a></h3>
+    <p>Server application for managing federated ecash and a self-custodial lightning node</p>
+    <a href="/blog/fedimint-lightning-gateway-uses-ldk-node-to-simplify-deployment-and-liquidity-management/" class="nav-link nav-link">
+      View case study
+    </a>
+  </div>
+  <div class="case-study-item">
     <a href="https://github.com/kuutamolabs/lightning-knd" target="_blank"><img src="./assets/kuutamo.png" /></a>
     <h3><a href="https://github.com/kuutamolabs/lightning-knd" target="_blank">kuutamo</a></h3>
     <p>A turn-key, end-to-end solution for running self-hosted nodes, anywhere</p>
@@ -192,7 +200,7 @@ lastUpdated: false
     <a href="https://voltage.cloud/" target="_blank"><img src="./assets/voltage.png" /></a>
     <h3><a href="https://voltage.cloud/" target="_blank">Voltage</a></h3>
     <p>Enterprise-grade infrastructure for the Lightning Network</p>
-  </div>  
+  </div>   
   </div>
 
   </template>
@@ -283,6 +291,14 @@ lastUpdated: false
         <a href="https://github.com/EttaWallet/EttaWallet" target="_blank"><img src="./assets/etta.png" /></a>
         <h3><a href="https://github.com/EttaWallet/EttaWallet" target="_blank">EttaWallet</a></h3>
         <p>A simple open-source wallet with a strong bias toward usability, accessibility, and UX</p>
+    </div>
+    <div class="case-study-item">
+      <a href="https://fedimint.org/" target="_blank"><img src="./assets/fedimint.png" /></a>
+      <h3><a href="https://fedimint.org/" target="_blank">Fedimint</a></h3>
+      <p>Server application for managing federated ecash and a self-custodial lightning node</p>
+      <a href="/blog/fedimint-lightning-gateway-uses-ldk-node-to-simplify-deployment-and-liquidity-management/" class="nav-link nav-link">
+        View case study
+      </a>
     </div>
     <div class="case-study-item">
         <a href="https://github.com/fiksn/gossiper" target="_blank"><img src="./assets/github.png" /></a>
