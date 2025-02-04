@@ -166,6 +166,9 @@ lastUpdated: false
     <a href="https://www.lightspark.com/" target="_blank"> <img src="./assets/lightspark.png" /></a>
     <h3><a href="https://www.lightspark.com/" target="_blank">Lightspark</a></h3>
     <p>Enterprise-grade, fast, secure payments on Lightning</p>
+    <a href="/blog/how-we-built-our-sparknodes-using-ldk/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://www.lqwdtech.com/" target="_blank"> <img src="./assets/lqwd.png" /></a>
@@ -334,6 +337,9 @@ lastUpdated: false
     <a href="https://www.lightspark.com/" target="_blank"> <img src="./assets/lightspark.png" /></a>
     <h3><a href="https://www.lightspark.com/" target="_blank">Lightspark</a></h3>
     <p>Enterprise-grade, fast, secure payments on Lightning</p>
+    <a href="/blog/how-we-built-our-sparknodes-using-ldk/" class="nav-link nav-link">
+      View case study
+    </a>
   </div>
   <div class="case-study-item">
     <a href="https://github.com/lndk-org/lndk" target="_blank"><img src="./assets/lndk.png" /></a>
