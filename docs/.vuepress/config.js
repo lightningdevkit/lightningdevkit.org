@@ -314,7 +314,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${(new Date()).getUTCFullYear()} BDK Developers`
+      copyright: `Copyright © ${(new Date()).getUTCFullYear()} LDK Developers`,
     },
   },
 };
