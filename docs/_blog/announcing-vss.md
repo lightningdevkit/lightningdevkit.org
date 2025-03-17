@@ -1,7 +1,7 @@
 ---
 title: "Announcing Versioned Storage Service (VSS)"
 description: "The Versioned Storage Service (VSS) provides a server-side storage solution for non-custodial mobile, web and hosted wallets."
-date: "2025-03-14"
+date: "2025-03-17"
 authors:
   - Gursharan Singh
 tags:
@@ -21,9 +21,9 @@ applications.
 VSS is a client-server storage framework for Lightning Network (LN) and Bitcoin wallet data. VSS primarily serves two
 core functionalities:
 
-* Recovery: VSS enables the restoration of states and wallet access, helping users regain their funds and control even
+- Recovery: VSS enables the restoration of states and wallet access, helping users regain their funds and control even
   in scenarios of device or data loss.
-* Multi-device Access: While this isn’t available now, future phases will allow the same wallet app across multiple
+- Multi-device Access: While this isn’t available now, future phases will allow the same wallet app across multiple
   devices to securely share and access the LN state, leading to consistent access to funds.
 
 Clients can also leverage VSS for general application metadata storage including payment history, user metadata, and
@@ -80,12 +80,12 @@ is integrated in LDK Node (written in Rust) using [VSS-rust-client](https://gith
 and there is also support for other languages such as Swift, Kotlin and Python
 through [UniFFI](https://mozilla.github.io/uniffi-rs/) bindings.
 
-```rust  
+```rust
 use ldk_node::Builder;
 
-fn main() {  
-let mut node_builder = Builder::new();  
-    ...  
+fn main() {
+let mut node_builder = Builder::new();
+    ...
     // Note: store_id can be freely set by the user and is useful for creating separate namespaces within storage.
     // However, it must remain fixed for the entire life of the node as it is used for database storage.
     let node = node_builder
@@ -96,10 +96,10 @@ let mut node_builder = Builder::new();
                 )
                 .unwrap();
 
-    node.start().unwrap();    
-    ...  
+    node.start().unwrap();
     ...
-}  
+    ...
+}
 ```
 
 ### Using with Other Applications
