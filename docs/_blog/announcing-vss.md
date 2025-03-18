@@ -55,7 +55,7 @@ Using VSS as the primary storage ensures that every state change is securely sto
 of funds and channels regardless of device loss.
 
 <div style="text-align: center;">
-    <img style="display: block; margin: auto;" src="../assets/vss-data-flow-simplified.png" alt="VSS High Level Data Flow (Simplified)">
+    <img style="display: block; margin: auto;" src="../assets/vss-data-flow-simplified.svg" alt="VSS High Level Data Flow (Simplified)">
     <p style="margin-top: 10px;">VSS High Level Data Flow (Simplified)</p>
 </div>
 
