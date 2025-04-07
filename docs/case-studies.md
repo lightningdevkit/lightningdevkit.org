@@ -135,6 +135,11 @@ lastUpdated: false
     <p>A financial infrastructure suite for developers and users</p>
   </div>
   <div class="case-study-item">
+    <a href="https://github.com/SurajNaidu0/AtomicLightningExchange" target="_blank"><img src="./assets/github.png" /></a>
+    <h3><a href="https://github.com/SurajNaidu0/AtomicLightningExchange" target="_blank">AtomicLightningExchange</a></h3>
+    <p>AtomicLightningExchange enables trustless swaps between Lightning Bitcoin and on-chain Bitcoin using atomic swaps</p>
+  </div>
+  <div class="case-study-item">
     <a href="https://cequals.xyz/" target="_blank"><img src="./assets/c=.png" /></a>
     <h3><a href="https://cequals.xyz/" target="_blank">c=</a></h3>
     <p>Tools and services that connect people to the Lightning Network</p>
@@ -268,6 +273,11 @@ lastUpdated: false
       <a href="https://atomicdex.io/en/" target="_blank"><img src="./assets/atomic.png" /></a>
       <h3><a href="https://atomicdex.io/en/" target="_blank">AtomicDEX</a></h3>
       <p>A multi-coin wallet, bridge, and DEX rolled into one app</p>
+    </div>
+    <div class="case-study-item">
+      <a href="https://github.com/SurajNaidu0/AtomicLightningExchange" target="_blank"><img src="./assets/github.png" /></a>
+      <h3><a href="https://github.com/SurajNaidu0/AtomicLightningExchange" target="_blank">AtomicLightningExchange</a></h3>
+      <p>AtomicLightningExchange enables trustless swaps between Lightning Bitcoin and on-chain Bitcoin using atomic swaps</p>
     </div>
     <div class="case-study-item">
       <a href="https://bitkit.to/" target="_blank"><img src="./assets/bitkit.png" /></a>
