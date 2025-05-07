@@ -1,0 +1,32 @@
+# Lightning Dev Kit
+
+> A complete Lightning implementation packaged as an SDK.
+
+Important notes:
+
+- Lightning Development Kit (LDK) is a full and completely standalone Lightning implementation with supporting modules enabling greater flexibility.
+
+## Docs
+
+- [Building a node with LDK](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/blob/main/docs/building-a-node-with-ldk/introduction.md): 
+The following tutorials will show you how to build the simplest lightning node using LDK
+- [Installation](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/installation.md)
+- [Setting up a ChannelManager](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/setting-up-a-channel-manager.md): 
+The ChannelManager is responsible for several tasks related to managing channel state. This includes keeping track of many channels, sending messages to appropriate channels, creating channels and more.
+- [Handling Events](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/handling-events.md): 
+LDK requires that you handle many different events throughout your app's life cycle.
+- [Setting up a PeerManager](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/setting-up-a-peer-manager.md):
+The PeerManager is responsible for managing a set of peer connections and data associated with those peers.
+- [Connect to Peers](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/connect-to-peers.md)
+- [Opening a Channel](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/opening-a-channel.md)
+- [Sending Payments](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/sending-payments.md)
+- [Receiving Payments](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/receiving-payments.md)
+- [Closing a Channel](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/closing-a-channel.md)
+
+## Examples
+
+- [Rust Sample Node](https://raw.githubusercontent.com/lightningdevkit/ldk-sample/refs/heads/main/src/main.rs)
+
+## LDK Node
+
+- [LDK Node](https://github.com/lightningdevkit/ldk-node/edit/main/README.md): A ready-to-go Lightning node library built using LDK and BDK.
