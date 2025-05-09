@@ -10,7 +10,8 @@ Important notes:
 
 - [Building a node with LDK](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/blob/main/docs/building-a-node-with-ldk/introduction.md): 
 The following tutorials will show you how to build the simplest lightning node using LDK
-- [Installation](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/installation.md)
+- [Installation](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/installation.md): 
+Learn how to install the Lightning Development Kit (LDK) and set up your environment.
 - [Setting up a ChannelManager](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/setting-up-a-channel-manager.md): 
 The ChannelManager is responsible for several tasks related to managing channel state. This includes keeping track of many channels, sending messages to appropriate channels, creating channels and more.
 - [Handling Events](https://raw.githubusercontent.com/lightningdevkit/lightningdevkit.org/refs/heads/main/docs/building-a-node-with-ldk/handling-events.md): 
