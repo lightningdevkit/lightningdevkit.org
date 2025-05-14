@@ -219,7 +219,7 @@ module.exports = {
             },
             {
               text: "Building a node with LDK",
-              link: "/building-a-node-with-ldk/introduction",
+              link: "/building-a-node-with-ldk/introduction/",
             },
             {
               text: "Running a sample LDK node",
