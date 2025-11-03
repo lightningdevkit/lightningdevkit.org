@@ -69,4 +69,4 @@ if let event = event.getValueAsFundingGenerationReady() {
 
 </CodeSwitcher>
 
-References: [Rust `Event` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java)
+References: [Rust `Event` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java)
