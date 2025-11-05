@@ -34,7 +34,7 @@ While Lithium is built in-house, LDK powers the Bitcoin side of this architectur
 - **Custom pathfinding and routing**, to integrate with Hydranet’s off-chain order book and decentralized off-chain network.
 - **Seamless integration**, allowing Lightning to coexist with Lithium in a single self-custodial application independent of the operating system.
 
-[IMAGE]
+![Hydranet architecture](../assets/hydranet-architecture.png)
 
 With LDK, Hydranet can now offer:
 
