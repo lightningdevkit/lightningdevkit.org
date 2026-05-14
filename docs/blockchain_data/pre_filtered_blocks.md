@@ -12,10 +12,9 @@ if a block contains relevant transactions before fetching it.
 So how does this work in practice? `ChainMonitor` is parameterized by an
 optional type that implements `chain::Filter`:
 
-<CodeSwitcher :languages="{rust:'Rust', java:'Java'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 impl chain::Filter for Blockchain {
 	fn register_tx(&self, txid: &Txid, script_pubkey: &Script) {
 		// <insert code for you to watch for this transaction on-chain>
@@ -28,10 +27,7 @@ impl chain::Filter for Blockchain {
 }
 ```
 
-  </template>
-  <template v-slot:java>
-
-```java
+```java [Java]
 Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 	@Override
 	public void register_tx(byte[] txid, byte[] script_pubkey) {
@@ -46,8 +42,7 @@ Filter tx_filter = Filter.new_impl(new Filter.FilterInterface() {
 });
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 When this is provided, `ChainMonitor` will call back to the filter as channels
 are opened and blocks connected. This gives the opportunity for the source to

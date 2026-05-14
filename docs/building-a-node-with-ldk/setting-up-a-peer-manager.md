@@ -6,10 +6,9 @@ The `PeerManager` is responsible for managing a set of peer connections and data
 
 To add a `PeerManager` to your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 use lightning::ln::peer_handler::{PeerManager};
 
 let mut ephemeral_bytes = [0; 32];
@@ -34,29 +33,19 @@ let peer_manager = PeerManager::new(
 );
 ```
 
-  </template>
+```java [Kotlin]
+import org.ldk.structs.PeerManager
 
-  <template v-slot:kotlin>
- 
-  ```java
-  import org.ldk.structs.PeerManager
-  
-  val peerManager: PeerManager = channelManagerConstructor.peer_manager;
-  ```
+val peerManager: PeerManager = channelManagerConstructor.peer_manager;
+```
 
-  </template>
+```Swift [Swift]
+import LightningDevKit
 
-  <template v-slot:swift>
- 
-  ```Swift
-  import LightningDevKit
-  
-  let peerManager: PeerManager = channelManagerConstructor.peerManager
-  ```
+let peerManager: PeerManager = channelManagerConstructor.peerManager
+```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** if you did not initialize `P2PGossipSync` in the previous step, you can initialize your own struct (which can be a dummy struct) that implements `RoutingMessageHandler`
 

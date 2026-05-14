@@ -5,10 +5,9 @@ string in accordance with BOLT 11. After parsing the invoice, you'll need to
 find a route from your node to the recipient and then make the payment using
 `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Parse the invoice.
 let invoice = Invoice::from_str(encoded_invoice)
 	.expect("ERROR: failed to parse invoice");
@@ -38,10 +37,7 @@ channel_manager.send_payment(&route, payment_hash, &payment_secret)
 	.expect("ERROR: failed to send payment");
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 // Get an invoice from the recipient/payee
 val invoice = Bolt11Invoice.from_str(recipientInvoice)
 val invoiceResult = (invoice as Result_Bolt11InvoiceParseOrSemanticErrorZ.Result_Bolt11InvoiceParseOrSemanticErrorZ_OK).res
@@ -60,11 +56,7 @@ if (res.is_ok) {
 }
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let invoiceStr = // get an invoice from the payee
 let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
 
@@ -89,9 +81,7 @@ if let invoiceVal = parsedInvoice.getValue() {
 }
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 # PaymentSent & PaymentFailed Event Handling
 
@@ -100,10 +90,9 @@ in a `PaymentSent` event with the preimage of the payment hash. Be sure to look
 out for a `PaymentFailed` event, if the payment fails for some reason, and act
 accordingly.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // In the event handler passed to BackgroundProcessor::start
 match event {
 	Event::PaymentSent { payment_preimage } => {
@@ -116,10 +105,7 @@ match event {
 }
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 // In the `handleEvent` method of ChannelManagerPersister implementation
 if(event is Event.PaymentSent) {
     // Handle successful payment
@@ -130,11 +116,7 @@ if(event is Event.PaymentFailed) {
 }
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // In the `handleEvent` method of ChannelManagerPersister implementation
 if let paymentSentEvent = event.getValueAsPaymentSent() {
   // Handle successful payment
@@ -143,8 +125,6 @@ if let paymentSentEvent = event.getValueAsPaymentSent() {
 }
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **References:** [Rust `PaymentSent` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentSent),[Rust `PaymentFailed` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentFailed), [Java/Kotlin `PaymentSent` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L464), [Java/Kotlin `PaymentFailed` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L512)

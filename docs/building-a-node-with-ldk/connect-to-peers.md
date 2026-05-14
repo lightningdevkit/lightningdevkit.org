@@ -6,10 +6,9 @@ Firstly we need to have the ability to do high performance I/O operations. LDK p
 
 **What it's used for**: making peer connections, facilitating peer data to and from LDK
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 use lightning_net_tokio; // use LDK's sample networking module
 
 let listen_port = 9735;
@@ -29,36 +28,25 @@ loop {
 }
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 val nioPeerHandler = channelManagerConstructor.nio_peer_handler
 val port = 9777
 nioPeerHandler.bind_listener(InetSocketAddress("127.0.0.1", port))
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let peerHandler = channelManagerConstructor.getTCPPeerHandler()
 let port = 9777
 peerHandler.bind(address: "127.0.0.1", port: port)
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 Connections to other peers are established with `PeerManager`. You'll need to know the pubkey and address of another node that you want as a peer. Once the connection is established and the handshake is complete, `PeerManager` will show the peer's pubkey in its list of peers.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, address).await {
 	Some(connection_closed_future) => {
 		let mut connection_closed_future = Box::pin(connection_closed_future);
@@ -82,11 +70,7 @@ match lightning_net_tokio::connect_outbound(Arc::clone(&peer_manager), pubkey, a
 }
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
- 
-```java
+```java [Kotlin]
 try {
     // Connect and wait for the handshake to complete.
     val address: SocketAddress = InetSocketAddress(hostname, port)
@@ -103,11 +87,7 @@ try {
 
 ````
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // Connect and wait for the handshake to complete.
 let pubKey = // Insert code to retrieve peer's pubKey as byte array
 let address = // Insert code to retrieve peer's address
@@ -119,9 +99,7 @@ let peerManager: PeerManager = channelManagerConstructor.peerManager
 let peerNodeIds = peerManager.getPeerNodeIds()
 ````
 
-  </template>
-  
-</CodeSwitcher>
+:::
 
 **Dependencies:** `PeerManager`
 

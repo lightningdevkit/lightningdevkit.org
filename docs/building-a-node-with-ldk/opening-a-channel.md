@@ -11,10 +11,9 @@ Now that you have a peer, you can open a channel with them using `ChannelManager
 
 Channels can be announced to the network or can remain private, which is controlled via `UserConfig::announced_channel`.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let amount = 10_000;
 let push_msat = 1_000;
 let user_id = 42;
@@ -28,11 +27,7 @@ match channel_manager.create_channel(pubkey, amount, push_msat, user_id, Some(co
 }
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 val amount = 100_000L
 val pushMsat = 1_000L
 val userChannelId = UInt128(Random.nextLong())
@@ -50,11 +45,7 @@ val createChannelResult = channelManager.create_channel(
 )
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let amount: UInt64 = 100000
 let pushMsat: UInt64 = 1000
 let userId: [UInt8] = toBytesArray(UUID().uuid)
@@ -75,9 +66,7 @@ let createChannelResults = channelManager.createChannel(
 )
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 # FundingGenerationReady Event Handling
 
@@ -89,10 +78,9 @@ Remember that the funding transaction must only spend [SegWit](https://bitcoinop
 
 :::
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-<template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 match event {
@@ -120,11 +108,7 @@ match event {
 }
 ```
 
-</template>
-
-<template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 if (event is Event.FundingGenerationReady) {
@@ -156,11 +140,7 @@ fun buildFundingTx(value: Long, script: ByteArray): Transaction {
 }
 ```
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // After the peer responds with an `accept_channel` message, an
 // Event.FundingGenerationReady event will be generated.
 if let event = event.getValueAsFundingGenerationReady() {
@@ -193,9 +173,7 @@ func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
 }
 ```
 
-</template>
-
-</CodeSwitcher>
+:::
 
 **References:** [Rust `FundingGenerationReady` docs](https://docs.rs/lightning/*/lightning/util/events/enum.Event.html#variant.FundingGenerationReady), [Java `FundingGenerationReady` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L95)
 
@@ -203,10 +181,9 @@ func buildFundingTx(script: Script, amount: UInt64) -> Transaction? {
 
 After crafting the funding transaction you'll need to send it to the Bitcoin network where it will hopefully be mined and added to the blockchain. You'll need to watch this transaction and wait for a minimum of 6 confirmations before the channel is ready to use.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
 impl BroadcasterInterface for YourTxBroadcaster {
 	fn broadcast_transactions(&self, txs: &[&Transaction]) {
@@ -234,12 +211,7 @@ impl BroadcasterInterface for YourTxBroadcaster {
 
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
-
+```java [Kotlin]
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
 object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
     override fun broadcast_transactions(txs: Array<out ByteArray>??) {
@@ -263,11 +235,7 @@ object YourTxBroadcaster : BroadcasterInterface.BroadcasterInterfaceInterface {
 
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // Using BDK (Bitcoin Dev Kit) to broadcast a transaction via the esplora client
 import BitcoinDevKit
 
@@ -289,9 +257,7 @@ class MyBroacaster: BroadcasterInterface {
 }
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **References:** [Rust `BroadcasterInterface` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java/Kotlin `BroadcasterInterface` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 

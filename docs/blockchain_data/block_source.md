@@ -4,10 +4,9 @@ Implementing the `BlockSource` interface requires defining methods for fetching
 headers, blocks, and the best block hash.
 
 
-<CodeSwitcher :languages="{rust:'Rust'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 impl BlockSource for Blockchain {
 	fn get_header<'a>(&'a mut self, header_hash: &'a BlockHash, _height: Option<u32>) -> AsyncBlockSourceResult<'a, BlockHeaderData> {
 		// <insert code for fetching block headers>
@@ -23,8 +22,7 @@ impl BlockSource for Blockchain {
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 <!-- ADD JAVA EXAMPLE -->
 

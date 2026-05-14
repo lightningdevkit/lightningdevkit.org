@@ -2,10 +2,9 @@
 
 Begins the process of closing a channel. After this call (plus some timeout), no new HTLCs will be accepted on the given channel, and after additional timeout/the closing of all pending HTLCs, the channel will be closed on chain.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let channel_id = channel_manager
 	.list_channels()
 	.iter()
@@ -19,10 +18,8 @@ channel_manager.close_channel(&channel_id).expect("ERROR: Failed to close channe
 // Example: Unilateral close
 channel_manager.force_close_channel(&channel_id).expect("ERROR: Failed to close channel");
 ```
-  </template>
-  <template v-slot:kotlin>
 
-```kotlin
+```kotlin [Kotlin]
 val res = channelManager.close_channel(channelId, pubKey)
 
 if (res is Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_Err) {
@@ -34,10 +31,7 @@ if (res.is_ok) {
 }
 ```
 
-  </template>
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let channelId: [UInt8] = // Add Channel Id in bytes
 let counterpartyNodeId: [UInt8] = // Add Counterparty Node Id in bytes
 let res = channelManager.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
@@ -46,18 +40,16 @@ if res!.isOk() {
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 
 To claim Funds directly into a custom wallet like BDK wallet using a custom `KeysManager` see the [Key Management](/key_management.md) guide for more info.
 
 # SpendableOutputs Event Handling
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 Event::SpendableOutputs { outputs, channel_id: _ } => {
     // SpendableOutputDescriptors, of which outputs is a vec of, are critical to keep track
     // of! While a `StaticOutput` descriptor is just an output to a static, well-known key,
@@ -78,10 +70,7 @@ Event::SpendableOutputs { outputs, channel_id: _ } => {
 
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Example where we spend straight to our BDK based wallet
 if (event is Event.SpendableOutputs) {
     val outputs = event.outputs
@@ -114,10 +103,7 @@ if (event is Event.SpendableOutputs) {
 
 ```
 
-  </template>
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // Example where we spend straight to our BDK based wallet
 func handleEvent(event: Event) {
     if let event = event.getValueAsSpendableOutputs() {
@@ -144,8 +130,6 @@ func handleEvent(event: Event) {
 }
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.SpendableOutputs), [Java/Kotlin `SpendableOutputs` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L802)

@@ -4,10 +4,9 @@ LDK requires that you handle many different events throughout your app's life cy
 
 To start handling events in your application, run:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 use lightning::util::events::{Event};
 
 // In the event handler passed to BackgroundProcessor::start
@@ -24,11 +23,7 @@ match event {
 }
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
- 
-  ```kotlin
+```kotlin [Kotlin]
   import org.ldk.structs.Event
 
 if (event is Event.PaymentSent) {
@@ -45,11 +40,7 @@ if (event is Event.FundingGenerationReady) {
 
 ````
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 import LightningDevKit
 
 if let event = event.getValueAsPaymentSent() {
@@ -65,8 +56,6 @@ if let event = event.getValueAsFundingGenerationReady() {
 }
 ````
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 References: [Rust `Event` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java)

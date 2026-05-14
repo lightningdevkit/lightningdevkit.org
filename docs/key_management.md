@@ -6,21 +6,16 @@ However, LDK also allows to customize the way key material and entropy are sourc
 
 A `KeysManager` can be constructed simply with only a 32-byte seed and some random integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`):
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let mut random_32_bytes = [0; 32];
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
 let keys_interface_impl = lightning::sign::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Fill in key_seed with secure random data, or, on restart, reload the seed from disk.
 val key_seed = ByteArray(32)
 val keys_manager = KeysManager.of(
@@ -29,11 +24,7 @@ val keys_manager = KeysManager.of(
 )
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```swift
+```swift [Swift]
 // Fill in seed with secure random data, or, on restart, reload the seed from disk.
 let seed = [UInt8](repeating: 0, count: 32)
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
@@ -45,9 +36,7 @@ self.myKeysManager = KeysManager(
 )
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 # Creating a Unified Wallet
 
@@ -60,10 +49,9 @@ Using a [BDK](https://bitcoindevkit.org/)-based wallet the steps would be as fol
 3.  Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
 4.  Optional: use a custom `SignerProvider` implementation to have the BDK wallet provide the destination and shutdown scripts (see [Spending On-Chain Funds](#spending-on-chain-funds)).
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Use BDK to create and build the HD wallet
 let mnemonic = Mnemonic::parse_in_normalized(
         Language::English,
@@ -81,11 +69,7 @@ let cur = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
 let keys_manager = KeysManager::new(&ldk_seed, cur.as_secs(), cur.subsec_nanos());
 ```
 
- </template>
-
- <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Use BDK to create and build the HD wallet
 val mnemonic = Mnemonic.fromString("sock lyrics village put galaxy famous pass act ship second diagram pull")
 val bip32RootKey = DescriptorSecretKey(network = Network.TESTNET, mnemonic = mnemonic, password = null)
@@ -103,11 +87,7 @@ val keysManager = KeysManager.of(
 );
 ```
 
- </template>
-
- <template v-slot:swift>
-
-```swift
+```swift [Swift]
 // Use BDK to create and build the HD wallet
 let mnemonic = try Mnemonic.fromString(mnemonic: "sock lyrics village put galaxy famous pass act ship second diagram pull")
 // Other supported networks include mainnet (Bitcoin), Regtest, Signet
@@ -128,8 +108,7 @@ let keysManager = KeysManager(
 )
 ```
 
- </template>
-</CodeSwitcher>
+:::
 
 ::: tip Protection for on-chain wallet
 
@@ -150,10 +129,9 @@ In order to make the outputs from channel closing spendable by a third-party wal
 
 For example, a wrapper based on BDK's [`Wallet`](https://docs.rs/bdk/*/bdk/wallet/struct.Wallet.html) could look like this:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin: 'Kotlin', swift:'Swift'}">
-<template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 pub struct BDKKeysManager<D>
 where
 	D: bdk::database::BatchDatabase,
@@ -272,11 +250,7 @@ where
 
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 class LDKKeysManager(seed: ByteArray, startTimeSecs: Long, startTimeNano: Int, wallet: Wallet) {
   var inner: KeysManager
   var wallet: Wallet
@@ -362,11 +336,7 @@ class LDKSignerProvider : SignerProvider.SignerProviderInterface {
 
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```swift
+```swift [Swift]
 class MyKeysManager {
     let inner: KeysManager
     let wallet: BitcoinDevKit.Wallet
@@ -493,5 +463,4 @@ class MySignerProvider: SignerProvider {
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::

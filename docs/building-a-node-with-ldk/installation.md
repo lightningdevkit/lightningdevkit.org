@@ -8,27 +8,23 @@ If you have any questions about anything related to LDK, feel free to ask our co
 
 Add LDK to a project by configuring the respective config files:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
-  <template v-slot:rust>
- 
-  ```toml
-    # Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use.
+::: code-group
 
-    [dependencies]
-    lightning = { version = {VERSION}, features = ["max_level_trace"] }
-    lightning-block-sync = { version = {VERSION}, features = [ "rpc-client" ] }
-    lightning-invoice = { version = {VERSION} }
-    lightning-net-tokio = { version = {VERSION} }
-    lightning-persister = { version = {VERSION} }
-    lightning-background-processor = { version = {VERSION} }
-    lightning-rapid-gossip-sync = { version = {VERSION} }
+```toml [Rust]
+  # Add the following dependencies to your cargo.toml and replace {VERSION} with the version number you want to use.
 
-  ```
-  </template>
-  
-<template v-slot:kotlin>
+  [dependencies]
+  lightning = { version = {VERSION}, features = ["max_level_trace"] }
+  lightning-block-sync = { version = {VERSION}, features = [ "rpc-client" ] }
+  lightning-invoice = { version = {VERSION} }
+  lightning-net-tokio = { version = {VERSION} }
+  lightning-persister = { version = {VERSION} }
+  lightning-background-processor = { version = {VERSION} }
+  lightning-rapid-gossip-sync = { version = {VERSION} }
 
-```java
+```
+
+```java [Kotlin]
 /*
 For Gradle, add the following dependency to your build.gradle and replace {VERSION} with
 the version number you want to use.
@@ -51,30 +47,21 @@ dependencies {
 }
 ````
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 Example usage after installation is complete:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 use lightning::chain::chaininterface::FeeEstimator;
 ```
 
-  </template>
-  
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 import org.ldk.structs.FeeEstimator
 ```
 
-  </template>
-  
-</CodeSwitcher>
+:::
 
 ::: tip Installing LDK Swift
 Add ldk-swift package using the Swift Package Manager.

@@ -102,9 +102,9 @@ export default defineConfig({
   description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
 
   cleanUrls: true,
+  lastUpdated: true,
 
   srcExclude: [
-    '_blog/**',
     'brainstorms/**',
     'plans/**',
     'todos/**',
@@ -112,6 +112,24 @@ export default defineConfig({
   ],
 
   ignoreDeadLinks: true,
+
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', href: '/img/favicon/apple-touch-icon.png' }],
+    ['link', { rel: 'manifest', href: '/site.webmanifest' }],
+    ['link', { rel: 'preload', as: 'font', type: 'font/woff2', crossorigin: '', href: '/fonts/ibm-plex-mono-400.woff2' }],
+    ['meta', { name: 'msapplication-config', content: '/browserconfig.xml' }],
+    ['meta', { name: 'theme-color', content: '#ffffff' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:url', content: 'https://lightningdevkit.org/' }],
+    ['meta', { property: 'og:image', content: 'https://lightningdevkit.org/card.png' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: 'https://lightningdevkit.org/card.png' }],
+  ],
+
+  markdown: {
+    lineNumbers: false,
+  },
 
   themeConfig: {
     logo: '/img/logo.svg',

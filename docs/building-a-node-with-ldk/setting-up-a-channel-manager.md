@@ -6,10 +6,9 @@ The `ChannelManager` is responsible for several tasks related to managing channe
 
 Adding a `ChannelManager` to your application should look something like this:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 use lightning::ln::channelmanager;
 
 let channel_manager = ChannelManager::new(
@@ -27,11 +26,7 @@ let channel_manager = ChannelManager::new(
 );
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
- 
-  ```kotlin
+```kotlin [Kotlin]
   import org.ldk.batteries.ChannelManagerConstructor
 
 val channelManagerConstructor = ChannelManagerConstructor(
@@ -53,11 +48,7 @@ val channelManagerConstructor = ChannelManagerConstructor(
 
 ````
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 import LightningDevKit
 
 let channelManagerConstructionParameters = ChannelManagerConstructionParameters(
@@ -82,9 +73,7 @@ let channelManagerConstructor = ChannelManagerConstructor(
 )
 ````
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 There are a few dependencies needed to get this working. Let's walk through setting up each one so we can plug them into our `ChannelManager`.
 
@@ -92,10 +81,9 @@ There are a few dependencies needed to get this working. Let's walk through sett
 
 **What it's used for:** estimating fees for on-chain transactions that LDK wants broadcasted.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
- 
-  ```rust
+::: code-group
+
+```rust [Rust]
 struct YourFeeEstimator();
 
 impl FeeEstimator for YourFeeEstimator {
@@ -122,11 +110,7 @@ impl FeeEstimator for YourFeeEstimator {
 let fee_estimator = YourFeeEstimator();
   ````
 
-</template>
-
-<template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 object YourFeeEstimator : FeeEstimatorInterface {
   override fun get_est_sat_per_1000_weight(confirmationTarget: ConfirmationTarget?): Int {
       if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Background) {
@@ -147,11 +131,7 @@ object YourFeeEstimator : FeeEstimatorInterface {
 val feeEstimator: FeeEstimator = FeeEstimator.new_impl(YourFeeEstimator)
 ````
 
-  </template>
-
-  <template v-slot:swift>
- 
-  ```Swift
+```Swift [Swift]
 class MyFeeEstimator: FeeEstimator {
     override func getEstSatPer1000Weight(confirmationTarget: Bindings.ConfirmationTarget) -> UInt32 {
       if confirmationTarget == .MinAllowedNonAnchorChannelRemoteFee {
@@ -171,9 +151,7 @@ let feeEstimator = MyFeeEstimator()
 
 ````
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:**
 1. Fees must be returned in: satoshis per 1000 weight units
@@ -189,39 +167,28 @@ retrieving fresh ones every time
 
 **What it's used for:** Finds a Route for a payment between the given payer and a payee.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-  ```rust
-  let router = DefaultRouter::new(
-    network_graph.clone(),
-    logger.clone(),
-    keys_manager.get_secure_random_bytes(),
-    scorer.clone(),
-    ProbabilisticScoringFeeParameters::default()
-  )
-  
- ````
-
-  </template>
-
-  <template v-slot:kotlin>
+```rust [Rust]
+ let router = DefaultRouter::new(
+   network_graph.clone(),
+   logger.clone(),
+   keys_manager.get_secure_random_bytes(),
+   scorer.clone(),
+   ProbabilisticScoringFeeParameters::default()
+ )
  
-  ```kotlin
-  val networkGraph = NetworkGraph.of(Network.LDKNetwork_Regtest, logger)
-  ```
+````
 
-  </template>
+```kotlin [Kotlin]
+val networkGraph = NetworkGraph.of(Network.LDKNetwork_Regtest, logger)
+```
 
-  <template v-slot:swift>
- 
-  ```Swift
-  let netGraph = NetworkGraph(network: .Regtest, logger: logger)
-  ```
+```Swift [Swift]
+let netGraph = NetworkGraph(network: .Regtest, logger: logger)
+```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Dependencies:** `P2PGossipSync`, `Logger`, `KeysManager`, `Scorer`
 
@@ -231,10 +198,9 @@ retrieving fresh ones every time
 
 **What it's used for:** LDK logging
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
- 
-  ```rust
+::: code-group
+
+```rust [Rust]
 struct YourLogger();
 
 impl Logger for YourLogger {
@@ -255,11 +221,7 @@ impl Logger for YourLogger {
 let logger = YourLogger();
 ````
 
-</template>
-
-<template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 object YourLogger : LoggerInterface {
     override fun log(record: Record?) {
         // <insert code to print this log and/or write this log to a file>
@@ -269,11 +231,7 @@ object YourLogger : LoggerInterface {
 val logger: Logger = Logger.new_impl(YourLogger)
 ````
 
-  </template>
-
-  <template v-slot:swift>
- 
-  ```Swift
+```Swift [Swift]
   class MyLogger: Logger {
     override func log(record: Bindings.Record) {
         // Print and/or write the log to a file
@@ -284,9 +242,7 @@ let logger = MyLogger()
 
 ````
 
-</template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** you'll likely want to write the logs to a file for debugging purposes.
 
@@ -297,10 +253,9 @@ let logger = MyLogger()
 ### Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various transactions to the bitcoin network
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-<template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 struct YourTxBroadcaster();
 
 impl BroadcasterInterface for YourTxBroadcaster {
@@ -312,11 +267,7 @@ impl BroadcasterInterface for YourTxBroadcaster {
 let broadcaster = YourTxBroadcaster();
 ````
 
-  </template>
-
-  <template v-slot:kotlin>
- 
-  ```kotlin
+```kotlin [Kotlin]
   object YourTxBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
       override fun broadcast_transactions(txs: Array<out ByteArray>??) {
         // <insert code to broadcast a list of transactions>
@@ -327,11 +278,7 @@ val txBroadcaster: BroadcasterInterface = BroadcasterInterface.new_impl(YourTxBr
 
 ````
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 class YourTxBroacaster: BroadcasterInterface {
   override func broadcastTransactions(txs: [[UInt8]]) {
       // Insert code to broadcast a list of transactions
@@ -341,9 +288,7 @@ class YourTxBroacaster: BroadcasterInterface {
 let broadcaster = YourTxBroacaster()
 ````
 
-</template>
-
-</CodeSwitcher>
+:::
 
 **Dependencies:** _none_
 
@@ -353,10 +298,9 @@ let broadcaster = YourTxBroacaster()
 
 **What it's used for:** persisting `ChannelMonitor`s, which contain crucial channel data, in a timely manner
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 struct YourPersister();
 
 impl<ChannelSigner: Sign> Persist for YourPersister {
@@ -382,11 +326,7 @@ impl<ChannelSigner: Sign> Persist for YourPersister {
 let persister = YourPersister();
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 object YourPersister: Persist.PersistInterface {
   override fun persist_new_channel(
       id: OutPoint?, data: ChannelMonitor?, updateId: MonitorUpdateId?
@@ -406,11 +346,7 @@ object YourPersister: Persist.PersistInterface {
 val persister: Persist = Persist.new_impl(YourPersister)
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 class MyPersister: Persist {
     override func persistNewChannel(channelId: OutPoint, data: ChannelMonitor, updateId: MonitorUpdateId) -> Bindings.ChannelMonitorUpdateStatus {
         // Insert the code to persist the ChannelMonitor to disk
@@ -424,21 +360,17 @@ class MyPersister: Persist {
 let persister = MyPersister()
 ```
 
-  </template>
+:::
 
-</CodeSwitcher>
+::: code-group
 
-<CodeSwitcher :languages="{rust:'Using LDK Sample Filesystem Persistence Crate in Rust'}">
-  <template v-slot:rust>
-
-```rust
+```rust [Using LDK Sample Filesystem Persistence Crate in Rust]
 use lightning_persister::FilesystemPersister; // import LDK sample persist crate
 
 let persister = FilesystemPersister::new(ldk_data_dir_path);
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 **Implementation notes:**
 
@@ -458,10 +390,9 @@ let persister = FilesystemPersister::new(ldk_data_dir_path);
 
 **What it's used for:** running tasks periodically in the background to keep LDK operational.
 
-<CodeSwitcher :languages="{rust:'Rust'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let background_processor = BackgroundProcessor::start(
   persister,
   Arc::clone(&invoice_payer),
@@ -473,8 +404,7 @@ let background_processor = BackgroundProcessor::start(
 );
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 **Dependencies:** `ChannelManager`, `ChainMonitor`, `PeerManager`, `Logger`
 
@@ -484,10 +414,9 @@ let background_processor = BackgroundProcessor::start(
 
 **What it's used for:** if you have 1 or more public channels, you may need to announce your node and its channels occasionally. LDK will automatically announce channels when they are created, but there are no guarantees you have connected peers at that time or that your peers will propagate such announcements. The broader node-announcement message is not automatically broadcast.
 
-<CodeSwitcher :languages="{rust:'Rust'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let mut interval = tokio::time::interval(Duration::from_secs(60));
 loop {
 	interval.tick().await;
@@ -499,8 +428,7 @@ loop {
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 **Dependencies:** `Peer Manager`
 
@@ -514,10 +442,9 @@ i.e. if you're using BIP 157/158 or Electrum as your chain backend
 **What it's used for:** if you are not providing full blocks, LDK uses this
 object to tell you what transactions and outputs to watch for on-chain.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 struct YourTxFilter();
 
 impl Filter for YourTxFilter {
@@ -535,11 +462,7 @@ impl Filter for YourTxFilter {
 let filter = YourTxFilter();
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 object YourTxFilter : Filter.FilterInterface {
   override fun register_tx(txid: ByteArray, script_pubkey: ByteArray) {
       // <insert code for you to watch for this transaction on-chain>
@@ -554,11 +477,7 @@ object YourTxFilter : Filter.FilterInterface {
 val txFilter: Filter = Filter.new_impl(YourTxFilter)
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 class MyFilter: Filter {
     override func registerTx(txid: [UInt8]?, scriptPubkey: [UInt8]) {
         // Insert code to watch this transaction
@@ -572,9 +491,7 @@ class MyFilter: Filter {
 let filter = MyFilter()
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** see the [Blockchain Data](/blockchain_data/introduction.md) guide for more info
 
@@ -586,30 +503,21 @@ let filter = MyFilter()
 
 **What it's used for:** tracking one or more `ChannelMonitor`s and using them to monitor the chain for lighting transactions that are relevant to our node, and broadcasting transactions if need be.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let filter: Option<Box<dyn Filter>> = // leave this as None or insert the Filter trait object
 
 let chain_monitor = ChainMonitor::new(filter, &broadcaster, &logger, &fee_estimator, &persister);
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 val filter : Filter = // leave this as `null` or insert the Filter object.
 
 val chainMonitor = ChainMonitor.of(filter, txBroadcaster, logger, feeEstimator, persister)
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let filter: Filter = // leave this as `nil` or insert the Filter object.
 
 let chainMonitor = ChainMonitor(
@@ -621,9 +529,7 @@ let chainMonitor = ChainMonitor(
 )
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** `Filter` must be non-`None` if you're using Electrum or BIP 157/158 as your chain backend
 
@@ -637,10 +543,9 @@ let chainMonitor = ChainMonitor(
 
 **What it's used for:** providing keys for signing Lightning transactions
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let keys_seed_path = format!("{}/keys_seed", ldk_data_dir.clone());
 
 // If we're restarting and already have a key seed, read it from disk. Else,
@@ -675,11 +580,7 @@ let keys_manager = KeysManager::new(&keys_seed, cur.as_secs(), cur.subsec_nanos(
 
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 val keySeed = ByteArray(32)
 // <insert code to fill key_seed with random bytes OR if restarting, reload the
 // seed from disk>
@@ -690,20 +591,14 @@ val keysManager = KeysManager.of(
   )
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 let seed = // Insert code to create seed with random bytes or if restarting, reload the seed from disk
 let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
 let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
 let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:**
 
@@ -724,10 +619,9 @@ let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, st
 
 **What it's used for:** if LDK is restarting and has at least 1 channel, its `ChannelMonitor`s will need to be (1) fed to the `ChannelManager` and (2) synced to chain.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Use LDK's sample persister crate provided method
 let mut channel_monitors =
   persister.read_channelmonitors(keys_manager.clone()).unwrap();
@@ -739,11 +633,7 @@ for chan_mon in channel_monitors.iter() {
 }
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 // Initialize the hashmap where we'll store the `ChannelMonitor`s read from disk.
 // This hashmap will later be given to the `ChannelManager` on initialization.
 var channelMonitors = arrayOf<ByteArray>();
@@ -756,11 +646,7 @@ channelMonitorFiles.iterator().forEach {
 channelMonitors = channelMonitorList.toTypedArray();
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // Initialize the array where we'll store the `ChannelMonitor`s read from disk.
 // This array will later be given to the `ChannelManagerConstructor` on initialization.
 var serializedChannelMonitors: [[UInt8]] = []
@@ -772,8 +658,7 @@ for channel in allChannels {
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 **Dependencies:** `KeysManager`
 
@@ -783,10 +668,9 @@ for channel in allChannels {
 
 **What it's used for:** managing channel state
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let user_config = UserConfig::default();
 
 /* RESTARTING */
@@ -837,11 +721,7 @@ let (channel_manager_blockhash, mut channel_manager) = {
 
 ```
 
-</template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 if (serializedChannelManager != null && serializedChannelManager.isNotEmpty()) {
     // Loading from disk (restarting)
     val channelManagerConstructor = ChannelManagerConstructor(
@@ -885,11 +765,7 @@ if (serializedChannelManager != null && serializedChannelManager.isNotEmpty()) {
 
 ```
 
-  </template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 if serializedChannelManager != nil && !serializedChannelManager!.isEmpty {
     do {
         let channelManagerConstructor = try ChannelManagerConstructor(
@@ -920,9 +796,7 @@ if serializedChannelManager != nil && !serializedChannelManager!.isEmpty {
 
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** No methods should be called on `ChannelManager` until
 _after_ the `ChannelMonitor`s and `ChannelManager` are synced to the chain tip (next step).
@@ -937,10 +811,9 @@ _after_ the `ChannelMonitor`s and `ChannelManager` are synced to the chain tip (
 
 **Example:**
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
-  
-  ```rust
+::: code-group
+
+```rust [Rust]
   // Full Blocks or BIP 157/158
 
 use lightning_block_sync::init;
@@ -1012,11 +885,7 @@ chain_tip = Some(
   
 ````
 
-</template>
-
-<template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 // Electrum/Esplora
 
 // Retrieve transaction IDs to check the chain for un-confirmation.
@@ -1059,11 +928,7 @@ chainMonitor.update_best_block(bestHeader, bestHeight);
 channelManagerConstructor.chain_sync_completed(customEventHandler);
 ````
 
-  </template>
-
-  <template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // Electrum/Esplora
 
 // Retrieve transaction IDs to check the chain for un-confirmation.
@@ -1116,9 +981,7 @@ chainMonitor.asConfirm().bestBlockUpdated(header: bestHeader, height: bestHeight
 channelManagerConstructor.chainSyncCompleted(persister: channelManagerPersister)
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:**
 
@@ -1146,11 +1009,9 @@ Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provid
 
 **What it's used for:** generating routes to send payments over
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+::: code-group
 
-<template v-slot:rust>
-
-```rust
+```rust [Rust]
 let genesis = genesis_block(Network::Testnet).header.block_hash();
 let network_graph_path = format!("{}/network_graph", ldk_data_dir.clone());
 let network_graph = Arc::new(disk::read_network(Path::new(&network_graph_path), genesis, logger.clone()));
@@ -1161,11 +1022,7 @@ let gossip_sync = Arc::new(P2PGossipSync::new(
 ));
 ```
 
-</template>
-
-<template v-slot:kotlin>
-
-```java
+```java [Kotlin]
 val genesisBlock : BestBlock = BestBlock.from_genesis(Network.LDKNetwork_Testnet)
 val genesisBlockHash : String = byteArrayToHex(genesisBlock.block_hash())
 
@@ -1174,11 +1031,7 @@ val networkGraph : NetworkGraph = NetworkGraph.read(serializedNetworkGraph, logg
 val p2pGossip : P2PGossipSync = P2PGossipSync.of(networkGraph, Option_AccessZ.none(), logger)
 ```
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // If Network Graph exists, then read from disk
 let serializedNetworkGraph = // Read Network Graph bytes from file
 let readResult = NetworkGraph.read(ser: serializedNetworkGraph, arg: logger)
@@ -1217,9 +1070,7 @@ func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
 }
 ```
 
-</template>
-
-</CodeSwitcher>
+:::
 
 **Implementation notes:** this struct is not required if you are providing your own routes. It will be used internally in `ChannelManager` to build a `NetworkGraph`. Network options include: `Mainnet`,`Regtest`,`Testnet`,`Signet`
 
@@ -1233,11 +1084,9 @@ func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
 
 **What it's used for**: to find a suitable payment path to reach the destination.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
+::: code-group
 
-<template v-slot:rust>
-
-```rust
+```rust [Rust]
 let network_graph_path = format!("{}/network_graph", ldk_data_dir.clone());
 let network_graph = Arc::new(disk::read_network(Path::new(&network_graph_path), args.network, logger.clone()));
 
@@ -1250,11 +1099,7 @@ let scorer = Arc::new(RwLock::new(disk::read_scorer(
 
 ```
 
-</template>
-
-<template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 if (scorerFile.exists()) {
     val scorerReaderResult = ProbabilisticScorer.read(scorerFile.readBytes(), ProbabilisticScoringDecayParameters.with_default(), networkGraph, logger)
     if (scorerReaderResult.is_ok) {
@@ -1275,11 +1120,7 @@ if (scorerFile.exists()) {
 }
 ```
 
-</template>
-
-<template v-slot:swift>
-
-```Swift
+```Swift [Swift]
 // If Scorer exists, then read from disk
 let serializedScorer = // Read Scorer bytes from file
 let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
@@ -1310,9 +1151,7 @@ let score = probabilisticScorer.asScore()
 let scorer = MultiThreadedLockableScore(score: score)
 ```
 
-</template>
-
-</CodeSwitcher>
+:::
 
 **Dependencies:** `NetworkGraph`
 

@@ -5,10 +5,9 @@ amount and description. `ChannelManager` contains the remaining information
 needed for the invoice. Use the provided utility to generate an invoice and
 register a pending payment in `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift: 'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 let invoice = match utils::create_invoice_from_channelmanager(
     channel_manager,
     keys_manager,
@@ -42,10 +41,7 @@ inbound_payments.payments.insert(
 
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 val description = "description"
 val amtMsat: Long = 3000000
 val invoice = UtilMethods.create_invoice_from_channelmanager(
@@ -63,11 +59,7 @@ val invoiceResult = (invoice as Result_Bolt11InvoiceSignOrCreationErrorZ.Result_
 val encodedInvoice = invoiceResult.to_str()
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```swift
+```swift [Swift]
 let invoice = Bindings.createInvoiceFromChannelmanager(
     channelmanager: self.channelManager!,
     nodeSigner: myKeysManager.inner.asNodeSigner(),
@@ -82,8 +74,7 @@ let invoice = Bindings.createInvoiceFromChannelmanager(
 invoice.getValue()!.toStr()
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 While it is possible to create an invoice without using the utility,
 `ChannelManager` will reject any incoming HTLCs for unregistered payments to
@@ -98,10 +89,9 @@ As with sending a payment, LDK will generate an event once a payment is
 received. It is your responsibility to handle the `PaymentClaimable` event by
 using `ChannelManager` to release the preimage and claim the funds.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 Event::PaymentClaimable {
     payment_hash,
     purpose,
@@ -127,10 +117,7 @@ Event::PaymentClaimable {
 }
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 if (event is Event.PaymentClaimable) {
     if (event.payment_hash != null) {
         val purpose = event.purpose as InvoicePayment
@@ -141,18 +128,13 @@ if (event is Event.PaymentClaimable) {
 }
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```swift
+```swift [Swift]
 if let paymentClaimedEvent = event.getValueAsPaymentClaimable() {
     let paymentPreimage = paymentClaimedEvent.getPurpose().getValueAsInvoicePayment()?.getPaymentPreimage()
     let _ = channelManager.claimFunds(paymentPreimage: paymentPreimage!)
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 **References:** [Rust `PaymentClaimable` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentClaimable), [Java/Kotlin `PaymentClaimable` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L261)
