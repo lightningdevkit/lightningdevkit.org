@@ -1,0 +1,64 @@
+/**
+ * LDK brand styles for VitePress's default theme.
+ *
+ * Brand colors ported from docs/public/css/variables.css (the v1 theme's
+ * source) into VitePress's --vp-c-brand-* tokens. The v1 theme used a
+ * single hue per mode; VitePress's default theme expects a 4-step ramp
+ * (1=base, 2=hover, 3=focus, soft=very-light backdrop) which we derive.
+ *
+ * Light mode primary: #0F31F7 (LDK blue)
+ * Dark mode primary:  #76F3CD (LDK mint)
+ */
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --vp-c-brand-1: #0f31f7;
+  --vp-c-brand-2: #2e48f8;
+  --vp-c-brand-3: #4d5ffa;
+  --vp-c-brand-soft: #f5f7ff;
+
+  --vp-button-brand-bg: #0f31f7;
+  --vp-button-brand-hover-bg: #2e48f8;
+  --vp-button-brand-active-bg: #4d5ffa;
+
+  --vp-code-block-bg: #020a36;
+  --vp-code-bg: #e6eafe;
+
+  --vp-custom-block-tip-bg: #f5f7ff;
+  --vp-custom-block-tip-text: var(--vp-c-text-1);
+
+  --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular,
+    'SF Mono', Menlo, Consolas, Liberation Mono, monospace;
+}
+
+.dark {
+  --vp-c-brand-1: #76f3cd;
+  --vp-c-brand-2: #5bd9b3;
+  --vp-c-brand-3: #40bf99;
+  --vp-c-brand-soft: rgba(118, 243, 205, 0.14);
+
+  --vp-button-brand-bg: #76f3cd;
+  --vp-button-brand-hover-bg: #5bd9b3;
+  --vp-button-brand-active-bg: #40bf99;
+  --vp-button-brand-text: #000628;
+  --vp-button-brand-hover-text: #000628;
+
+  --vp-code-block-bg: #002547;
+  --vp-code-bg: #06463c;
+
+  --vp-custom-block-tip-bg: rgba(118, 243, 205, 0.08);
+}
+
+/* Slot-mounted home sections: keep them centered and consistent with
+   VitePress's home layout container width. */
+.vp-home-extras {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
