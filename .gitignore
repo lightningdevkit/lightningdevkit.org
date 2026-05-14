@@ -3,6 +3,8 @@
 
 # Production
 /docs/.vuepress/dist
+/docs/.vitepress/dist
+/docs/.vitepress/cache
 
 # Local planning artifacts (Claude /ce workflow)
 /docs/brainstorms

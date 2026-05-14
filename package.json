@@ -25,6 +25,8 @@
     "prestart": "rm -rf $npm_package_config_dist",
     "start": "NODE_ENV=development vuepress dev docs -p $npm_package_config_port",
     "build": "NODE_ENV=production vuepress build docs",
+    "start:vitepress": "vitepress dev docs",
+    "build:vitepress": "vitepress build docs",
     "linkcheck": "start-server-and-test linkcheck:serve $npm_package_config_port linkcheck:local",
     "linkcheck:serve": "serve -p $npm_package_config_port $npm_package_config_dist",
     "linkcheck:local": "$npm_package_config_linkcheck http://localhost:$npm_package_config_port"
@@ -34,6 +36,7 @@
     "broken-link-checker": "0.7.8",
     "serve": "14.2.6",
     "start-server-and-test": "3.0.5",
+    "vitepress": "^1.5.0",
     "vue": "2.7.16",
     "vue-server-renderer": "2.7.16",
     "vuepress": "1.9.10"
