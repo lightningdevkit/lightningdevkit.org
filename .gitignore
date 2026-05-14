@@ -7,6 +7,7 @@
 # Local planning artifacts (Claude /ce workflow)
 /docs/brainstorms
 /docs/plans
+/todos
 
 # Misc
 .DS_Store
