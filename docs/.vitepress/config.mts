@@ -164,10 +164,16 @@ export default defineConfig({
 
   vite: {
     resolve: {
+      // Alias bare `vue` and subpaths to VitePress's nested Vue 3.
+      // Point at the PACKAGE DIRECTORY (not a specific file) so esbuild's
+      // prebundler can package-resolve via vue's own package.json
+      // exports map — pointing at index.mjs directly let the prebundler
+      // cache Vue 2 from top-level node_modules.
       alias: [
-        { find: /^vue$/, replacement: path.join(vitepressVueDir, 'index.mjs') },
+        { find: /^vue$/, replacement: vitepressVueDir },
         { find: /^vue\/(.*)$/, replacement: path.join(vitepressVueDir, '$1') },
       ],
+      dedupe: ['vue'],
     },
   },
 })
