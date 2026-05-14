@@ -4,6 +4,10 @@
 # Production
 /docs/.vuepress/dist
 
+# Local planning artifacts (Claude /ce workflow)
+/docs/brainstorms
+/docs/plans
+
 # Misc
 .DS_Store
 .env.local
