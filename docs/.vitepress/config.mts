@@ -132,7 +132,20 @@ export default defineConfig({
   },
 
   themeConfig: {
-    logo: '/img/logo.svg',
+    // logo.svg (the v1 brand asset) is a sprite of `<symbol>` elements
+    // that only render via `<use>` — VitePress just emits `<img src=>`
+    // and gets nothing. logo-mark-{light,dark}.svg are standalone
+    // copies of the lightning-bolt paths with the brand color baked
+    // in, so they render directly via `<img>` and switch automatically
+    // with VitePress's appearance toggle.
+    logo: {
+      light: '/img/logo-mark-light.svg',
+      dark: '/img/logo-mark-dark.svg',
+    },
+    // The styled `LIGHTNING / DEV KIT` wordmark is injected via the
+    // `.VPNavBarTitle .title::after` rule in theme/style.css.
+    // Setting siteTitle to false hides the default plain-text title.
+    siteTitle: false,
 
     editLink: {
       pattern: 'https://github.com/lightningdevkit/lightningdevkit.org/edit/main/docs/:path',

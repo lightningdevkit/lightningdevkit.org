@@ -35,6 +35,13 @@
 
   --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular,
     'SF Mono', Menlo, Consolas, Liberation Mono, monospace;
+
+  /* Custom tokens used by the inline SVG monograms (illustrations.svg).
+     Mirror the v1 spiralbtc theme's --docs-primary / --docs-border-color
+     so the sprite's `fill="var(--docs-primary)"` paths pick up the
+     brand color and switch with light/dark. */
+  --docs-primary: var(--vp-c-brand-1);
+  --docs-border-color: var(--vp-c-text-1);
 }
 
 .dark {
@@ -56,9 +63,94 @@
 }
 
 /* Slot-mounted home sections: keep them centered and consistent with
-   VitePress's home layout container width. */
+   VitePress's home layout container width. Each section gets a dashed
+   bottom divider so the home page reads as a stack of cards inside the
+   page frame. */
 .vp-home-extras {
   max-width: 1152px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 24px 48px;
+  border-bottom: 1px dashed var(--vp-c-divider);
+}
+
+/* Dashed page frame: vertical lines flanking the centered content,
+   matching the v1 spiralbtc theme's `.wrap-border` aesthetic. Fixed
+   positioning keeps them aligned with the content max-width as the
+   user scrolls. Hidden on narrow viewports where they'd overlap the
+   content. */
+.Layout::before,
+.Layout::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed var(--vp-c-divider);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.Layout::before {
+  left: 50%;
+  transform: translateX(-577px); /* half of (1152 + 2*24 padding) */
+}
+
+.Layout::after {
+  left: 50%;
+  transform: translateX(576px);
+}
+
+@media (max-width: 1200px) {
+  .Layout::before,
+  .Layout::after {
+    display: none;
+  }
+}
+
+/* Dashed dividers on the structural elements VitePress renders by
+   default — navbar bottom and hero bottom. The home extras have their
+   own bottom-border rule above. */
+.VPNavBar {
+  border-bottom: 1px dashed var(--vp-c-divider);
+}
+
+.VPHome .VPHero {
+  border-bottom: 1px dashed var(--vp-c-divider);
+  padding-bottom: 48px;
+}
+
+/* Site title: stack the words above each other in uppercase to match
+   the v1 navbar's `LIGHTNING / DEV KIT` mark. `themeConfig.siteTitle`
+   is set to `false` so VitePress doesn't render any plain title text;
+   this pseudo-element supplies the styled mark instead. */
+.VPNavBarTitle .title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.VPNavBarTitle .title::after {
+  /* `\A ` is the CSS escape for a newline (line feed). The trailing
+     space terminates the escape sequence — without it, the parser
+     greedily consumes following hex digits (e.g. `\AD` becomes ®). */
+  content: 'Lightning\A Dev Kit';
+  white-space: pre;
+  font-size: 16px;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--vp-c-brand-1);
+  font-weight: 700;
+}
+
+/* Brand-color the nav items (Docs / Case Studies / Blog / Discord / GitHub)
+   to match the v1 spiralbtc navbar. */
+.VPNavBarMenuLink,
+.VPNavBarMenuGroup .text {
+  color: var(--vp-c-brand-1) !important;
+}
+
+.VPNavBarMenuLink:hover,
+.VPNavBarMenuGroup:hover .text {
+  color: var(--vp-c-brand-2) !important;
 }
