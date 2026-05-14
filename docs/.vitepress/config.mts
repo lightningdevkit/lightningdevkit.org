@@ -15,6 +15,18 @@ const vitepressVueDir = path.resolve(
 const githubUrl = 'https://github.com/lightningdevkit'
 const discordUrl = 'https://discord.gg/5AcknnMfBw'
 
+const blogSidebar: DefaultTheme.SidebarItem[] = [
+  {
+    text: 'Blog',
+    collapsed: false,
+    items: [
+      { text: 'Articles', link: '/blog/' },
+      { text: 'Tags', link: '/blog/tags/' },
+      { text: 'Authors', link: '/blog/author/' },
+    ],
+  },
+]
+
 const docsSidebar: DefaultTheme.SidebarItem[] = [
   {
     text: 'Documentation',
@@ -161,6 +173,7 @@ export default defineConfig({
     ],
 
     sidebar: {
+      '/blog/': blogSidebar,
       '/': docsSidebar,
     },
 

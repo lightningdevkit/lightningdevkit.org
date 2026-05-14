@@ -9,6 +9,7 @@ import HomePromo from './components/HomePromo.vue'
 import HomeCaseStudies from './components/HomeCaseStudies.vue'
 import HomeCrossPromo from './components/HomeCrossPromo.vue'
 import SiteFooter from './components/SiteFooter.vue'
+import BlogPostList from './components/BlogPostList.vue'
 
 export default {
   extends: DefaultTheme,
@@ -22,5 +23,10 @@ export default {
       ],
       'layout-bottom': () => h(SiteFooter),
     })
+  },
+  enhanceApp({ app }) {
+    // Register globally so blog markdown pages can use <BlogPostList>
+    // without per-file script setup imports.
+    app.component('BlogPostList', BlogPostList)
   },
 } satisfies Theme
