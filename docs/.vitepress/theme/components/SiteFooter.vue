@@ -100,9 +100,8 @@ const year = new Date().getUTCFullYear()
 
 <style scoped>
 .site-footer {
-  border-top: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg-alt);
-  padding: 48px 24px 24px;
+  padding: 64px 24px 32px;
 }
 
 .site-footer-inner {
@@ -113,38 +112,48 @@ const year = new Date().getUTCFullYear()
 .footer-columns {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-  margin-bottom: 32px;
+  gap: 48px;
+  margin-bottom: 48px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 960px) {
   .footer-columns {
     grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 540px) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 }
 
 .footer-column h4 {
-  margin: 0 0 12px;
-  font-size: 13px;
-  font-weight: 600;
+  margin: 0 0 16px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--vp-c-text-2);
+  letter-spacing: 0.08em;
+  color: var(--vp-c-text-1);
 }
 
 .footer-column ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .footer-column li {
-  margin-bottom: 8px;
   line-height: 1.5;
 }
 
 .footer-column a {
-  color: var(--vp-c-text-1);
+  color: var(--vp-c-text-2);
   text-decoration: none;
   font-size: 14px;
 }

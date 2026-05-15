@@ -8,7 +8,12 @@
  *
  * Light mode primary: #0F31F7 (LDK blue)
  * Dark mode primary:  #76F3CD (LDK mint)
+ *
+ * Fonts: Manrope (body) + IBM Plex Mono (code), matching the v1
+ * spiralbtc theme's pairing.
  */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 @font-face {
   font-family: 'IBM Plex Mono';
@@ -33,6 +38,9 @@
   --vp-custom-block-tip-bg: #f5f7ff;
   --vp-custom-block-tip-text: var(--vp-c-text-1);
 
+  --vp-font-family-base: 'Manrope', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
   --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular,
     'SF Mono', Menlo, Consolas, Liberation Mono, monospace;
 
@@ -69,19 +77,37 @@
 .vp-home-extras {
   max-width: 1152px;
   margin: 0 auto;
-  padding: 0 24px 48px;
+  padding: 0 24px;
   border-bottom: 1px dashed var(--vp-c-divider);
 }
 
+/* Typography ramp for home section headings (case studies, etc.)
+   so they sit between the hero (44px) and body copy in a clean
+   ratio rather than landing at VitePress's default markdown h2. */
+.vp-home-extras h2 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* The default theme leaves the doc page's `.VPDoc .container` at
+   1152px max-width too — keep our home content aligned with it so
+   the dashed frame visually wraps both. */
+
 /* Dashed page frame: vertical lines flanking the centered content,
-   matching the v1 spiralbtc theme's `.wrap-border` aesthetic. Fixed
-   positioning keeps them aligned with the content max-width as the
-   user scrolls. Hidden on narrow viewports where they'd overlap the
-   content. */
+   matching the v1 spiralbtc theme's `.wrap-border` aesthetic.
+   Implemented as `position: absolute` on the Layout root so the
+   lines extend with content height rather than viewport. Hidden
+   on narrow viewports where they'd overlap content. */
+.Layout {
+  position: relative;
+}
+
 .Layout::before,
 .Layout::after {
   content: '';
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   width: 0;
@@ -91,16 +117,14 @@
 }
 
 .Layout::before {
-  left: 50%;
-  transform: translateX(-577px); /* half of (1152 + 2*24 padding) */
+  left: calc(50% - 600px);
 }
 
 .Layout::after {
-  left: 50%;
-  transform: translateX(576px);
+  left: calc(50% + 600px);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1240px) {
   .Layout::before,
   .Layout::after {
     display: none;
@@ -114,34 +138,110 @@
   border-bottom: 1px dashed var(--vp-c-divider);
 }
 
+/* Constrain navbar inner content to match the home/content max-width.
+   VitePress's default `.wrapper` has asymmetric padding (`0 8px 0 24px`)
+   that shifts the navbar right vs the content below; zero it out so
+   the container's own padding is the only inset. */
+.VPNavBar .wrapper {
+  padding: 0 !important;
+}
+
+.VPNavBar .wrapper > .container {
+  max-width: 1152px !important;
+  margin: 0 auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+/* Hero: tighten the default VitePress hero to read as a single
+   content column rather than the full-width centered ramp the
+   default theme produces. Padding lives on the container (not the
+   `.VPHero` outer) so the inner content edge matches the navbar
+   and home-extras sections. */
 .VPHome .VPHero {
   border-bottom: 1px dashed var(--vp-c-divider);
-  padding-bottom: 48px;
+  /* VitePress's default uses a negative `margin-top` equal to the nav
+     height plus an asymmetric padding (`calc(... + 80px) 48px 64px`)
+     in media queries — both fight our symmetric layout. Override
+     fully with `!important` so the visible padding is what we set. */
+  margin-top: 0 !important;
+  padding: 48px 0 !important;
 }
 
-/* Site title: stack the words above each other in uppercase to match
-   the v1 navbar's `LIGHTNING / DEV KIT` mark. `themeConfig.siteTitle`
-   is set to `false` so VitePress doesn't render any plain title text;
-   this pseudo-element supplies the styled mark instead. */
-.VPNavBarTitle .title {
+.VPHome .VPHero .container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.VPHome .VPHero .main {
+  text-align: left;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
 }
 
-.VPNavBarTitle .title::after {
-  /* `\A ` is the CSS escape for a newline (line feed). The trailing
-     space terminates the escape sequence — without it, the parser
-     greedily consumes following hex digits (e.g. `\AD` becomes ®). */
-  content: 'Lightning\A Dev Kit';
-  white-space: pre;
-  font-size: 16px;
-  line-height: 1.1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--vp-c-brand-1);
+.VPHome .VPHero .name,
+.VPHome .VPHero .text {
+  font-size: 48px;
+  line-height: 1.15;
   font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
+
+@media (max-width: 960px) {
+  .VPHome .VPHero .name,
+  .VPHome .VPHero .text {
+    /* On narrower viewports the heading would overflow if kept on
+       one line; let it wrap there. */
+    white-space: normal;
+    font-size: 32px;
+  }
+}
+
+.VPHome .VPHero .tagline {
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: var(--vp-c-text-2);
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 48ch;
+}
+
+@media (max-width: 960px) {
+  .VPHome .VPHero .tagline {
+    font-size: 1.2rem;
+  }
+}
+
+.VPHome .VPHero .actions {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.VPHome .VPHero .VPButton.brand {
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.1s ease;
+  box-sizing: border-box;
+  color: var(--vp-button-brand-text, var(--vp-c-white));
+  background: var(--vp-button-brand-bg);
+  font-weight: 600;
+  line-height: 1.4;
+  height: auto;
+}
+
+.VPHome .VPHero .VPButton.brand:hover {
+  background: var(--vp-button-brand-hover-bg);
+}
+
+/* Wordmark + bolt rendered as a composed unit via `NavLogo.vue` in
+   the `nav-bar-title-before` slot. No extra title styling needed
+   beyond what the component scopes itself. */
 
 /* Brand-color the nav items (Docs / Case Studies / Blog / Discord / GitHub)
    to match the v1 spiralbtc navbar. */
@@ -153,4 +253,39 @@
 .VPNavBarMenuLink:hover,
 .VPNavBarMenuGroup:hover .text {
   color: var(--vp-c-brand-2) !important;
+}
+
+/* VitePress renders a divider line between the menu group and the
+   appearance toggle. With socialLinks removed it's a stray vertical
+   line next to the toggle — hide it. The same goes for the `::before`
+   pseudo-element on `.appearance` (and adjacent combinations) that
+   draws another 1px vertical bar. */
+.VPNavBar .divider {
+  display: none;
+}
+.VPNavBar .appearance::before,
+.VPNavBar .menu + .social-links::before,
+.VPNavBar .translations + .appearance::before,
+.VPNavBar .appearance + .social-links::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Visually reorder the navbar items so search sits AFTER the menu
+   (GitHub) and before the appearance toggle. The DOM order is
+   Search → Menu → Appearance; flex `order` rearranges them as
+   Menu → Search → Appearance without touching markup. */
+.VPNavBar .content-body .VPNavBarMenu {
+  order: 1;
+}
+.VPNavBar .content-body .VPNavBarSearch {
+  order: 2;
+  /* Default `flex-grow: 1` absorbs leftover space and pushes the
+     menu items left. Disable so everything hugs the right edge. */
+  flex-grow: 0;
+  padding-left: 16px;
+}
+.VPNavBar .content-body .VPNavBarAppearance {
+  order: 3;
+  margin-left: 16px;
 }

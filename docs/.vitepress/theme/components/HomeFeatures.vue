@@ -49,7 +49,8 @@ const features: Feature[] = [
 
 <style scoped>
 .home-features {
-  margin-top: 64px;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 .home-features-grid {
@@ -65,39 +66,33 @@ const features: Feature[] = [
 }
 
 .home-feature {
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-bg-soft);
-  border-radius: 12px;
-  padding: 24px;
-  transition: border-color 0.2s, background-color 0.2s;
-}
-
-.home-feature:hover {
-  border-color: var(--vp-c-brand-1);
-}
-
-.home-feature-icon {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 8px 0;
 }
 
 .home-feature-icon svg {
   display: block;
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
 }
 
 .home-feature-title {
-  margin: 0 0 8px;
-  font-size: 16px;
+  margin: 0;
+  font-size: 20px;
   font-weight: 600;
   border: 0;
   padding: 0;
+  line-height: 1.3;
+  color: var(--vp-c-text-1);
 }
 
 .home-feature-details {
   margin: 0;
   color: var(--vp-c-text-2);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
 }
 </style>

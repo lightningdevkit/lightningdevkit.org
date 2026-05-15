@@ -10,11 +10,13 @@ import HomeCaseStudies from './components/HomeCaseStudies.vue'
 import HomeCrossPromo from './components/HomeCrossPromo.vue'
 import SiteFooter from './components/SiteFooter.vue'
 import BlogPostList from './components/BlogPostList.vue'
+import NavLogo from './components/NavLogo.vue'
 
 export default {
   extends: DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
+      'nav-bar-title-before': () => h(NavLogo),
       'home-features-after': () => [
         h(HomeFeatures),
         h(HomePromo),

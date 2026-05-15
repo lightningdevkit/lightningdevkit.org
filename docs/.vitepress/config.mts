@@ -144,19 +144,16 @@ export default defineConfig({
   },
 
   themeConfig: {
-    // logo.svg (the v1 brand asset) is a sprite of `<symbol>` elements
-    // that only render via `<use>` — VitePress just emits `<img src=>`
-    // and gets nothing. logo-mark-{light,dark}.svg are standalone
-    // copies of the lightning-bolt paths with the brand color baked
-    // in, so they render directly via `<img>` and switch automatically
-    // with VitePress's appearance toggle.
-    logo: {
-      light: '/img/logo-mark-light.svg',
-      dark: '/img/logo-mark-dark.svg',
-    },
-    // The styled `LIGHTNING / DEV KIT` wordmark is injected via the
-    // `.VPNavBarTitle .title::after` rule in theme/style.css.
-    // Setting siteTitle to false hides the default plain-text title.
+    // Hide the right-hand "On this page" outline on docs pages —
+    // not part of the LDK design. Can still be enabled per-page via
+    // frontmatter `outline: 'deep'` if a long page benefits from it.
+    outline: false,
+
+    // Logo and wordmark are rendered together via `NavLogo.vue` in the
+    // `nav-bar-title-before` slot, which uses the original sprite at
+    // `/img/logo.svg` (with `#small` / `#large` symbols, each a
+    // composed bolt + wordmark). No `themeConfig.logo` needed; setting
+    // siteTitle to false hides the default plain-text title.
     siteTitle: false,
 
     editLink: {
@@ -176,12 +173,6 @@ export default defineConfig({
       '/blog/': blogSidebar,
       '/': docsSidebar,
     },
-
-    socialLinks: [
-      { icon: 'github', link: githubUrl },
-      { icon: 'twitter', link: 'https://twitter.com/lightningdevkit' },
-      { icon: 'discord', link: discordUrl },
-    ],
 
     // Search: VitePress's built-in local search (MiniSearch-powered)
     // ships immediately and runs entirely client-side. Plan is to swap
