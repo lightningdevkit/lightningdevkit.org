@@ -183,6 +183,29 @@ export default defineConfig({
       { icon: 'discord', link: discordUrl },
     ],
 
+    // Search: VitePress's built-in local search (MiniSearch-powered)
+    // ships immediately and runs entirely client-side. Plan is to swap
+    // to DocSearch v3 once Algolia approves the application — the
+    // legacy v2 index (appId `BH4D9OD16A`, indexName `lightningdevkit`)
+    // is deprecated and not compatible with VitePress's search config
+    // shape. Apply at https://docsearch.algolia.com/apply (free for
+    // OSS docs sites; 1–2 week approval typical).
+    //
+    // To swap to v3 once credentials arrive, replace the block below
+    // with:
+    //
+    //   search: {
+    //     provider: 'algolia',
+    //     options: {
+    //       appId: '<new v3 appId>',
+    //       apiKey: '<new public search-only key>',
+    //       indexName: 'lightningdevkit',
+    //     },
+    //   },
+    search: {
+      provider: 'local',
+    },
+
     footer: {
       copyright: `Copyright © ${new Date().getUTCFullYear()} LDK Developers`,
     },
