@@ -23,28 +23,51 @@
 
 <style scoped>
 .ldk-promo {
-  margin-top: 64px;
+  /* No top gap: the soft band fills its section from the top, flush
+     with the divider below the case-studies section. */
+  margin-top: 0;
 }
 
 .ldk-promo-inner {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 1fr;
   gap: 32px;
   align-items: center;
   background: var(--vp-c-brand-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  padding: 32px;
+  padding: 64px 24px;
+  text-align: center;
+  /* Full-bleed soft band rather than a floating rounded card: cancel
+     the section's 24px side padding so the background fills the section
+     edge-to-edge with square corners. The inner padding above keeps the
+     content aligned to the page gutter. */
+  margin-left: -24px;
+  margin-right: -24px;
 }
 
-@media (max-width: 720px) {
+.ldk-promo-icon {
+  justify-self: center;
+}
+
+@media (min-width: 721px) {
   .ldk-promo-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
+    grid-template-columns: 200px 1fr;
+    text-align: left;
   }
 
   .ldk-promo-icon {
-    justify-self: center;
+    justify-self: stretch;
+  }
+}
+
+@media (min-width: 1241px) {
+  .ldk-promo-inner {
+    /* Once the dashed page-frame is visible, extend the band to the
+       frame lines (calc(50% ± 600px)) — 24px past each section edge —
+       and grow the inner padding to keep content on the page gutter. */
+    margin-left: -48px;
+    margin-right: -48px;
+    padding-left: 48px;
+    padding-right: 48px;
   }
 }
 
@@ -57,7 +80,7 @@
 .ldk-promo-content h2 {
   margin: 0 0 8px;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   border: 0;
   padding: 0;
 }

@@ -28,7 +28,11 @@ import { withBase } from 'vitepress'
 
 <style scoped>
 .cross-promo {
-  margin: 64px 0 0;
+  /* Stay within the dashed page-frame (1200px wide, centered) rather
+     than bleeding the orange band to the viewport edges. No vertical
+     margin so it sits flush below the "Trusted by the best" section. */
+  max-width: 1200px;
+  margin: 0 auto;
   background: #f7931a;
   border-bottom: 1px dashed var(--vp-c-divider);
 }
@@ -43,10 +47,12 @@ import { withBase } from 'vitepress'
   max-width: 1152px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 12px;
   padding: 28px 24px;
+  text-align: center;
 }
 
 .cross-promo-brand {
@@ -73,6 +79,7 @@ import { withBase } from 'vitepress'
   width: 1px;
   height: 28px;
   background: rgba(255, 255, 255, 0.5);
+  display: none;
 }
 
 .cross-promo-description {
@@ -81,15 +88,15 @@ import { withBase } from 'vitepress'
   font-size: 15px;
 }
 
-@media (max-width: 720px) {
+@media (min-width: 721px) {
   .cross-promo-inner {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
+    flex-direction: row;
+    gap: 24px;
+    text-align: left;
   }
 
   .cross-promo-divider {
-    display: none;
+    display: block;
   }
 }
 </style>

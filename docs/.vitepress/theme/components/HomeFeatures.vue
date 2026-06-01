@@ -49,19 +49,19 @@ const features: Feature[] = [
 
 <style scoped>
 .home-features {
-  padding-top: 48px;
-  padding-bottom: 48px;
+  padding-top: 64px;
+  padding-bottom: 64px;
 }
 
 .home-features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
-@media (max-width: 960px) {
+@media (min-width: 961px) {
   .home-features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -75,8 +75,8 @@ const features: Feature[] = [
 
 .home-feature-icon svg {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 144px;
+  height: 144px;
 }
 
 .home-feature-title {

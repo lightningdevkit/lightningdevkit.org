@@ -100,7 +100,10 @@ const year = new Date().getUTCFullYear()
 
 <style scoped>
 .site-footer {
-  background: var(--vp-c-bg-alt);
+  /* White background, with the dashed page-frame lines (z-index 1) left
+     visible — they run down through the footer's side gutters. No
+     stacking context here, so the lines paint over the background. */
+  background: var(--vp-c-bg);
   padding: 64px 24px 32px;
 }
 
@@ -111,22 +114,22 @@ const year = new Date().getUTCFullYear()
 
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 48px;
+  grid-template-columns: 1fr;
+  gap: 24px;
   margin-bottom: 48px;
 }
 
-@media (max-width: 960px) {
+@media (min-width: 541px) {
   .footer-columns {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
   }
 }
 
-@media (max-width: 540px) {
+@media (min-width: 961px) {
   .footer-columns {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
   }
 }
 
@@ -163,10 +166,32 @@ const year = new Date().getUTCFullYear()
 }
 
 .site-footer-copy {
+  position: relative;
   color: var(--vp-c-text-3);
   font-size: 13px;
   text-align: center;
   padding-top: 24px;
+}
+
+/* Separator above the copyright. Rendered as a pseudo-element (not a
+   plain border-top) so it can reach the dashed page-frame lines. Base
+   spans the 1152px content width; once the frame is visible it widens
+   to the 1200px frame span and centers so its ends meet the lines. */
+.site-footer-copy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   border-top: 1px solid var(--vp-c-divider);
+}
+
+@media (min-width: 1241px) {
+  .site-footer-copy::before {
+    left: 50%;
+    right: auto;
+    width: 1200px;
+    transform: translateX(-50%);
+  }
 }
 </style>

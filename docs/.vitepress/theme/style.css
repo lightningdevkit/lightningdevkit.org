@@ -50,6 +50,10 @@
      brand color and switch with light/dark. */
   --docs-primary: var(--vp-c-brand-1);
   --docs-border-color: var(--vp-c-text-1);
+
+  /* Taller navbar for a bit more vertical padding around the logo and
+     nav items (VitePress default is 64px). */
+  --vp-nav-height: 72px;
 }
 
 .dark {
@@ -75,10 +79,36 @@
    bottom divider so the home page reads as a stack of cards inside the
    page frame. */
 .vp-home-extras {
+  position: relative;
   max-width: 1152px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* Bottom divider. Rendered as a pseudo-element rather than a plain
+   `border-bottom` so it can reach the dashed page-frame lines. The
+   section is 1152px wide but the frame sits at calc(50% ± 600px)
+   (1200px apart), so a content-width border would stop 24px short of
+   each line and read as "cut off". Base spans the content width
+   (unchanged on mobile/tablet); once the frame is visible it widens to
+   the 1200px frame span and centers so its ends meet the lines. */
+.vp-home-extras::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   border-bottom: 1px dashed var(--vp-c-divider);
+  pointer-events: none;
+}
+
+@media (min-width: 1241px) {
+  .vp-home-extras::after {
+    left: 50%;
+    right: auto;
+    width: 1200px;
+    transform: translateX(-50%);
+  }
 }
 
 /* Typography ramp for home section headings (case studies, etc.)
@@ -114,6 +144,9 @@
   border-left: 1px dashed var(--vp-c-divider);
   pointer-events: none;
   z-index: 1;
+  /* Hidden by default (narrow viewports where they'd overlap content);
+     revealed once there's room at the wide breakpoint below. */
+  display: none;
 }
 
 .Layout::before {
@@ -124,11 +157,18 @@
   left: calc(50% + 600px);
 }
 
-@media (max-width: 1240px) {
+@media (min-width: 1241px) {
   .Layout::before,
   .Layout::after {
-    display: none;
+    display: block;
   }
+}
+
+/* VitePress adds a large bottom margin under the home content before the
+   footer. Drop it so the BDK cross-promo (our last home section) sits
+   flush at the bottom of the page frame with the footer directly below. */
+.VPHome {
+  margin-bottom: 0 !important;
 }
 
 /* Dashed dividers on the structural elements VitePress renders by
@@ -138,19 +178,22 @@
   border-bottom: 1px dashed var(--vp-c-divider);
 }
 
-/* Constrain navbar inner content to match the home/content max-width.
+/* Align the navbar inner content with the dashed page-frame.
    VitePress's default `.wrapper` has asymmetric padding (`0 8px 0 24px`)
-   that shifts the navbar right vs the content below; zero it out so
-   the container's own padding is the only inset. */
+   that shifts the navbar right; zero it out so the container's own
+   padding is the only inset. The container is sized to the frame width
+   (1200px) so the logo and nav items sit a symmetric 24px inside the
+   frame lines — slightly closer to the border than the 1152px content
+   column below. */
 .VPNavBar .wrapper {
   padding: 0 !important;
 }
 
 .VPNavBar .wrapper > .container {
-  max-width: 1152px !important;
+  max-width: 1200px !important;
   margin: 0 auto !important;
-  padding-left: 24px !important;
-  padding-right: 24px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }
 
 /* Hero: tighten the default VitePress hero to read as a single
@@ -184,25 +227,26 @@
 
 .VPHome .VPHero .name,
 .VPHome .VPHero .text {
-  font-size: 48px;
+  /* Mobile base: smaller heading that's allowed to wrap so it never
+     overflows on narrow viewports. */
+  font-size: 32px;
   line-height: 1.15;
   font-weight: 700;
   letter-spacing: -0.02em;
-  white-space: nowrap;
+  white-space: normal;
 }
 
-@media (max-width: 960px) {
+@media (min-width: 961px) {
   .VPHome .VPHero .name,
   .VPHome .VPHero .text {
-    /* On narrower viewports the heading would overflow if kept on
-       one line; let it wrap there. */
-    white-space: normal;
-    font-size: 32px;
+    /* Wide enough to keep the heading on a single line. */
+    font-size: 48px;
+    white-space: nowrap;
   }
 }
 
 .VPHome .VPHero .tagline {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   color: var(--vp-c-text-2);
   margin: 0 !important;
@@ -210,9 +254,9 @@
   max-width: 48ch;
 }
 
-@media (max-width: 960px) {
+@media (min-width: 961px) {
   .VPHome .VPHero .tagline {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -243,6 +287,103 @@
    the `nav-bar-title-before` slot. No extra title styling needed
    beyond what the component scopes itself. */
 
+/* Case studies page layout. The page body is a series of inline
+   `<div class="case-studies">` grids containing `.case-study-item`
+   cards. Matching the v1 spiralbtc theme: three-column grid, centered
+   text, logo on top, title + description below, optional "View case
+   study" link at the bottom. */
+.case-studies {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 541px) {
+  .case-studies {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 961px) {
+  .case-studies {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.case-study-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.case-study-item:hover {
+  border-color: var(--vp-c-brand-1);
+}
+
+.case-study-item > a:first-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  margin-bottom: 12px;
+}
+
+.case-study-item img {
+  max-height: 64px;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+.case-study-item h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  border: 0;
+  padding: 0;
+}
+
+.case-study-item h3 a {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+
+.case-study-item h3 a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.case-study-item p {
+  margin: 0 0 12px;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.case-study-item .nav-link {
+  display: inline-block;
+  margin-top: auto;
+  color: var(--vp-c-brand-1);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.case-study-item .nav-link:hover {
+  color: var(--vp-c-brand-2);
+}
+
+.more-cases-heading {
+  margin-top: 32px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
 /* Brand-color the nav items (Docs / Case Studies / Blog / Discord / GitHub)
    to match the v1 spiralbtc navbar. */
 .VPNavBarMenuLink,
@@ -253,6 +394,14 @@
 .VPNavBarMenuLink:hover,
 .VPNavBarMenuGroup:hover .text {
   color: var(--vp-c-brand-2) !important;
+}
+
+/* Larger nav item text on desktop. */
+@media (min-width: 768px) {
+  .VPNavBarMenuLink,
+  .VPNavBarMenuGroup .text {
+    font-size: 18px;
+  }
 }
 
 /* VitePress renders a divider line between the menu group and the
@@ -283,9 +432,57 @@
   /* Default `flex-grow: 1` absorbs leftover space and pushes the
      menu items left. Disable so everything hugs the right edge. */
   flex-grow: 0;
-  padding-left: 16px;
 }
 .VPNavBar .content-body .VPNavBarAppearance {
   order: 3;
-  margin-left: 16px;
+  /* Mobile base: surface the dark/light toggle in the navbar itself,
+     sitting between search (order 2) and the hamburger (order 4).
+     VitePress hides it here by default (it lives in the hamburger
+     screen), so we opt it back in. */
+  display: flex;
+}
+/* Push the hamburger past search and appearance (it has no `order`,
+   so defaults to 0) — order reads Search → Appearance → Hamburger.
+   The 48px button centers its 16px icon, leaving 16px of internal
+   padding before the container's 24px edge — so the icon group would
+   sit ~16px further in than the logo on the left. Cancel that padding
+   with a negative margin so the icon aligns to the same 24px line as
+   the LDK symbol (the right-packed group shifts out as a unit). */
+.VPNavBar .content-body .VPNavBarHamburger {
+  order: 4;
+  margin-right: -16px;
+}
+
+/* Mobile: space the three visible controls (search, appearance,
+   hamburger) evenly with a single gap rather than per-item margins,
+   which previously left an uneven 16px / 0px split. */
+.VPNavBar .content-body {
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  /* Desktop manages spacing per item, so drop the mobile gap and
+     restore the search/appearance insets. The "⋯" extra menu carries
+     the appearance toggle in this range, so hide the standalone one. */
+  .VPNavBar .content-body {
+    gap: 0;
+  }
+  .VPNavBar .content-body .VPNavBarSearch {
+    padding-left: 16px;
+  }
+  .VPNavBar .content-body .VPNavBarAppearance {
+    display: none;
+    margin-left: 16px;
+  }
+  .VPNavBar .content-body .VPNavBarHamburger {
+    margin-right: 0;
+  }
+}
+
+/* ≥1280px: VitePress surfaces the standalone toggle again (its
+   default), so restore it. */
+@media (min-width: 1280px) {
+  .VPNavBar .content-body .VPNavBarAppearance {
+    display: flex;
+  }
 }

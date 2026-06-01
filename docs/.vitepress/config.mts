@@ -196,10 +196,9 @@ export default defineConfig({
     search: {
       provider: 'local',
     },
-
-    footer: {
-      copyright: `Copyright © ${new Date().getUTCFullYear()} LDK Developers`,
-    },
+    // No `footer` here: VitePress's default VPFooter would render its own
+    // copyright above our custom SiteFooter (layout-bottom slot). The
+    // SiteFooter carries the single copyright line.
   },
 
   vite: {
