@@ -68,7 +68,8 @@ const features: Feature[] = [
 .home-feature {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 16px;
   padding: 8px 0;
 }

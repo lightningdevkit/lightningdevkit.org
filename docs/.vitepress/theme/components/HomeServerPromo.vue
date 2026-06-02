@@ -4,8 +4,8 @@
       <div class="ldk-server-content">
         <h2>LDK Server</h2>
         <p>
-          A deployable server with a clean API, enterprise features, and
-          built-in LSP support
+          Deployable with a clean API, enterprise features, and built-in
+          LSP support
         </p>
         <a
           class="ldk-server-cta"

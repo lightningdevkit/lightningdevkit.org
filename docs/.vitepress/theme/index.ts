@@ -11,6 +11,8 @@ import HomeCaseStudies from './components/HomeCaseStudies.vue'
 import HomeCrossPromo from './components/HomeCrossPromo.vue'
 import SiteFooter from './components/SiteFooter.vue'
 import BlogPostList from './components/BlogPostList.vue'
+import BlogPostHeader from './components/BlogPostHeader.vue'
+import CaseStudiesPage from './components/CaseStudiesPage.vue'
 import NavLogo from './components/NavLogo.vue'
 
 export default {
@@ -18,6 +20,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {
       'nav-bar-title-before': () => h(NavLogo),
+      'doc-before': () => h(BlogPostHeader),
       'home-features-after': () => [
         h(HomeFeatures),
         h(HomePromo),
@@ -32,5 +35,6 @@ export default {
     // Register globally so blog markdown pages can use <BlogPostList>
     // without per-file script setup imports.
     app.component('BlogPostList', BlogPostList)
+    app.component('CaseStudiesPage', CaseStudiesPage)
   },
 } satisfies Theme

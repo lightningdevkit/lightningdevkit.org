@@ -149,6 +149,12 @@ export default defineConfig({
     // frontmatter `outline: 'deep'` if a long page benefits from it.
     outline: false,
 
+    // Remove the "Previous/Next page" pager at the bottom of docs pages.
+    docFooter: {
+      prev: false,
+      next: false,
+    },
+
     // Logo and wordmark are rendered together via `NavLogo.vue` in the
     // `nav-bar-title-before` slot, which uses the original sprite at
     // `/img/logo.svg` (with `#small` / `#large` symbols, each a

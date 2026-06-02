@@ -98,6 +98,10 @@ function formatDate(iso: string): string {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  /* Align pills by their text baseline. Without this the first <li> in a
+     row sits ~8px higher than the rest (an inline-block line-box strut
+     quirk that only affects the first flex item). */
+  align-items: baseline;
   gap: 6px;
 }
 

@@ -169,10 +169,11 @@
   width: 0;
   border-left: 1px dashed var(--vp-c-divider);
   pointer-events: none;
-  /* Above the docs sidebar (z-index 28) so the left frame line shows in
-     the sidebar's left margin, but below the navbar (z-index 30) so it
-     stays covered there. */
-  z-index: 29;
+  /* Above the docs sidebar (z-index 28) and above the navbar (z-index 30)
+     so the frame lines run unbroken to the top of the window through the
+     navbar region. The navbar content is inset 16px from the frame width,
+     so the 1px lines clear the logo and nav items. */
+  z-index: 31;
   /* Hidden by default (narrow viewports where they'd overlap content);
      revealed once there's room at the wide breakpoint below. */
   display: none;
@@ -317,6 +318,33 @@
   }
 }
 
+/* Plain pages (e.g. Case Studies) have no divider above the footer the
+   way docs pages (the sidebar rule above) and the home page (its last
+   section's divider) do. Give the footer a dashed top border there.
+   Drawn as a pseudo-element so it can reach the page-frame lines like
+   the home dividers, rather than spanning the full window width. */
+.VPContent:not(.has-sidebar):not(.is-home) ~ .site-footer {
+  position: relative;
+}
+.VPContent:not(.has-sidebar):not(.is-home) ~ .site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  border-top: 1px dashed var(--vp-c-divider);
+  pointer-events: none;
+}
+
+@media (min-width: 1241px) {
+  .VPContent:not(.has-sidebar):not(.is-home) ~ .site-footer::before {
+    left: 50%;
+    right: auto;
+    width: var(--ldk-frame-width);
+    transform: translateX(-50%);
+  }
+}
+
 /* Hero: tighten the default VitePress hero to read as a single
    content column rather than the full-width centered ramp the
    default theme produces. Padding lives on the container (not the
@@ -408,6 +436,17 @@
    the `nav-bar-title-before` slot. No extra title styling needed
    beyond what the component scopes itself. */
 
+/* Case studies is a landing-style page (no sidebar/aside), so VitePress
+   caps its doc column at ~784px and centers it. Let it break out to the
+   full frame content width instead, so the featured band and project
+   grids span the page and align with the home content. */
+.VPDoc:has(.cs-page) .container {
+  max-width: var(--ldk-content-width) !important;
+}
+.VPDoc:has(.cs-page) .content {
+  max-width: none !important;
+}
+
 /* Case studies page layout. The page body is a series of inline
    `<div class="case-studies">` grids containing `.case-study-item`
    cards. Matching the v1 spiralbtc theme: three-column grid, centered
@@ -438,13 +477,92 @@
   align-items: center;
   text-align: center;
   padding: 24px 16px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  transition: border-color 0.2s, transform 0.2s;
 }
 
-.case-study-item:hover {
-  border-color: var(--vp-c-brand-1);
+/* Featured row: a dashed-bordered band (matching the page-frame
+   aesthetic) with dashed cell dividers between the three highlights,
+   rather than individual rounded cards. */
+.case-studies.cs-featured {
+  position: relative;
+  /* Featured highlights render 20% larger than the rest of the page.
+     zoom (not transform: scale) reflows, so the band still fills its
+     container width while logos, text, and padding all grow. This
+     compounds with .cs-page's own zoom:1.25 to an effective 1.5. */
+  zoom: 1.2;
+  margin-top: 0;
+  gap: 0;
+  grid-template-columns: 1fr;
+  border-top: 1px dashed var(--vp-c-divider);
+  border-bottom: 1px dashed var(--vp-c-divider);
+}
+
+.cs-featured .case-study-item {
+  padding: 32px 24px;
+}
+
+/* Stacked (narrow): horizontal dashed dividers between cells. */
+.cs-featured .case-study-item:not(:first-child) {
+  border-top: 1px dashed var(--vp-c-divider);
+}
+
+.cs-featured .case-study-item > a:first-child {
+  height: 80px;
+}
+
+.cs-featured .case-study-item img {
+  max-height: 80px;
+}
+
+@media (min-width: 961px) {
+  /* Three across: swap to vertical dashed dividers. */
+  .case-studies.cs-featured {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cs-featured .case-study-item:not(:first-child) {
+    border-top: 0;
+    border-left: 1px dashed var(--vp-c-divider);
+  }
+}
+
+/* Once the page frame is visible (≥1241px, matching .vp-home-extras),
+   the band's own border stops ~24px short of each frame line. Replace
+   it with frame-spanning pseudo-elements so the top/bottom dashed lines
+   reach the vertical frame lines. The pseudo-elements sit inside the
+   band's compounded zoom (cs-page 1.25 × cs-featured 1.2 = 1.5), so the
+   real-px frame width is divided by that factor to render at the true
+   frame span, centered on the (centered) band. */
+@media (min-width: 1241px) {
+  .case-studies.cs-featured {
+    border-top: 0;
+    border-bottom: 0;
+    /* Break the band out to the full page-frame width so the outer cells
+       meet the frame lines — otherwise they stop ~56px short (the content
+       column's 32px padding + the 24px content-to-frame gutter), leaving
+       whitespace beside the first/last cells. `/1.5` undoes the compounded
+       zoom (cs-page 1.25 × cs-featured 1.2); left:50% + translateX(-50%)
+       re-centers the wider band on the frame regardless of the narrower
+       content container it lives in. */
+    width: calc(var(--ldk-frame-width) / 1.5);
+    max-width: none;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .case-studies.cs-featured::before,
+  .case-studies.cs-featured::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: calc(var(--ldk-frame-width) / 1.5);
+    transform: translateX(-50%);
+    border-top: 1px dashed var(--vp-c-divider);
+    pointer-events: none;
+  }
+  .case-studies.cs-featured::before {
+    top: 0;
+  }
+  .case-studies.cs-featured::after {
+    bottom: 0;
+  }
 }
 
 .case-study-item > a:first-child {
