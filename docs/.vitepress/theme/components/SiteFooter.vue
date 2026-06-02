@@ -166,32 +166,9 @@ const year = new Date().getUTCFullYear()
 }
 
 .site-footer-copy {
-  position: relative;
   color: var(--vp-c-text-3);
   font-size: 13px;
   text-align: center;
   padding-top: 24px;
-}
-
-/* Separator above the copyright. Rendered as a pseudo-element (not a
-   plain border-top) so it can reach the dashed page-frame lines. Base
-   spans the 1152px content width; once the frame is visible it widens
-   to the 1200px frame span and centers so its ends meet the lines. */
-.site-footer-copy::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  border-top: 1px solid var(--vp-c-divider);
-}
-
-@media (min-width: 1241px) {
-  .site-footer-copy::before {
-    left: 50%;
-    right: auto;
-    width: var(--ldk-frame-width);
-    transform: translateX(-50%);
-  }
 }
 </style>

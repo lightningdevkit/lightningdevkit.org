@@ -138,6 +138,15 @@
   letter-spacing: -0.01em;
 }
 
+/* Drop VitePress's default solid divider above each doc h2 — the design
+   relies on the dashed page frame, not solid section rules. Keep the
+   vertical rhythm via margin alone. */
+.vp-doc h2 {
+  margin-top: 48px;
+  padding-top: 0;
+  border-top: none;
+}
+
 /* The default theme leaves the doc page's `.VPDoc .container` at
    1152px max-width too — keep our home content aligned with it so
    the dashed frame visually wraps both. */
@@ -200,6 +209,18 @@
   border-bottom: 1px dashed var(--vp-c-divider);
 }
 
+/* On desktop docs pages VitePress forces the navbar transparent via a
+   *scoped* rule — `.VPNavBar:not(.home)[data-v-hash]`, specificity
+   (0,3,0) — which lets the sidebar (z-index 28, below) show through and
+   overlap the logo as it scrolls. A plain class selector can't outrank
+   the scoped attribute selector, so use !important to re-assert an opaque
+   background and let the fixed navbar fully mask the sidebar beneath it. */
+@media (min-width: 960px) {
+  .VPNavBar.has-sidebar {
+    background-color: var(--vp-c-bg) !important;
+  }
+}
+
 /* The content-body is explicitly `height: var(--vp-nav-height)`, but
    border-box sizing + our 1px bottom border shrink the navbar's content
    area by 1px — so the content-body overflows 1px and, on docs pages
@@ -245,11 +266,12 @@
   }
 }
 
-/* The sidebar's "curtain" masks the navbar strip above the sidebar and
-   reads as a box behind the logo on docs pages; the navbar flows
-   normally now, so hide it. */
+/* The sidebar's "curtain" is the sticky mask at the top of the sidebar's
+   own scroll container — it hides links as they scroll up past the
+   navbar. Keep it (matched to the page background so it doesn't read as a
+   distinct box) so sidebar content never overlaps the fixed navbar/logo. */
 .VPSidebar .curtain {
-  display: none;
+  background-color: var(--vp-c-bg);
 }
 
 /* Sidebar sits above the doc content (so content scrolls under it), but
@@ -276,7 +298,11 @@
    never sits under the fixed sidebar. */
 @media (min-width: 960px) {
   .VPContent.has-sidebar ~ .site-footer {
-    padding-left: var(--vp-sidebar-width);
+    /* Offset past the fixed sidebar, plus a 32px gutter so the columns
+       aren't flush against the sidebar/frame edge. */
+    padding-left: calc(var(--vp-sidebar-width) + 32px);
+    /* Padded divider separating the footer from the doc content above. */
+    border-top: 1px dashed var(--vp-c-divider);
   }
   .VPContent.has-sidebar ~ .site-footer .site-footer-inner {
     max-width: none;
@@ -286,19 +312,9 @@
 
 @media (min-width: 1440px) {
   .VPContent.has-sidebar ~ .site-footer {
-    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
+    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + 32px);
     padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
   }
-}
-
-/* The copyright separator centers a frame-width line to meet the home
-   frame; on the offset docs footer that overflows, so span the footer
-   column instead. */
-.VPContent.has-sidebar ~ .site-footer .site-footer-copy::before {
-  left: 0 !important;
-  right: 0 !important;
-  width: auto !important;
-  transform: none !important;
 }
 
 /* Hero: tighten the default VitePress hero to read as a single
