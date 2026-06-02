@@ -412,7 +412,9 @@ const filtered = computed(() =>
 .cs-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  /* Tight row-gap so wrapped rows (on mobile) sit close together, while
+     keeping a comfortable column-gap between tabs on the same row. */
+  gap: 10px 24px;
   margin: 20px 0 4px;
 }
 
