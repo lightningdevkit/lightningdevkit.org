@@ -31,7 +31,7 @@ import { withBase } from 'vitepress'
   /* Stay within the dashed page-frame (1200px wide, centered) rather
      than bleeding the orange band to the viewport edges. No vertical
      margin so it sits flush below the "Trusted by the best" section. */
-  max-width: 1200px;
+  max-width: var(--ldk-frame-width);
   margin: 0 auto;
   background: #f7931a;
   border-bottom: 1px dashed var(--vp-c-divider);
@@ -44,7 +44,7 @@ import { withBase } from 'vitepress'
 }
 
 .cross-promo-inner {
-  max-width: 1152px;
+  max-width: var(--ldk-content-width);
   margin: 0 auto;
   display: flex;
   flex-direction: column;

@@ -54,6 +54,23 @@
   /* Taller navbar for a bit more vertical padding around the logo and
      nav items (VitePress default is 64px). */
   --vp-nav-height: 72px;
+
+  /* White sidebar (VitePress default is the grey --vp-c-bg-alt) so docs
+     pages read on the same surface as the page frame. */
+  --vp-sidebar-bg-color: var(--vp-c-bg);
+
+  /* Shared layout widths. The dashed page frame sits at --ldk-frame-width
+     (centered), with the content column 48px narrower inside it (a 24px
+     gutter each side). Widen these to pull the frame closer to the window
+     edges; the navbar, home sections, dividers, footer, and cross-promo
+     all derive from them. */
+  --ldk-content-width: 1320px;
+  --ldk-frame-width: 1368px;
+  --ldk-frame-half: 684px; /* --ldk-frame-width / 2 */
+
+  /* Docs layout matches the frame width so the sidebar + content sit
+     within the same frame. */
+  --vp-layout-max-width: var(--ldk-frame-width);
 }
 
 .dark {
@@ -80,7 +97,7 @@
    page frame. */
 .vp-home-extras {
   position: relative;
-  max-width: 1152px;
+  max-width: var(--ldk-content-width);
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -106,7 +123,7 @@
   .vp-home-extras::after {
     left: 50%;
     right: auto;
-    width: 1200px;
+    width: var(--ldk-frame-width);
     transform: translateX(-50%);
   }
 }
@@ -149,12 +166,14 @@
   display: none;
 }
 
+/* Frame the 1200px content column (center ± 600) — same on home and
+   docs now that the docs layout is also capped at 1200px. */
 .Layout::before {
-  left: calc(50% - 600px);
+  left: calc(50% - var(--ldk-frame-half));
 }
 
 .Layout::after {
-  left: calc(50% + 600px);
+  left: calc(50% + var(--ldk-frame-half));
 }
 
 @media (min-width: 1241px) {
@@ -190,10 +209,64 @@
 }
 
 .VPNavBar .wrapper > .container {
-  max-width: 1200px !important;
+  max-width: var(--ldk-frame-width) !important;
   margin: 0 auto !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
+}
+
+/* Keep the navbar identical on docs (sidebar) pages. VitePress's
+   `has-sidebar` mode pulls the logo into an absolute sidebar-width box
+   and pads the nav content by the sidebar width; neutralize both so the
+   logo and nav items flow within the 1200px container exactly like
+   every other page. */
+@media (min-width: 960px) {
+  .VPNavBar.has-sidebar .title {
+    position: static !important;
+    width: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .VPNavBar.has-sidebar .content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* The sidebar's "curtain" masks the navbar strip above the sidebar and
+   reads as a box behind the logo on docs pages; the navbar flows
+   normally now, so hide it. */
+.VPSidebar .curtain {
+  display: none;
+}
+
+/* The footer now sits in the content column (offset past the sidebar,
+   below), so the sidebar no longer overlaps any footer content. Let the
+   fixed sidebar sit on top of everything below the navbar — keep it
+   under the navbar (z-index 30) so the logo stays visible. */
+@media (min-width: 960px) {
+  .VPSidebar {
+    z-index: 29 !important;
+  }
+}
+
+/* Dashed divider between the sidebar and the content, matching the page
+   frame, so the docs grid reads as: left frame | sidebar | content |
+   right frame. */
+@media (min-width: 960px) {
+  .VPSidebar {
+    border-right: 1px dashed var(--vp-c-divider);
+  }
+}
+
+/* Footer is centered within the page on docs pages too (same as home) —
+   its inner column and copyright separator use the shared base styles.
+   The fixed sidebar (z-index 29) would otherwise cover the centered
+   footer's left edge at the bottom of the page, so lift the footer above
+   it here. */
+.VPContent.has-sidebar ~ .site-footer {
+  position: relative;
+  z-index: 31;
 }
 
 /* Hero: tighten the default VitePress hero to read as a single
@@ -212,7 +285,7 @@
 }
 
 .VPHome .VPHero .container {
-  max-width: 1152px;
+  max-width: var(--ldk-content-width);
   margin: 0 auto;
   padding: 0 24px;
 }

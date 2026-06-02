@@ -108,7 +108,7 @@ const year = new Date().getUTCFullYear()
 }
 
 .site-footer-inner {
-  max-width: 1152px;
+  max-width: var(--ldk-content-width);
   margin: 0 auto;
 }
 
@@ -190,7 +190,7 @@ const year = new Date().getUTCFullYear()
   .site-footer-copy::before {
     left: 50%;
     right: auto;
-    width: 1200px;
+    width: var(--ldk-frame-width);
     transform: translateX(-50%);
   }
 }
