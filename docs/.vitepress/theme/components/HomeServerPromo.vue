@@ -31,16 +31,16 @@
 }
 
 .ldk-server-inner {
-  /* Text then illustration (swapped vs LDK Node), grouped and aligned to
-     the right of the section. */
+  /* Mobile: same pattern as the LDK Node section — illustration on top,
+     content below, everything centered. (Content is first in the DOM for
+     the desktop swap, so column-reverse puts the icon on top here.) */
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
+  flex-direction: column-reverse;
+  align-items: center;
   gap: 32px;
   background: var(--vp-c-brand-soft);
   padding: 64px 24px;
-  text-align: right;
+  text-align: center;
   /* Full-bleed soft band (matches the LDK Node section): cancel the
      section's 24px side padding so the background fills edge-to-edge. */
   margin-left: -24px;
@@ -49,7 +49,12 @@
 
 @media (min-width: 721px) {
   .ldk-server-inner {
+    /* Desktop: text left, illustration right (swapped vs LDK Node),
+       grouped and aligned to the right of the section. */
     flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
   }
 }
 

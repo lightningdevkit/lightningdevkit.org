@@ -160,7 +160,10 @@
   width: 0;
   border-left: 1px dashed var(--vp-c-divider);
   pointer-events: none;
-  z-index: 1;
+  /* Above the docs sidebar (z-index 28) so the left frame line shows in
+     the sidebar's left margin, but below the navbar (z-index 30) so it
+     stays covered there. */
+  z-index: 29;
   /* Hidden by default (narrow viewports where they'd overlap content);
      revealed once there's room at the wide breakpoint below. */
   display: none;
@@ -195,6 +198,15 @@
    own bottom-border rule above. */
 .VPNavBar {
   border-bottom: 1px dashed var(--vp-c-divider);
+}
+
+/* The content-body is explicitly `height: var(--vp-nav-height)`, but
+   border-box sizing + our 1px bottom border shrink the navbar's content
+   area by 1px — so the content-body overflows 1px and, on docs pages
+   where it has an opaque background, paints over the dashed border on the
+   nav-items side. Trim it so the border shows full width. */
+.VPNavBar .content-body {
+  height: calc(var(--vp-nav-height) - 1px);
 }
 
 /* Align the navbar inner content with the dashed page-frame.
@@ -240,13 +252,12 @@
   display: none;
 }
 
-/* The footer now sits in the content column (offset past the sidebar,
-   below), so the sidebar no longer overlaps any footer content. Let the
-   fixed sidebar sit on top of everything below the navbar — keep it
-   under the navbar (z-index 30) so the logo stays visible. */
+/* Sidebar sits above the doc content (so content scrolls under it), but
+   below the page-frame lines (z-index 29) so the left frame line stays
+   visible in the sidebar's left margin, and below the navbar. */
 @media (min-width: 960px) {
   .VPSidebar {
-    z-index: 29 !important;
+    z-index: 28 !important;
   }
 }
 
@@ -259,14 +270,35 @@
   }
 }
 
-/* Footer is centered within the page on docs pages too (same as home) —
-   its inner column and copyright separator use the shared base styles.
-   The fixed sidebar (z-index 29) would otherwise cover the centered
-   footer's left edge at the bottom of the page, so lift the footer above
-   it here. */
-.VPContent.has-sidebar ~ .site-footer {
-  position: relative;
-  z-index: 31;
+/* Footer sits in the doc-content column on sidebar pages: mirror
+   VPContent.has-sidebar's sidebar offset and let the inner fill that
+   column, so the footer matches the VPDoc.has-sidebar.has-aside width and
+   never sits under the fixed sidebar. */
+@media (min-width: 960px) {
+  .VPContent.has-sidebar ~ .site-footer {
+    padding-left: var(--vp-sidebar-width);
+  }
+  .VPContent.has-sidebar ~ .site-footer .site-footer-inner {
+    max-width: none;
+    margin: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .VPContent.has-sidebar ~ .site-footer {
+    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
+    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
+  }
+}
+
+/* The copyright separator centers a frame-width line to meet the home
+   frame; on the offset docs footer that overflows, so span the footer
+   column instead. */
+.VPContent.has-sidebar ~ .site-footer .site-footer-copy::before {
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+  transform: none !important;
 }
 
 /* Hero: tighten the default VitePress hero to read as a single
