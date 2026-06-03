@@ -563,7 +563,7 @@ const filter = ldk.Filter.new_impl({
 
 :::
 
-**Implementation notes:** see the [Blockchain Data](/blockchain_data/introduction.md) guide for more info
+**Implementation notes:** see the [Blockchain Data](/blockchain_data/) guide for more info
 
 **Dependencies:** _none_
 

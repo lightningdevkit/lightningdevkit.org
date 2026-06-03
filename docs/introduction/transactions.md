@@ -6,7 +6,7 @@ Clients running a light client may wish to filter for transactions on a separate
 
 [LDK's `Filter` API reference](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html)
 
-More information is available in the [Blockchain Data guide](/blockchain_data/introduction).
+More information is available in the [Blockchain Data guide](/blockchain_data/).
 
 ## Fee Estimation 
 

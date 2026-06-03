@@ -9,4 +9,4 @@ LDK also uses an event-driven architecture which allows for asynchronous result 
 
 ::: tip Language Bindings
 
-Although the core SDK is written in Rust, LDK supports many other programming languages. These include Java/Kotlin, Swift, JavaScript/TypeScript (Beta), C++ (Alpha). Check out [examples](../examples.md) to see some of the implementations out in the wild!
+Although the core SDK is written in Rust, LDK supports many other programming languages. These include Java/Kotlin, JavaScript/TypeScript, C++ (Alpha). Check out [examples](../examples.md) to see some of the implementations out in the wild!
