@@ -141,6 +141,14 @@ export default defineConfig({
 
   markdown: {
     lineNumbers: false,
+    // Code blocks use a dark navy background in BOTH light and dark mode
+    // (--vp-code-block-bg is dark in :root and .dark alike), so both Shiki
+    // themes must be dark-on-navy. github-light/github-dark have muted tokens
+    // that disappear on the navy; one-dark-pro stays high-contrast and legible.
+    theme: {
+      light: 'one-dark-pro',
+      dark: 'one-dark-pro',
+    },
   },
 
   themeConfig: {
