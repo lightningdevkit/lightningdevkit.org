@@ -3,10 +3,7 @@
     <div class="ldk-server-inner">
       <div class="ldk-server-content">
         <h2>LDK Server</h2>
-        <p>
-          Deployable with a clean API, enterprise features, and built-in
-          LSP support
-        </p>
+        <p>Deployable with a clean API, enterprise features, and built-in LSP support</p>
         <a
           class="ldk-server-cta"
           href="https://github.com/lightningdevkit/ldk-server"
@@ -69,7 +66,9 @@
 }
 
 .ldk-server-content {
-  max-width: 30rem;
+  /* Wide enough for the tagline to sit on one line on desktop; flex-shrink
+     still lets it wrap on narrow/mobile viewports. */
+  max-width: 52rem;
 }
 
 .ldk-server-icon {

@@ -342,4 +342,69 @@ class LDKSignerProvider : SignerProvider.SignerProviderInterface {
 
 ```
 
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+// Wrap a KeysManager so destination/shutdown scripts come from your BDK wallet.
+class BDKKeysManager {
+  constructor(
+    private readonly inner: ldk.KeysManager,
+    private readonly wallet: BdkWallet
+  ) {}
+
+  // We drop all occurrences of `SpendableOutputDescriptor_StaticOutput` (since
+  // they will be spendable by the BDK wallet) and forward any other descriptors
+  // to the inner KeysManager. `spend_spendable_outputs` lives on the
+  // OutputSpender trait.
+  //
+  // Note you should set `locktime` to the current block height to mitigate fee
+  // sniping. See https://bitcoinops.org/en/topics/fee-sniping/ for more info.
+  spendSpendableOutputs(
+    descriptors: ldk.SpendableOutputDescriptor[],
+    outputs: ldk.TxOut[],
+    changeDestinationScript: Uint8Array,
+    feerateSatPer1000Weight: number
+  ): ldk.Result_TransactionNoneZ {
+    const onlyNonStatic = descriptors.filter(
+      (d) => !(d instanceof ldk.SpendableOutputDescriptor_StaticOutput)
+    );
+    return this.inner
+      .as_OutputSpender()
+      .spend_spendable_outputs(
+        onlyNonStatic,
+        outputs,
+        changeDestinationScript,
+        feerateSatPer1000Weight,
+        ldk.Option_u32Z.constructor_none() // locktime
+      );
+  }
+
+  // Build a SignerProvider that returns the BDK wallet's scripts and redirects
+  // every other method to the inner KeysManager.
+  asSignerProvider(): ldk.SignerProvider {
+    const inner = this.inner.as_SignerProvider();
+    const wallet = this.wallet;
+    return ldk.SignerProvider.new_impl({
+      // We return the destination and shutdown scripts derived by the BDK wallet.
+      get_destination_script(_channelKeysId: Uint8Array): ldk.Result_CVec_u8ZNoneZ {
+        const script = wallet.getNewAddress().scriptPubkey(); // Uint8Array
+        return ldk.Result_CVec_u8ZNoneZ.constructor_ok(script);
+      },
+      get_shutdown_scriptpubkey(): ldk.Result_ShutdownScriptNoneZ {
+        // Derive a ShutdownScript from the wallet's (witness) address, e.g. via
+        // ldk.ShutdownScript.constructor_new_witness_program(version, program).
+        // ...
+      },
+      // ... and redirect the remaining methods to the `inner` KeysManager.
+      generate_channel_keys_id(inbound: boolean, userChannelId: bigint): Uint8Array {
+        return inner.generate_channel_keys_id(inbound, userChannelId);
+      },
+      derive_channel_signer(channelKeysId: Uint8Array): ldk.EcdsaChannelSigner {
+        return inner.derive_channel_signer(channelKeysId);
+      },
+    } as ldk.SignerProviderInterface);
+  }
+}
+```
+
 :::
