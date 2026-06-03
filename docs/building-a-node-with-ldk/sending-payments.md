@@ -8,76 +8,80 @@ find a route from your node to the recipient and then make the payment using
 ::: code-group
 
 ```rust [Rust]
+use lightning_invoice::Bolt11Invoice;
+use lightning::ln::channelmanager::{PaymentId, Retry, RouteParametersConfig};
+use bitcoin::hashes::Hash;
+use std::str::FromStr;
+use std::time::Duration;
+
 // Parse the invoice.
-let invoice = Invoice::from_str(encoded_invoice)
+let invoice = Bolt11Invoice::from_str(encoded_invoice)
 	.expect("ERROR: failed to parse invoice");
 
-let amt_pico_btc = invoice.amount_pico_btc()
-	.expect("ERROR: invalid invoice: must contain amount to pay");
-let amt_msat = amt_pico_btc / 10;
-let payer_pubkey = channel_manager.get_our_node_id();
-let network_graph = router.network_graph.read().unwrap();
-let payee_pubkey = invoice.recover_payee_pub_key();
-let payee_features = invoice.features().cloned();
-let first_hops = channel_manager.list_usable_channels();
-let last_hops = invoice.route_hints();
-let final_cltv = invoice.min_final_cltv_expiry() as u32;
-
-// Find a route and send the payment.
-let route = router::get_route(
-	&payer_pubkey, &network_graph, &payee_pubkey, payee_features,
-	Some(&first_hops.iter().collect::<Vec<_>>()), &last_hops,
-	amt_msat, final_cltv, logger.clone(),
-).expect("ERROR: failed to find route");
-
-let payment_hash = PaymentHash(invoice.payment_hash().clone().into_inner());
-let payment_secret = invoice.payment_secret().cloned();
-
-channel_manager.send_payment(&route, payment_hash, &payment_secret)
+// `pay_for_bolt11_invoice` derives the route parameters and retries internally.
+// The old `router::get_route` + `send_payment(&route, ..)` flow and the
+// `InvoicePayer` abstraction were removed.
+let payment_id = PaymentId((*invoice.payment_hash()).to_byte_array());
+channel_manager
+	.pay_for_bolt11_invoice(
+		&invoice,
+		payment_id,
+		None, // amount_msats: None uses the invoice's amount
+		RouteParametersConfig::default(),
+		Retry::Timeout(Duration::from_secs(10)),
+	)
 	.expect("ERROR: failed to send payment");
 ```
 
 ```java [Kotlin]
 // Get an invoice from the recipient/payee
-val invoice = Bolt11Invoice.from_str(recipientInvoice)
-val invoiceResult = (invoice as Result_Bolt11InvoiceParseOrSemanticErrorZ.Result_Bolt11InvoiceParseOrSemanticErrorZ_OK).res
-val paymentParams = UtilMethods.payment_parameters_from_invoice(invoiceResult)
-val paymentParamsResult = (paymentParams as Result_C3Tuple_ThirtyTwoBytesRecipientOnionFieldsRouteParametersZNoneZ.Result_C3Tuple_ThirtyTwoBytesRecipientOnionFieldsRouteParametersZNoneZ_OK).res
+val parseRes = Bolt11Invoice.from_str(recipientInvoice)
+val invoice = (parseRes as Result_Bolt11InvoiceParseOrSemanticErrorZ.Result_Bolt11InvoiceParseOrSemanticErrorZ_OK).res
 
-val paymentHash = paymentParamsResult._a
-val recipientOnion = paymentParamsResult._b
-val paymentId = paymentParamsResult._a
-val routeParams = paymentParamsResult._c
-
-val res = channelManager.send_payment(paymentHash, recipientOnion, paymentId, routeParams, Retry.attempts(5))
+// `UtilMethods.payment_parameters_from_invoice` was removed —
+// `pay_for_bolt11_invoice` builds the route parameters for you.
+val res = channelManager.pay_for_bolt11_invoice(
+    invoice,
+    paymentId,                            // ByteArray (32) — your idempotency id
+    Option_u64Z.none(),                   // amount_msats (none = use invoice amount)
+    RouteParametersConfig.with_default(),
+    Retry.attempts(5)
+)
 
 if (res.is_ok) {
   // Payment success
 }
 ```
 
-```Swift [Swift]
-let invoiceStr = // get an invoice from the payee
-let parsedInvoice = Bolt11Invoice.fromStr(s: invoiceStr)
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-if let invoiceVal = parsedInvoice.getValue() {
-  let invoicePaymentResult = Bindings.paymentParametersFromInvoice(invoice: invoiceVal)
-  guard invoicePaymentResult.isOk() else {
-    return false
-  }
-  let (paymentHash, recipientOnion, routeParams) = Bindings.paymentParametersFromInvoice(invoice: invoiceVal).getValue()!
-  let paymentId = invoice.paymentHash()!
-  let res = channelManager.sendPayment(
-    paymentHash: paymentHash, 
-    recipientOnion: recipientOnion, 
-    paymentId: paymentId, 
-    routeParams: routeParams, 
-    retryStrategy: .initWithTimeout(a: 15)
-  )
+// Parse the invoice.
+const parsed = ldk.Bolt11Invoice.constructor_from_str(invoiceString);
+if (!(parsed instanceof ldk.Result_Bolt11InvoiceParseOrSemanticErrorZ_OK)) {
+  return; // invalid invoice
+}
+const invoice = parsed.res;
 
-  if res.isOk() {
-    // Payment Sent
-  }
+// The TS bindings have no `pay_for_bolt11_invoice` helper, and
+// `payment_parameters_from_invoice` was removed — build route params from the
+// invoice, then call `send_payment`.
+const paymentParams = ldk.PaymentParameters.constructor_from_bolt11_invoice(invoice);
+const amtMsat = (invoice.amount_milli_satoshis() as ldk.Option_u64Z_Some).some;
+const routeParams = ldk.RouteParameters.constructor_from_payment_params_and_value(
+  paymentParams,
+  amtMsat
+);
+
+const res = channelManager.send_payment(
+  invoice.payment_hash(), // Uint8Array
+  ldk.RecipientOnionFields.constructor_secret_only(invoice.payment_secret()),
+  paymentId,              // Uint8Array — your idempotency id
+  routeParams,
+  ldk.Retry.constructor_attempts(5)
+);
+if (res.is_ok()) {
+  // Payment sent
 }
 ```
 
@@ -93,38 +97,43 @@ accordingly.
 ::: code-group
 
 ```rust [Rust]
-// In the event handler passed to BackgroundProcessor::start
+// In the async event handler passed to process_events_async.
+// Note `PaymentFailed` now carries `payment_id` + optional `reason`
+// (the old `rejected_by_dest` field is gone).
 match event {
-	Event::PaymentSent { payment_preimage } => {
+	Event::PaymentSent { payment_preimage, payment_hash, .. } => {
 		// Handle successful payment
 	}
-	Event::PaymentFailed { payment_hash, rejected_by_dest } => {
+	Event::PaymentFailed { payment_id, payment_hash, reason } => {
 		// Handle failed payment
 	}
 	// ...
+	_ => {}
 }
 ```
 
 ```java [Kotlin]
-// In the `handleEvent` method of ChannelManagerPersister implementation
-if(event is Event.PaymentSent) {
+// In your ChannelManagerConstructor.EventHandler
+if (event is Event.PaymentSent) {
     // Handle successful payment
 }
 
-if(event is Event.PaymentFailed) {
+if (event is Event.PaymentFailed) {
     // Handle failed payment
 }
 ```
 
-```Swift [Swift]
-// In the `handleEvent` method of ChannelManagerPersister implementation
-if let paymentSentEvent = event.getValueAsPaymentSent() {
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+// In your EventHandler (see Handling Events)
+if (event instanceof ldk.Event_PaymentSent) {
   // Handle successful payment
-} else if let paymentFailedEvent = event.getValueAsPaymentFailed() {
+} else if (event instanceof ldk.Event_PaymentFailed) {
   // Handle failed payment
 }
 ```
 
 :::
 
-**References:** [Rust `PaymentSent` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentSent),[Rust `PaymentFailed` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentFailed), [Java/Kotlin `PaymentSent` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L464), [Java/Kotlin `PaymentFailed` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L512)
+**References:** [Rust `PaymentSent` docs](https://docs.rs/lightning/0.2.2/lightning/events/enum.Event.html#variant.PaymentSent), [Rust `PaymentFailed` docs](https://docs.rs/lightning/0.2.2/lightning/events/enum.Event.html#variant.PaymentFailed), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Event.java), [TypeScript `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/ts/structs/Event.mts)

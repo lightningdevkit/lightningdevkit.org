@@ -45,7 +45,16 @@ dependencies {
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     // ...
 }
-````
+```
+
+```bash [TypeScript]
+# Install the LDK WASM bindings from npm, replacing {VERSION} with the version
+# you want. Pin an explicit version: the npm `latest` tag lags the releases
+# (e.g. use 0.2.0-0). The bindings are pure ESM and require a one-time async
+# WASM init before use (see below).
+
+npm install lightningdevkit@{VERSION}
+```
 
 :::
 
@@ -61,11 +70,11 @@ use lightning::chain::chaininterface::FeeEstimator;
 import org.ldk.structs.FeeEstimator
 ```
 
-:::
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-::: tip Installing LDK Swift
-Add ldk-swift package using the Swift Package Manager.
-
-To import the package, use: `import LightningDevKit`
+// Load the WASM once, before using any API:
+await ldk.initializeWasmWebFetch("/liblightningjs.wasm");
+```
 
 :::

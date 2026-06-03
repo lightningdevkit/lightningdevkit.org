@@ -9,25 +9,28 @@ Adding a `ChannelManager` to your application should look something like this:
 ::: code-group
 
 ```rust [Rust]
-use lightning::ln::channelmanager;
+use lightning::ln::channelmanager::ChannelManager;
 
+// 0.2 adds a `message_router` argument (e.g. a `DefaultMessageRouter`) and
+// takes the dependencies by value (pass your `Arc` handles / clones).
 let channel_manager = ChannelManager::new(
-  &fee_estimator,
-  &chain_monitor,
-  &broadcaster,
-  &router,
-  &logger,
-  &entropy_source,
-  &node_signer,
-  &signer_provider,
+  fee_estimator,
+  chain_monitor,
+  broadcaster,
+  router,
+  message_router,
+  logger,
+  entropy_source,
+  node_signer,
+  signer_provider,
   user_config,
   chain_params,
-  current_timestamp
+  current_timestamp,
 );
 ```
 
 ```kotlin [Kotlin]
-  import org.ldk.batteries.ChannelManagerConstructor
+import org.ldk.batteries.ChannelManagerConstructor
 
 val channelManagerConstructor = ChannelManagerConstructor(
     Network.LDKNetwork_Regtest,
@@ -39,39 +42,44 @@ val channelManagerConstructor = ChannelManagerConstructor(
     keysManager.as_SignerProvider(),
     feeEstimator,
     chainMonitor,
-    router,
-    scoringParams,
-    routerWrapper, // optional
+    networkGraph,
+    ProbabilisticScoringDecayParameters.with_default(),
+    ProbabilisticScoringFeeParameters.with_default(),
+    null, // routerWrapper (optional — null uses the default router)
     txBroadcaster,
     logger
+)
+```
+
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+// The TypeScript bindings have no ChannelManagerConstructor helper — call the
+// raw constructor. (The sections below build each dependency.)
+const params = ldk.ChainParameters.constructor_new(
+  ldk.Network.LDKNetwork_Regtest,
+  ldk.BestBlock.constructor_from_network(ldk.Network.LDKNetwork_Regtest)
+);
+const messageRouter = ldk.DefaultMessageRouter.constructor_new(
+  networkGraph,
+  keysManager.as_EntropySource()
 );
 
-````
-
-```Swift [Swift]
-import LightningDevKit
-
-let channelManagerConstructionParameters = ChannelManagerConstructionParameters(
-    config: userConfig,
-    entropySource: keysManager.asEntropySource(),
-    nodeSigner: keysManager.asNodeSigner(),
-    signerProvider: keysManager.asSignerProvider(),
-    feeEstimator: feeEstimator,
-    chainMonitor: chainMonitor,
-    txBroadcaster: broadcaster,
-    logger: logger,
-    enableP2PGossip: true,
-    scorer: scorer
-)
-
-let channelManagerConstructor = ChannelManagerConstructor(
-    network: network,
-    currentBlockchainTipHash: latestBlockHash,
-    currentBlockchainTipHeight: latestBlockHeight,
-    netGraph: netGraph,
-    params: channelManagerConstructionParameters
-)
-````
+const channelManager = ldk.ChannelManager.constructor_new(
+  feeEstimator,
+  chainMonitor.as_Watch(),
+  txBroadcaster,
+  router.as_Router(),
+  messageRouter.as_MessageRouter(),
+  logger,
+  keysManager.as_EntropySource(),
+  keysManager.as_NodeSigner(),
+  keysManager.as_SignerProvider(),
+  userConfig,
+  params,
+  Math.floor(Date.now() / 1000) // current_timestamp (seconds)
+);
+```
 
 :::
 
@@ -84,72 +92,66 @@ There are a few dependencies needed to get this working. Let's walk through sett
 ::: code-group
 
 ```rust [Rust]
+use lightning::chain::chaininterface::{ConfirmationTarget, FeeEstimator};
+
 struct YourFeeEstimator();
 
 impl FeeEstimator for YourFeeEstimator {
-    fn get_est_sat_per_1000_weight(
-        &self, confirmation_target: ConfirmationTarget,
-    ) -> u32 {
+    fn get_est_sat_per_1000_weight(&self, confirmation_target: ConfirmationTarget) -> u32 {
+        // 0.2 re-modeled `ConfirmationTarget` around anchor vs non-anchor
+        // channels and specific spending scenarios. Return your own feerates;
+        // the values below are illustrative (the floor is 253).
         match confirmation_target {
-            ConfirmationTarget::Background => {
-                // Fetch background feerate,
-                // You can add the code here for this case
-            }
-            ConfirmationTarget::Normal => {
-                // Fetch normal feerate (~6 blocks)
-                // You can add the code here for this case
-            }
-            ConfirmationTarget::HighPriority => {
-                // Fetch high priority feerate
-                // You can add the code here for this case
-            }
+            ConfirmationTarget::MaximumFeeEstimate => 7500,
+            ConfirmationTarget::UrgentOnChainSweep => 5000,
+            ConfirmationTarget::MinAllowedAnchorChannelRemoteFee => 253,
+            ConfirmationTarget::MinAllowedNonAnchorChannelRemoteFee => 253,
+            ConfirmationTarget::AnchorChannelFee => 1000,
+            ConfirmationTarget::NonAnchorChannelFee => 2000,
+            ConfirmationTarget::ChannelCloseMinimum => 500,
+            ConfirmationTarget::OutputSpendingFee => 1000,
         }
     }
 }
 
 let fee_estimator = YourFeeEstimator();
-  ````
+```
 
 ```java [Kotlin]
-object YourFeeEstimator : FeeEstimatorInterface {
-  override fun get_est_sat_per_1000_weight(confirmationTarget: ConfirmationTarget?): Int {
-      if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Background) {
-          // <insert code to retrieve a background feerate>
-      }
-
-      if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_Normal) {
-          // <insert code to retrieve a normal (i.e. within ~6 blocks) feerate>
-      }
-
-      if (confirmationTarget == ConfirmationTarget.LDKConfirmationTarget_HighPriority) {
-          // <insert code to retrieve a high-priority feerate>
-      }
-      // return default fee rate
-  }
-}
-
-val feeEstimator: FeeEstimator = FeeEstimator.new_impl(YourFeeEstimator)
-````
-
-```Swift [Swift]
-class MyFeeEstimator: FeeEstimator {
-    override func getEstSatPer1000Weight(confirmationTarget: Bindings.ConfirmationTarget) -> UInt32 {
-      if confirmationTarget == .MinAllowedNonAnchorChannelRemoteFee {
-          return 253
-      } else if confirmationTarget == .ChannelCloseMinimum {
-          return 1000
-      } else if confirmationTarget == .NonAnchorChannelFee {
-          return 7500
-      } else if confirmationTarget == .OnChainSweep {
-          return 7500
-      }
-      return 7500
+val feeEstimator = FeeEstimator.new_impl(object : FeeEstimator.FeeEstimatorInterface {
+    override fun get_est_sat_per_1000_weight(confirmationTarget: ConfirmationTarget): Int {
+        return when (confirmationTarget) {
+            ConfirmationTarget.LDKConfirmationTarget_MaximumFeeEstimate -> 7500
+            ConfirmationTarget.LDKConfirmationTarget_UrgentOnChainSweep -> 5000
+            ConfirmationTarget.LDKConfirmationTarget_MinAllowedAnchorChannelRemoteFee -> 253
+            ConfirmationTarget.LDKConfirmationTarget_MinAllowedNonAnchorChannelRemoteFee -> 253
+            ConfirmationTarget.LDKConfirmationTarget_AnchorChannelFee -> 1000
+            ConfirmationTarget.LDKConfirmationTarget_NonAnchorChannelFee -> 2000
+            ConfirmationTarget.LDKConfirmationTarget_ChannelCloseMinimum -> 500
+            ConfirmationTarget.LDKConfirmationTarget_OutputSpendingFee -> 1000
+            else -> 2000
+        }
     }
-}
+})
+```
 
-let feeEstimator = MyFeeEstimator()
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-````
+const feeEstimator = ldk.FeeEstimator.new_impl({
+  get_est_sat_per_1000_weight(target: ldk.ConfirmationTarget): number {
+    // Return your own feerates per ConfirmationTarget (floor is 253).
+    switch (target) {
+      case ldk.ConfirmationTarget.LDKConfirmationTarget_UrgentOnChainSweep:
+        return 5000;
+      case ldk.ConfirmationTarget.LDKConfirmationTarget_ChannelCloseMinimum:
+        return 253;
+      default:
+        return 2000;
+    }
+  },
+} as ldk.FeeEstimatorInterface);
+```
 
 :::
 
@@ -161,7 +163,7 @@ retrieving fresh ones every time
 
 **Dependencies:** *none*
 
-**References:** [Rust `FeeEstimator` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java/Kotlin `FeeEstimator` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/FeeEstimator.java)
+**References:** [Rust `FeeEstimator` docs](https://docs.rs/lightning/0.2.2/lightning/chain/chaininterface/trait.FeeEstimator.html), [Java/Kotlin `FeeEstimator` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/FeeEstimator.java)
 
 ### Initialize the `Router`
 
@@ -170,29 +172,40 @@ retrieving fresh ones every time
 ::: code-group
 
 ```rust [Rust]
- let router = DefaultRouter::new(
-   network_graph.clone(),
-   logger.clone(),
-   keys_manager.get_secure_random_bytes(),
-   scorer.clone(),
-   ProbabilisticScoringFeeParameters::default()
- )
- 
-````
+// The 3rd argument is now an `EntropySource` (e.g. your KeysManager), not a
+// raw byte array.
+let router = DefaultRouter::new(
+  network_graph.clone(),
+  logger.clone(),
+  keys_manager.clone(),
+  scorer.clone(),
+  ProbabilisticScoringFeeParameters::default(),
+);
+```
 
 ```kotlin [Kotlin]
+// If you use the ChannelManagerConstructor it builds the router for you. The
+// NetworkGraph it needs is created like so:
 val networkGraph = NetworkGraph.of(Network.LDKNetwork_Regtest, logger)
 ```
 
-```Swift [Swift]
-let netGraph = NetworkGraph(network: .Regtest, logger: logger)
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+const router = ldk.DefaultRouter.constructor_new(
+  networkGraph,
+  logger,
+  keysManager.as_EntropySource(),
+  multiThreadedScorer.as_LockableScore(),
+  ldk.ProbabilisticScoringFeeParameters.constructor_default()
+);
 ```
 
 :::
 
 **Dependencies:** `P2PGossipSync`, `Logger`, `KeysManager`, `Scorer`
 
-**References:** [Rust `Router` docs](https://docs.rs/lightning/*/lightning/routing/router/trait.Router.html), [Java/Kotlin `Router` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Router.java)
+**References:** [Rust `Router` docs](https://docs.rs/lightning/0.2.2/lightning/routing/router/trait.Router.html), [Java/Kotlin `Router` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Router.java)
 
 ### Initialize the `Logger`
 
@@ -201,15 +214,17 @@ let netGraph = NetworkGraph(network: .Regtest, logger: logger)
 ::: code-group
 
 ```rust [Rust]
+use lightning::util::logger::{Logger, Record};
+
 struct YourLogger();
 
 impl Logger for YourLogger {
-    fn log(&self, record: &Record) {
+    // Note: `log` now takes `Record` by value (was `&Record`).
+    fn log(&self, record: Record) {
         let raw_log = record.args.to_string();
         let log = format!(
-            "{} {:<5} [{}:{}] {}\n",
-            OffsetDateTime::now_utc().format("%F %T"),
-            record.level.to_string(),
+            "{:<5} [{}:{}] {}\n",
+            record.level,
             record.module_path,
             record.line,
             raw_log
@@ -219,28 +234,27 @@ impl Logger for YourLogger {
 }
 
 let logger = YourLogger();
-````
+```
 
 ```kotlin [Kotlin]
-object YourLogger : LoggerInterface {
-    override fun log(record: Record?) {
+object YourLogger : Logger.LoggerInterface {
+    override fun log(record: Record) {
         // <insert code to print this log and/or write this log to a file>
     }
 }
 
 val logger: Logger = Logger.new_impl(YourLogger)
-````
+```
 
-```Swift [Swift]
-  class MyLogger: Logger {
-    override func log(record: Bindings.Record) {
-        // Print and/or write the log to a file
-    }
-  }
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-let logger = MyLogger()
-
-````
+const logger = ldk.Logger.new_impl({
+  log(record: ldk.Record): void {
+    console.log(`${record.get_level()} [${record.get_module_path()}] ${record.get_args()}`);
+  },
+} as ldk.LoggerInterface);
+```
 
 :::
 
@@ -248,7 +262,7 @@ let logger = MyLogger()
 
 **Dependencies:** *none*
 
-**References:** [Rust `Logger` docs](https://docs.rs/lightning/*/lightning/util/logger/trait.Logger.html), [Java/Kotlin `Logger` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Logger.java)
+**References:** [Rust `Logger` docs](https://docs.rs/lightning/0.2.2/lightning/util/logger/trait.Logger.html), [Java/Kotlin `Logger` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Logger.java)
 
 ### Initialize the `BroadcasterInterface`
 **What it's used for:** broadcasting various transactions to the bitcoin network
@@ -265,34 +279,29 @@ impl BroadcasterInterface for YourTxBroadcaster {
 }
 
 let broadcaster = YourTxBroadcaster();
-````
+```
 
 ```kotlin [Kotlin]
-  object YourTxBroadcaster: BroadcasterInterface.BroadcasterInterfaceInterface {
-      override fun broadcast_transactions(txs: Array<out ByteArray>??) {
-        // <insert code to broadcast a list of transactions>
-      }
-  }
-
-val txBroadcaster: BroadcasterInterface = BroadcasterInterface.new_impl(YourTxBroadcaster)
-
-````
-
-```Swift [Swift]
-class YourTxBroacaster: BroadcasterInterface {
-  override func broadcastTransactions(txs: [[UInt8]]) {
-      // Insert code to broadcast a list of transactions
-  }
+val txBroadcaster = BroadcasterInterface.new_impl { txs: Array<ByteArray> ->
+    // <insert code to broadcast a list of transactions>
 }
+```
 
-let broadcaster = YourTxBroacaster()
-````
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+const txBroadcaster = ldk.BroadcasterInterface.new_impl({
+  broadcast_transactions(txs: Uint8Array[]): void {
+    // <insert code to broadcast a list of transactions>
+  },
+} as ldk.BroadcasterInterfaceInterface);
+```
 
 :::
 
 **Dependencies:** _none_
 
-**References:** [Rust `BroadcasterInterface` docs](https://docs.rs/lightning/*/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java/Kotlin `BroadcasterInterface` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/BroadcasterInterface.java)
+**References:** [Rust `BroadcasterInterface` docs](https://docs.rs/lightning/0.2.2/lightning/chain/chaininterface/trait.BroadcasterInterface.html), [Java/Kotlin `BroadcasterInterface` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/BroadcasterInterface.java)
 
 ### Initialize `Persist`
 
@@ -301,25 +310,34 @@ let broadcaster = YourTxBroacaster()
 ::: code-group
 
 ```rust [Rust]
+use lightning::chain::ChannelMonitorUpdateStatus;
+use lightning::util::persist::MonitorName;
+
 struct YourPersister();
 
-impl<ChannelSigner: Sign> Persist for YourPersister {
+// In 0.2 monitors are keyed by `MonitorName` (not `OutPoint`), the methods
+// return `ChannelMonitorUpdateStatus` (not a `Result`), the update is now
+// `Option`al, and there is a new `archive_persisted_channel`.
+impl<ChannelSigner: EcdsaChannelSigner> Persist<ChannelSigner> for YourPersister {
     fn persist_new_channel(
-        &self, id: OutPoint, data: &ChannelMonitor<ChannelSigner>
-    ) -> Result<(), ChannelMonitorUpdateErr> {
+        &self, monitor_name: MonitorName, monitor: &ChannelMonitor<ChannelSigner>,
+    ) -> ChannelMonitorUpdateStatus {
         // <insert code to persist the ChannelMonitor to disk and/or backups>
-        // Note that monitor.encode() will get you the ChannelMonitor as a
-        // Vec<u8>.
+        // Note that monitor.encode() will get you the ChannelMonitor as a Vec<u8>.
+        ChannelMonitorUpdateStatus::Completed
     }
 
-  fn update_persisted_channel(
-        &self,
-        id: OutPoint,
-        update: &ChannelMonitorUpdate,
-        data: &ChannelMonitor<ChannelSigner>
-    ) -> Result<(), ChannelMonitorUpdateErr> {
+    fn update_persisted_channel(
+        &self, monitor_name: MonitorName, update: Option<&ChannelMonitorUpdate>,
+        monitor: &ChannelMonitor<ChannelSigner>,
+    ) -> ChannelMonitorUpdateStatus {
         // <insert code to persist either the ChannelMonitor or the
         //  ChannelMonitorUpdate to disk>
+        ChannelMonitorUpdateStatus::Completed
+    }
+
+    fn archive_persisted_channel(&self, monitor_name: MonitorName) {
+        // <optional: the monitor for `monitor_name` is now safe to archive>
     }
 }
 
@@ -327,37 +345,42 @@ let persister = YourPersister();
 ```
 
 ```kotlin [Kotlin]
-object YourPersister: Persist.PersistInterface {
-  override fun persist_new_channel(
-      id: OutPoint?, data: ChannelMonitor?, updateId: MonitorUpdateId?
-  ): Result_NoneChannelMonitorUpdateErrZ? {
-      // <insert code to write these bytes to disk, keyed by `id`>
-  }
+val persister = Persist.new_impl(object : Persist.PersistInterface {
+    override fun persist_new_channel(
+        monitorName: MonitorName, monitor: ChannelMonitor
+    ): ChannelMonitorUpdateStatus {
+        // <insert code to write monitor.write() to disk, keyed by `monitorName`>
+        return ChannelMonitorUpdateStatus.LDKChannelMonitorUpdateStatus_Completed
+    }
 
-  override fun update_persisted_channel(
-      id: OutPoint?, update: ChannelMonitorUpdate?, data: ChannelMonitor?,
-      updateId: MonitorUpdateId
-  ): Result_NoneChannelMonitorUpdateErrZ? {
-      // <insert code to update the `ChannelMonitor`'s file on disk with these
-      //  new bytes, keyed by `id`>
-  }
-}
+    override fun update_persisted_channel(
+        monitorName: MonitorName, update: ChannelMonitorUpdate?, monitor: ChannelMonitor
+    ): ChannelMonitorUpdateStatus {
+        // <insert code to update the persisted `ChannelMonitor`, keyed by `monitorName`>
+        return ChannelMonitorUpdateStatus.LDKChannelMonitorUpdateStatus_Completed
+    }
 
-val persister: Persist = Persist.new_impl(YourPersister)
+    override fun archive_persisted_channel(monitorName: MonitorName) {}
+
+    override fun get_and_clear_completed_updates(): Array<TwoTuple_ChannelIdu64Z> = arrayOf()
+})
 ```
 
-```Swift [Swift]
-class MyPersister: Persist {
-    override func persistNewChannel(channelId: OutPoint, data: ChannelMonitor, updateId: MonitorUpdateId) -> Bindings.ChannelMonitorUpdateStatus {
-        // Insert the code to persist the ChannelMonitor to disk
-    }
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-    override func updatePersistedChannel(channelId: OutPoint, update: ChannelMonitorUpdate, data: ChannelMonitor, updateId: MonitorUpdateId) -> ChannelMonitorUpdateStatus {
-        // Insert the code to persist either ChannelMonitor or ChannelMonitorUpdate to disk
-    }
-}
-
-let persister = MyPersister()
+const persister = ldk.Persist.new_impl({
+  persist_new_channel(id: ldk.OutPoint, data: ldk.ChannelMonitor): ldk.ChannelMonitorUpdateStatus {
+    // <insert code to persist data.write() to disk, keyed by `id`>
+    return ldk.ChannelMonitorUpdateStatus.LDKChannelMonitorUpdateStatus_Completed;
+  },
+  update_persisted_channel(id: ldk.OutPoint, update: ldk.ChannelMonitorUpdate, data: ldk.ChannelMonitor): ldk.ChannelMonitorUpdateStatus {
+    return ldk.ChannelMonitorUpdateStatus.LDKChannelMonitorUpdateStatus_Completed;
+  },
+  get_and_clear_completed_updates(): ldk.TwoTuple_ChannelIdu64Z[] {
+    return [];
+  },
+} as ldk.PersistInterface);
 ```
 
 :::
@@ -365,9 +388,11 @@ let persister = MyPersister()
 ::: code-group
 
 ```rust [Using LDK Sample Filesystem Persistence Crate in Rust]
-use lightning_persister::FilesystemPersister; // import LDK sample persist crate
+use lightning_persister::fs_store::FilesystemStore; // import LDK sample persist crate
 
-let persister = FilesystemPersister::new(ldk_data_dir_path);
+// `FilesystemPersister` was replaced by `FilesystemStore`, which implements the
+// `KVStore` trait and can be passed wherever a persister/KV store is expected.
+let persister = Arc::new(FilesystemStore::new(ldk_data_dir_path.into()));
 ```
 
 :::
@@ -384,7 +409,7 @@ let persister = FilesystemPersister::new(ldk_data_dir_path);
 
 **Dependencies:** _none_
 
-**References:** [Rust `Persister` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/trait.Persist.html), [Java/Kotlin `Persister` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Persist.java)
+**References:** [Rust `Persister` docs](https://docs.rs/lightning/0.2.2/lightning/chain/chainmonitor/trait.Persist.html), [Java/Kotlin `Persister` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Persist.java)
 
 ### Start Background Processing
 
@@ -393,22 +418,66 @@ let persister = FilesystemPersister::new(ldk_data_dir_path);
 ::: code-group
 
 ```rust [Rust]
-let background_processor = BackgroundProcessor::start(
-  persister,
-  Arc::clone(&invoice_payer),
-  Arc::clone(&chain_monitor),
-  Arc::clone(&channel_manager),
-  Arc::clone(&net_graph_msg_handler),
-  Arc::clone(&peer_manager),
-  Arc::clone(&logger),
+use lightning_background_processor::{process_events_async, GossipSync};
+
+// The old `BackgroundProcessor::start(persister, invoice_payer, ..)` (with its
+// `InvoicePayer`) is gone. Drive LDK with `process_events_async` — the event
+// handler is now async, the scorer/sweeper/onion-messenger are passed directly,
+// and `sleeper`/`fetch_time` closures control the loop.
+process_events_async(
+    Arc::clone(&persister),                  // a KVStore (e.g. FilesystemStore)
+    event_handler,                           // async Fn(Event) -> Result<(), ReplayEvent>
+    Arc::clone(&chain_monitor),
+    Arc::clone(&channel_manager),
+    Some(Arc::clone(&onion_messenger)),
+    GossipSync::p2p(Arc::clone(&gossip_sync)),
+    Arc::clone(&peer_manager),
+    None,                                    // liquidity manager (NO_LIQUIDITY_MANAGER)
+    Some(Arc::clone(&output_sweeper)),
+    Arc::clone(&logger),
+    Some(Arc::clone(&scorer)),
+    sleeper,                                 // Fn(Duration) -> impl Future<Output = bool>
+    false,                                   // mobile_interruptable_platform
+    fetch_time,                              // Fn() -> Option<Duration>
+)
+.await;
+```
+
+```kotlin [Kotlin]
+// The ChannelManagerConstructor runs the background tasks for you once you call
+// `chain_sync_completed`, passing your event handler.
+channelManagerConstructor.chain_sync_completed(
+    kvStore,        // KVStoreSync
+    eventHandler,   // ChannelManagerConstructor.EventHandler
+    outputSweeper,  // OutputSweeperSync? (nullable)
+    false           // use P2P gossip sync
+)
+```
+
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+// There is no BackgroundProcessor in the TypeScript bindings — drive everything
+// yourself. Register a callback that fires when work is pending, then pull
+// events and flush peer I/O (you must also run your own periodic timers).
+const fut = channelManager.get_event_or_persistence_needed_future();
+fut.register_callback_fn(
+  ldk.FutureCallback.new_impl({
+    call(): void {
+      channelManager.as_EventsProvider().process_pending_events(eventHandler);
+      chainMonitor.as_EventsProvider().process_pending_events(eventHandler);
+      peerManager.process_events();
+      // ...persist the ChannelManager / network graph / scorer as needed.
+    },
+  } as ldk.FutureCallbackInterface)
 );
 ```
 
 :::
 
-**Dependencies:** `ChannelManager`, `ChainMonitor`, `PeerManager`, `Logger`
+**Dependencies:** `ChannelManager`, `ChainMonitor`, `PeerManager`, `Logger`, `Persister`/`KVStore` (plus, in Rust, the `OnionMessenger`, `GossipSync`, and optionally `Scorer`/`OutputSweeper`)
 
-**References:** [Rust `BackgroundProcessor::Start` docs](https://docs.rs/lightning-background-processor/*/lightning_background_processor/struct.BackgroundProcessor.html#method.start)
+**References:** [Rust `process_events_async` docs](https://docs.rs/lightning-background-processor/0.2.0/lightning_background_processor/fn.process_events_async.html), [Java/Kotlin `ChannelManagerConstructor` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/batteries/ChannelManagerConstructor.java)
 
 ### Regularly Broadcast Node Announcement
 
@@ -420,7 +489,9 @@ let background_processor = BackgroundProcessor::start(
 let mut interval = tokio::time::interval(Duration::from_secs(60));
 loop {
 	interval.tick().await;
-	channel_manager.broadcast_node_announcement(
+	// `broadcast_node_announcement` lives on `PeerManager`, and addresses are
+	// now `lightning::ln::msgs::SocketAddress` values.
+	peer_manager.broadcast_node_announcement(
 		[0; 3], // insert your node's RGB color
 		node_alias,
 		vec![ldk_announced_listen_addr],
@@ -432,7 +503,7 @@ loop {
 
 **Dependencies:** `Peer Manager`
 
-**References:** [`PeerManager::broadcast_node_announcement` docs](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html#method.broadcast_node_announcement)
+**References:** [`PeerManager::broadcast_node_announcement` docs](https://docs.rs/lightning/0.2.2/lightning/ln/peer_handler/struct.PeerManager.html#method.broadcast_node_announcement)
 
 ### Optional: Initialize the Transaction `Filter`
 
@@ -452,8 +523,8 @@ impl Filter for YourTxFilter {
         // <insert code for you to watch for this transaction on-chain>
   }
 
-  fn register_output(&self, output: WatchedOutput) ->
-        Option<(usize, Transaction)> {
+  // In 0.2 `register_output` returns `()` (it no longer returns an Option).
+  fn register_output(&self, output: WatchedOutput) {
         // <insert code for you to watch for any transactions that spend this
         // output on-chain>
     }
@@ -477,18 +548,17 @@ object YourTxFilter : Filter.FilterInterface {
 val txFilter: Filter = Filter.new_impl(YourTxFilter)
 ```
 
-```Swift [Swift]
-class MyFilter: Filter {
-    override func registerTx(txid: [UInt8]?, scriptPubkey: [UInt8]) {
-        // Insert code to watch this transaction
-    }
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-    override func registerOutput(output: Bindings.WatchedOutput) {
-        // Insert code to watch for any transaction that spend this output
-    }
-}
-
-let filter = MyFilter()
+const filter = ldk.Filter.new_impl({
+  register_tx(txid: Uint8Array, scriptPubkey: Uint8Array): void {
+    // <insert code to watch for this transaction on-chain>
+  },
+  register_output(output: ldk.WatchedOutput): void {
+    // <insert code to watch for any transaction that spends this output>
+  },
+} as ldk.FilterInterface);
 ```
 
 :::
@@ -497,7 +567,7 @@ let filter = MyFilter()
 
 **Dependencies:** _none_
 
-**References:** [Rust `Filter` docs](https://docs.rs/lightning/*/lightning/chain/trait.Filter.html), [Java/Kotlin `Filter` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Filter.java)
+**References:** [Rust `Filter` docs](https://docs.rs/lightning/0.2.2/lightning/chain/trait.Filter.html), [Java/Kotlin `Filter` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Filter.java)
 
 ### Initialize the `ChainMonitor`
 
@@ -508,25 +578,45 @@ let filter = MyFilter()
 ```rust [Rust]
 let filter: Option<Box<dyn Filter>> = // leave this as None or insert the Filter trait object
 
-let chain_monitor = ChainMonitor::new(filter, &broadcaster, &logger, &fee_estimator, &persister);
+// 0.2 adds an `entropy_source` and a peer-storage encryption key
+// (obtained from your signer).
+let chain_monitor = ChainMonitor::new(
+    filter,
+    &broadcaster,
+    &logger,
+    &fee_estimator,
+    &persister,
+    &keys_manager,
+    keys_manager.get_peer_storage_key(),
+);
 ```
 
 ```java [Kotlin]
-val filter : Filter = // leave this as `null` or insert the Filter object.
-
-val chainMonitor = ChainMonitor.of(filter, txBroadcaster, logger, feeEstimator, persister)
+// Pass `Option_FilterZ.none()` (or `.some(filter)`). 0.2 adds a trailing
+// entropy source and peer-storage key.
+val chainMonitor = ChainMonitor.of(
+    Option_FilterZ.none(),
+    txBroadcaster,
+    logger,
+    feeEstimator,
+    persister,
+    keysManager.as_EntropySource(),
+    keysManager.get_peer_storage_key()
+)
 ```
 
-```Swift [Swift]
-let filter: Filter = // leave this as `nil` or insert the Filter object.
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-let chainMonitor = ChainMonitor(
-  chainSource: filter,
-  broadcaster: broadcaster,
-  logger: logger,
-  feeest: feeEstimator,
-  persister: persister
-)
+const chainMonitor = ldk.ChainMonitor.constructor_new(
+  ldk.Option_FilterZ.constructor_none(), // or .constructor_some(filter)
+  txBroadcaster,
+  logger,
+  feeEstimator,
+  persister,
+  keysManager.as_EntropySource(),
+  keysManager.as_NodeSigner().get_peer_storage_key()
+);
 ```
 
 :::
@@ -537,7 +627,7 @@ let chainMonitor = ChainMonitor(
 
 **Optional dependency:** `Filter`
 
-**References:** [Rust `ChainMonitor` docs](https://docs.rs/lightning/*/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java/Kotlin `ChainMonitor` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChainMonitor.java)
+**References:** [Rust `ChainMonitor` docs](https://docs.rs/lightning/0.2.2/lightning/chain/chainmonitor/struct.ChainMonitor.html), [Java/Kotlin `ChainMonitor` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/ChainMonitor.java)
 
 ### Initialize the `KeysManager`
 
@@ -576,26 +666,35 @@ let keys_seed = if let Ok(seed) = fs::read(keys_seed_path.clone()) {
 };
 
 let cur = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
-let keys_manager = KeysManager::new(&keys_seed, cur.as_secs(), cur.subsec_nanos());
+// 0.2 adds a `v2_remote_key_derivation` flag (pass `true` for new nodes).
+let keys_manager = KeysManager::new(&keys_seed, cur.as_secs(), cur.subsec_nanos(), true);
 
 ```
 
 ```java [Kotlin]
 val keySeed = ByteArray(32)
-// <insert code to fill key_seed with random bytes OR if restarting, reload the
+// <insert code to fill keySeed with random bytes OR if restarting, reload the
 // seed from disk>
+// 0.2 adds a `v2_remote_key_derivation` flag (pass `true` for new nodes).
 val keysManager = KeysManager.of(
-      keySeed,
-      System.currentTimeMillis() / 1000,
-      (System.currentTimeMillis() * 1000).toInt()
-  )
+    keySeed,
+    System.currentTimeMillis() / 1000,
+    (System.currentTimeMillis() * 1000).toInt(),
+    true
+)
 ```
 
-```Swift [Swift]
-let seed = // Insert code to create seed with random bytes or if restarting, reload the seed from disk
-let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+const seed = new Uint8Array(32); // fill with CSPRNG bytes, or reload from disk
+const nowSecs = Math.floor(Date.now() / 1000);
+const keysManager = ldk.KeysManager.constructor_new(
+  seed,
+  BigInt(nowSecs),                  // starting_time_secs (bigint)
+  (Date.now() % 1000) * 1_000_000,  // starting_time_nanos
+  true                              // v2_remote_key_derivation
+);
 ```
 
 :::
@@ -613,7 +712,7 @@ let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, st
 
 **Dependencies:** random bytes
 
-**References:** [Rust `KeysManager` docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html), [Java/Kotlin `KeysManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/KeysManager.java)
+**References:** [Rust `KeysManager` docs](https://docs.rs/lightning/0.2.2/lightning/sign/struct.KeysManager.html), [Java/Kotlin `KeysManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/KeysManager.java)
 
 ### Read `ChannelMonitor` state from disk
 
@@ -622,14 +721,17 @@ let keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, st
 ::: code-group
 
 ```rust [Rust]
-// Use LDK's sample persister crate provided method
+use lightning::util::persist::read_channel_monitors;
+
+// Read the ChannelMonitors persisted to your KVStore. Returns a
+// Vec<(BlockHash, ChannelMonitor)>.
 let mut channel_monitors =
-  persister.read_channelmonitors(keys_manager.clone()).unwrap();
+    read_channel_monitors(&persister, &keys_manager, &keys_manager).unwrap();
 
 // If you are using Electrum or BIP 157/158, you must call load_outputs_to_watch
 // on each ChannelMonitor to prepare for chain synchronization.
-for chan_mon in channel_monitors.iter() {
-    chan_mon.load_outputs_to_watch(&filter);
+for (_, chan_mon) in channel_monitors.iter() {
+    chan_mon.load_outputs_to_watch(&filter, &logger);
 }
 ```
 
@@ -646,23 +748,24 @@ channelMonitorFiles.iterator().forEach {
 channelMonitors = channelMonitorList.toTypedArray();
 ```
 
-```Swift [Swift]
-// Initialize the array where we'll store the `ChannelMonitor`s read from disk.
-// This array will later be given to the `ChannelManagerConstructor` on initialization.
-var serializedChannelMonitors: [[UInt8]] = []
-let allChannels = // Insert code to get a list of persisted channels
-for channel in allChannels {
-    let channelData = try Data(contentsOf: channel)
-    let channelBytes = [UInt8](channelData)
-    serializedChannelMonitors.append(channelBytes)
-}
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
+
+// Read the ChannelMonitors persisted to your KVStore. On success,
+// `monitorsRes.res` is the array of ChannelMonitors to hand to the
+// ChannelManager on restart.
+const monitorsRes = ldk.UtilMethods.constructor_read_channel_monitors(
+  kvStore,
+  keysManager.as_EntropySource(),
+  keysManager.as_SignerProvider()
+);
 ```
 
 :::
 
 **Dependencies:** `KeysManager`
 
-**References:** [Rust `load_outputs_to_watch` docs](https://docs.rs/lightning/*/lightning/chain/channelmonitor/struct.ChannelMonitor.html#method.load_outputs_to_watch)
+**References:** [Rust `load_outputs_to_watch` docs](https://docs.rs/lightning/0.2.2/lightning/chain/channelmonitor/struct.ChannelMonitor.html#method.load_outputs_to_watch)
 
 ### Initialize the `ChannelManager`
 
@@ -675,18 +778,24 @@ let user_config = UserConfig::default();
 
 /* RESTARTING */
 let (channel_manager_blockhash, mut channel_manager) = {
-    let channel_manager_file = fs::File::open(format!("{}/manager", ldk_data_dir.clone())).unwrap();
+    let mut channel_manager_file = fs::File::open(format!("{}/manager", ldk_data_dir.clone())).unwrap();
 
-    // Use the `ChannelMonitors` we read from disk.
+    // Use the `ChannelMonitor`s we read from disk.
     let mut channel_monitor_mut_references = Vec::new();
     for (_, channel_monitor) in channel_monitors.iter_mut() {
         channel_monitor_mut_references.push(channel_monitor);
     }
+    // 0.2 reorders the args and adds `router` + `message_router`. The three
+    // signer args are typically all the same `KeysManager`.
     let read_args = ChannelManagerReadArgs::new(
-        &keys_manager,
+        &keys_manager, // entropy_source
+        &keys_manager, // node_signer
+        &keys_manager, // signer_provider
         &fee_estimator,
         &chain_monitor,
         &broadcaster,
+        &router,
+        &message_router,
         &logger,
         user_config,
         channel_monitor_mut_references,
@@ -708,13 +817,14 @@ let (channel_manager_blockhash, mut channel_manager) = {
         &chain_monitor,
         &broadcaster,
         &router,
+        &message_router,
         &logger,
-        &entropy_source,
-        &node_signer,
-        &signer_provider,
+        &keys_manager, // entropy_source
+        &keys_manager, // node_signer
+        &keys_manager, // signer_provider
         user_config,
         chain_params,
-        current_timestamp
+        current_timestamp,
       );
     (best_blockhash, fresh_channel_manager)
 };
@@ -728,17 +838,17 @@ if (serializedChannelManager != null && serializedChannelManager.isNotEmpty()) {
         serializedChannelManager,
         serializedChannelMonitors,
         userConfig,
-        keysManager!!.inner.as_EntropySource(),
-        keysManager!!.inner.as_NodeSigner(),
-        SignerProvider.new_impl(keysManager!!.signerProvider),
+        keysManager.as_EntropySource(),
+        keysManager.as_NodeSigner(),
+        keysManager.as_SignerProvider(),
         feeEstimator,
         chainMonitor,
         txFilter,
-        networkGraph!!.write(),
+        networkGraph.write(),
         ProbabilisticScoringDecayParameters.with_default(),
         ProbabilisticScoringFeeParameters.with_default(),
-        scorer!!.write(),
-        null,
+        scorer.write(),
+        null, // routerWrapper (optional)
         txBroadcaster,
         logger
     )
@@ -747,53 +857,46 @@ if (serializedChannelManager != null && serializedChannelManager.isNotEmpty()) {
     val channelManagerConstructor = ChannelManagerConstructor(
         Network.LDKNetwork_Regtest,
         userConfig,
-        latestBlockHash.toByteArray(),
+        latestBlockHash,
         latestBlockHeight,
-        keysManager!!.inner.as_EntropySource(),
-        keysManager!!.inner.as_NodeSigner(),
-        SignerProvider.new_impl(keysManager!!.signerProvider),
+        keysManager.as_EntropySource(),
+        keysManager.as_NodeSigner(),
+        keysManager.as_SignerProvider(),
         feeEstimator,
         chainMonitor,
         networkGraph,
         ProbabilisticScoringDecayParameters.with_default(),
         ProbabilisticScoringFeeParameters.with_default(),
-        null,
+        null, // routerWrapper (optional)
         txBroadcaster,
         logger
     )
 }
-
 ```
 
-```Swift [Swift]
-if serializedChannelManager != nil && !serializedChannelManager!.isEmpty {
-    do {
-        let channelManagerConstructor = try ChannelManagerConstructor(
-            channelManagerSerialized: serializedChannelManager!,
-            channelMonitorsSerialized: serializedChannelMonitors,
-            networkGraph: NetworkGraphArgument.instance(netGraph),
-            filter: filter,
-            params: channelManagerConstructionParameters
-        )
-    } catch {
-        let channelManagerConstructor = ChannelManagerConstructor(
-            network: network,
-            currentBlockchainTipHash: latestBlockHash!,
-            currentBlockchainTipHeight: latestBlockHeight!,
-            netGraph: netGraph,
-            params: channelManagerConstructionParameters
-        )
-    }
-} else {
-    let channelManagerConstructor = ChannelManagerConstructor(
-        network: network,
-        currentBlockchainTipHash: latestBlockHash!,
-        currentBlockchainTipHeight: latestBlockHeight!,
-        netGraph: netGraph,
-        params: channelManagerConstructionParameters
-    )
-}
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
+// FRESH start: build the ChannelManager directly (see "Adding a ChannelManager").
+// RESTART: deserialize it together with its ChannelMonitors. There is no
+// ChannelManagerConstructor helper in the TypeScript bindings.
+const read = ldk.UtilMethods.constructor_C2Tuple_ThirtyTwoBytesChannelManagerZ_read(
+  serializedChannelManager,
+  keysManager.as_EntropySource(),
+  keysManager.as_NodeSigner(),
+  keysManager.as_SignerProvider(),
+  feeEstimator,
+  chainMonitor.as_Watch(),
+  txBroadcaster,
+  router.as_Router(),
+  messageRouter.as_MessageRouter(),
+  logger,
+  userConfig,
+  channelMonitors // ChannelMonitor[]
+);
+if (read instanceof ldk.Result_C2Tuple_ThirtyTwoBytesChannelManagerZDecodeErrorZ_OK) {
+  const channelManager = read.res.get_b(); // get_a() is the latest block hash
+}
 ```
 
 :::
@@ -803,7 +906,7 @@ _after_ the `ChannelMonitor`s and `ChannelManager` are synced to the chain tip (
 
 **Dependencies:** `KeysManager`, `FeeEstimator`, `ChainMonitor`, `BroadcasterInterface`, `Logger`
 
-**References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManager.html), [Java/Kotlin `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ChannelManager.java)
+**References:** [Rust `ChannelManager` docs](https://docs.rs/lightning/0.2.2/lightning/ln/channelmanager/struct.ChannelManager.html), [Java/Kotlin `ChannelManager` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/ChannelManager.java)
 
 ### Sync `ChannelMonitor`s and `ChannelManager` to chain tip
 
@@ -829,8 +932,9 @@ impl lightning_block_sync::BlockSource for YourChainBackend {
 
     fn get_block<'a>(
         &'a mut self, header_hash: &'a BlockHash,
-    ) -> AsyncBlockSourceResult<'a, Block> {
+    ) -> AsyncBlockSourceResult<'a, BlockData> {
         // <insert code to retrieve the block corresponding to header_hash>
+        // Note: `get_block` now returns `BlockData` (was `Block`).
     }
 
     fn get_best_block<'a>(&'a mut self) ->
@@ -923,62 +1027,27 @@ val bestHeight: Int = // <insert code to get your best known block height>
 channelManager.update_best_block(bestHeader, bestHeight);
 chainMonitor.update_best_block(bestHeader, bestHeight);
 
-// Finally, tell LDK that chain sync is complete. This will also spawn several
-// background threads to handle networking and event processing.
-channelManagerConstructor.chain_sync_completed(customEventHandler);
-````
+// Finally, tell LDK that chain sync is complete. This also starts the
+// background tasks. Note the new signature: a KVStoreSync, your event handler,
+// an optional OutputSweeperSync, and whether to use P2P gossip sync.
+channelManagerConstructor.chain_sync_completed(kvStore, eventHandler, outputSweeper, false)
+```
 
-```Swift [Swift]
-// Electrum/Esplora
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-// Retrieve transaction IDs to check the chain for un-confirmation.
-let relevantTxIds1 = channelManager?.asConfirm().getRelevantTxids() ?? []
-let relevantTxIds2 = chainMonitor?.asConfirm().getRelevantTxids() ?? []
-
-var relevantTxIds: [[UInt8]] = [[UInt8]]()
-for tx in relevantTxIds1 {
-    relevantTxIds.append(tx.0)
-}
-for tx in relevantTxIds2 {
-    relevantTxIds.append(tx.0)
-}
-
-var unconfirmedTx: [[UInt8]] = // Insert code to find out from your chain source
-                              // if any of relevantTxIds have been reorged out
-                              // of the chain
-
-for txid in unconfirmedTx {
-    channelManager.asConfirm().transactionUnconfirmed(txid: txid)
-    chainMonitor.asConfirm().transactionUnconfirmed(txid: txid)
-}
-
-// Retrieve transactions and outputs that were registered through the `Filter` interface.
-
-var confirmedTx: [[UInt8]] = // Insert code to find out from your chain source
-                            // if any of the `Filter` txs/outputs were confirmed
-                            // on-chain
-
-for txid in confirmedTx {
-    let header: [UInt8] = // Insert code to fetch header
-    let height: UInt32 = // Insert code to fetch height of the header
-    let tx: [UInt8] = // Insert code to fetch tx
-    let txIndex: UInt = // Insert code to fetch tx index
-
-    var twoTuple: [(UInt, [UInt8])] = []
-    twoTuple.append((UInt, [UInt8])(txIndex, tx))
-    channelManager.asConfirm().transactionsConfirmed(header: header, txdata: twoTuple, height: height)
-    chainMonitor.asConfirm().transactionsConfirmed(header: header, txdata: twoTuple, height: height)
-}
-
-let bestHeader = // Insert code to fetch best header
-let bestHeight = // Insert code to fetch best height
-
-channelManager.asConfirm().bestBlockUpdated(header: bestHeader, height: bestHeight)
-chainMonitor.asConfirm().bestBlockUpdated(header: bestHeader, height: bestHeight)
-
-// Finally, tell LDK that chain sync is complete. This will also spawn several
-// background threads to handle networking and event processing.
-channelManagerConstructor.chainSyncCompleted(persister: channelManagerPersister)
+// The TypeScript bindings have no block-sync helper — drive the `Confirm`
+// interface yourself. Both the ChannelManager and ChainMonitor implement it
+// (via `as_Confirm()`); as you learn of confirmed/unconfirmed transactions and
+// new tips from your chain source, forward them to both:
+//
+//   const confirm = channelManager.as_Confirm();
+//   confirm.transactions_confirmed(header, txdata, height);
+//   confirm.transaction_unconfirmed(txid);
+//   confirm.best_block_updated(header, height);
+//
+// Use `confirm.get_relevant_txids()` to learn which transactions to monitor for
+// reorgs. Repeat for `chainMonitor.as_Confirm()`.
 ```
 
 :::
@@ -993,7 +1062,7 @@ If you are connecting full blocks or using BIP 157/158, then it is recommended t
 LDK's `lightning_block_sync` crate as in the example above: the high-level steps that must be done for both `ChannelManager` and each `ChannelMonitor` are as follows:
 
 1. Get the last blockhash that each object saw.
-   - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/*/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
+   - Receive the latest block hash when through [deserializtion](https://docs.rs/lightning/0.2.2/lightning/ln/channelmanager/struct.ChannelManagerReadArgs.html) of the `ChannelManager` via `read()`
    - Each `ChannelMonitor`'s is in `channel_manager.channel_monitors`, as the 2nd element in each tuple
 2. For each object, if its latest known blockhash has been reorged out of the chain, then disconnect blocks using `channel_manager.as_Listen().block_disconnected(..)` or `channel_monitor.block_disconnected(..)` until you reach the last common ancestor with the main chain.
 3. For each object, reconnect blocks starting from the common ancestor until it gets to your best known chain tip using `channel_manager.as_Listen().block_connected(..)` and/or `channel_monitor.block_connected(..)`.
@@ -1012,62 +1081,40 @@ Alternatively, you can use LDK's `lightning-transaction-sync` crate. This provid
 ::: code-group
 
 ```rust [Rust]
-let genesis = genesis_block(Network::Testnet).header.block_hash();
 let network_graph_path = format!("{}/network_graph", ldk_data_dir.clone());
-let network_graph = Arc::new(disk::read_network(Path::new(&network_graph_path), genesis, logger.clone()));
+let network_graph = Arc::new(disk::read_network(Path::new(&network_graph_path), Network::Testnet, logger.clone()));
+// `chain::Access` was replaced by `UtxoLookup`; pass `None` or a UTXO source.
 let gossip_sync = Arc::new(P2PGossipSync::new(
   Arc::clone(&network_graph),
-  None::<Arc<dyn chain::Access + Send + Sync>>,
+  None::<Arc<dyn UtxoLookup + Send + Sync>>,
   logger.clone(),
 ));
 ```
 
 ```java [Kotlin]
-val genesisBlock : BestBlock = BestBlock.from_genesis(Network.LDKNetwork_Testnet)
-val genesisBlockHash : String = byteArrayToHex(genesisBlock.block_hash())
-
 val serializedNetworkGraph = // Read network graph bytes from file
-val networkGraph : NetworkGraph = NetworkGraph.read(serializedNetworkGraph, logger)
-val p2pGossip : P2PGossipSync = P2PGossipSync.of(networkGraph, Option_AccessZ.none(), logger)
+val readResult = NetworkGraph.read(serializedNetworkGraph, logger)
+val networkGraph = (readResult as Result_NetworkGraphDecodeErrorZ.Result_NetworkGraphDecodeErrorZ_OK).res
+
+// `Option_AccessZ` was replaced by `Option_UtxoLookupZ`.
+val p2pGossip = P2PGossipSync.of(networkGraph, Option_UtxoLookupZ.none(), logger)
 ```
 
-```Swift [Swift]
-// If Network Graph exists, then read from disk
-let serializedNetworkGraph = // Read Network Graph bytes from file
-let readResult = NetworkGraph.read(ser: serializedNetworkGraph, arg: logger)
-if readResult.isOk() {
-  netGraph = readResult.getValue()!
-}
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-// If Network Graph does not exist, create a new one
-let netGraph = NetworkGraph(network: network, logger: logger)
+// Read an existing graph from disk, or create a new one.
+const readResult = ldk.NetworkGraph.constructor_read(serializedNetworkGraph, logger);
+const networkGraph =
+  readResult instanceof ldk.Result_NetworkGraphDecodeErrorZ_OK
+    ? readResult.res
+    : ldk.NetworkGraph.constructor_new(ldk.Network.LDKNetwork_Testnet4, logger);
 
-// Initialise RGS
-let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger)
-if let lastSync = netGraph.getLastRapidGossipSyncTimestamp(), let snapshot = getSnapshot(lastSyncTimeStamp: lastSync) {
-  let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-  let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: timestampSeconds)
-  if res.isOk() {
-    print("RGS updated")
-  }
-} else if let snapshot = getSnapshot(lastSyncTimeStamp: 0) { // Use lastSyncTimeStamp as 0 for first Sync
-  let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-  let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: timestampSeconds)
-  if res.isOk() {
-    print("RGS initialized for the first time")
-  }
-}
-
-// Get current snapshot from the RGS Server
-func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
-  // Use LDK's RGS Server or use your own Server
-  let url: URL = URL(string: "https://rapidsync.lightningdevkit.org/snapshot/\(lastSyncTimeStamp)")!
-  let data = // Use the url to get the data
-  if let data = data {
-    return [UInt8](data)
-  }
-  return nil
-}
+const p2pGossip = ldk.P2PGossipSync.constructor_new(
+  networkGraph,
+  ldk.Option_UtxoLookupZ.constructor_none(),
+  logger
+);
 ```
 
 :::
@@ -1078,7 +1125,7 @@ func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
 
 **Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
-**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/*/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/*/lightning/chain/trait.Access.html), [Java/Kotlin `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java/Kotlin `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/RapidGossipSync.java)
+**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/0.2.2/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/0.2.2/lightning/chain/trait.Access.html), [Java/Kotlin `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java/Kotlin `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/RapidGossipSync.java)
 
 ### Optional: Initialize `Probabilistic Scorer`
 
@@ -1120,39 +1167,29 @@ if (scorerFile.exists()) {
 }
 ```
 
-```Swift [Swift]
-// If Scorer exists, then read from disk
-let serializedScorer = // Read Scorer bytes from file
-let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
-let serializedProbabilisticScorer = ProbabilisticScorer.read(
-  ser: serializedScorer,
-  argA: decayParams,
-  argB: netGraph,
-  argC: logger
-)
-if let res = serializedProbabilisticScorer.getValue() {
-  let probabilisticScorer = res
-  let score = probabilisticScorer.asScore()
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-  // Scorer loaded
-  let scorer = MultiThreadedLockableScore(score: score)
-}
+const decayParams = ldk.ProbabilisticScoringDecayParameters.constructor_default();
 
-// If Scorer does not exist, create a new one
-let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
-let probabilisticScorer = ProbabilisticScorer(
-  decayParams: decayParams,
-  networkGraph: netGraph,
-  logger: logger
-)
-let score = probabilisticScorer.asScore()
+// Read an existing scorer from disk, or create a new one.
+const readResult = ldk.ProbabilisticScorer.constructor_read(
+  serializedScorer,
+  decayParams,
+  networkGraph,
+  logger
+);
+const scorer =
+  readResult instanceof ldk.Result_ProbabilisticScorerDecodeErrorZ_OK
+    ? readResult.res
+    : ldk.ProbabilisticScorer.constructor_new(decayParams, networkGraph, logger);
 
-// Scorer loaded
-let scorer = MultiThreadedLockableScore(score: score)
+// Wrap it so it can be shared with the router (see "Initialize the Router").
+const multiThreadedScorer = ldk.MultiThreadedLockableScore.constructor_new(scorer.as_Score());
 ```
 
 :::
 
 **Dependencies:** `NetworkGraph`
 
-**References:** [Rust `ProbabilisticScorer` docs](https://docs.rs/lightning/*/lightning/routing/scoring/struct.ProbabilisticScorer.html), [Java/Kotlin `ProbabilisticScorer` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/ProbabilisticScorer.java)
+**References:** [Rust `ProbabilisticScorer` docs](https://docs.rs/lightning/0.2.2/lightning/routing/scoring/struct.ProbabilisticScorer.html), [Java/Kotlin `ProbabilisticScorer` docs](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/ProbabilisticScorer.java)
