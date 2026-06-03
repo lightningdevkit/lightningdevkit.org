@@ -106,16 +106,16 @@ Once you've created the directory, open the ```Cargo.toml``` file, which Cargo u
 [package]
 name = "ldk-fee-estimator"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
-lightning = { version = "0.0.124", features = ["max_level_trace"] }
-lightning-block-sync = { version = "0.0.124", features = [ "rpc-client" ] }
-lightning-invoice = { version = "0.31.0" }
-lightning-net-tokio = { version = "0.0.124" }
-lightning-persister = { version = "0.0.124" }
-lightning-background-processor = { version = "0.0.124" }
-lightning-rapid-gossip-sync = { version = "0.0.124" }
+lightning = { version = "0.2.2", features = ["max_level_trace"] }
+lightning-block-sync = { version = "0.2.0", features = [ "rpc-client" ] }
+lightning-invoice = { version = "0.34.0" }
+lightning-net-tokio = { version = "0.2.0" }
+lightning-persister = { version = "0.2.0" }
+lightning-background-processor = { version = "0.2.0" }
+lightning-rapid-gossip-sync = { version = "0.2.0" }
 reqwest = { version = "0.11", features = ["json", "blocking"] }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }  # Async runtime, required for reqwest
