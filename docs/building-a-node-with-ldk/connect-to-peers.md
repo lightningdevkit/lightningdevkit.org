@@ -109,7 +109,7 @@ try {
     // The peer's pubkey will be present in the list of peers. (`get_peer_node_ids`
     // was removed in favour of `list_peers`, which returns `PeerDetails`.)
     val peerManager: PeerManager = channelManagerConstructor.peer_manager
-    val peerNodeIds = peerManager.list_peers().map { it._counterparty_node_id }
+    val peerNodeIds = peerManager.list_peers().map { it.get_counterparty_node_id() }
 
     } catch (e: IOException) {
     // Handle failure when connecting to a peer.

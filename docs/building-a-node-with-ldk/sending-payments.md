@@ -9,7 +9,8 @@ find a route from your node to the recipient and then make the payment using
 
 ```rust [Rust]
 use lightning_invoice::Bolt11Invoice;
-use lightning::ln::channelmanager::{PaymentId, Retry, RouteParametersConfig};
+use lightning::ln::channelmanager::{PaymentId, Retry};
+use lightning::routing::router::RouteParametersConfig;
 use bitcoin::hashes::Hash;
 use std::str::FromStr;
 use std::time::Duration;

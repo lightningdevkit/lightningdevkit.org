@@ -50,8 +50,7 @@ Currently, `lightning-block-sync` is only available in Rust.
 ## Block Source
 
 Implementing the `BlockSource` interface requires defining methods for fetching
-headers, blocks, and the best block hash. As noted above, `lightning-block-sync`
-is only available in Rust.
+headers, blocks, and the best block hash. (`lightning-block-sync` is Rust-only.)
 
 ```rust
 impl BlockSource for Blockchain {
@@ -182,13 +181,9 @@ the `Confirm::best_block_updated` method. See the documentation for a full
 picture of how this interface is intended to be used.
 
 ::: tip Note
-Note that the described methods of `Confirm` must be called in accordance with the ordering requirements
-described in the [`Confirm` documentation](https://docs.rs/lightning/0.2.2/lightning/chain/trait.Confirm.html#order)
-:::
-
-::: tip Note
-Note that the described methods of `Confirm` must be called both on the
-`ChannelManager` *and* the `ChainMonitor`.
+The described methods of `Confirm` must be called both on the `ChannelManager`
+*and* the `ChainMonitor`, and in accordance with the ordering requirements
+described in the [`Confirm` documentation](https://docs.rs/lightning/0.2.2/lightning/chain/trait.Confirm.html#order).
 :::
 
 ::: tip Note

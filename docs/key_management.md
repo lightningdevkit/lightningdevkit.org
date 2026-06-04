@@ -97,7 +97,7 @@ import * as ldk from "lightningdevkit";
 
 // Derive your 32-byte LDK seed from your HD wallet (e.g. the key at m/535h),
 // then seed the KeysManager with it.
-const ldkSeed: Uint8Array = /* 32 bytes derived at m/535h */;
+const ldkSeed = new Uint8Array(32); // fill with the 32 bytes derived at m/535h
 const nowSecs = Math.floor(Date.now() / 1000);
 const keysManager = ldk.KeysManager.constructor_new(
   ldkSeed,

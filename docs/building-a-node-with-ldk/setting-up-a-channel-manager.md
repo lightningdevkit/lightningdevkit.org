@@ -1123,9 +1123,9 @@ const p2pGossip = ldk.P2PGossipSync.constructor_new(
 
 **Dependencies:** `Logger`
 
-**Optional dependency:** `Access`, a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
+**Optional dependency:** `UtxoLookup` (formerly `Access`), a source of chain information. Recommended to be able to verify channels before adding them to the internal network graph.
 
-**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/0.2.2/lightning/routing/gossip/struct.P2PGossipSync.html), [`Access` docs](https://docs.rs/lightning/0.2.2/lightning/chain/trait.Access.html), [Java/Kotlin `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/*/lightning_rapid_gossip_sync/), [Java/Kotlin `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/RapidGossipSync.java)
+**References:** [Rust `P2PGossipSync` docs](https://docs.rs/lightning/0.2.2/lightning/routing/gossip/struct.P2PGossipSync.html), [`UtxoLookup` docs](https://docs.rs/lightning/0.2.2/lightning/routing/utxo/trait.UtxoLookup.html), [Java/Kotlin `P2PGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/P2PGossipSync.java), [Rust `RapidGossipSync` docs](https://docs.rs/lightning-rapid-gossip-sync/0.2.0/lightning_rapid_gossip_sync/), [Java/Kotlin `RapidGossipSync` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/RapidGossipSync.java)
 
 ### Optional: Initialize `Probabilistic Scorer`
 
