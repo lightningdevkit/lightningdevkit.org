@@ -725,3 +725,18 @@
     display: flex;
   }
 }
+
+/* Theme-aware images: render the light variant by default and swap to the
+   dark variant under .dark (e.g. the architecture diagram, which ships
+   two SVGs rather than a single CSS-themed one). */
+img.dark-only {
+  display: none;
+}
+
+.dark img.light-only {
+  display: none;
+}
+
+.dark img.dark-only {
+  display: initial;
+}
