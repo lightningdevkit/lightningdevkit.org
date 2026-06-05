@@ -177,6 +177,8 @@ const projects: Project[] = [
     img: '/img/lexe.png',
     desc: 'Managed non-custodial Lightning nodes inside secure hardware',
     cats: ['infra'],
+    caseStudy:
+      '/blog/lexe-uses-ldk-to-run-self-custodial-lightning-in-secure-enclaves/',
   },
   {
     name: 'Lightspark',

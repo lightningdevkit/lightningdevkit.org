@@ -12,6 +12,7 @@ import SiteFooter from './components/SiteFooter.vue'
 import BlogPostList from './components/BlogPostList.vue'
 import BlogPostHeader from './components/BlogPostHeader.vue'
 import CaseStudiesPage from './components/CaseStudiesPage.vue'
+import LexeArchitectureDiagram from './components/LexeArchitectureDiagram.vue'
 import NavLogo from './components/NavLogo.vue'
 
 export default {
@@ -34,5 +35,6 @@ export default {
     // without per-file script setup imports.
     app.component('BlogPostList', BlogPostList)
     app.component('CaseStudiesPage', CaseStudiesPage)
+    app.component('LexeArchitectureDiagram', LexeArchitectureDiagram)
   },
 } satisfies Theme
