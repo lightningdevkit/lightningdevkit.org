@@ -5,8 +5,8 @@ date: "2022-08-30"
 authors:
   - Arik Sosman
 tags:
-  - Gossip 
-  - Network Graph 
+  - gossip
+  - network graph
 --- 
 
 If you've run a Lightning node, you'll have noticed that initialization can be time-consuming. Merely opening a channel requires six block confirmations or about one hour. However, even if your node already has open channels but has been offline for a while, restarting it still requires fetching the latest channel graph data (commonly referred to as "gossip”) and verifying that all its channels have remained intact.

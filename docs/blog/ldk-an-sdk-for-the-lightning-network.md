@@ -5,8 +5,8 @@ date: "2022-06-20"
 authors:
   - Conor Okus
 tags:
-  - Bitcoin
-  - LDK
+  - bitcoin
+  - ldk
 ---  
 We are excited to release our first blog post, we have a lot to share and a lot to build. We’ll be updating this blog regularly with what we’re working on, new features and the details on new releases. 
   

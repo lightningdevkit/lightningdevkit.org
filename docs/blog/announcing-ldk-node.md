@@ -5,8 +5,8 @@ date: "2023-06-22"
 authors:
   - Elias Rohrer
 tags:
-  - Self-custody
-  - Mobile
+  - self-custody
+  - mobile
 ---
 
 [LDK Node][github_repo] is a ready-to-go Lightning node library built using [LDK][ldk] and [BDK][bdk]. LDK Node provides a straightforward interface and an integrated on-chain wallet, enabling users to quickly and easily set up a self-custodial Lightning node. With LDK Node, developers can get a Lightning Node up and running within a day.

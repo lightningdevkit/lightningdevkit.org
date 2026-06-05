@@ -5,7 +5,7 @@ date: "2025-01-30"
 authors:
   - Justin Moeller
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 The [Fedimint Lightning Gateway](https://github.com/fedimint/fedimint/blob/master/docs/gateway.md) is a server application that powers the Lightning payments for Fedimints. Lightning Gateways enable Fedimint ecash users access to the broader Lightning network by offering a trustless ecash to Lightning swap service to the federation. A Fedimint user incentivizes the gateway to pay a Lightning invoice on its behalf by locking ecash to a hash time locked contract that is enforced by the federation. The gateway can then claim the locked ecash by revealing the preimage from the paid invoice. To receive ecash, the gateway will fund a Fedimint client as long as it receives a preimage in return that the gateway can use to claim a payment on the Lightning network. If this sounds similar to how HTLCs in Lightning work, that's because it is! However, there is the added caveat that Lightning Gateways must also manage an ecash balance alongside the Lightning channels.

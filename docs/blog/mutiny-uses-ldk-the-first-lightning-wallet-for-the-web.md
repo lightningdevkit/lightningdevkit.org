@@ -5,7 +5,7 @@ date: "2023-08-07"
 authors:
   - Ben Carman
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 Mutiny is a new lightning wallet for the web. It is the first self-custodial wallet to run directly in a user's browser. It’s built on top of LDK and [BDK](https://bitcoindevkit.org/), written in Rust, and compiled into WebAssembly. It offers a simple, intuitive interface for sending and receiving payments and other advanced features, such as Nostr Wallet Connect and subscription payments.

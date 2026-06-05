@@ -5,8 +5,8 @@ date: "2022-07-11"
 authors:
   - Valentine Wallace
 tags:
-  - Enterprise 
-  - Phantom
+  - enterprise
+  - phantom
 --- 
 
 Introducing phantom node payments, a new-ish feature for LDK.

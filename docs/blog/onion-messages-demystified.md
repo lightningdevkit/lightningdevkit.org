@@ -5,8 +5,8 @@ date: "2022-10-04"
 authors:
   - Valentine Wallace
 tags:
-  - Onion Messages
-  - Offers
+  - onion messages
+  - offers
 --- 
 
 We recently merged support for onion message forwarding, a precursor to deprecating today’s Lightning invoice format, in favor of [offers](https://github.com/lightning/bolts/pull/798). Offers bring many improvements to Lightning, including static invoices, refunds, and receiving payments in a way that doesn’t reveal your node ID or UTXOs. Then, once offer extensions are added, support for subscriptions follows.

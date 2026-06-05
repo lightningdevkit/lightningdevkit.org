@@ -5,8 +5,8 @@ date: "2023-12-14"
 authors:
   - Matt Corallo
 tags:
-  - Mobile
-  - Non-Custodial
+  - mobile
+  - non-custodial
 ---
 
 Lightning development is tough. While going custodial simplifies the process, it means sacrificing user privacy, censorship resistance, and self-sovereignty, all of which contradict bitcoin’s ethos. Therefore, many companies and projects have started with or redirected their focus from building custodial to non-custodial Lightning applications.

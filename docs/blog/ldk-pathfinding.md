@@ -5,7 +5,7 @@ date: "2025-02-10"
 authors:
   - Matt Corallo
 tags:
-  - Pathfinding
+  - pathfinding
 ---
 
 Some time ago, LDK shipped an overhaul of our pathfinding algorithm to incorporate substantially more learnings over time into each new path over which we sent a payment. At the time, we didn’t have any formal analysis framework for our pathfinder, so we didn’t run to our blog to declare it the most advanced pathfinder in the lightning world. As of Nov, 2024, [we do](https://bluematt.bitcoin.ninja/2024/11/22/ln-routing-replay/).

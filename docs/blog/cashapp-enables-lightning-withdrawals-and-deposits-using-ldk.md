@@ -5,7 +5,7 @@ date: "2022-11-17"
 authors:
   - Ryan Loomba
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 Cash App allows users to instantly deposit and withdraw bitcoin over the lightning network. As an engineer on the Cash App Lightning Wallet team, I was very involved in the entire implementation process.

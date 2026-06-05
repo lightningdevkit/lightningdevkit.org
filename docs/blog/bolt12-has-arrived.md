@@ -5,9 +5,9 @@ date: "2024-04-30"
 authors:
   - Jeff Czyz
 tags:
-  - Offers
-  - Onion Messages
-  - Privacy
+  - offers
+  - onion messages
+  - privacy
 ---
 
 You may have heard of BOLT12—lovingly referred to as Offers—but what is it, and why should you care? In short, BOLT12 is a new payment protocol for Lightning that offers enhanced privacy, reusable payment codes, refunds, and much more, all natively over the Lightning Network. No additional servers are required. This is all possible using new technologies like onion messages and route blinding. Let’s further explore how to make use of BOLT12 in LDK.

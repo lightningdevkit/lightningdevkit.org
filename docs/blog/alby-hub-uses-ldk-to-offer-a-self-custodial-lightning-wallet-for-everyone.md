@@ -5,7 +5,7 @@ date: "2024-09-04"
 authors:
   - Moritz Kaminski
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 [Alby Hub](https://albyhub.com/) is a self-custodial Lightning wallet that combines ease of use, ownership, and seamless connectivity to apps. It serves as a central hub for managing bitcoin payments, featuring a simple plug-in mechanism that links the integrated Lightning node with apps across platforms and operating systems.

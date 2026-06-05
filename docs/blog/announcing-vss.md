@@ -5,10 +5,10 @@ date: "2025-03-17"
 authors:
   - Gursharan Singh
 tags:
-  - VSS
-  - Mobile
-  - Storage
-  - Self-custody
+  - vss
+  - mobile
+  - storage
+  - self-custody
 ---
 
 The Versioned Storage Service (VSS) provides a server-side storage solution for non-custodial mobile, web and hosted

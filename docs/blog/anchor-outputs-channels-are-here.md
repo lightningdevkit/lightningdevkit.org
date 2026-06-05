@@ -5,9 +5,9 @@ date: "2023-08-02"
 authors:
   - Wilmer Paulino
 tags:
-  - Channels
-  - Anchor Outputs
-  - Fees
+  - channels
+  - anchor outputs
+  - fees
 ---
 
 `v0.0.116` of LDK with added support for opening channels with [anchor

@@ -5,7 +5,7 @@ date: "2025-02-04"
 authors:
   - Lightspark Engineering
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 When we started building Lightspark's Lightning Network infrastructure, we needed an architecture that could scale as customer demand grew. Our system needed to be flexible and capable of scaling with the growth.

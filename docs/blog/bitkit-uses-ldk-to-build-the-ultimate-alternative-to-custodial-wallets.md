@@ -5,7 +5,7 @@ date: "2024-01-24"
 authors:
   - Matt Carvalho
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 In 2020, the Lightning Network was in its early stages, and most people used custodial wallets. We believe this trend towards custodial wallets contradicts the Bitcoin ethos, so we decided to create a self-custodial alternative that offers a great user experience for all, not just technical users.

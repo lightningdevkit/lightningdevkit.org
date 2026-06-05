@@ -5,7 +5,7 @@ date: "2023-03-13"
 authors:
   - Steve Lee
 tags:
-  - Roadmap
+  - roadmap
 --- 
 
 LDK is going to have a big year. Several key features are actively being developed or expected to be developed in the next few quarters. There are also a few projects of interest that don’t yet have any committed developers. If you want to get involved, hop into the [Discord Server](https://discord.gg/xaYE3pDQpm) or [GitHub repo](https://github.com/lightningdevkit).

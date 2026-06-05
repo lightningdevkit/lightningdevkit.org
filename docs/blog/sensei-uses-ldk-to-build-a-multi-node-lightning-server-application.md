@@ -5,7 +5,7 @@ date: "2022-12-20"
 authors:
   - John Cantrell
 tags:
-  - Case-Studies
+  - case-studies
 ---
 
 [Sensei](https://l2.technology/sensei) is a lightning node application optimized to serve many nodes within a single instance. It offers a beautiful web interface for admins to manage nodes as well as an interface for individual nodes to perform all of the common lightning network tasks such as connecting to peers, opening and closing channels, and creating and paying invoices. Sensei exposes http and grpc interfaces, allowing automation and programmatic control of the nodes.
