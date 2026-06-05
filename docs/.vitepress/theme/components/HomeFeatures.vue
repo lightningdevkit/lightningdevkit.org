@@ -76,8 +76,8 @@ const features: Feature[] = [
 
 .home-feature-icon svg {
   display: block;
-  width: 144px;
-  height: 144px;
+  width: 173px;
+  height: 173px;
 }
 
 .home-feature-title {
