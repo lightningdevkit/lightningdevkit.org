@@ -5,20 +5,21 @@ amount and description. `ChannelManager` contains the remaining information
 needed for the invoice. Use the provided utility to generate an invoice and
 register a pending payment in `ChannelManager`.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift: 'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
-let invoice = match utils::create_invoice_from_channelmanager(
-    channel_manager,
-    keys_manager,
-    logger,
-    currency,
-    Some(amt_msat),
-    "description".to_string(),
-    expiry_secs,
-    None,
-) {
+```rust [Rust]
+// The standalone `utils::create_invoice_from_channelmanager` was removed in
+// lightning-invoice 0.34. Invoice creation now lives on the ChannelManager and
+// takes a single `Bolt11InvoiceParameters`; it registers the inbound payment
+// for you. The invoice currency is inferred from the manager's network.
+use lightning::ln::channelmanager::Bolt11InvoiceParameters;
+
+let mut invoice_params = Bolt11InvoiceParameters::default();
+invoice_params.amount_msats = Some(amt_msat);
+invoice_params.invoice_expiry_delta_secs = Some(expiry_secs);
+// Set `description` and other fields on `invoice_params` as needed.
+
+let invoice = match channel_manager.create_bolt11_invoice(invoice_params) {
     Ok(inv) => {
         println!("SUCCESS: generated invoice: {}", inv);
         inv
@@ -28,69 +29,55 @@ let invoice = match utils::create_invoice_from_channelmanager(
         return;
     }
 };
-
-let payment_hash = PaymentHash(invoice.payment_hash().to_byte_array());
-inbound_payments.payments.insert(
-    payment_hash,
-    PaymentInfo {
-        preimage: None,
-        secret: Some(invoice.payment_secret().clone()),
-        status: HTLCStatus::Pending,
-        amt_msat: MillisatAmount(Some(amt_msat)),
-    },
-);
-
 ```
 
-  </template>
-  <template v-slot:kotlin>
+```kotlin [Kotlin]
+// `UtilMethods.create_invoice_from_channelmanager` was removed — use
+// `channelManager.create_bolt11_invoice(..)` instead.
+val descriptionRes = Description.of("description")
+val description = (descriptionRes as Result_DescriptionCreationErrorZ.Result_DescriptionCreationErrorZ_OK).res
 
-```kotlin
-val description = "description"
-val amtMsat: Long = 3000000
-val invoice = UtilMethods.create_invoice_from_channelmanager(
-    channelManager,
-    keysManager.inner.as_NodeSigner(),
-    logger,
-    Currency.LDKCurrency_Regtest,
-    Option_u64Z.some(amtMsat),
-    description,
-    300,
-    Option_u16Z.some(144)
+val amtMsat: Long = 3_000_000
+val invoice = channelManager.create_bolt11_invoice(
+    Option_u64Z.some(amtMsat),                    // amount_msats
+    Bolt11InvoiceDescription.direct(description),  // description
+    Option_u32Z.some(300),                         // invoice_expiry_delta_secs
+    Option_u16Z.some(144),                         // min_final_cltv_expiry_delta
+    Option_ThirtyTwoBytesZ.none()                  // payment_hash (none = auto)
 )
 
 val invoiceResult = (invoice as Result_Bolt11InvoiceSignOrCreationErrorZ.Result_Bolt11InvoiceSignOrCreationErrorZ_OK).res
 val encodedInvoice = invoiceResult.to_str()
 ```
 
-  </template>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-  <template v-slot:swift>
+// `create_bolt11_invoice` lives on the ChannelManager (the old
+// `UtilMethods.create_invoice_from_channelmanager` was removed).
+const descRes = ldk.Description.constructor_new("description");
+const description = (descRes as ldk.Result_DescriptionCreationErrorZ_OK).res;
 
-```swift
-let invoice = Bindings.createInvoiceFromChannelmanager(
-    channelmanager: self.channelManager!,
-    nodeSigner: myKeysManager.inner.asNodeSigner(),
-    logger: self.logger,
-    network: currency,
-    amtMsat: amount,
-    description: "Test Invoice",
-    invoiceExpiryDeltaSecs: expiry,
-    minFinalCltvExpiryDelta: nil
-)
-
-invoice.getValue()!.toStr()
+const invoiceRes = channelManager.create_bolt11_invoice(
+  ldk.Option_u64Z.constructor_some(BigInt(3_000_000)),  // amount_msats
+  ldk.Bolt11InvoiceDescription.constructor_direct(description),
+  ldk.Option_u32Z.constructor_some(300),                // invoice_expiry_delta_secs
+  ldk.Option_u16Z.constructor_some(144),                // min_final_cltv_expiry_delta
+  ldk.Option_ThirtyTwoBytesZ.constructor_none()         // payment_hash (none = auto)
+);
+if (invoiceRes instanceof ldk.Result_Bolt11InvoiceSignOrCreationErrorZ_OK) {
+  const encodedInvoice = invoiceRes.res.to_str();
+}
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 While it is possible to create an invoice without using the utility,
 `ChannelManager` will reject any incoming HTLCs for unregistered payments to
 protect your privacy. In this case, use either `create_inbound_payment` or
 `create_inbound_payment_for_hash` to register a payment with `ChannelManager`
 before creating the invoice with the returned payment hash and/or secret. 
-You might also opt to for `inbound_payment`, useful for generating invoices for [phantom node payments](https://docs.rs/lightning/*/lightning/sign/struct.PhantomKeysManager.html) without a ChannelManager.
+You might also opt to for `inbound_payment`, useful for generating invoices for [phantom node payments](https://docs.rs/lightning/0.2.2/lightning/sign/struct.PhantomKeysManager.html) without a ChannelManager.
 
 # PaymentClaimable Event Handling
 
@@ -98,61 +85,52 @@ As with sending a payment, LDK will generate an event once a payment is
 received. It is your responsibility to handle the `PaymentClaimable` event by
 using `ChannelManager` to release the preimage and claim the funds.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
-Event::PaymentClaimable {
-    payment_hash,
-    purpose,
-    amount_msat,
-    receiver_node_id: _,
-    via_channel_id: _,
-    via_user_channel_id: _,
-    claim_deadline: _,
-    onion_fields: _,
-    counterparty_skimmed_fee_msat: _,
-} => {
+```rust [Rust]
+// `PaymentClaimable` has several more fields in 0.2; use `..` to ignore them.
+// `PaymentPurpose::InvoicePayment` was split into BOLT11/BOLT12 variants.
+Event::PaymentClaimable { payment_hash, purpose, amount_msat, .. } => {
     println!(
         "\nEVENT: received payment from payment hash {} of {} millisatoshis",
         payment_hash, amount_msat,
     );
-    print!("> ");
-    io::stdout().flush().unwrap();
     let payment_preimage = match purpose {
-        PaymentPurpose::InvoicePayment { payment_preimage, .. } => payment_preimage,
+        PaymentPurpose::Bolt11InvoicePayment { payment_preimage, .. } => payment_preimage,
+        PaymentPurpose::Bolt12OfferPayment { payment_preimage, .. } => payment_preimage,
+        PaymentPurpose::Bolt12RefundPayment { payment_preimage, .. } => payment_preimage,
         PaymentPurpose::SpontaneousPayment(preimage) => Some(preimage),
     };
-    channel_manager.claim_funds(payment_preimage.unwrap());
-}
-```
-
-  </template>
-  <template v-slot:kotlin>
-
-```kotlin
-if (event is Event.PaymentClaimable) {
-    if (event.payment_hash != null) {
-        val purpose = event.purpose as InvoicePayment
-        val paymentPreimage = (purpose.payment_preimage as Option_ThirtyTwoBytesZ.Some).some
-
-        channelManager.claim_funds(paymentPreimage)
+    if let Some(preimage) = payment_preimage {
+        channel_manager.claim_funds(preimage);
     }
 }
 ```
 
-  </template>
-
-  <template v-slot:swift>
-
-```swift
-if let paymentClaimedEvent = event.getValueAsPaymentClaimable() {
-    let paymentPreimage = paymentClaimedEvent.getPurpose().getValueAsInvoicePayment()?.getPaymentPreimage()
-    let _ = channelManager.claimFunds(paymentPreimage: paymentPreimage!)
+```kotlin [Kotlin]
+if (event is Event.PaymentClaimable) {
+    val purpose = event.purpose
+    if (purpose is PaymentPurpose.Bolt11InvoicePayment) {
+        val preimage = purpose.payment_preimage
+        if (preimage is Option_ThirtyTwoBytesZ.Some) {
+            channelManager.claim_funds(preimage.some)
+        }
+    }
 }
 ```
 
-  </template>
-</CodeSwitcher>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-**References:** [Rust `PaymentClaimable` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.PaymentClaimable), [Java/Kotlin `PaymentClaimable` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L261)
+if (event instanceof ldk.Event_PaymentClaimable) {
+  // `purpose.preimage()` returns the preimage for any purpose variant.
+  const preimage = event.purpose.preimage();
+  if (preimage instanceof ldk.Option_ThirtyTwoBytesZ_Some) {
+    channelManager.claim_funds(preimage.some);
+  }
+}
+```
+
+:::
+
+**References:** [Rust `PaymentClaimable` docs](https://docs.rs/lightning/0.2.2/lightning/events/enum.Event.html#variant.PaymentClaimable), [Rust `PaymentPurpose` docs](https://docs.rs/lightning/0.2.2/lightning/events/enum.PaymentPurpose.html), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Event.java), [TypeScript `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/ts/structs/Event.mts)

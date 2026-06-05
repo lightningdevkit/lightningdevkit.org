@@ -26,13 +26,13 @@ jobs:
       - name: Install
         run: npm ci
       - name: Build
-        run: npm run build
+        run: npm run build:vitepress
       # Deploy, limited to the main branch
       - name: Deploy
         if: success() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
-          publish_dir: ./docs/.vuepress/dist
+          publish_dir: ./docs/.vitepress/dist
           github_token: ${{ secrets.GITHUB_TOKEN }}
           cname: lightningdevkit.org
           user_name: 'github-actions[bot]'

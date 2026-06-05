@@ -1,5 +1,6 @@
 # Peer Management
-![Peer Management](../assets/ldk-peer-management.svg)
+<img class="light-only" src="../assets/ldk-peer-management.svg" alt="Peer Management">
+<img class="dark-only" src="../assets/ldk-peer-management-dark.svg" alt="Peer Management">
 
 One of the first things you'll need to do when building your own Lightning node is connect to a peer. In LDK this is handled by the [`PeerManager`](https://docs.rs/lightning/*/lightning/ln/peer_handler/struct.PeerManager.html).
 

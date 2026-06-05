@@ -16,11 +16,6 @@ These provide the most searchable and comprehensive documentation on LDK.
 If you're using Java and want more information on any method/struct/etc., searching
 the Rust docs for the Rust version of that struct/method is your best bet.
 
-### [Swift LDK Documentation](https://github.com/arik-so/SwiftLightning/tree/master/Documentation)
-
-These docs are mainly geared towards how Swift could call LDK C bindings directly, but still may
-provide a useful overview of Rust Lightning in the context of language bindings.
-
 ### [Rust Sample Node](https://github.com/lightningdevkit/ldk-sample)
 
 The sample serves as a complete reference for constructing a Lightning node with

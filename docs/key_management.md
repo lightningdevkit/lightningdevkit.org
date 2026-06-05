@@ -1,53 +1,46 @@
 # Key Management
 
-LDK provides a simple default `KeysManager` implementation that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/*/lightning/sign/struct.KeysManager.html).
+LDK provides a simple default `KeysManager` implementation that takes a 32-byte seed for use as a BIP 32 extended key and derives keys from that. Check out the [Rust docs](https://docs.rs/lightning/0.2.2/lightning/sign/struct.KeysManager.html).
 
 However, LDK also allows to customize the way key material and entropy are sourced through custom implementations of the `NodeSigner`, `SignerProvider`, and `EntropySource` traits located in `sign`. These traits include basic methods to provide public and private key material, as well as pseudorandom numbers.
 
 A `KeysManager` can be constructed simply with only a 32-byte seed and some random integers which ensure uniqueness across restarts (defined as `starting_time_secs` and `starting_time_nanos`):
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Fill in random_32_bytes with secure random data, or, on restart, reload the seed from disk.
 let mut random_32_bytes = [0; 32];
 let start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
-let keys_interface_impl = lightning::sign::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos());
+// 0.2 adds a `v2_remote_key_derivation` flag (pass `true` for new nodes).
+let keys_interface_impl = lightning::sign::KeysManager::new(&random_32_bytes, start_time.as_secs(), start_time.subsec_nanos(), true);
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Fill in key_seed with secure random data, or, on restart, reload the seed from disk.
 val key_seed = ByteArray(32)
 val keys_manager = KeysManager.of(
     key_seed,
-    System.currentTimeMillis() / 1000, (System.currentTimeMillis() * 1000).toInt()
+    System.currentTimeMillis() / 1000, (System.currentTimeMillis() * 1000).toInt(),
+    true // v2_remote_key_derivation
 )
 ```
 
-  </template>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-  <template v-slot:swift>
-
-```swift
-// Fill in seed with secure random data, or, on restart, reload the seed from disk.
-let seed = [UInt8](repeating: 0, count: 32)
-let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-self.myKeysManager = KeysManager(
-	seed: seed,
-	startingTimeSecs: timestampSeconds,
-	startingTimeNanos: timestampNanos
-)
+// Fill with secure random data, or, on restart, reload the seed from disk.
+const seed = new Uint8Array(32);
+const nowSecs = Math.floor(Date.now() / 1000);
+const keysManager = ldk.KeysManager.constructor_new(
+  seed,
+  BigInt(nowSecs),                  // starting_time_secs (bigint)
+  (Date.now() % 1000) * 1_000_000,  // starting_time_nanos
+  true                              // v2_remote_key_derivation
+);
 ```
 
-  </template>
-
-</CodeSwitcher>
+:::
 
 # Creating a Unified Wallet
 
@@ -60,10 +53,9 @@ Using a [BDK](https://bitcoindevkit.org/)-based wallet the steps would be as fol
 3.  Derive the private key at `m/535h` (or some other custom path). That's 32 bytes and is your starting entropy for your LDK wallet.
 4.  Optional: use a custom `SignerProvider` implementation to have the BDK wallet provide the destination and shutdown scripts (see [Spending On-Chain Funds](#spending-on-chain-funds)).
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 // Use BDK to create and build the HD wallet
 let mnemonic = Mnemonic::parse_in_normalized(
         Language::English,
@@ -78,14 +70,10 @@ let ldk_seed: [u8; 32] = xprv.private_key.secret_bytes();
 
 // Seed the LDK KeysManager with the private key at m/535h
 let cur = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
-let keys_manager = KeysManager::new(&ldk_seed, cur.as_secs(), cur.subsec_nanos());
+let keys_manager = KeysManager::new(&ldk_seed, cur.as_secs(), cur.subsec_nanos(), true);
 ```
 
- </template>
-
- <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Use BDK to create and build the HD wallet
 val mnemonic = Mnemonic.fromString("sock lyrics village put galaxy famous pass act ship second diagram pull")
 val bip32RootKey = DescriptorSecretKey(network = Network.TESTNET, mnemonic = mnemonic, password = null)
@@ -99,37 +87,27 @@ val entropy: ByteArray = ldkChild.secretBytes().toUByteArray().toByteArray()
 val keysManager = KeysManager.of(
     entropy,
     System.currentTimeMillis() / 1000,
-    (System.currentTimeMillis() * 1000).toInt()
+    (System.currentTimeMillis() * 1000).toInt(),
+    true // v2_remote_key_derivation
 );
 ```
 
- </template>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
- <template v-slot:swift>
-
-```swift
-// Use BDK to create and build the HD wallet
-let mnemonic = try Mnemonic.fromString(mnemonic: "sock lyrics village put galaxy famous pass act ship second diagram pull")
-// Other supported networks include mainnet (Bitcoin), Regtest, Signet
-let bip32RootKey = DescriptorSecretKey(network: .testnet, mnemonic: mnemonic, password: nil)
-let ldkDerivationPath = try DerivationPath(path: "m/535h")
-let ldkChild = try bip32RootKey.derive(path: ldkDerivationPath)
-let ldkSeed = ldkChild.secretBytes()
-
-// Retrieve the current system time for uniqueness across restarts.
-let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-
-// Seed the LDK KeysManager with the private key at m/535h
-let keysManager = KeysManager(
-	seed: ldkSeed,
-	startingTimeSecs: timestampSeconds,
-	startingTimeNanos: timestampNanos
-)
+// Derive your 32-byte LDK seed from your HD wallet (e.g. the key at m/535h),
+// then seed the KeysManager with it.
+const ldkSeed = new Uint8Array(32); // fill with the 32 bytes derived at m/535h
+const nowSecs = Math.floor(Date.now() / 1000);
+const keysManager = ldk.KeysManager.constructor_new(
+  ldkSeed,
+  BigInt(nowSecs),
+  (Date.now() % 1000) * 1_000_000,
+  true // v2_remote_key_derivation
+);
 ```
 
- </template>
-</CodeSwitcher>
+:::
 
 ::: tip Protection for on-chain wallet
 
@@ -139,7 +117,7 @@ An advantage to this approach is that the LDK entropy is contained within your i
 
 # Spending On-Chain Funds
 
-When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `util::events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `sign::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it.
+When a channel has been closed and some outputs on chain are spendable only by us, LDK provides a `events::Event::SpendableOutputs` event in return from `ChannelMonitor::get_and_clear_pending_events()`. It contains a list of `sign::SpendableOutputDescriptor` objects which describe the output and provide all necessary information to spend it.
 
 If you're using `KeysManager` directly, a utility method is provided which can generate a signed transaction given a list of `
 SpendableOutputDescriptor` objects. `KeysManager::spend_spendable_outputs` can be called any time after receiving the `SpendableOutputDescriptor` objects to build a spending transaction, including delaying until sending funds to an external destination or opening a new channel. Note that if you open new channels directly with `SpendableOutputDescriptor` objects, you must ensure all closing/destination scripts provided to LDK are SegWit (either native or P2SH-wrapped).
@@ -150,10 +128,18 @@ In order to make the outputs from channel closing spendable by a third-party wal
 
 For example, a wrapper based on BDK's [`Wallet`](https://docs.rs/bdk/*/bdk/wallet/struct.Wallet.html) could look like this:
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin: 'Kotlin', swift:'Swift'}">
-<template v-slot:rust>
+::: tip Note
+The `SignerProvider` trait changed in 0.2: `generate_channel_keys_id` and
+`derive_channel_signer` no longer take `channel_value_satoshis`,
+`get_destination_script` now takes a `channel_keys_id` and returns `ScriptBuf`,
+and `spend_spendable_outputs` lives on the separate `OutputSpender` trait
+(implemented by `KeysManager`). For a production-grade wrapper, see
+[LDK Node's `KeysManager`](https://github.com/lightningdevkit/ldk-node/blob/main/src/wallet/mod.rs).
+:::
 
-```rust
+::: code-group
+
+```rust [Rust]
 pub struct BDKKeysManager<D>
 where
 	D: bdk::database::BatchDatabase,
@@ -169,7 +155,7 @@ where
 	pub fn new(
 		seed: &[u8; 32], starting_time_secs: u64, starting_time_nanos: u32, wallet: Arc<Mutex<bdk::Wallet<D>>>,
 	) -> Self {
-		let inner = KeysManager::new(seed, starting_time_secs, starting_time_nanos);
+		let inner = KeysManager::new(seed, starting_time_secs, starting_time_nanos, true);
 		Self { inner, wallet }
 	}
 
@@ -181,8 +167,8 @@ where
 	// See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
 	pub fn spend_spendable_outputs<C: Signing>(
 		&self, descriptors: &[&SpendableOutputDescriptor], outputs: Vec<TxOut>,
-		change_destination_script: Script, feerate_sat_per_1000_weight: u32,
-		locktime: Option<PackedLockTime>, secp_ctx: &Secp256k1<C>,
+		change_destination_script: ScriptBuf, feerate_sat_per_1000_weight: u32,
+		locktime: Option<LockTime>, secp_ctx: &Secp256k1<C>,
 	) -> Result<Transaction, ()> {
 		let only_non_static = &descriptors
 			.iter()
@@ -210,10 +196,11 @@ impl<D> SignerProvider for BDKKeysManager<D>
 where
 	D: bdk::database::BatchDatabase,
 {
-	type Signer = InMemorySigner;
+	type EcdsaSigner = InMemorySigner;
 
 	// We return the destination and shutdown scripts derived by the BDK wallet.
-	fn get_destination_script(&self) -> Result<Script, ()> {
+	// `get_destination_script` now takes a `channel_keys_id` and returns `ScriptBuf`.
+	fn get_destination_script(&self, _channel_keys_id: [u8; 32]) -> Result<ScriptBuf, ()> {
 		let address = self.wallet.lock().unwrap()
 			.get_address(bdk::wallet::AddressIndex::New)
 			.map_err(|e| {
@@ -239,20 +226,18 @@ where
 	}
 
 	// ... and redirect all other trait method implementations to the `inner` `KeysManager`.
+	// Note: `generate_channel_keys_id` and `derive_channel_signer` no longer take
+	// `channel_value_satoshis` in 0.2.
 	fn generate_channel_keys_id(
-		&self, inbound: bool, channel_value_satoshis: u64, user_channel_id: u128,
+		&self, inbound: bool, user_channel_id: u128,
 	) -> [u8; 32] {
-		self.inner.generate_channel_keys_id(inbound, channel_value_satoshis, user_channel_id)
+		self.inner.generate_channel_keys_id(inbound, user_channel_id)
 	}
 
 	fn derive_channel_signer(
-		&self, channel_value_satoshis: u64, channel_keys_id: [u8; 32],
-	) -> Self::Signer {
-		self.inner.derive_channel_signer(channel_value_satoshis, channel_keys_id)
-	}
-
-	fn read_chan_signer(&self, reader: &[u8]) -> Result<Self::Signer, DecodeError> {
-		self.inner.read_chan_signer(reader)
+		&self, channel_keys_id: [u8; 32],
+	) -> Self::EcdsaSigner {
+		self.inner.derive_channel_signer(channel_keys_id)
 	}
 }
 
@@ -272,18 +257,14 @@ where
 
 ```
 
-  </template>
-
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 class LDKKeysManager(seed: ByteArray, startTimeSecs: Long, startTimeNano: Int, wallet: Wallet) {
   var inner: KeysManager
   var wallet: Wallet
   var signerProvider: LDKSignerProvider
 
   init {
-      this.inner = KeysManager.of(seed, startTimeSecs, startTimeNano)
+      this.inner = KeysManager.of(seed, startTimeSecs, startTimeNano, true)
       this.wallet = wallet
       signerProvider = LDKSignerProvider()
       signerProvider.ldkkeysManager = this
@@ -317,21 +298,20 @@ class LDKKeysManager(seed: ByteArray, startTimeSecs: Long, startTimeNano: Int, w
 class LDKSignerProvider : SignerProvider.SignerProviderInterface {
   var ldkkeysManager: LDKKeysManager? = null
 
-  override fun generate_channel_keys_id(inbound: Boolean, channelValueSatoshis: Long, userChannelId: UInt128?): ByteArray {
-      return ldkkeysManager!!.inner.as_SignerProvider().generate_channel_keys_id(inbound, channelValueSatoshis, userChannelId)
+  // Note: `generate_channel_keys_id` and `derive_channel_signer` no longer take
+  // `channelValueSatoshis` in 0.2.
+  override fun generate_channel_keys_id(inbound: Boolean, userChannelId: UInt128?): ByteArray {
+      return ldkkeysManager!!.inner.as_SignerProvider().generate_channel_keys_id(inbound, userChannelId)
   }
 
-  override fun derive_channel_signer(channelValueSatoshis: Long, channelKeysId: ByteArray?): WriteableEcdsaChannelSigner {
-      return ldkkeysManager!!.inner.as_SignerProvider().derive_channel_signer(channelValueSatoshis, channelKeysId)
-  }
-
-  override fun read_chan_signer(reader: ByteArray?): Result_WriteableEcdsaChannelSignerDecodeErrorZ {
-      return ldkkeysManager!!.inner.as_SignerProvider().read_chan_signer(reader)
+  override fun derive_channel_signer(channelKeysId: ByteArray?): EcdsaChannelSigner {
+      return ldkkeysManager!!.inner.as_SignerProvider().derive_channel_signer(channelKeysId)
   }
 
   // We return the destination and shutdown scripts derived by the BDK wallet.
+  // `get_destination_script` now takes a `channelKeysId`.
   @OptIn(ExperimentalUnsignedTypes::class)
-  override fun get_destination_script(): Result_CVec_u8ZNoneZ {
+  override fun get_destination_script(channelKeysId: ByteArray): Result_CVec_u8ZNoneZ {
       val address = ldkkeysManager!!.wallet.getAddress(AddressIndex.New)
       return Result_CVec_u8ZNoneZ.ok(address.address.scriptPubkey().toBytes().toUByteArray().toByteArray())
   }
@@ -362,136 +342,69 @@ class LDKSignerProvider : SignerProvider.SignerProviderInterface {
 
 ```
 
-  </template>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-  <template v-slot:swift>
+// Wrap a KeysManager so destination/shutdown scripts come from your BDK wallet.
+class BDKKeysManager {
+  constructor(
+    private readonly inner: ldk.KeysManager,
+    private readonly wallet: BdkWallet
+  ) {}
 
-```swift
-class MyKeysManager {
-    let inner: KeysManager
-    let wallet: BitcoinDevKit.Wallet
-    let signerProvider: MySignerProvider
+  // We drop all occurrences of `SpendableOutputDescriptor_StaticOutput` (since
+  // they will be spendable by the BDK wallet) and forward any other descriptors
+  // to the inner KeysManager. `spend_spendable_outputs` lives on the
+  // OutputSpender trait.
+  //
+  // Note you should set `locktime` to the current block height to mitigate fee
+  // sniping. See https://bitcoinops.org/en/topics/fee-sniping/ for more info.
+  spendSpendableOutputs(
+    descriptors: ldk.SpendableOutputDescriptor[],
+    outputs: ldk.TxOut[],
+    changeDestinationScript: Uint8Array,
+    feerateSatPer1000Weight: number
+  ): ldk.Result_TransactionNoneZ {
+    const onlyNonStatic = descriptors.filter(
+      (d) => !(d instanceof ldk.SpendableOutputDescriptor_StaticOutput)
+    );
+    return this.inner
+      .as_OutputSpender()
+      .spend_spendable_outputs(
+        onlyNonStatic,
+        outputs,
+        changeDestinationScript,
+        feerateSatPer1000Weight,
+        ldk.Option_u32Z.constructor_none() // locktime
+      );
+  }
 
-    init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
-        self.inner = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
-        self.wallet = wallet
-        signerProvider = MySignerProvider()
-        signerProvider.myKeysManager = self
-    }
-
-    // We drop all occurences of `SpendableOutputDescriptor::StaticOutput` (since they will be
-    // spendable by the BDK wallet) and forward any other descriptors to
-    // `KeysManager::spend_spendable_outputs`.
-    //
-    // Note you should set `locktime` to the current block height to mitigate fee sniping.
-    // See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
-    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut],
-                               changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32,
-                               locktime: UInt32?) -> Result_TransactionNoneZ {
-        let onlyNonStatic: [SpendableOutputDescriptor] = descriptors.filter { desc in
-            if desc.getValueType() == .StaticOutput {
-                return false
-            }
-            return true
-        }
-        let res = self.inner.spendSpendableOutputs(
-            descriptors: onlyNonStatic,
-            outputs: outputs,
-            changeDestinationScript: changeDestinationScript,
-            feerateSatPer1000Weight: feerateSatPer1000Weight,
-            locktime: locktime
-        )
-        return res
-    }
-}
-
-class MySignerProvider: SignerProvider {
-    weak var myKeysManager: MyKeysManager?
-
-    // We return the destination and shutdown scripts derived by the BDK wallet.
-    override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
-        do {
-            let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
-            return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
-        } catch {
-            return .initWithErr()
-        }
-    }
-
-    override func getShutdownScriptpubkey() -> Bindings.Result_ShutdownScriptNoneZ {
-        do {
-            let address = try myKeysManager!.wallet.getAddress(addressIndex: .new).address
-            let payload = address.payload()
-            if case let .witnessProgram(`version`, `program`) = payload {
-                let ver: UInt8
-                switch version {
-                case .v0:
-                    ver = 0
-                case .v1:
-                    ver = 1
-                case .v2:
-                    ver = 2
-                case .v3:
-                    ver = 3
-                case .v4:
-                    ver = 4
-                case .v5:
-                    ver = 5
-                case .v6:
-                    ver = 6
-                case .v7:
-                    ver = 7
-                case .v8:
-                    ver = 8
-                case .v9:
-                    ver = 9
-                case .v10:
-                    ver = 10
-                case .v11:
-                    ver = 11
-                case .v12:
-                    ver = 12
-                case .v13:
-                    ver = 13
-                case .v14:
-                    ver = 14
-                case .v15:
-                    ver = 15
-                case .v16:
-                    ver = 16
-                }
-                let res = ShutdownScript.newWitnessProgram(version: ver, program: program)
-                if res.isOk() {
-                    return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
-                }
-            }
-            return .initWithErr()
-        } catch {
-            return .initWithErr()
-        }
-    }
-
-    // ... and redirect all other trait method implementations to the `inner` `KeysManager`.
-    override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
-        return myKeysManager!.inner.asSignerProvider().deriveChannelSigner(
-            channelValueSatoshis: channelValueSatoshis,
-            channelKeysId: channelKeysId
-        )
-    }
-
-    override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
-        return myKeysManager!.inner.asSignerProvider().generateChannelKeysId(
-            inbound: inbound,
-            channelValueSatoshis: channelValueSatoshis,
-            userChannelId: userChannelId
-        )
-    }
-
-    override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
-        return myKeysManager!.inner.asSignerProvider().readChanSigner(reader: reader)
-    }
+  // Build a SignerProvider that returns the BDK wallet's scripts and redirects
+  // every other method to the inner KeysManager.
+  asSignerProvider(): ldk.SignerProvider {
+    const inner = this.inner.as_SignerProvider();
+    const wallet = this.wallet;
+    return ldk.SignerProvider.new_impl({
+      // We return the destination and shutdown scripts derived by the BDK wallet.
+      get_destination_script(_channelKeysId: Uint8Array): ldk.Result_CVec_u8ZNoneZ {
+        const script = wallet.getNewAddress().scriptPubkey(); // Uint8Array
+        return ldk.Result_CVec_u8ZNoneZ.constructor_ok(script);
+      },
+      get_shutdown_scriptpubkey(): ldk.Result_ShutdownScriptNoneZ {
+        // Derive a ShutdownScript from the wallet's (witness) address, e.g. via
+        // ldk.ShutdownScript.constructor_new_witness_program(version, program).
+        // ...
+      },
+      // ... and redirect the remaining methods to the `inner` KeysManager.
+      generate_channel_keys_id(inbound: boolean, userChannelId: bigint): Uint8Array {
+        return inner.generate_channel_keys_id(inbound, userChannelId);
+      },
+      derive_channel_signer(channelKeysId: Uint8Array): ldk.EcdsaChannelSigner {
+        return inner.derive_channel_signer(channelKeysId);
+      },
+    } as ldk.SignerProviderInterface);
+  }
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::

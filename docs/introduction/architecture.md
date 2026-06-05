@@ -1,5 +1,6 @@
 # Architecture
-![Architecture](../assets/ldk-architecture.svg)
+<img class="light-only" src="../assets/ldk-architecture.svg" alt="Architecture">
+<img class="dark-only" src="../assets/ldk-architecture-dark.svg" alt="Architecture">
 
 Firstly, LDK is not a daemon, but rather its own implementation of the Lightning protocol written as an SDK and designed to be compiled and executed in your application. 
 
@@ -9,4 +10,4 @@ LDK also uses an event-driven architecture which allows for asynchronous result 
 
 ::: tip Language Bindings
 
-Although the core SDK is written in Rust, LDK supports many other programming languages. These include Java/Kotlin, Swift, JavaScript/TypeScript (Beta), C++ (Alpha). Check out [examples](../examples.md) to see some of the implementations out in the wild!
+Although the core SDK is written in Rust, LDK supports many other programming languages. These include Java/Kotlin, JavaScript/TypeScript, C++ (Alpha). Check out [examples](../examples.md) to see some of the implementations out in the wild!

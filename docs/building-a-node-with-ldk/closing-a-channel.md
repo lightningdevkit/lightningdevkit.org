@@ -2,28 +2,32 @@
 
 Begins the process of closing a channel. After this call (plus some timeout), no new HTLCs will be accepted on the given channel, and after additional timeout/the closing of all pending HTLCs, the channel will be closed on chain.
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
-let channel_id = channel_manager
+```rust [Rust]
+// Both close methods now require the counterparty's node id, so grab the full
+// ChannelDetails. Note the field is `user_channel_id` (a u128) in 0.2.
+let channel = channel_manager
 	.list_channels()
-	.iter()
-	.find(|channel| channel.user_id == user_id)
-	.expect("ERROR: Channel not found")
-	.channel_id;
+	.into_iter()
+	.find(|channel| channel.user_channel_id == user_channel_id)
+	.expect("ERROR: Channel not found");
+let channel_id = channel.channel_id;
+let counterparty_node_id = channel.counterparty.node_id;
 
 // Example: Cooperative close
-channel_manager.close_channel(&channel_id).expect("ERROR: Failed to close channel");
+channel_manager
+	.close_channel(&channel_id, &counterparty_node_id)
+	.expect("ERROR: Failed to close channel");
 
-// Example: Unilateral close
-channel_manager.force_close_channel(&channel_id).expect("ERROR: Failed to close channel");
+// Example: Unilateral close (renamed; now requires an error-message string)
+channel_manager
+	.force_close_broadcasting_latest_txn(&channel_id, &counterparty_node_id, "manually force-closed".to_string())
+	.expect("ERROR: Failed to force-close channel");
 ```
-  </template>
-  <template v-slot:kotlin>
 
-```kotlin
-val res = channelManager.close_channel(channelId, pubKey)
+```kotlin [Kotlin]
+val res = channelManager.close_channel(channelId, counterpartyNodeId)
 
 if (res is Result_NoneAPIErrorZ.Result_NoneAPIErrorZ_Err) {
     // Handle error
@@ -34,30 +38,28 @@ if (res.is_ok) {
 }
 ```
 
-  </template>
-  <template v-slot:swift>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-```Swift
-let channelId: [UInt8] = // Add Channel Id in bytes
-let counterpartyNodeId: [UInt8] = // Add Counterparty Node Id in bytes
-let res = channelManager.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
-if res!.isOk() {
-    // Channel Closed
+// channelId: ChannelId, counterpartyNodeId: Uint8Array (from the ChannelDetails)
+const res = channelManager.close_channel(channelId, counterpartyNodeId);
+if (res instanceof ldk.Result_NoneAPIErrorZ_Err) {
+  // Handle error
+} else {
+  // Handle successful close
 }
 ```
 
-  </template>
-</CodeSwitcher>
+:::
 
 
 To claim Funds directly into a custom wallet like BDK wallet using a custom `KeysManager` see the [Key Management](/key_management.md) guide for more info.
 
 # SpendableOutputs Event Handling
 
-<CodeSwitcher :languages="{rust:'Rust', kotlin:'Kotlin', swift:'Swift'}">
-  <template v-slot:rust>
+::: code-group
 
-```rust
+```rust [Rust]
 Event::SpendableOutputs { outputs, channel_id: _ } => {
     // SpendableOutputDescriptors, of which outputs is a vec of, are critical to keep track
     // of! While a `StaticOutput` descriptor is just an output to a static, well-known key,
@@ -78,10 +80,7 @@ Event::SpendableOutputs { outputs, channel_id: _ } => {
 
 ```
 
-  </template>
-  <template v-slot:kotlin>
-
-```kotlin
+```kotlin [Kotlin]
 // Example where we spend straight to our BDK based wallet
 if (event is Event.SpendableOutputs) {
     val outputs = event.outputs
@@ -89,63 +88,44 @@ if (event is Event.SpendableOutputs) {
         val address = OnchainWallet.getNewAddress()
         val script = Address(address).scriptPubkey().toBytes().toUByteArray().toByteArray()
         val txOut: Array<TxOut> = arrayOf()
-        val res = keysManager?.spend_spendable_outputs(
+        // `spend_spendable_outputs` moved from KeysManager onto the OutputSpender
+        // trait, and gained a trailing `locktime` argument.
+        val res = keysManager?.as_OutputSpender()?.spend_spendable_outputs(
             outputs,
             txOut,
             script,
             1000,
-            Option_u32Z.None.none()
+            Option_u32Z.none() // locktime
         )
 
-        if (res != null) {
-            if (res.is_ok) {
-                val tx = (res as Result_TransactionNoneZ.Result_TransactionNoneZ_OK).res
-                val txs: Array<ByteArray> = arrayOf()
-                txs.plus(tx)
-
-                LDKBroadcaster.broadcast_transactions(txs)
-            }
+        if (res != null && res.is_ok) {
+            val tx = (res as Result_TransactionNoneZ.Result_TransactionNoneZ_OK).res
+            LDKBroadcaster.broadcast_transactions(arrayOf(tx))
         }
-
     } catch (e: Exception) {
         Log.i(LDKTAG, "Error: ${e.message}")
     }
 }
-
 ```
 
-  </template>
-  <template v-slot:swift>
+```typescript [TypeScript]
+import * as ldk from "lightningdevkit";
 
-```Swift
-// Example where we spend straight to our BDK based wallet
-func handleEvent(event: Event) {
-    if let event = event.getValueAsSpendableOutputs() {
-        let outputs = event.getOutputs()
-        do {
-            let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
-            let network = ldkManager!.network == .Testnet ? BitcoinDevKit.Network.testnet : BitcoinDevKit.Network.regtest
-            let script = try Address(address: address, network: network).scriptPubkey().toBytes()
-            let res = ldkManager!.myKeysManager.spendSpendableOutputs(
-                descriptors: outputs,
-                outputs: [],
-                changeDestinationScript: script,
-                feerateSatPer1000Weight: 1000,
-                locktime: nil)
-            if res.isOk() {
-                var txs: [[UInt8]] = []
-                txs.append(res.getValue()!)
-                ldkManager!.broadcaster.broadcastTransactions(txs: txs)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+if (event instanceof ldk.Event_SpendableOutputs) {
+  // `spend_spendable_outputs` is on the OutputSpender trait.
+  const res = keysManager.as_OutputSpender().spend_spendable_outputs(
+    event.outputs,                      // SpendableOutputDescriptor[]
+    [],                                 // additional TxOut[]
+    changeDestinationScript,            // Uint8Array (your change scriptPubKey)
+    1000,                               // feerate_sat_per_1000_weight
+    ldk.Option_u32Z.constructor_none()  // locktime
+  );
+  if (res instanceof ldk.Result_TransactionNoneZ_OK) {
+    txBroadcaster.broadcast_transactions([res.res]);
+  }
 }
 ```
 
-  </template>
+:::
 
-</CodeSwitcher>
-
-**References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/*/lightning/events/enum.Event.html#variant.SpendableOutputs), [Java/Kotlin `SpendableOutputs` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/main/src/main/java/org/ldk/structs/Event.java#L802)
+**References:** [Rust `SpendableOutputs` docs](https://docs.rs/lightning/0.2.2/lightning/events/enum.Event.html#variant.SpendableOutputs), [Rust `OutputSpender` docs](https://docs.rs/lightning/0.2.2/lightning/sign/trait.OutputSpender.html), [Java/Kotlin `Event` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/src/main/java/org/ldk/structs/Event.java), [TypeScript `OutputSpender` bindings](https://github.com/lightningdevkit/ldk-garbagecollected/blob/v0.2.0.0/ts/structs/OutputSpender.mts)

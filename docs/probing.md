@@ -235,12 +235,15 @@ To instantiate the background processor, you need to pass in the required compon
 // by sending a signal that can be checked at appropriate intervals.
 let (bp_exit, bp_exit_check) = tokio::sync::watch::channel(());
 let mut background_processor = tokio::spawn(process_events_async(
-    Arc::clone(&persister),  // Persister for writing/reading from file system.
+    Arc::clone(&persister),  // KVStore for writing/reading from the file system.
     event_handler,           // Handler for processing various LDK events.
     chain_monitor.clone(),   // Monitors blocks for relevant activity.
     channel_manager.clone(), // Responsible for managing tasks related to channel state.
+    Some(onion_messenger.clone()), // Onion messenger (or None).
     GossipSync::p2p(gossip_sync.clone()), // Handles P2P network gossip.
     peer_manager.clone(),    // Manages peer connections and associated data.
+    None,                    // Liquidity manager (NO_LIQUIDITY_MANAGER).
+    Some(output_sweeper.clone()), // Output sweeper (or None).
     logger.clone(),          // Logger for recording events and errors.
     Some(scorer.clone()),    // Scorer for updating and persisting scoring updates.
     move |t| {
@@ -287,7 +290,7 @@ fn update_scorer<'a, S: 'static + Deref<Target = SC> + Send + Sync, SC: 'a + Wri
 			let mut score = scorer.write_lock();
 			score.probe_successful(path, duration_since_epoch);
 		},
-		Event::ailed { path, short_channel_id: Some(scid), .. } => {
+		Event::ProbeFailed { path, short_channel_id: Some(scid), .. } => {
 			let mut score = scorer.write_lock();
 			score.probe_failed(path, *scid, duration_since_epoch);
 		},

@@ -1,0 +1,9 @@
+# Build the VitePress site for Netlify deploy previews (and production).
+# Overrides any build command/publish dir configured in the Netlify UI,
+# which still pointed at the old VuePress pipeline.
+[build]
+  command = "npm run build:vitepress"
+  publish = "docs/.vitepress/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
