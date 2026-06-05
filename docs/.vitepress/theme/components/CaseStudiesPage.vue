@@ -12,6 +12,9 @@ interface Project {
   desc: string
   cats: string[]
   caseStudy?: string
+  /* Monochrome marks baked onto a dark tile (e.g. Lexe) read on the light
+     page as-is but vanish on the dark page; invert them in dark mode. */
+  invertOnDark?: boolean
 }
 
 /* Three highlighted projects shown above the full grid. */
@@ -35,13 +38,14 @@ const featured: Project[] = [
       '/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/',
   },
   {
-    name: 'Bitkit',
-    url: 'https://bitkit.to/',
-    img: '/img/bitkit.svg',
-    desc: 'Hands you the keys to your money, profile, contacts, and web accounts',
-    cats: ['mobile'],
+    name: 'Lexe',
+    url: 'https://github.com/lexe-app/lexe-public',
+    img: '/img/lexe.png',
+    desc: 'Managed non-custodial Lightning nodes inside secure hardware',
+    cats: ['infra'],
+    invertOnDark: true,
     caseStudy:
-      '/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/',
+      '/blog/lexe-uses-ldk-to-run-self-custodial-lightning-in-secure-enclaves/',
   },
 ]
 
@@ -177,6 +181,7 @@ const projects: Project[] = [
     img: '/img/lexe.png',
     desc: 'Managed non-custodial Lightning nodes inside secure hardware',
     cats: ['infra'],
+    invertOnDark: true,
     caseStudy:
       '/blog/lexe-uses-ldk-to-run-self-custodial-lightning-in-secure-enclaves/',
   },
@@ -312,7 +317,11 @@ const filtered = computed(() =>
     <div class="case-studies cs-featured">
       <div v-for="p in featured" :key="p.name" class="case-study-item">
         <a :href="p.url" target="_blank" rel="noopener noreferrer">
-          <img :src="withBase(p.img)" :alt="p.name" />
+          <img
+            :src="withBase(p.img)"
+            :alt="p.name"
+            :class="{ 'cs-invert-dark': p.invertOnDark }"
+          />
         </a>
         <h3>
           <a :href="p.url" target="_blank" rel="noopener noreferrer">{{
@@ -345,7 +354,11 @@ const filtered = computed(() =>
     <div class="case-studies">
       <div v-for="p in filtered" :key="p.name" class="case-study-item">
         <a :href="p.url" target="_blank" rel="noopener noreferrer">
-          <img :src="withBase(p.img)" :alt="p.name" />
+          <img
+            :src="withBase(p.img)"
+            :alt="p.name"
+            :class="{ 'cs-invert-dark': p.invertOnDark }"
+          />
         </a>
         <h3>
           <a :href="p.url" target="_blank" rel="noopener noreferrer">{{
@@ -440,5 +453,11 @@ const filtered = computed(() =>
   color: var(--vp-c-text-1);
   border-bottom-color: var(--vp-c-brand-1);
   font-weight: 600;
+}
+
+/* Logos baked onto a dark tile (Lexe) disappear on the dark page —
+   invert them so the badge reads light, matching the home-page logo strip. */
+.dark .case-study-item img.cs-invert-dark {
+  filter: invert(1);
 }
 </style>
