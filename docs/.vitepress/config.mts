@@ -74,7 +74,6 @@ const docsSidebar: DefaultTheme.SidebarItem[] = [
           { text: 'Key Management', link: '/key_management' },
           { text: 'Fee Estimation', link: '/fee_estimation' },
           { text: 'Probing and Path Finding', link: '/probing' },
-          { text: 'Async Payments', link: '/async-payments' },
         ],
       },
       { text: 'Examples', link: '/examples' },
