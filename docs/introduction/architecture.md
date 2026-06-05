@@ -1,6 +1,6 @@
 # Architecture
-<img class="light-only" src="/img/ldk-architecture.svg" alt="Architecture">
-<img class="dark-only" src="/img/ldk-architecture-dark.svg" alt="Architecture">
+<img class="light-only" src="../assets/ldk-architecture.svg" alt="Architecture">
+<img class="dark-only" src="../assets/ldk-architecture-dark.svg" alt="Architecture">
 
 Firstly, LDK is not a daemon, but rather its own implementation of the Lightning protocol written as an SDK and designed to be compiled and executed in your application. 
 
