@@ -24,7 +24,7 @@ That’s where BOLT12 comes in. The specification defines an *offer* that can be
 
 <p style="text-align: center;"><i>Comparison of typical BOLT11 (left) and BOLT12 (right) QR codes</i></p>
 
-So how is this all happening without a dedicated server? The magic comes in with something called [onion messages](../onion-messages-demystified). The Lightning protocol is defined as messages exchanged between direct peers. An onion payment involves an interchange of messages along a path, collecting fees and transferring funds until the preimage is revealed and the funds claimed.
+So how is this all happening without a dedicated server? The magic comes in with something called [onion messages](./onion-messages-demystified.md). The Lightning protocol is defined as messages exchanged between direct peers. An onion payment involves an interchange of messages along a path, collecting fees and transferring funds until the preimage is revealed and the funds claimed.
 
 An onion message is very similar in that it involves sending messages along a path, encrypted as an onion such that each hop only knows where to send the message next. The difference is that they’re more efficient and don’t require locking any liquidity. Messages are forwarded until they reach the intended recipient. There is no interchange between adjacent peers to sign and revoke commitments or a round-trip along the path. Channel liquidity—or channels, for that matter—aren’t even required.
 
