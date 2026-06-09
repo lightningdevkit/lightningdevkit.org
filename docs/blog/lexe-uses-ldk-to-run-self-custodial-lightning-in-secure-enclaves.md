@@ -10,7 +10,7 @@ tags:
 
 [Lexe](https://lexe.app) is building the world's most cost-effective and reliable self-custodial Lightning nodes running inside secure hardware enclaves in the cloud. By leveraging the hardware-based isolation guarantees of Intel SGX, Lexe can offer a wallet that sends and receives payments 24/7 without retaining custody of users' funds, as Lexe cannot read the keys inside of the enclaves.
 
-Lexe wallet users enjoy reliable receives to BOLT 12 offers, BIP 353, and Lightning Address, with always-on uptime for Nostr Wallet Connect. Lexe's TEE-based architecture also drastically reduces node hosting costs, allowing Lexe to offer enterprise-grade Lightning node hosting for free.
+Lexe wallet users enjoy reliable receives to BOLT 12 offers, Human Bitcoin Address (BIP 353), and Lightning Address, with always-on uptime for Nostr Wallet Connect. Lexe's TEE-based architecture also drastically reduces node hosting costs, allowing Lexe to offer enterprise-grade Lightning node hosting for free.
 
 # The Challenge: Secure Enclaves are Highly Constrained
 
