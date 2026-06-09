@@ -93,6 +93,15 @@ watch(zoomed, (v) => {
   transition: background 0.25s ease;
 }
 
+/* On narrow screens the side padding is the main thing shrinking the wide
+   diagram — trim it (and the radius) so the figure reclaims that width. */
+@media (max-width: 640px) {
+  .figure {
+    border-radius: 16px;
+    padding: 16px 8px 12px;
+  }
+}
+
 /* The diagram is wrapped in a button so it's a keyboard-operable zoom
    target; strip the native button chrome and signal the affordance. */
 .zoom-trigger {
@@ -180,17 +189,17 @@ watch(zoomed, (v) => {
   border: 1px solid var(--hair);
   border-radius: 18px;
   padding: 22px;
-  max-width: 96vw;
-  max-height: 92vh;
-  overflow: auto;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
   cursor: default;
 }
+/* Size the diagram against the viewport with the 1280:852 (~1.5023) aspect
+   ratio baked in, so it scales up to fill whichever dimension is the binding
+   constraint. Relying on width:auto here is unreliable — an inline SVG that
+   has a viewBox but no definite width can collapse instead of filling. */
 .lexe-zoom .zoom-svg {
-  width: auto;
+  width: min(calc(96vw - 80px), calc((92vh - 80px) * 1.5023));
   height: auto;
-  max-width: calc(96vw - 44px);
-  max-height: calc(92vh - 44px);
+  display: block;
 }
 .zoom-close {
   position: fixed;

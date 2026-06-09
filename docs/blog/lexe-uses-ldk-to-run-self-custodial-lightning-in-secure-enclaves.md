@@ -1,7 +1,7 @@
 ---
 title: "Lexe Uses LDK to Run Self-Custodial Lightning in Secure Enclaves"
 description: "Learn how Lexe uses LDK to run self-custodial Lightning nodes inside Intel SGX secure enclaves with free, always-on node hosting"
-date: "2026-06-05"
+date: "2026-06-10"
 authors:
   - Max Fang
 tags:
