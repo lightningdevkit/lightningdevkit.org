@@ -10,7 +10,7 @@ const logos = [
   // rather than inverting (which would ruin the yellow).
   { src: '/img/alby-logo.webp', srcDark: '/img/alby-logo-dark.png', alt: 'Alby Hub' },
   { src: '/img/cash-app-logo.png', alt: 'Cash App' },
-  { src: '/img/lexe-logo.jpg', alt: 'Lexe' },
+  { src: '/img/lexe.png', alt: 'Lexe' },
 ]
 </script>
 

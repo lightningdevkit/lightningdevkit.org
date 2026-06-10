@@ -35,13 +35,13 @@ const featured: Project[] = [
       '/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/',
   },
   {
-    name: 'Bitkit',
-    url: 'https://bitkit.to/',
-    img: '/img/bitkit.svg',
-    desc: 'Hands you the keys to your money, profile, contacts, and web accounts',
-    cats: ['mobile'],
+    name: 'Lexe',
+    url: 'https://github.com/lexe-app/lexe-public',
+    img: '/img/lexe.png',
+    desc: 'Managed non-custodial Lightning nodes inside secure hardware',
+    cats: ['infra'],
     caseStudy:
-      '/blog/bitkit-uses-ldk-to-build-the-ultimate-alternative-to-custodial-wallets/',
+      '/blog/lexe-uses-ldk-to-run-self-custodial-lightning-in-secure-enclaves/',
   },
 ]
 
@@ -177,6 +177,8 @@ const projects: Project[] = [
     img: '/img/lexe.png',
     desc: 'Managed non-custodial Lightning nodes inside secure hardware',
     cats: ['infra'],
+    caseStudy:
+      '/blog/lexe-uses-ldk-to-run-self-custodial-lightning-in-secure-enclaves/',
   },
   {
     name: 'Lightspark',
