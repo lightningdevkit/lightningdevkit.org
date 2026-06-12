@@ -21,6 +21,7 @@ const columns: Column[] = [
     children: [
       { text: 'Introduction', link: '/introduction/' },
       { text: 'Building a node with LDK', link: '/building-a-node-with-ldk/introduction/' },
+      { text: 'Getting Started with LDK Node', link: '/getting-started-with-ldk-node' },
       { text: 'Running a sample LDK node', link: '/running-a-sample-ldk-node/' },
       { text: 'Architecture', link: '/introduction/architecture/' },
       { text: 'Blockchain Data', link: '/blockchain_data/' },
