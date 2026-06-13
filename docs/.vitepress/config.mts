@@ -65,6 +65,7 @@ const docsSidebar: DefaultTheme.SidebarItem[] = [
           { text: 'Closing a Channel', link: '/building-a-node-with-ldk/closing-a-channel' },
         ],
       },
+      { text: 'Getting Started with LDK Node', link: '/getting-started-with-ldk-node' },
       { text: 'Running a sample LDK node', link: '/running-a-sample-ldk-node' },
       {
         text: 'Advanced Guides',

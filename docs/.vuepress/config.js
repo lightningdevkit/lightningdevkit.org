@@ -57,6 +57,7 @@ const docsSidebar = [
           ["/building-a-node-with-ldk/closing-a-channel", "Closing a Channel"],
         ],
       },
+      ["/getting-started-with-ldk-node", "Getting Started with LDK Node"],
       "/running-a-sample-ldk-node",
       {
         title: "Blockchain Data",
@@ -220,6 +221,10 @@ module.exports = {
             {
               text: "Building a node with LDK",
               link: "/building-a-node-with-ldk/introduction/",
+            },
+            {
+              text: "Getting Started with LDK Node",
+              link: "/getting-started-with-ldk-node/",
             },
             {
               text: "Running a sample LDK node",
