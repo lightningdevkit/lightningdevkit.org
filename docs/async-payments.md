@@ -2,6 +2,10 @@
 
 Async payments let an often-offline node — typically a mobile wallet — receive Lightning payments without keeping an app open in the foreground, without trusting a third party to custody funds, and without anyone encumbering network capacity with long-lived HTLCs.
 
+::: warning Beta
+Async payments are still under active development and are not yet recommended for production use. In particular, the sender-side HTLC hold — extending CLTVs so the sender's LSP can hold the payment until the recipient comes online (step 2, "Lock the payment on hold") — has not yet been merged. The APIs described below may change before the feature is complete.
+:::
+
 This guide covers how to enable async payments in your application. For the protocol background, the existing approaches it improves on, and the design rationale, see the blog post [Async Payments: Getting Paid While Your Node Is Offline](/blog/async-payments-receiving-while-offline).
 
 <AsyncPaymentsSequenceDiagram />
