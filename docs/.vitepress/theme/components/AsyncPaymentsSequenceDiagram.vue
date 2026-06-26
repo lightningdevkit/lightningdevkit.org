@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 
 // Reusable async-payments sequence diagram, embedded in both the blog post
@@ -15,8 +15,16 @@ const light = withBase('/img/async-payments-sequence.png')
 const dark = withBase('/img/async-payments-sequence-dark.png')
 
 const zoomed = ref(false)
+const lightbox = ref<HTMLElement | null>(null)
 
-function open() {
+// Remember the element that opened the lightbox so focus can return to it on
+// close, and the prior body overflow so we restore it rather than assuming we
+// own the scroll lock (another component — e.g. VitePress search — may hold it).
+let lastFocused: HTMLElement | null = null
+let priorOverflow = ''
+
+function open(e: Event) {
+  lastFocused = (e.currentTarget as HTMLElement) ?? null
   zoomed.value = true
 }
 function close() {
@@ -26,28 +34,35 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') close()
 }
 
-// Lock background scroll and wire Escape only while the lightbox is open.
-watch(zoomed, (isOpen) => {
+// Lock background scroll, wire Escape, and move focus into the dialog (so
+// keyboard and screen-reader users are actually inside the modal that
+// aria-modal promises) only while the lightbox is open.
+watch(zoomed, async (isOpen) => {
   if (typeof document === 'undefined') return
-  document.body.style.overflow = isOpen ? 'hidden' : ''
   if (isOpen) {
+    priorOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKeydown)
+    await nextTick()
+    lightbox.value?.focus()
   } else {
+    document.body.style.overflow = priorOverflow
     document.removeEventListener('keydown', onKeydown)
+    lastFocused?.focus()
   }
 })
 
 onBeforeUnmount(() => {
   if (typeof document === 'undefined') return
-  document.body.style.overflow = ''
+  document.body.style.overflow = priorOverflow
   document.removeEventListener('keydown', onKeydown)
 })
 
+// Kept short: the figcaption below carries the fuller description, and a
+// screen reader would otherwise read near-identical prose twice in a row.
 const alt =
-  'Sequence diagram: an async payment flows from sender to an often-offline ' +
-  'recipient via their LSPs — the sender fetches a static invoice, locks the ' +
-  'HTLC on hold with its LSP, leaves an onion message, and the recipient ' +
-  'releases the payment when it next comes online.'
+  'Sequence diagram of an async Lightning payment from sender to an ' +
+  'often-offline recipient via their LSPs.'
 </script>
 
 <template>
@@ -89,10 +104,12 @@ const alt =
   <Teleport to="body">
     <div
       v-if="zoomed"
+      ref="lightbox"
       class="async-payments-lightbox"
       role="dialog"
       aria-modal="true"
       aria-label="Async payments sequence diagram, enlarged"
+      tabindex="-1"
       @click="close"
     >
       <img class="lb-light" :src="light" alt="" />
@@ -141,6 +158,9 @@ const alt =
   padding: 4vmin;
   background: rgba(0, 0, 0, 0.8);
   cursor: zoom-out;
+  /* Programmatically focused on open for keyboard/SR users; the full-screen
+     backdrop outline would look like a bug, so suppress it. */
+  outline: none;
 }
 
 .async-payments-lightbox img {

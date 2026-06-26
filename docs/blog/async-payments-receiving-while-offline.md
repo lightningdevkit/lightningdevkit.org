@@ -1,10 +1,10 @@
 ---
 title: "Async Payments: Getting Paid While Your Node Is Offline"
 description: "Async payments let an often-offline node receive Lightning payments without trusting a custodian and without locking up network capacity with long-lived HTLCs."
-date: "2026-06-23"
+date: "2026-06-26"
 authors:
-  - Matt Corallo
   - Valentine Wallace
+  - Conor Okus
 tags:
   - async payments
   - offers
@@ -16,6 +16,10 @@ The Lightning Development Kit (LDK) provides the tools to build a node on the Li
 That assumption breaks down for one of the most common things people want to do with Lightning: accept tips or payments on a phone without keeping an app open and in the foreground. Modern mobile operating systems compound the problem. On both Android and iOS, an application is generally not guaranteed any CPU time in response to a push notification unless it falls into a privileged category such as VoIP. In practice, this means a mobile node often cannot wake up to claim an incoming HTLC on its own.
 
 This post describes the async payments protocol, which LDK implements to allow an often-offline node to receive payments without trusting a third party to custody funds, and without anyone encumbering network capacity with long-lived HTLCs.
+
+::: warning Beta
+Async payments are still under active development and not yet recommended for production use. Parts of the sender-side flow described below have not yet been merged, and the flow currently works LDK-to-LDK only. See the [implementation guide](/async-payments) for the current status.
+:::
 
 ## Existing Approaches and Their Limitations
 
@@ -37,13 +41,13 @@ A payment then proceeds roughly as follows:
 
 1. **The sender fetches a static invoice.** The sender requests a static invoice from the recipient's invoice server. The absence of a payment hash signals that the recipient sits behind an LSP and is rarely online, so the sender knows to use the async flow.
 
-2. **The sender locks in the HTLC with its own LSP.** The sender forwards an HTLC with a long CLTV timeout to its own LSP, with instructions to hold it: "when you receive an onion message containing secret B, release this HTLC; until then, hold it." The sender's LSP accepts the HTLC but does not forward it. The long CLTV is acceptable here because these are the sender's own funds; if the sender chooses to encumber their own balance, no one else is affected. A sender that is reliably online can skip this step.
+2. **The sender locks in the HTLC with its own LSP.** The sender forwards an HTLC with a long CLTV timeout to its own LSP, with instructions to hold it: "when you receive an onion message containing the release secret, release this HTLC; until then, hold it." The sender's LSP accepts the HTLC but does not forward it. The long CLTV is acceptable here because these are the sender's own funds; if the sender chooses to encumber their own balance, no one else is affected. A sender that is reliably online can skip this step.
 
-3. **The sender notifies the recipient.** The sender transmits an onion message to the recipient: "when you next come online, use the included reply path to send secret B to my LSP." The recipient's LSP holds this message until the recipient connects. At this point the sender can safely go offline.
+3. **The sender notifies the recipient.** The sender transmits an onion message to the recipient: "when you next come online, use the included reply path to send the release secret to my LSP." The recipient's LSP holds this message until the recipient connects. At this point the sender can safely go offline.
 
-4. **The recipient comes online and replies.** When the recipient reconnects, their LSP delivers the held onion message. The recipient follows the reply path and sends secret B to the sender's LSP.
+4. **The recipient comes online and replies.** When the recipient reconnects, their LSP delivers the held onion message. The recipient follows the reply path and sends the release secret to the sender's LSP.
 
-5. **The HTLC is released.** Receiving secret B prompts the sender's LSP to forward the original HTLC, which travels the route and is received by the recipient.
+5. **The HTLC is released.** Receiving the release secret prompts the sender's LSP to forward the original HTLC, which travels the route and is received by the recipient.
 
 <AsyncPaymentsSequenceDiagram />
 
@@ -57,6 +61,6 @@ When the route the sender originally selected has gone stale by the time the rec
 - **Stale routes.** If the route the sender used when locking in the HTLC is no longer viable by the time the recipient returns, the sender's LSP finds a new route. This is what makes step 2 safe to perform immediately rather than waiting for the recipient.
 - **The recipient never returns.** This behaves exactly as a normal Lightning payment does today. If any node on the route is offline long enough that the payment approaches its expiry, the HTLC is failed backwards to the sender.
 
-## Integrating it into your app
+## Integrating It Into Your App
 
-LDK handles the async offer machinery transparently once your node is configured for the appropriate role, whether it is an always-online participant, an often-offline sender or receiver, or the always-online LSP and static-invoice server that supports offline recipients. For step-by-step configuration, see the [Async Payments guide](/async-payments).
+LDK handles the async offer machinery transparently once your node is configured for the appropriate role, whether it is an always-online participant, an often-offline sender or receiver, or the always-online LSP and static invoice server that supports offline recipients. For step-by-step configuration, see the [Async Payments guide](/async-payments).
