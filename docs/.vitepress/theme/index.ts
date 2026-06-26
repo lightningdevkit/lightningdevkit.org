@@ -14,6 +14,7 @@ import BlogPostHeader from './components/BlogPostHeader.vue'
 import CaseStudiesPage from './components/CaseStudiesPage.vue'
 import LexeArchitectureDiagram from './components/LexeArchitectureDiagram.vue'
 import NavLogo from './components/NavLogo.vue'
+import AsyncPaymentsSequenceDiagram from './components/AsyncPaymentsSequenceDiagram.vue'
 
 export default {
   extends: DefaultTheme,
@@ -36,5 +37,7 @@ export default {
     app.component('BlogPostList', BlogPostList)
     app.component('CaseStudiesPage', CaseStudiesPage)
     app.component('LexeArchitectureDiagram', LexeArchitectureDiagram)
+    // Shared between the blog post and the async-payments guide.
+    app.component('AsyncPaymentsSequenceDiagram', AsyncPaymentsSequenceDiagram)
   },
 } satisfies Theme
