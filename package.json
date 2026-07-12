@@ -34,6 +34,7 @@
   "devDependencies": {
     "@spiralbtc/vuepress-devkit-theme": "^0.21.0",
     "broken-link-checker": "0.7.8",
+    "feed": "^6.0.0",
     "serve": "14.2.6",
     "start-server-and-test": "3.0.5",
     "vitepress": "^1.5.0",
