@@ -1,6 +1,9 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type DefaultTheme } from 'vitepress'
+import fs from 'node:fs/promises'
+import { Feed } from 'feed'
+import { readBlogPosts } from '../blog/_taxonomy.ts'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -104,7 +107,7 @@ const docsSidebar: DefaultTheme.SidebarItem[] = [
 ]
 
 export default defineConfig({
-  title: 'Lightning Dev Kit Documentation',
+ title: 'Lightning Dev Kit Documentation',
   description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
 
   cleanUrls: true,
@@ -223,4 +226,33 @@ export default defineConfig({
       dedupe: ['vue'],
     },
   },
+
+async buildEnd(siteConfig) {
+    const posts = await readBlogPosts(path.join(siteConfig.srcDir, 'blog'))
+
+    const feed = new Feed({
+      title: 'Lightning Dev Kit Documentation Blog',
+      description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
+      id: 'https://lightningdevkit.org/blog/',
+      link: 'https://lightningdevkit.org/blog/',
+      language: 'en',
+      copyright: `Copyright © ${new Date().getFullYear()} LDK Developers`,
+      updated: posts[0] ? new Date(posts[0].date) : new Date(),
+    })
+
+    for (const post of posts) {
+      feed.addItem({
+        title: post.title,
+        id: `https://lightningdevkit.org${post.url}`,
+        link: `https://lightningdevkit.org${post.url}`,
+        description: post.description,
+        author: post.authors.map((name) => ({ name })),
+        date: new Date(post.date),
+      })
+    }
+
+    await fs.writeFile(path.join(siteConfig.outDir, 'rss.xml'), feed.rss2())
+  },
 })
+
+
