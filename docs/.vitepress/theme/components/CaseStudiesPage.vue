@@ -9,6 +9,8 @@ interface Project {
   name: string
   url: string
   img: string
+  /* Alternative logo shown when dark mode is active. */
+  imgDark?: string
   desc: string
   cats: string[]
   caseStudy?: string
@@ -92,6 +94,7 @@ const projects: Project[] = [
     name: 'AtomicLightningExchange',
     url: 'https://github.com/SurajNaidu0/AtomicLightningExchange',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'AtomicLightningExchange enables trustless swaps between Lightning Bitcoin and on-chain Bitcoin using atomic swaps',
     cats: ['misc'],
   },
@@ -121,6 +124,14 @@ const projects: Project[] = [
       '/blog/cashapp-enables-lightning-withdrawals-and-deposits-using-ldk/',
   },
   {
+    name: 'cdk-payment-processors',
+    url: 'https://github.com/cashubtc/cdk-payment-processors',
+    img: '/img/github.png',
+    imgDark: '/img/github-white.png',
+    desc: 'Payment processors connecting Cashu mints to Lightning backends, including LDK Server',
+    cats: ['infra'],
+  },
+  {
     name: 'EttaWallet',
     url: 'https://github.com/EttaWallet/EttaWallet',
     img: '/img/etta.png',
@@ -140,6 +151,7 @@ const projects: Project[] = [
     name: 'Gossiper',
     url: 'https://github.com/fiksn/gossiper',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'Lightning Gossip Ingestion',
     cats: ['misc'],
   },
@@ -168,6 +180,7 @@ const projects: Project[] = [
     name: 'ldk-sample with Tor',
     url: 'https://github.com/TonyGiorgio/ldk-sample-tor',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'An experimentation with tor that adapts the ldk-sample node',
     cats: ['misc'],
   },
@@ -222,6 +235,7 @@ const projects: Project[] = [
     name: 'rgb-lightning-node',
     url: 'https://github.com/RGB-Tools/rgb-lightning-node',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'LN node based on ldk-sample supporting RGB assets',
     cats: ['misc'],
   },
@@ -229,6 +243,7 @@ const projects: Project[] = [
     name: 'rust-dlc',
     url: 'https://github.com/p2pderivatives/rust-dlc',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'A Rust library for working with Discreet Log Contracts',
     cats: ['misc'],
   },
@@ -253,6 +268,7 @@ const projects: Project[] = [
     name: 'The Hidden LN',
     url: 'https://github.com/BitcoinDevShop/hidden-lightning-network',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'Probes the Lightning Network for the detection of private channels',
     cats: ['misc'],
   },
@@ -260,6 +276,7 @@ const projects: Project[] = [
     name: 'uMlando',
     url: 'https://github.com/ConorOkus/uMlando-wallet',
     img: '/img/github.png',
+    imgDark: '/img/github-white.png',
     desc: 'An educational Android demo wallet',
     cats: ['misc'],
   },
@@ -312,7 +329,17 @@ const filtered = computed(() =>
     <div class="case-studies cs-featured">
       <div v-for="p in featured" :key="p.name" class="case-study-item">
         <a :href="p.url" target="_blank" rel="noopener noreferrer">
-          <img :src="withBase(p.img)" :alt="p.name" />
+          <img
+            :src="withBase(p.img)"
+            :alt="p.name"
+            :class="{ 'cs-logo-light': p.imgDark }"
+          />
+          <img
+            v-if="p.imgDark"
+            :src="withBase(p.imgDark)"
+            :alt="p.name"
+            class="cs-logo-dark"
+          />
         </a>
         <h3>
           <a :href="p.url" target="_blank" rel="noopener noreferrer">{{
@@ -345,7 +372,17 @@ const filtered = computed(() =>
     <div class="case-studies">
       <div v-for="p in filtered" :key="p.name" class="case-study-item">
         <a :href="p.url" target="_blank" rel="noopener noreferrer">
-          <img :src="withBase(p.img)" :alt="p.name" />
+          <img
+            :src="withBase(p.img)"
+            :alt="p.name"
+            :class="{ 'cs-logo-light': p.imgDark }"
+          />
+          <img
+            v-if="p.imgDark"
+            :src="withBase(p.imgDark)"
+            :alt="p.name"
+            class="cs-logo-dark"
+          />
         </a>
         <h3>
           <a :href="p.url" target="_blank" rel="noopener noreferrer">{{
@@ -440,5 +477,19 @@ const filtered = computed(() =>
   color: var(--vp-c-text-1);
   border-bottom-color: var(--vp-c-brand-1);
   font-weight: 600;
+}
+
+/* Logo swap for dark mode: projects with an `imgDark` variant render both
+   images; VitePress toggles the `.dark` class on <html>. */
+.cs-logo-dark {
+  display: none;
+}
+
+.dark .cs-logo-light {
+  display: none;
+}
+
+.dark .cs-logo-dark {
+  display: block;
 }
 </style>
