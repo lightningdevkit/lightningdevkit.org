@@ -68,13 +68,6 @@ const projects: Project[] = [
     cats: ['mobile'],
   },
   {
-    name: 'Aciedo',
-    url: 'https://github.com/aciedo',
-    img: '/img/aciedo.svg',
-    desc: 'A financial infrastructure suite for developers and users',
-    cats: ['infra'],
-  },
-  {
     name: 'Alby Hub',
     url: 'https://albyhub.com/',
     img: '/img/alby-logo.webp',
@@ -82,13 +75,6 @@ const projects: Project[] = [
     cats: ['web'],
     caseStudy:
       '/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/',
-  },
-  {
-    name: 'AtomicDEX',
-    url: 'https://atomicdex.io/en/',
-    img: '/img/atomic.png',
-    desc: 'A multi-coin wallet, bridge, and DEX rolled into one app',
-    cats: ['desktop'],
   },
   {
     name: 'AtomicLightningExchange',
@@ -217,13 +203,6 @@ const projects: Project[] = [
     caseStudy: '/blog/lqwd-liquidity-provider-get-liquidity-when-you-need-it/',
   },
   {
-    name: 'Mercury',
-    url: 'https://mercurywallet.com/',
-    img: '/img/mercury.png',
-    desc: 'A layer 2 bitcoin wallet that enables users to send and swap bitcoin privately',
-    cats: ['mobile', 'desktop'],
-  },
-  {
     name: 'Mutiny',
     url: 'https://mutinywallet.com/',
     img: '/img/mutiny.png',
@@ -255,6 +234,14 @@ const projects: Project[] = [
     cats: ['infra'],
     caseStudy:
       '/blog/sensei-uses-ldk-to-build-a-multi-node-lightning-server-application/',
+  },
+  {
+    name: 'Stable Channels',
+    url: 'https://github.com/toneloc/stable-channels',
+    img: '/img/github.png',
+    imgDark: '/img/github-white.png',
+    desc: 'Keep a portion of your bitcoin at a stable dollar value in self-custodial Lightning channels, built on LDK Node',
+    cats: ['mobile', 'desktop', 'infra'],
   },
   {
     name: 'TEOS',
