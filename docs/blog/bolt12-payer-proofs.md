@@ -1,7 +1,7 @@
 ---
 title: "BOLT 12 Payer Proofs: Exportable, Verifiable Receipts for Lightning Payments"
 description: "After settlement the payer’s wallet can export a compact, verifiable receipt (lnp…) that anyone can check against the original BOLT 12 offer — no recipient web server required."
-date: "2026-07-01"
+date: "2026-08-06"
 authors:
   - Vincenzo Palazzo
 tags:
