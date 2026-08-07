@@ -1,6 +1,6 @@
 ---
 title: "BOLT 12 Payer Proofs: Exportable, Verifiable Receipts for Lightning Payments"
-description: "After settlement the payer’s wallet can export a compact, verifiable receipt (lnp…) that anyone can check against the original BOLT 12 offer — no recipient web server required."
+description: "After settlement the payer’s wallet can export a compact, verifiable receipt (lnp…) that anyone can check against the original BOLT 12 offer. No recipient web server required."
 date: "2026-08-06"
 authors:
   - Vincenzo Palazzo
@@ -15,7 +15,7 @@ BOLT 12 finally made receiving usable. You can publish a reusable offer, negotia
 
 The payment side is still missing something though.
 
-Once the payment settles, how does the person who actually paid prove it? To a messaging app, a Nostr client, a POS terminal, or basically anyone else — without standing up a web server, without asking the recipient to publish a receipt, and without falling back to LNURL callbacks or custodial zap servers?
+Once the payment settles, how does the person who actually paid prove it? To a messaging app, a Nostr client, a POS terminal, or basically anyone else, without standing up a web server, without asking the recipient to publish a receipt, and without falling back to LNURL callbacks or custodial zap servers?
 
 Most of the time the answer is still “you don’t”. Or you just end up trusting someone else’s server again.
 
@@ -42,7 +42,7 @@ Settlement can finish while the UI that would have shown it is offline. The proo
 
 ![Trusted server vs cryptography already in BOLT 12](../assets/bolt12-payer-proofs-comparison.png)
 
-*Figure: comparison — a trusted server reintroduced vs the cryptography already in BOLT 12.*
+*Figure: comparison. A trusted server reintroduced vs the cryptography already in BOLT 12.*
 
 ## What a payer proof actually contains
 
@@ -62,7 +62,7 @@ That’s the difference between a screenshot and an actual receipt.
 
 ![Anatomy of a payer proof (lnp)](../assets/bolt12-payer-proofs-anatomy.png)
 
-*Figure: anatomy — selected invoice-request fields, invoice fields, preimage and signatures that make up an `lnp`.*
+*Figure: anatomy. Selected invoice-request fields, invoice fields, preimage and signatures that make up an `lnp`.*
 
 ## How the flow looks
 
@@ -70,7 +70,7 @@ That’s the difference between a screenshot and an actual receipt.
 2. The payer requests an invoice over onion messages, including the amount (for variable offers) and any payer note or metadata the application wants bound to the payment.
 3. The recipient returns a unique invoice and the payer settles it.
 4. After settlement the payer’s wallet builds the `lnp` from the paid invoice, the preimage, and whichever fields it decides to disclose. This happens entirely on the payer side.
-5. The application attaches the proof where it needs it — a public tip event, an encrypted chat receipt, a wallet-connector response, a POS notification.
+5. The application attaches the proof where it needs it: a public tip event, an encrypted chat receipt, a wallet-connector response, a POS notification.
 
 Anyone who needs to can verify it. Clients parse the `lnp`, check the signatures and the preimage binding, and compare the disclosed fields against the offer they think was paid. Invalid or replayed proofs get dropped; duplicates are deduplicated by payment hash.
 
@@ -79,7 +79,7 @@ No LNURL. No “please host a zap callback”. The Lightning proof *is* the rece
 
 ![Payer proof end-to-end flow](../assets/bolt12-payer-proofs-flow.png)
 
-*Figure: flow — publish offer → request invoice over onion messages → settle → export `lnp` → verify.*
+*Figure: flow. Publish offer → request invoice over onion messages → settle → export `lnp` → verify.*
 
 ## A couple of design points that matter
 
@@ -90,7 +90,7 @@ Privacy is the user’s choice. A publicly posted proof is a public statement ab
 
 ![Trust boundary for payer proofs](../assets/bolt12-payer-proofs-trust-boundary.png)
 
-*Figure: trust boundary — what the verifier checks locally without asking the recipient’s server.*
+*Figure: trust boundary. What the verifier checks locally without asking the recipient’s server.*
 
 ## Current status
 
@@ -110,7 +110,7 @@ Once you have offers for receiving and payer proofs for receipts, a lot of the c
 Tips and zaps no longer need LNURL pay servers to publish receipts on the recipient’s behalf.  
 In-chat payments can carry receipts that either party (or an auditor) can re-check later.  
 Point-of-sale systems can reference a specific order instead of just watching a node balance.  
-Scoped app wallets can return a proof on payment the same way card APIs return a transaction ID — except this one is verifiable without the wallet vendor.
+Scoped app wallets can return a proof on payment the same way card APIs return a transaction ID, except this one is verifiable without the wallet vendor.
 
 Same theme as the rest of the BOLT 12 stack: push the policy and the cryptography into the protocol so applications don’t have to reinvent trust.
 
