@@ -262,3 +262,40 @@ The value is not in replacing single commands — `ldk-server-cli` is already go
 | "Draft a weekly summary of my node I can paste into a report." | `get_node_info`, `get_balances`, `list_channels`, `list_payments`, `list_forwarded_payments` | The synthesis is the work; the calls are trivial |
 
 Anything in the last three rows that moves funds — `open_channel` in particular — should be reviewed before you approve it. Which is the next section.
+
+## Operating safely
+
+This bridge does not hand your agent a read-only dashboard. An agent that can list your channels can also close them, and an agent that can create an invoice can also pay one. These are the tools that move money or change channel state:
+
+`onchain_send`, `bolt11_send`, `bolt11_send_underpaying`, `bolt12_send`, `spontaneous_send`, `unified_send`, `open_channel`, `splice_in`, `splice_out`, `close_channel`, `force_close_channel`.
+
+::: warning Approve fund-moving calls individually
+Every one of these clients can be configured to approve tool calls without asking. Do not do that for this server. A misread prompt with blanket auto-approval is an on-chain transaction you cannot take back — and `force_close_channel` in particular costs fees and locks funds up for the channel's timeout.
+:::
+
+A few more habits worth forming:
+
+- **Start on regtest or signet.** LDK Server is pre-v0.1 and its persisted data model may still change incompatibly. Learn the workflow where a mistake costs nothing.
+- **Keep credentials out of anything committed.** Prefer the default discovery path from Step 3, where the agent config holds only a binary path. If you commit a project-scoped `.mcp.json`, `.codex/config.toml`, or `opencode.json`, make sure it does not carry `LDK_API_KEY`.
+- **Keep the node on loopback.** The bridge is a local child process that talks to `127.0.0.1`; it never needs `grpc_service_address` bound to a routable interface.
+- **Your node's logs remain the audit trail.** The agent's transcript shows what it intended; the node's log shows what actually happened. Reconcile the two when something surprises you.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `API key not provided. Set LDK_API_KEY or ensure the api_key file exists at ~/.ldk-server/[network]/api_key` | No key file at the resolved data directory for the resolved network. With no config file, the bridge assumes `bitcoin` — so a signet or regtest node's key goes unfound | Pass `--config` pointing at your node's TOML, or set `LDK_API_KEY` to the hex key from Step 2 |
+| `TLS cert path not provided. Set LDK_TLS_CERT_PATH or ensure config file exists at ~/.ldk-server/config.toml` | Neither a config file nor the environment variable told the bridge where the certificate is | Set `LDK_TLS_CERT_PATH`, or pass `--config` for a config file with a `[tls] cert_path` entry |
+| `Failed to read server certificate file '...'` | The path exists in configuration but is wrong or unreadable | Check it against `tls.crt` in the data directory from Step 2, and check file permissions |
+| The client lists the server, but calls fail to reach the node | The daemon is not running, or it listens somewhere other than `127.0.0.1:3536` | Confirm the node is up and compare its `gRPC service listening on` log line with `LDK_BASE_URL` |
+| The client reports the server failed to connect or start | The binary path is wrong, relative, or not executable | Use the absolute path to `target/release/ldk-server-mcp` |
+| Answers describe a node that isn't yours — no channels, unexpected network | The bridge resolved different configuration than the daemon runs on | Point both at the same TOML: `ldk-server my-config.toml` and `--config /path/to/my-config.toml` |
+| An event-driven request never resolves | Streaming is not exposed as a tool | Ask for a poll instead: check `list_payments` or `get_payment_details` again in a moment |
+
+## Further reading
+
+- [LDK Server](https://github.com/lightningdevkit/ldk-server) — the node daemon, CLI, and client library
+- [`ldk-server-mcp`](https://github.com/lightningdevkit/ldk-server/tree/main/ldk-server-mcp) — the bridge's own README
+- [Getting Started](https://github.com/lightningdevkit/ldk-server/blob/main/docs/getting-started.md) — install, configure, and run a node
+- [API Guide](https://github.com/lightningdevkit/ldk-server/blob/main/docs/api-guide.md) — the gRPC surface behind every tool above
+- [Model Context Protocol](https://spec.modelcontextprotocol.io/) — the specification the bridge implements
