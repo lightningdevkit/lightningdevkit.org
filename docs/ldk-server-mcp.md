@@ -148,38 +148,54 @@ args = []
 
 :::
 
-### Pointing at a node that isn't in the default location
+### Pointing at a node somewhere else
 
-Three environment variables override discovery: `LDK_BASE_URL` (the gRPC address), `LDK_API_KEY` (the hex-encoded key from Step 2), and `LDK_TLS_CERT_PATH`.
+Two situations need explicit configuration: a node whose data directory or config file is not in the default location, and a node on another machine. Three environment variables override discovery — `LDK_BASE_URL` (the gRPC address as `host:port`), `LDK_API_KEY` (the hex-encoded key from Step 2), and `LDK_TLS_CERT_PATH`.
+
+Keep the key out of the file. Export it once in your shell, then have the agent config reference it:
+
+```bash
+export LDK_API_KEY="$(xxd -p -c 64 ~/.ldk-server/signet/api_key)"
+```
 
 ::: code-group
 
-```bash [Claude Code]
-claude mcp add ldk-server \
-  --env LDK_BASE_URL=127.0.0.1:3536 \
-  --env LDK_API_KEY=<hex_api_key> \
-  --env LDK_TLS_CERT_PATH=/path/to/tls.crt \
-  -- /abs/path/to/ldk-server-mcp
+```json [Claude Code]
+{
+  "mcpServers": {
+    "ldk-server": {
+      "command": "/abs/path/to/ldk-server-mcp",
+      "env": {
+        "LDK_BASE_URL": "node.example.internal:3536",
+        "LDK_API_KEY": "${LDK_API_KEY}",
+        "LDK_TLS_CERT_PATH": "/path/to/tls.crt"
+      }
+    }
+  }
+}
 ```
 
-```bash [Codex CLI]
-codex mcp add ldk-server \
-  --env LDK_BASE_URL=127.0.0.1:3536 \
-  --env LDK_API_KEY=<hex_api_key> \
-  --env LDK_TLS_CERT_PATH=/path/to/tls.crt \
-  -- /abs/path/to/ldk-server-mcp
+```toml [Codex CLI]
+[mcp_servers.ldk-server]
+command = "/abs/path/to/ldk-server-mcp"
+env_vars = ["LDK_API_KEY"]
+
+[mcp_servers.ldk-server.env]
+LDK_BASE_URL = "node.example.internal:3536"
+LDK_TLS_CERT_PATH = "/path/to/tls.crt"
 ```
 
 ```json [opencode]
 {
+  "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "ldk-server": {
       "type": "local",
       "command": ["/abs/path/to/ldk-server-mcp"],
       "enabled": true,
       "environment": {
-        "LDK_BASE_URL": "127.0.0.1:3536",
-        "LDK_API_KEY": "<hex_api_key>",
+        "LDK_BASE_URL": "node.example.internal:3536",
+        "LDK_API_KEY": "{env:LDK_API_KEY}",
         "LDK_TLS_CERT_PATH": "/path/to/tls.crt"
       }
     }
@@ -189,7 +205,7 @@ codex mcp add ldk-server \
 
 :::
 
-Both CLIs take `--env KEY=value` after the server name and before the `--` separator; everything after `--` is the command that launches the bridge. opencode carries the same variables in the entry's `environment` object.
+Each client has its own indirection syntax: Claude Code expands `${VAR}` (and `${VAR:-default}`) in a `.mcp.json` entry's `command`, `args`, and `env`; opencode substitutes `{env:VAR}`; Codex forwards a variable from your environment when you name it in `env_vars`. Both CLIs also accept `--env KEY=value` between the server name and the `--` separator — `claude mcp add ldk-server --env LDK_BASE_URL=127.0.0.1:3536 -- /abs/path/to/ldk-server-mcp` — but a key typed there lands in your shell history and in the agent process's argument list, where any local user can read it with `ps`. Use the config forms above for the API key. For a same-machine node whose config simply lives elsewhere, `LDK_BASE_URL` stays `127.0.0.1:3536`.
 
 Precedence runs highest first: the three environment variables, then a `--config <path>` TOML file, then the defaults from Step 2. Two sharp edges are worth knowing. The bridge bypasses the default config file only when all three variables are set — a partial set still loads `config.toml` and overrides it field by field. And to use a config file instead of environment variables, pass it as an argument to the bridge: `-- /abs/path/to/ldk-server-mcp --config /path/to/my-config.toml` for either CLI, or as a second element of opencode's `command` array.
 
@@ -212,6 +228,8 @@ opencode mcp list   # or: opencode mcp ls
 ```
 
 :::
+
+A connected server means the bridge process started and answered `initialize` — not that it reached your node. `ldk-server-mcp` probes the node on startup and only logs `Warning: Failed to reach ldk-server on startup` when that fails, so it still advertises its full tool list against a node that is down, unreachable, or holding a different API key. The health check in Step 4 is what proves the whole chain.
 
 ::: tip Working from the crate README?
 Two details in the `ldk-server-mcp` README will not behave as written. It tells Claude Code users to add an `mcpServers` block to `.claude/settings.json`, which is not where Claude Code reads MCP servers from — use `claude mcp add` or `.mcp.json` as above. And its examples set `LDK_BASE_URL` to `localhost:3000`; the gRPC service address defaults to `127.0.0.1:3536`, the address your node prints on startup.
@@ -255,7 +273,7 @@ The value is not in replacing single commands — `ldk-server-cli` is already go
 | "Which channels are running low on outbound liquidity?" | `list_channels` | Compares outbound against capacity per channel, and names the ones that matter |
 | "Create an invoice for 25,000 sats for the deposit, then check whether it's been paid." | `bolt11_receive`, then `list_payments` or `get_payment_details` | Generates, tracks, and re-checks against the payment hash it just created |
 | "Here's an invoice — can I pay it, and what will it cost me?" | `decode_invoice`, `get_balances`, `list_channels` | Decodes the amount and expiry, then checks it against your actual liquidity before you commit |
-| "Connect to this node URI and open a 500,000 sat channel." | `connect_peer`, `open_channel` | Sequences peer connection before funding, and reports the funding txid |
+| "Connect to this node URI and open a 500,000 sat channel." | `connect_peer` (optional pre-flight), `open_channel` | Splits the node URI into the pubkey and address `open_channel` requires, then reports the funding txid |
 | "How much did I earn forwarding payments this week, and through which channels?" | `list_forwarded_payments`, `list_channels` | Aggregates and attributes forwards; the raw list needs the same work done by hand |
 | "Tell me about this node before I open a channel to it." | `graph_get_node`, `graph_list_channels`, `list_peers` | Pulls the gossip view of capacity and connectivity into a readable answer |
 | "Draft a weekly summary of my node I can paste into a report." | `get_node_info`, `get_balances`, `list_channels`, `list_payments`, `list_forwarded_payments` | The synthesis is the work; the calls are trivial |
@@ -268,6 +286,8 @@ This bridge does not hand your agent a read-only dashboard. An agent that can li
 
 `onchain_send`, `bolt11_send`, `bolt11_send_underpaying`, `bolt12_send`, `spontaneous_send`, `unified_send`, `open_channel`, `splice_in`, `splice_out`, `close_channel`, `force_close_channel`.
 
+Three more decide the fate of money already in flight or in your channels: `bolt11_claim_for_hash` and `bolt11_fail_for_hash` settle or fail an incoming payment, and `update_channel_config` changes how your channels forward.
+
 ::: warning Approve fund-moving calls individually
 Every one of these clients can be configured to approve tool calls without asking. Do not do that for this server. A misread prompt with blanket auto-approval is an on-chain transaction you cannot take back — and `force_close_channel` in particular costs fees and locks funds up for the channel's timeout.
 :::
@@ -277,6 +297,7 @@ A few more habits worth forming:
 - **Start on regtest or signet.** LDK Server is pre-v0.1 and its persisted data model may still change incompatibly. Learn the workflow where a mistake costs nothing.
 - **Keep credentials out of anything committed.** Prefer the default discovery path from Step 3, where the agent config holds only a binary path. If you commit a project-scoped `.mcp.json`, `.codex/config.toml`, or `opencode.json`, make sure it does not carry `LDK_API_KEY`.
 - **Keep the node on loopback where you can.** With the node and agent on one machine, the bridge is a local child process talking to `127.0.0.1`, and `grpc_service_address` never needs a routable interface. For a node on another machine, reach it through an authenticated tunnel rather than exposing the gRPC service publicly.
+- **Treat everything the node reports as untrusted text.** Invoice descriptions, BIP 353 names, and node aliases from the network graph are written by strangers, and they reach your agent's context through `decode_invoice`, `list_peers`, and `graph_get_node`. Read them as data, never as instructions, and never let text that arrived that way be the reason a payment gets approved.
 - **Your node's logs remain the audit trail.** The agent's transcript shows what it intended; the node's log shows what actually happened. Reconcile the two when something surprises you.
 
 ## Troubleshooting
