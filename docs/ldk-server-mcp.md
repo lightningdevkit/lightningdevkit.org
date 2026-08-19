@@ -217,3 +217,48 @@ The ldk-server tools then appear in the session's tool list.
 ::: tip Working from the crate README?
 Two details in the `ldk-server-mcp` README will not behave as written. It tells Claude Code users to add an `mcpServers` block to `.claude/settings.json`, which is not where Claude Code reads MCP servers from — use `claude mcp add` or `.mcp.json` as above. And its examples set `LDK_BASE_URL` to `localhost:3000`; the gRPC service address defaults to `127.0.0.1:3536`, the address your node prints on startup.
 :::
+
+## Step 4: Your first conversation
+
+Start with a question that only reads:
+
+> What's the status of my Lightning node?
+
+Your agent calls `get_node_info`, `get_balances`, `list_channels`, and `list_peers`, then reports back in one place: the node ID, whether the node is synced and to which block, spendable on-chain and Lightning balances, how many channels are usable, and how many peers are currently connected. Four API calls you would otherwise run and cross-reference by hand.
+
+## What your agent can do
+
+Every unary LDK Server RPC is exposed as a tool. Grouped by what they touch:
+
+| Area | Tools |
+| --- | --- |
+| Node and wallet | `get_node_info`, `get_balances` |
+| On-chain | `onchain_receive`, `onchain_send` |
+| Receiving over BOLT11 | `bolt11_receive`, `bolt11_receive_for_hash`, `bolt11_claim_for_hash`, `bolt11_fail_for_hash`, `bolt11_receive_via_jit_channel`, `bolt11_receive_variable_amount_via_jit_channel` |
+| Sending over BOLT11 | `bolt11_send`, `bolt11_send_underpaying` |
+| BOLT12 offers | `bolt12_receive`, `bolt12_send` |
+| Other payment paths | `spontaneous_send` (keysend), `unified_send` (BIP 21 URI or BIP 353 name) |
+| Channels | `list_channels`, `open_channel`, `close_channel`, `force_close_channel`, `splice_in`, `splice_out`, `update_channel_config` |
+| Peers | `list_peers`, `connect_peer`, `disconnect_peer` |
+| History | `list_payments`, `get_payment_details`, `list_forwarded_payments` |
+| Network graph | `graph_get_node`, `graph_list_nodes`, `graph_get_channel`, `graph_list_channels` |
+| Utilities | `decode_invoice`, `decode_offer`, `sign_message`, `verify_signature`, `export_pathfinding_scores` |
+
+Two things are deliberately absent. The streaming `subscribe_events` RPC is not a tool, and neither is the non-RPC `metrics` HTTP endpoint. The practical consequence of the first: your agent cannot sit and wait for an event, so "tell me when this invoice is paid" becomes a poll of `list_payments` or `get_payment_details` rather than a subscription. LDK Server is moving quickly, so ask your agent to list its available tools for the current set rather than treating the table above as final.
+
+## Prompts worth using
+
+The value is not in replacing single commands — `ldk-server-cli` is already good at those. It is in the questions whose answers span several calls and need interpreting.
+
+| Ask this | Tools it reaches for | Why it beats the CLI |
+| --- | --- | --- |
+| "Give me a morning health check on my node." | `get_node_info`, `get_balances`, `list_channels`, `list_peers` | One summary instead of four outputs to reconcile |
+| "Which channels are running low on outbound liquidity?" | `list_channels` | Compares outbound against capacity per channel, and names the ones that matter |
+| "Create an invoice for 25,000 sats for the deposit, then check whether it's been paid." | `bolt11_receive`, then `list_payments` or `get_payment_details` | Generates, tracks, and re-checks against the payment hash it just created |
+| "Here's an invoice — can I pay it, and what will it cost me?" | `decode_invoice`, `get_balances`, `list_channels` | Decodes the amount and expiry, then checks it against your actual liquidity before you commit |
+| "Connect to this node URI and open a 500,000 sat channel." | `connect_peer`, `open_channel` | Sequences peer connection before funding, and reports the funding txid |
+| "How much did I earn forwarding payments this week, and through which channels?" | `list_forwarded_payments`, `list_channels` | Aggregates and attributes forwards; the raw list needs the same work done by hand |
+| "Tell me about this node before I open a channel to it." | `graph_get_node`, `graph_list_channels`, `list_peers` | Pulls the gossip view of capacity and connectivity into a readable answer |
+| "Draft a weekly summary of my node I can paste into a report." | `get_node_info`, `get_balances`, `list_channels`, `list_payments`, `list_forwarded_payments` | The synthesis is the work; the calls are trivial |
+
+Anything in the last three rows that moves funds — `open_channel` in particular — should be reviewed before you approve it. Which is the next section.
