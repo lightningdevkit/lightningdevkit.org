@@ -108,7 +108,7 @@ codex mcp add ldk-server -- /abs/path/to/ldk-server-mcp
 
 :::
 
-Claude Code writes to local scope by default; add `--scope project` to share the server through a committed `.mcp.json`, or `--scope user` to have it available in every project. opencode has no add command — it reads `opencode.json` (or `opencode.jsonc`) from your project root or global config directory.
+Claude Code writes to local scope by default; add `--scope project` to share the server through a committed `.mcp.json`, or `--scope user` to have it available in every project. opencode's own `opencode mcp add` walks you through the same thing interactively; the JSON above is what it writes to `opencode.json` (or `opencode.jsonc`) in your project root or global config directory.
 
 ### The same thing, written by hand
 
@@ -207,9 +207,8 @@ claude mcp get ldk-server   # shows the resolved configuration
 codex mcp list
 ```
 
-```text [opencode]
-Save opencode.json and restart opencode.
-The ldk-server tools then appear in the session's tool list.
+```bash [opencode]
+opencode mcp list   # or: opencode mcp ls
 ```
 
 :::
@@ -277,7 +276,7 @@ A few more habits worth forming:
 
 - **Start on regtest or signet.** LDK Server is pre-v0.1 and its persisted data model may still change incompatibly. Learn the workflow where a mistake costs nothing.
 - **Keep credentials out of anything committed.** Prefer the default discovery path from Step 3, where the agent config holds only a binary path. If you commit a project-scoped `.mcp.json`, `.codex/config.toml`, or `opencode.json`, make sure it does not carry `LDK_API_KEY`.
-- **Keep the node on loopback.** The bridge is a local child process that talks to `127.0.0.1`; it never needs `grpc_service_address` bound to a routable interface.
+- **Keep the node on loopback where you can.** With the node and agent on one machine, the bridge is a local child process talking to `127.0.0.1`, and `grpc_service_address` never needs a routable interface. For a node on another machine, reach it through an authenticated tunnel rather than exposing the gRPC service publicly.
 - **Your node's logs remain the audit trail.** The agent's transcript shows what it intended; the node's log shows what actually happened. Reconcile the two when something surprises you.
 
 ## Troubleshooting
