@@ -94,6 +94,7 @@ codex mcp add ldk-server -- /abs/path/to/ldk-server-mcp
 ```
 
 ```bash [Goose]
+# this session only; goose configure registers it permanently
 goose session --with-extension "/abs/path/to/ldk-server-mcp"
 ```
 
@@ -236,9 +237,9 @@ extensions:
 
 :::
 
-Each client has its own indirection syntax. Claude Code expands `${VAR}` (and `${VAR:-default}`) in a `.mcp.json` entry's `command`, `args`, and `env`. Codex forwards a variable from your environment when you name it in `env_vars`. Goose keeps the two apart on purpose — plain values go in `envs`, while a key named in `env_keys` is resolved from Goose's own secret store, so the value never lands in `config.yaml`; store it with `goose configure` -> `goose settings` -> extension secrets. opencode substitutes `{env:VAR}`. Both CLIs also accept `--env KEY=value` between the server name and the `--` separator — `claude mcp add ldk-server --env LDK_BASE_URL=127.0.0.1:3536 -- /abs/path/to/ldk-server-mcp` — but a key typed there lands in your shell history and in the agent process's argument list, where any local user can read it with `ps`. Use the config forms above for the API key. For a same-machine node whose config simply lives elsewhere, `LDK_BASE_URL` stays `127.0.0.1:3536`.
+Each client has its own indirection syntax. Claude Code expands `${VAR}` (and `${VAR:-default}`) in a `.mcp.json` entry's `command`, `args`, and `env`. Codex forwards a variable from your environment when you name it in `env_vars`. Goose keeps the two apart on purpose: plain values go in `envs`, while a key named in `env_keys` is resolved outside the config file — Goose checks the uppercased environment variable first, then falls back to its own secret store (`goose configure` > extension secrets). The `export` above is therefore enough, and the value never lands in `config.yaml`. Mind that order, though: a stale exported variable silently wins over a stored secret. opencode substitutes `{env:VAR}`. The Claude Code and Codex CLIs also accept `--env KEY=value` between the server name and the `--` separator — `claude mcp add ldk-server --env LDK_BASE_URL=127.0.0.1:3536 -- /abs/path/to/ldk-server-mcp` — and Goose takes the same idea inline: `goose session --with-extension "LDK_BASE_URL=127.0.0.1:3536 /abs/path/to/ldk-server-mcp"`. Either way, a key typed on a command line lands in your shell history and in the agent process's argument list, where any local user can read it with `ps`. Use the config forms above for the API key. For a same-machine node whose config simply lives elsewhere, `LDK_BASE_URL` stays `127.0.0.1:3536`.
 
-Precedence runs highest first: the three environment variables, then a `--config <path>` TOML file, then the defaults from Step 2. Two sharp edges are worth knowing. The bridge bypasses the default config file only when all three variables are set — a partial set still loads `config.toml` and overrides it field by field. And to use a config file instead of environment variables, pass it as an argument to the bridge: `-- /abs/path/to/ldk-server-mcp --config /path/to/my-config.toml` for either CLI, or as a second element of opencode's `command` array.
+Precedence runs highest first: the three environment variables, then a `--config <path>` TOML file, then the defaults from Step 2. Two sharp edges are worth knowing. The bridge bypasses the default config file only when all three variables are set — a partial set still loads `config.toml` and overrides it field by field. And to use a config file instead of environment variables, pass it as an argument to the bridge: append it after the binary for the Claude Code and Codex CLIs (`-- /abs/path/to/ldk-server-mcp --config /path/to/my-config.toml`), put it in Goose's `args` list (`args: ["--config", "/path/to/my-config.toml"]`), or add it as a further element of opencode's `command` array.
 
 ### Confirm it connected
 
