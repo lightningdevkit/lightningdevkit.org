@@ -2,7 +2,7 @@
 
 LDK Server already exposes every node operation as an API call. The `ldk-server-mcp` bridge turns those calls into tools an AI agent can use, so "which of my channels are running low on outbound liquidity?" becomes a question you ask rather than a sequence of CLI invocations you run and interpret yourself.
 
-This guide connects a running LDK Server node to opencode, the Claude Code CLI, or the Codex CLI over the [Model Context Protocol](https://spec.modelcontextprotocol.io/) (MCP), then shows what that conversation is genuinely good for — and where it needs a firm hand.
+This guide connects a running LDK Server node to the Claude Code CLI, the Codex CLI, opencode, or Goose over the [Model Context Protocol](https://spec.modelcontextprotocol.io/) (MCP), then shows what that conversation is genuinely good for — and where it needs a firm hand.
 
 ::: warning Alpha
 [LDK Server](https://github.com/lightningdevkit/ldk-server) is still under active development and is not ready for production use. Until the v0.1 release, its persisted data model may change in non-backwards-compatible ways. Do not run it with funds you cannot afford to lose, and read [Operating safely](#operating-safely) before pointing an agent at a node that holds real money.
@@ -14,10 +14,10 @@ Three processes, two hops:
 
 ```text
   your agent             ldk-server-mcp          ldk-server           Bitcoin +
- (opencode /    ──────▶  (stdio bridge)  ──────▶ (node daemon) ──────▶ Lightning
-  Claude Code /          JSON-RPC 2.0            gRPC over TLS
-  Codex CLI)             over stdio              + API key
-                                                 127.0.0.1:3536
+ (Claude Code / ──────▶  (stdio bridge)  ──────▶ (node daemon) ──────▶ Lightning
+  Codex CLI /            JSON-RPC 2.0            gRPC over TLS
+  opencode /             over stdio              + API key
+  Goose)                                         127.0.0.1:3536
 ```
 
 Your agent launches `ldk-server-mcp` as a child process and speaks JSON-RPC 2.0 to it over stdio, one message per line. The bridge translates each tool call into an authenticated gRPC request to your node, over TLS, using the node's API key and self-signed certificate. Nothing new is exposed to the network: the bridge is a local process, and your node keeps listening on loopback.
@@ -26,7 +26,7 @@ Your agent launches `ldk-server-mcp` as a child process and speaks JSON-RPC 2.0 
 
 - A running LDK Server node. If you do not have one yet, follow [Getting Started](https://github.com/lightningdevkit/ldk-server/blob/main/docs/getting-started.md); it needs a Bitcoin chain backend (Bitcoin Core, Electrum, or Esplora) and little else.
 - Rust 1.85.0 or later, to build the bridge.
-- One of opencode, the Claude Code CLI, or the Codex CLI.
+- One of the Claude Code CLI, the Codex CLI, opencode, or Goose.
 - Ideally a regtest or signet node for your first run. These tools can spend funds and close channels, so get familiar where mistakes are free.
 
 ## Step 1: Build the bridge
@@ -106,13 +106,17 @@ codex mcp add ldk-server -- /abs/path/to/ldk-server-mcp
 }
 ```
 
+```bash [Goose]
+goose session --with-extension "/abs/path/to/ldk-server-mcp"
+```
+
 :::
 
-Claude Code writes to local scope by default; add `--scope project` to share the server through a committed `.mcp.json`, or `--scope user` to have it available in every project. opencode's own `opencode mcp add` walks you through the same thing interactively; the JSON above is what it writes to `opencode.json` (or `opencode.jsonc`) in your project root or global config directory.
+Claude Code writes to local scope by default; add `--scope project` to share the server through a committed `.mcp.json`, or `--scope user` to have it available in every project. opencode's own `opencode mcp add` walks you through the same thing interactively; the JSON above is what it writes to `opencode.json` (or `opencode.jsonc`) in your project root or global config directory. Goose calls MCP servers *extensions*: `--with-extension` attaches one to a single session, while `goose configure` -> `Add Extension` -> `Command-Line Extension` registers it permanently.
 
 ### The same thing, written by hand
 
-`.mcp.json` in your project root for Claude Code, `~/.codex/config.toml` (or `.codex/config.toml` in the project) for Codex, `opencode.json` for opencode:
+`.mcp.json` in your project root for Claude Code, `~/.codex/config.toml` (or `.codex/config.toml` in the project) for Codex, `opencode.json` for opencode, `~/.config/goose/config.yaml` for Goose:
 
 ::: code-group
 
@@ -144,6 +148,17 @@ args = []
     }
   }
 }
+```
+
+```yaml [Goose]
+extensions:
+  ldk-server:
+    name: LDK Server
+    type: stdio
+    cmd: /abs/path/to/ldk-server-mcp
+    args: []
+    enabled: true
+    timeout: 300
 ```
 
 :::
@@ -203,9 +218,25 @@ LDK_TLS_CERT_PATH = "/path/to/tls.crt"
 }
 ```
 
+```yaml [Goose]
+extensions:
+  ldk-server:
+    name: LDK Server
+    type: stdio
+    cmd: /abs/path/to/ldk-server-mcp
+    args: []
+    enabled: true
+    timeout: 300
+    envs:
+      LDK_BASE_URL: node.example.internal:3536
+      LDK_TLS_CERT_PATH: /path/to/tls.crt
+    env_keys:
+      - LDK_API_KEY
+```
+
 :::
 
-Each client has its own indirection syntax: Claude Code expands `${VAR}` (and `${VAR:-default}`) in a `.mcp.json` entry's `command`, `args`, and `env`; opencode substitutes `{env:VAR}`; Codex forwards a variable from your environment when you name it in `env_vars`. Both CLIs also accept `--env KEY=value` between the server name and the `--` separator — `claude mcp add ldk-server --env LDK_BASE_URL=127.0.0.1:3536 -- /abs/path/to/ldk-server-mcp` — but a key typed there lands in your shell history and in the agent process's argument list, where any local user can read it with `ps`. Use the config forms above for the API key. For a same-machine node whose config simply lives elsewhere, `LDK_BASE_URL` stays `127.0.0.1:3536`.
+Each client has its own indirection syntax: Claude Code expands `${VAR}` (and `${VAR:-default}`) in a `.mcp.json` entry's `command`, `args`, and `env`; opencode substitutes `{env:VAR}`; Codex forwards a variable from your environment when you name it in `env_vars`. Goose keeps the two apart on purpose — plain values go in `envs`, while a key named in `env_keys` is resolved from Goose's own secret store, so the value never lands in `config.yaml`. Store it with `goose configure` -> `goose settings` -> extension secrets. Both CLIs also accept `--env KEY=value` between the server name and the `--` separator — `claude mcp add ldk-server --env LDK_BASE_URL=127.0.0.1:3536 -- /abs/path/to/ldk-server-mcp` — but a key typed there lands in your shell history and in the agent process's argument list, where any local user can read it with `ps`. Use the config forms above for the API key. For a same-machine node whose config simply lives elsewhere, `LDK_BASE_URL` stays `127.0.0.1:3536`.
 
 Precedence runs highest first: the three environment variables, then a `--config <path>` TOML file, then the defaults from Step 2. Two sharp edges are worth knowing. The bridge bypasses the default config file only when all three variables are set — a partial set still loads `config.toml` and overrides it field by field. And to use a config file instead of environment variables, pass it as an argument to the bridge: `-- /abs/path/to/ldk-server-mcp --config /path/to/my-config.toml` for either CLI, or as a second element of opencode's `command` array.
 
@@ -225,6 +256,10 @@ codex mcp list
 
 ```bash [opencode]
 opencode mcp list   # or: opencode mcp ls
+```
+
+```bash [Goose]
+goose info -v       # lists enabled extensions
 ```
 
 :::
@@ -263,6 +298,8 @@ Every unary LDK Server RPC is exposed as a tool. Grouped by what they touch:
 
 Two things are deliberately absent. The streaming `subscribe_events` RPC is not a tool, and neither is the non-RPC `metrics` HTTP endpoint. The practical consequence of the first: your agent cannot sit and wait for an event, so "tell me when this invoice is paid" becomes a poll of `list_payments` or `get_payment_details` rather than a subscription. LDK Server is moving quickly, so ask your agent to list its available tools for the current set rather than treating the table above as final.
 
+That set is large: 38 tools from this one server. Goose in particular advises keeping fewer than 25 tools enabled at once for best results, so consider toggling other extensions off while you work on your node.
+
 ## Prompts worth using
 
 The value is not in replacing single commands — `ldk-server-cli` is already good at those. It is in the questions whose answers span several calls and need interpreting.
@@ -290,6 +327,8 @@ Three more decide the fate of money already in flight or in your channels: `bolt
 
 ::: warning Approve fund-moving calls individually
 Every one of these clients can be configured to approve tool calls without asking. Do not do that for this server. A misread prompt with blanket auto-approval is an on-chain transaction you cannot take back — and `force_close_channel` in particular costs fees and locks funds up for the channel's timeout.
+
+Goose deserves a specific mention: it ships in **Autonomous** mode, which runs tools without asking. Before you point it at a node, switch to `/mode approve` or `/mode smart_approve` in session (or set the mode through `goose configure` -> `goose settings` -> `goose mode`). Both approval modes also support per-tool rules — *Always Allow*, *Ask Before*, *Never Allow* — which is the sharpest tool on this page: read-only tools like `get_balances` can run freely while `onchain_send` and `force_close_channel` stay on *Ask Before* or off entirely.
 :::
 
 A few more habits worth forming:
