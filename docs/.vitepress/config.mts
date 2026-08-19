@@ -81,6 +81,13 @@ const docsSidebar: DefaultTheme.SidebarItem[] = [
     ],
   },
   {
+    text: 'LDK Server',
+    collapsed: false,
+    items: [
+      { text: 'AI Agent Integration (MCP)', link: '/ldk-server-mcp' },
+    ],
+  },
+  {
     text: 'API Reference',
     collapsed: false,
     items: [
