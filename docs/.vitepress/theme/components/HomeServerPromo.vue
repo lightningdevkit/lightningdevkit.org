@@ -27,11 +27,7 @@
               Built-in LSP support
             </li>
           </ul>
-          <a
-            class="fh-cta"
-            href="https://github.com/lightningdevkit/ldk-server"
-            rel="noopener noreferrer"
-          >
+          <a class="fh-cta" href="/ldk-server-mcp">
             Get started →
           </a>
         </div>
