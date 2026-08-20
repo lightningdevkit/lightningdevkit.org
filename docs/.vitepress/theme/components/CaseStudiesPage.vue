@@ -11,6 +11,8 @@ interface Project {
   img: string
   /* Alternative logo shown when dark mode is active. */
   imgDark?: string
+  /* For single-colour dark marks with no dark variant: invert in dark mode. */
+  invertOnDark?: boolean
   desc: string
   cats: string[]
   caseStudy?: string
@@ -22,6 +24,9 @@ const featured: Project[] = [
     name: 'Alby Hub',
     url: 'https://albyhub.com/',
     img: '/img/alby-logo.webp',
+    /* Two-tone mark: the black center pin vanishes on dark, so swap the
+       whole logo rather than inverting (which would ruin the yellow). */
+    imgDark: '/img/alby-logo-dark.png',
     desc: 'Equipped with its own lightning node, ready to connect you to numerous applications',
     cats: ['web'],
     caseStudy:
@@ -71,18 +76,13 @@ const projects: Project[] = [
     name: 'Alby Hub',
     url: 'https://albyhub.com/',
     img: '/img/alby-logo.webp',
+    /* Two-tone mark: the black center pin vanishes on dark, so swap the
+       whole logo rather than inverting (which would ruin the yellow). */
+    imgDark: '/img/alby-logo-dark.png',
     desc: 'With its own lightning node, connecting you to numerous apps',
     cats: ['web'],
     caseStudy:
       '/blog/alby-hub-uses-ldk-to-offer-a-self-custodial-lightning-wallet-for-everyone/',
-  },
-  {
-    name: 'AtomicLightningExchange',
-    url: 'https://github.com/SurajNaidu0/AtomicLightningExchange',
-    img: '/img/github.png',
-    imgDark: '/img/github-white.png',
-    desc: 'AtomicLightningExchange enables trustless swaps between Lightning Bitcoin and on-chain Bitcoin using atomic swaps',
-    cats: ['misc'],
   },
   {
     name: 'Bitkit',
@@ -118,13 +118,6 @@ const projects: Project[] = [
     cats: ['infra'],
   },
   {
-    name: 'EttaWallet',
-    url: 'https://github.com/EttaWallet/EttaWallet',
-    img: '/img/etta.png',
-    desc: 'A simple open-source wallet with a strong bias toward usability, accessibility, and UX',
-    cats: ['mobile'],
-  },
-  {
     name: 'Fedimint',
     url: 'https://fedimint.org/',
     img: '/img/fedimint.png',
@@ -149,20 +142,6 @@ const projects: Project[] = [
     cats: ['desktop'],
   },
   {
-    name: 'Kumuly',
-    url: 'https://twitter.com/kumulydev',
-    img: '/img/kumuly.png',
-    desc: 'Colombian-based mobile bitcoin and Lightning wallet',
-    cats: ['mobile'],
-  },
-  {
-    name: 'kuutamo',
-    url: 'https://github.com/kuutamolabs/lightning-knd',
-    img: '/img/kuutamo.png',
-    desc: 'A turn-key, end-to-end solution for running self-hosted nodes, anywhere',
-    cats: ['infra'],
-  },
-  {
     name: 'ldk-sample with Tor',
     url: 'https://github.com/TonyGiorgio/ldk-sample-tor',
     img: '/img/github.png',
@@ -183,6 +162,7 @@ const projects: Project[] = [
     name: 'Lightspark',
     url: 'https://www.lightspark.com/',
     img: '/img/lightspark-logo.svg',
+    invertOnDark: true,
     desc: 'Enterprise-grade, fast, secure payments on Lightning',
     cats: ['infra'],
     caseStudy: '/blog/how-we-built-our-sparknodes-using-ldk/',
@@ -201,6 +181,13 @@ const projects: Project[] = [
     desc: 'At the forefront of building transaction infrastructure on the Lightning Network',
     cats: ['infra'],
     caseStudy: '/blog/lqwd-liquidity-provider-get-liquidity-when-you-need-it/',
+  },
+  {
+    name: 'Megalith',
+    url: 'https://megalithic.me/',
+    img: '/img/megalith.webp',
+    desc: 'One of the largest routing nodes on the Lightning Network, serving LSPS1 and LSPS2 inbound liquidity to mobile wallets',
+    cats: ['infra'],
   },
   {
     name: 'Mutiny',
@@ -260,14 +247,6 @@ const projects: Project[] = [
     cats: ['misc'],
   },
   {
-    name: 'uMlando',
-    url: 'https://github.com/ConorOkus/uMlando-wallet',
-    img: '/img/github.png',
-    imgDark: '/img/github-white.png',
-    desc: 'An educational Android demo wallet',
-    cats: ['misc'],
-  },
-  {
     name: 'Velas',
     url: 'https://www.velascommerce.com/',
     img: '/img/velas.png',
@@ -287,6 +266,29 @@ const projects: Project[] = [
     img: '/img/voltage.png',
     desc: 'Enterprise-grade infrastructure for the Lightning Network',
     cats: ['infra'],
+  },
+  {
+    name: 'Zeus',
+    url: 'https://zeusln.com/',
+    img: '/img/zeus.svg',
+    desc: 'A self-custodial mobile bitcoin wallet, with an embedded LDK Node',
+    cats: ['mobile'],
+  },
+  {
+    name: 'zinqq',
+    url: 'https://zinqq.app',
+    img: '/img/github.png',
+    imgDark: '/img/github-white.png',
+    desc: 'A self-custodial Lightning wallet running entirely in the browser, on LDK compiled to WebAssembly',
+    cats: ['web'],
+  },
+  {
+    name: 'zinqq-kmp',
+    url: 'https://github.com/ConorOkus/zinqq-kmp',
+    img: '/img/github.png',
+    imgDark: '/img/github-white.png',
+    desc: 'A Kotlin Multiplatform client for zinqq, wrapping the LDK crates over UniFFI with Compose and SwiftUI shells',
+    cats: ['mobile'],
   },
 ]
 
@@ -319,7 +321,10 @@ const filtered = computed(() =>
           <img
             :src="withBase(p.img)"
             :alt="p.name"
-            :class="{ 'cs-logo-light': p.imgDark }"
+            :class="{
+              'cs-logo-light': p.imgDark,
+              'cs-invert-dark': p.invertOnDark,
+            }"
           />
           <img
             v-if="p.imgDark"
@@ -362,7 +367,10 @@ const filtered = computed(() =>
           <img
             :src="withBase(p.img)"
             :alt="p.name"
-            :class="{ 'cs-logo-light': p.imgDark }"
+            :class="{
+              'cs-logo-light': p.imgDark,
+              'cs-invert-dark': p.invertOnDark,
+            }"
           />
           <img
             v-if="p.imgDark"
@@ -478,5 +486,11 @@ const filtered = computed(() =>
 
 .dark .cs-logo-dark {
   display: block;
+}
+
+/* Single-colour dark marks (e.g. Lightspark) ship no dark variant; invert
+   them so they read light against the dark card. */
+.dark .case-study-item img.cs-invert-dark {
+  filter: invert(1);
 }
 </style>
