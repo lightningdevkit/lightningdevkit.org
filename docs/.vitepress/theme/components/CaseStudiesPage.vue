@@ -143,7 +143,7 @@ const projects: Project[] = [
   },
   {
     name: 'ldk-sample with Tor',
-    url: 'https://github.com/TonyGiorgio/ldk-sample-tor',
+    url: 'https://github.com/AnthonyRonning/ldk-sample-tor',
     img: '/img/github.png',
     imgDark: '/img/github-white.png',
     desc: 'An experimentation with tor that adapts the ldk-sample node',
@@ -190,14 +190,6 @@ const projects: Project[] = [
     cats: ['infra'],
   },
   {
-    name: 'Mutiny',
-    url: 'https://mutinywallet.com/',
-    img: '/img/mutiny.png',
-    desc: 'A web-first unstoppable bitcoin wallet for everyone',
-    cats: ['web'],
-    caseStudy: '/blog/mutiny-uses-ldk-the-first-lightning-wallet-for-the-web/',
-  },
-  {
     name: 'rgb-lightning-node',
     url: 'https://github.com/RGB-Tools/rgb-lightning-node',
     img: '/img/github.png',
@@ -237,14 +229,6 @@ const projects: Project[] = [
     desc: 'A bitcoin watchtower with a specific focus on Lightning',
     cats: ['infra'],
     caseStudy: '/blog/teos-uses-ldk-to-build-open-source-watchtower/',
-  },
-  {
-    name: 'The Hidden LN',
-    url: 'https://github.com/BitcoinDevShop/hidden-lightning-network',
-    img: '/img/github.png',
-    imgDark: '/img/github-white.png',
-    desc: 'Probes the Lightning Network for the detection of private channels',
-    cats: ['misc'],
   },
   {
     name: 'Velas',
