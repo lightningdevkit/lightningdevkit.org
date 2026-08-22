@@ -1,6 +1,9 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type DefaultTheme } from 'vitepress'
+import fs from 'node:fs/promises'
+import { Feed } from 'feed'
+import { readBlogPosts } from '../blog/_taxonomy.ts'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -131,6 +134,7 @@ export default defineConfig({
     ['link', { rel: 'apple-touch-icon', href: '/img/favicon/apple-touch-icon.png' }],
     ['link', { rel: 'manifest', href: '/site.webmanifest' }],
     ['link', { rel: 'preload', as: 'font', type: 'font/woff2', crossorigin: '', href: '/fonts/ibm-plex-mono-400.woff2' }],
+    ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'LDK Blog', href: '/rss.xml' }],
     ['meta', { name: 'msapplication-config', content: '/browserconfig.xml' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -229,5 +233,32 @@ export default defineConfig({
       ],
       dedupe: ['vue'],
     },
+  },
+
+  async buildEnd(siteConfig) {
+    const posts = await readBlogPosts(path.join(siteConfig.srcDir, 'blog'))
+
+    const feed = new Feed({
+      title: 'Lightning Dev Kit Documentation Blog',
+      description: 'LDK is a flexible lightning implementation with supporting batteries (or modules).',
+      id: 'https://lightningdevkit.org/blog/',
+      link: 'https://lightningdevkit.org/blog/',
+      language: 'en',
+      copyright: `Copyright © ${new Date().getFullYear()} LDK Developers`,
+      updated: posts[0] ? new Date(posts[0].date) : new Date(),
+    })
+
+    for (const post of posts) {
+      feed.addItem({
+        title: post.title,
+        id: `https://lightningdevkit.org${post.url}`,
+        link: `https://lightningdevkit.org${post.url}`,
+        description: post.description,
+        author: post.authors.map((name) => ({ name })),
+        date: new Date(post.date),
+      })
+    }
+
+    await fs.writeFile(path.join(siteConfig.outDir, 'rss.xml'), feed.rss2())
   },
 })
