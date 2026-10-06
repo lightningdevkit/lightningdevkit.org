@@ -190,6 +190,12 @@
   background: var(--vp-button-brand-hover-bg);
 }
 
+.fh-cta:focus-visible,
+.fh-node-cta:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
 .fh-icon {
   justify-self: center;
 }
@@ -253,7 +259,7 @@
 
 .fh-node-cta:hover {
   background: var(--vp-c-brand-1);
-  color: var(--vp-c-white);
+  color: var(--vp-button-brand-text, var(--vp-c-white));
 }
 
 @media (max-width: 720px) {
