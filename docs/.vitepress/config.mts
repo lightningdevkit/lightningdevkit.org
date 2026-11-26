@@ -63,6 +63,7 @@ const docsSidebar: DefaultTheme.SidebarItem[] = [
           { text: 'Sending Payments', link: '/building-a-node-with-ldk/sending-payments' },
           { text: 'Receiving Payments', link: '/building-a-node-with-ldk/receiving-payments' },
           { text: 'Closing a Channel', link: '/building-a-node-with-ldk/closing-a-channel' },
+          { text: 'Shutting Down a Node', link: '/building-a-node-with-ldk/shutting-down-a-node' },
         ],
       },
       { text: 'Running a sample LDK node', link: '/running-a-sample-ldk-node' },
